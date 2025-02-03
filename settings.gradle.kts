@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Softie"
 include(":app")
- 
+include(":build-logic")
