@@ -9,4 +9,6 @@ android {
 
 dependencies {
     implementation(projects.core)
+
+    implementation(projects.feature.onboarding)
 }
