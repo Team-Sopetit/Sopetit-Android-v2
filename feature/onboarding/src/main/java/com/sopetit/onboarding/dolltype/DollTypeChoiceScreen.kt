@@ -17,6 +17,7 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.ui.common.topbar.OnboardingTopBar
 
 @Composable
 fun DollTypeChoiceScreen() {
@@ -35,6 +36,8 @@ fun DollTypeChoiceContent() {
             modifier = Modifier
                 .fillMaxSize()
         ) {
+            OnboardingTopBar(page = 2)
+
             Text(
                 text = DollTypeChoiceTitle,
                 style = SoftieTypo.head1,
