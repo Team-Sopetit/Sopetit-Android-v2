@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.R
 import com.sopetit.design_system.StoryTellingContent3
-import com.sopetit.ui.common.StoryTellingTextContent
+import com.sopetit.ui.common.StoryTellingText
 
 @Composable
 fun StoryTellingThirdScreen() {
@@ -57,7 +57,7 @@ fun StoryTellingThirdContent() {
                 )
             }
 
-            StoryTellingTextContent(
+            StoryTellingText(
                 storyContent = StoryTellingContent3
             )
         }
