@@ -1,6 +1,7 @@
 package com.sopetit.ui.common
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,7 +24,8 @@ import com.sopetit.design_system.SoftieTypo
 
 @Composable
 fun StoryTellingTextContent(
-    storyContent: String
+    storyContent: String,
+    onClickAction: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -32,6 +34,7 @@ fun StoryTellingTextContent(
             .clip(RoundedCornerShape(12))
             .background(Gray0)
             .wrapContentHeight()
+            .clickable { onClickAction() }
     ) {
         Text(
             text = storyContent,
