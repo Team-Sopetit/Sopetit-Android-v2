@@ -1,4 +1,4 @@
-package com.sopetit.ui.common
+package com.sopetit.ui.common.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
