@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
 import com.sopetit.onboarding.storytelling.StoryTellingSecondScreen
+import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 
 fun NavGraphBuilder.onBoardingNavGraph(
     navController: NavHostController
@@ -21,7 +22,13 @@ fun NavGraphBuilder.onBoardingNavGraph(
         }
 
         composable(NavRoutes.StoryTellingSecondScreen.route) {
-            StoryTellingSecondScreen()
+            StoryTellingSecondScreen(
+                goToThirdStoryPage = { navController.navigate(NavRoutes.StoryTellingThirdScreen.route) }
+            )
+        }
+
+        composable(NavRoutes.StoryTellingThirdScreen.route) {
+            StoryTellingThirdScreen()
         }
     }
 }

@@ -25,14 +25,20 @@ import com.sopetit.design_system.StoryTellingContent2
 import com.sopetit.ui.common.StoryTellingTextContent
 
 @Composable
-fun StoryTellingSecondScreen() {
+fun StoryTellingSecondScreen(
+    goToThirdStoryPage: () -> Unit = {}
+) {
 
-    StoryTellingSecondContent()
+    StoryTellingSecondContent(
+        onClickContent = { goToThirdStoryPage() }
+    )
 
 }
 
 @Composable
-fun StoryTellingSecondContent() {
+fun StoryTellingSecondContent(
+    onClickContent: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -74,7 +80,8 @@ fun StoryTellingSecondContent() {
                     .padding(bottom = 107.dp)
             ) {
                 StoryTellingTextContent(
-                    storyContent = StoryTellingContent2
+                    storyContent = StoryTellingContent2,
+                    onClickAction = onClickContent
                 )
             }
         }
