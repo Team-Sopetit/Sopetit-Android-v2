@@ -18,18 +18,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.R
-import com.sopetit.design_system.StoryTellingContent1
+import com.sopetit.design_system.StoryTellingContent2
 import com.sopetit.ui.common.StoryTellingTextContent
 
-
 @Composable
-fun StoryTellingFirstScreen() {
+fun StoryTellingSecondScreen() {
 
-    StoryTellingFirstContent()
+    StoryTellingSecondContent()
+
 }
 
 @Composable
-fun StoryTellingFirstContent() {
+fun StoryTellingSecondContent() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -45,11 +45,19 @@ fun StoryTellingFirstContent() {
                     .padding(start = 20.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_storytelling_girl1),
+                    painter = painterResource(id = R.drawable.ic_storytelling_girl2),
                     contentDescription = "story telling girl",
                     modifier = Modifier
                         .size(width = 210.dp, height = 360.dp)
                         .align(Alignment.TopStart)
+                )
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_box_closed_split),
+                    contentDescription = "story telling closed box",
+                    modifier = Modifier
+                        .size(width = 141.dp, height = 120.dp)
+                        .align(Alignment.BottomEnd)
                 )
             }
 
@@ -61,7 +69,7 @@ fun StoryTellingFirstContent() {
                     .padding(bottom = 107.dp)
             ) {
                 StoryTellingTextContent(
-                    storyContent = StoryTellingContent1
+                    storyContent = StoryTellingContent2
                 )
             }
         }
@@ -70,6 +78,6 @@ fun StoryTellingFirstContent() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PreviewStoryTelling() {
-    StoryTellingFirstContent()
+fun PreviewStoryTellingSecond() {
+    StoryTellingSecondContent()
 }
