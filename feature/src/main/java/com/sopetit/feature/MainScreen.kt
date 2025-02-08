@@ -1,6 +1,8 @@
 package com.sopetit.feature
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,12 +19,17 @@ fun MainScreen() {
     Scaffold(
         bottomBar = { BottomNavBar() }
     ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = NavRoutes.OnBoardingGraph.route,
-            modifier = Modifier.padding(innerPadding)
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .statusBarsPadding()
         ) {
-            onBoardingNavGraph(navController = navController)
+            NavHost(
+                navController = navController,
+                startDestination = NavRoutes.OnBoardingGraph.route
+            ) {
+                onBoardingNavGraph(navController = navController)
+            }
         }
     }
 }
