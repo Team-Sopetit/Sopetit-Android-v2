@@ -4,8 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -36,31 +38,38 @@ fun StoryTellingScreen() {
 
 @Composable
 fun StoryTellingContent() {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Gray50)
     ) {
-        Box(
+        Column(
             modifier = Modifier
-                .wrapContentSize()
-                .padding(top = 174.dp, start = 20.dp)
+                .align(Alignment.BottomCenter)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_storytelling_girl1),
-                contentDescription = "story telling girl",
+            Box(
                 modifier = Modifier
-                    .size(width = 210.dp, height = 360.dp)
-                    .align(Alignment.TopStart)
-            )
-        }
+                    .wrapContentSize()
+                    .padding(start = 20.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_storytelling_girl1),
+                    contentDescription = "story telling girl",
+                    modifier = Modifier
+                        .size(width = 210.dp, height = 360.dp)
+                        .align(Alignment.TopStart)
+                )
+            }
 
-        Box(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(top = 63.dp)
-        ) {
-            StoryTextContent()
+            Spacer(modifier = Modifier.height(63.dp))
+
+            Box(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(bottom = 107.dp)
+            ) {
+                StoryTextContent()
+            }
         }
     }
 }
