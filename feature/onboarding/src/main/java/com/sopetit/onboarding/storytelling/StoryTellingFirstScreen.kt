@@ -31,7 +31,7 @@ import com.sopetit.design_system.StoryTellingContent1
 
 
 @Composable
-fun StoryTellingScreen() {
+fun StoryTellingFirstScreen() {
 
     StoryTellingContent()
 }
