@@ -10,3 +10,4 @@ const val StoryTellingContent3 = "한 번 열어볼까?"
 
 const val DollTypeChoiceTitle = "어떤 친구와 함께 할까요?"
 const val DollTypeChoiceSemiTitle = "한 번 선택한 인형은 바꿀 수 없어요"
+const val DollTypeChoiceBtn = "이 친구와 함께 할래"

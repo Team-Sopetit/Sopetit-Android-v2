@@ -11,12 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sopetit.design_system.DollTypeChoiceBtn
 import com.sopetit.design_system.DollTypeChoiceSemiTitle
 import com.sopetit.design_system.DollTypeChoiceTitle
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.ui.common.item.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 
 @Composable
@@ -38,23 +40,30 @@ fun DollTypeChoiceContent() {
         ) {
             OnboardingTopBar(page = 2)
 
-            Text(
-                text = DollTypeChoiceTitle,
-                style = SoftieTypo.head1,
-                color = Gray700,
+            Column(
                 modifier = Modifier
-                    .padding(top = 28.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
+                    .weight(1f)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = DollTypeChoiceTitle,
+                    style = SoftieTypo.head1,
+                    color = Gray700,
+                    modifier = Modifier
+                        .padding(top = 28.dp)
+                )
 
-            Text(
-                text = DollTypeChoiceSemiTitle,
-                style = SoftieTypo.body2,
-                color = Gray500,
-                modifier = Modifier
-                    .padding(top = 4.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
+                Text(
+                    text = DollTypeChoiceSemiTitle,
+                    style = SoftieTypo.body2,
+                    color = Gray500,
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                )
+            }
+
+            BottomRectangleBtn(btnTextContent = DollTypeChoiceBtn)
         }
     }
 }
