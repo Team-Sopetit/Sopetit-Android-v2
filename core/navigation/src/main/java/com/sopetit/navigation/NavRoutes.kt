@@ -7,4 +7,6 @@ sealed class NavRoutes(val route: String) {
     data object StoryTellingFirstScreen: NavRoutes("story_telling_first")
     data object StoryTellingSecondScreen: NavRoutes("story_telling_second")
     data object StoryTellingThirdScreen: NavRoutes("story_telling_third")
+
+    data object DollTypeChoiceScreen: NavRoutes("doll_type_choice")
 }

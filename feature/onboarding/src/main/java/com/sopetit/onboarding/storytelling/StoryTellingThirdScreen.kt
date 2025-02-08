@@ -20,12 +20,18 @@ import com.sopetit.design_system.StoryTellingContent3
 import com.sopetit.ui.common.StoryTellingText
 
 @Composable
-fun StoryTellingThirdScreen() {
-    StoryTellingThirdContent()
+fun StoryTellingThirdScreen(
+    goToDollTypeChoicePage: () -> Unit = {}
+) {
+    StoryTellingThirdContent(
+        onClickContent = { goToDollTypeChoicePage() }
+    )
 }
 
 @Composable
-fun StoryTellingThirdContent() {
+fun StoryTellingThirdContent(
+    onClickContent: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -58,7 +64,8 @@ fun StoryTellingThirdContent() {
             }
 
             StoryTellingText(
-                storyContent = StoryTellingContent3
+                storyContent = StoryTellingContent3,
+                onClickAction = onClickContent
             )
         }
     }
