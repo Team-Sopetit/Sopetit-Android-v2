@@ -36,7 +36,9 @@ import com.sopetit.ui.common.item.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 
 @Composable
-fun DollTypeChoiceScreen() {
+fun DollTypeChoiceScreen(
+    goToDollNamingPage: () -> Unit = {}
+) {
 
     val viewModel: DollTypeChoiceViewModel = hiltViewModel()
     val uiState: DollTypeChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -45,14 +47,16 @@ fun DollTypeChoiceScreen() {
         selectedDollType = uiState.selectedDollType,
         onSelectDollType = { dollType ->
             viewModel.setSelectedDollType(dollType)
-        }
+        },
+        onClickBtnAction = { goToDollNamingPage() }
     )
 }
 
 @Composable
 fun DollTypeChoiceContent(
     onSelectDollType: (DollType) -> Unit = {},
-    selectedDollType: DollType = DollType.NONE
+    selectedDollType: DollType = DollType.NONE,
+    onClickBtnAction: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -95,7 +99,8 @@ fun DollTypeChoiceContent(
 
             BottomRectangleBtn(
                 btnTextContent = DollTypeChoiceBtn,
-                isBtnActivated = (selectedDollType != DollType.NONE)
+                isBtnActivated = (selectedDollType != DollType.NONE),
+                onClickAction = onClickBtnAction
             )
         }
     }

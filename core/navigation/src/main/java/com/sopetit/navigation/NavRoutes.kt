@@ -9,4 +9,5 @@ sealed class NavRoutes(val route: String) {
     data object StoryTellingThirdScreen: NavRoutes("story_telling_third")
 
     data object DollTypeChoiceScreen: NavRoutes("doll_type_choice")
+    data object DollNamingScreen: NavRoutes("doll_naming")
 }

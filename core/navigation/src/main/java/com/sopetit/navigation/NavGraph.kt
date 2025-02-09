@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sopetit.onboarding.dollnaming.DollNamingScreen
 import com.sopetit.onboarding.dolltype.DollTypeChoiceScreen
 import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
 import com.sopetit.onboarding.storytelling.StoryTellingSecondScreen
@@ -35,7 +36,13 @@ fun NavGraphBuilder.onBoardingNavGraph(
         }
 
         composable(NavRoutes.DollTypeChoiceScreen.route) {
-            DollTypeChoiceScreen()
+            DollTypeChoiceScreen(
+                goToDollNamingPage = { navController.navigate(NavRoutes.DollNamingScreen.route) }
+            )
+        }
+
+        composable(NavRoutes.DollNamingScreen.route) {
+            DollNamingScreen()
         }
     }
 }
