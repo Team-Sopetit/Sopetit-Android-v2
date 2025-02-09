@@ -5,14 +5,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sopetit.design_system.DollNamingBtn
 import com.sopetit.design_system.DollNamingSemiTitle
 import com.sopetit.design_system.DollNamingTitle
@@ -20,16 +26,26 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.onboarding.model.DollHelloModel
 import com.sopetit.ui.common.item.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 
 @Composable
 fun DollNamingScreen() {
-    DollNamingContent()
+    val viewModel: DollNamingViewModel = hiltViewModel()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    DollNamingContent(
+        dollHelloList = uiState.dollHelloList
+    )
 }
 
 @Composable
-fun DollNamingContent() {
+fun DollNamingContent(
+    dollHelloList: List<DollHelloModel> = emptyList()
+) {
+    val composition by rememberLottieComposition(spec = dollHelloList[0].resource)
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -63,6 +79,9 @@ fun DollNamingContent() {
                     color = Gray500,
                     modifier = Modifier
                         .padding(top = 4.dp)
+                )
+                LottieAnimation(
+                    composition = composition
                 )
             }
 
