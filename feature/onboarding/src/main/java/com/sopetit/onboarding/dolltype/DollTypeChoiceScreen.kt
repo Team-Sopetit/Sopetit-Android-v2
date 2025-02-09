@@ -23,15 +23,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.design_system.DollTypeChoiceBtn
 import com.sopetit.design_system.DollTypeChoiceSemiTitle
 import com.sopetit.design_system.DollTypeChoiceTitle
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.onboarding.model.DollTypeModel
 import com.sopetit.ui.common.item.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 
@@ -44,6 +44,7 @@ fun DollTypeChoiceScreen(
     val uiState: DollTypeChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     DollTypeChoiceContent(
+        dollTypeList = uiState.dollTypeList,
         selectedDollType = uiState.selectedDollType,
         onSelectDollType = { dollType ->
             viewModel.setSelectedDollType(dollType)
@@ -56,6 +57,7 @@ fun DollTypeChoiceScreen(
 
 @Composable
 fun DollTypeChoiceContent(
+    dollTypeList: List<DollTypeModel> = emptyList(),
     onSelectDollType: (DollType) -> Unit = {},
     selectedDollType: DollType = DollType.NONE,
     onClickBtnAction: () -> Unit = {}
@@ -97,6 +99,7 @@ fun DollTypeChoiceContent(
                 )
 
                 DollTypeChoiceItem(
+                    dollTypeList = dollTypeList,
                     selectedDollType = selectedDollType,
                     onSelectDollType = onSelectDollType
                 )
@@ -113,24 +116,10 @@ fun DollTypeChoiceContent(
 
 @Composable
 fun DollTypeChoiceItem(
+    dollTypeList: List<DollTypeModel> = emptyList(),
     onSelectDollType: (DollType) -> Unit = {},
     selectedDollType: DollType = DollType.NONE
 ) {
-
-    val dollInBoxImgList: List<Int> = listOf(
-        R.drawable.ic_doll_brown_box_in,
-        R.drawable.ic_doll_gray_box_in,
-        R.drawable.ic_doll_white_box_in,
-        R.drawable.ic_doll_red_box_in
-    )
-    val dollUpBoxImgList: List<Int> = listOf(
-        R.drawable.ic_doll_brown_box_up,
-        R.drawable.ic_doll_gray_box_up,
-        R.drawable.ic_doll_white_box_up,
-        R.drawable.ic_doll_red_box_up
-    )
-    val dollTypeList: List<DollType> =
-        listOf(DollType.BROWN, DollType.GRAY, DollType.WHITE, DollType.RED)
 
     Box(
         modifier = Modifier
@@ -143,14 +132,14 @@ fun DollTypeChoiceItem(
             horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            itemsIndexed(dollTypeList, key = { _, item -> item }) { index, item ->
+            itemsIndexed(dollTypeList, key = { _, item -> item.id }) { _, item ->
                 Image(
-                    painter = painterResource(id = if (selectedDollType == item) dollUpBoxImgList[index] else dollInBoxImgList[index]),
+                    painter = painterResource(id = if (selectedDollType == item.dollType) item.dollUpBox else item.dollInBox),
                     contentDescription = "bear type",
                     modifier = Modifier
                         .size(160.dp)
                         .align(Alignment.Center)
-                        .clickable { onSelectDollType(item) }
+                        .clickable { onSelectDollType(item.dollType) }
                 )
             }
         }
