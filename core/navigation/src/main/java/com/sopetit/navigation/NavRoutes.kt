@@ -10,4 +10,5 @@ sealed class NavRoutes(val route: String) {
 
     data object DollTypeChoiceScreen: NavRoutes("doll_type_choice")
     data object DollNamingScreen: NavRoutes("doll_naming")
+    data object ThemeChoiceScreen: NavRoutes("theme_choice")
 }

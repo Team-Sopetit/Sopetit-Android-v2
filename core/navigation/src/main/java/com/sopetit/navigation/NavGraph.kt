@@ -9,6 +9,7 @@ import com.sopetit.onboarding.dolltype.DollTypeChoiceScreen
 import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
 import com.sopetit.onboarding.storytelling.StoryTellingSecondScreen
 import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
+import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
 
 fun NavGraphBuilder.onBoardingNavGraph(
     navController: NavHostController
@@ -42,7 +43,13 @@ fun NavGraphBuilder.onBoardingNavGraph(
         }
 
         composable(NavRoutes.DollNamingScreen.route) {
-            DollNamingScreen()
+            DollNamingScreen(
+                goToThemeChoicePage = { navController.navigate(NavRoutes.ThemeChoiceScreen.route) }
+            )
+        }
+
+        composable(NavRoutes.ThemeChoiceScreen.route) {
+            ThemeChoiceScreen()
         }
     }
 }

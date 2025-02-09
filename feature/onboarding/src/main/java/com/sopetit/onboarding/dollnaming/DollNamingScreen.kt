@@ -54,14 +54,17 @@ import com.sopetit.ui.common.item.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 
 @Composable
-fun DollNamingScreen() {
+fun DollNamingScreen(
+    goToThemeChoicePage: () -> Unit = {}
+) {
     val viewModel: DollNamingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     DollNamingContent(
         dollHelloList = uiState.dollHelloList,
         dollInputName = uiState.dollInputName,
-        onValueChange = { newValue -> viewModel.onValueChange(newValue) }
+        onValueChange = { newValue -> viewModel.onValueChange(newValue) },
+        onClickBtnAction = { goToThemeChoicePage() }
     )
 }
 
@@ -69,7 +72,8 @@ fun DollNamingScreen() {
 fun DollNamingContent(
     dollHelloList: List<DollHelloModel> = emptyList(),
     dollInputName: String = "",
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (String) -> Unit = {},
+    onClickBtnAction: () -> Unit = {}
 ) {
     val composition by rememberLottieComposition(spec = dollHelloList[0].resource)
     val progress by animateLottieCompositionAsState(
@@ -126,7 +130,9 @@ fun DollNamingContent(
             }
 
             BottomRectangleBtn(
-                btnTextContent = DollNamingBtn
+                btnTextContent = DollNamingBtn,
+                isBtnActivated = dollInputName.isNotEmpty(),
+                onClickAction = onClickBtnAction
             )
         }
     }
