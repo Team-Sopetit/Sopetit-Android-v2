@@ -55,7 +55,8 @@ import com.sopetit.ui.common.topbar.OnboardingTopBar
 
 @Composable
 fun DollNamingScreen(
-    goToThemeChoicePage: () -> Unit = {}
+    goToThemeChoicePage: () -> Unit = {},
+    goBackToDollTypePage: () -> Unit = {}
 ) {
     val viewModel: DollNamingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -64,7 +65,8 @@ fun DollNamingScreen(
         dollHelloList = uiState.dollHelloList,
         dollInputName = uiState.dollInputName,
         onValueChange = { newValue -> viewModel.onValueChange(newValue) },
-        onClickBtnAction = { goToThemeChoicePage() }
+        onClickBtnAction = { goToThemeChoicePage() },
+        onClickBackBtnAction = { goBackToDollTypePage() }
     )
 }
 
@@ -73,7 +75,8 @@ fun DollNamingContent(
     dollHelloList: List<DollHelloModel> = emptyList(),
     dollInputName: String = "",
     onValueChange: (String) -> Unit = {},
-    onClickBtnAction: () -> Unit = {}
+    onClickBtnAction: () -> Unit = {},
+    onClickBackBtnAction: () -> Unit = {}
 ) {
     val composition by rememberLottieComposition(spec = dollHelloList[0].resource)
     val progress by animateLottieCompositionAsState(
@@ -90,7 +93,11 @@ fun DollNamingContent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            OnboardingTopBar(page = 2)
+            OnboardingTopBar(
+                page = 2,
+                enabledGoBack = true,
+                goBack = { onClickBackBtnAction() }
+            )
 
             Column(
                 modifier = Modifier

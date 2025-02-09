@@ -14,12 +14,18 @@ import com.sopetit.ui.common.item.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 
 @Composable
-fun ThemeChoiceScreen() {
-    ThemeChoiceContent()
+fun ThemeChoiceScreen(
+    goBackToDollNamingPage: () -> Unit = {}
+) {
+    ThemeChoiceContent(
+        onClickBackBtnAction = { goBackToDollNamingPage() }
+    )
 }
 
 @Composable
-fun ThemeChoiceContent() {
+fun ThemeChoiceContent(
+    onClickBackBtnAction: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -29,7 +35,11 @@ fun ThemeChoiceContent() {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            OnboardingTopBar(page = 3)
+            OnboardingTopBar(
+                page = 3,
+                enabledGoBack = true,
+                goBack = { onClickBackBtnAction() }
+            )
 
             Column(
                 modifier = Modifier

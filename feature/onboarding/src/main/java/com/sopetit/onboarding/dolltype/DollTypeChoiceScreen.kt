@@ -67,7 +67,10 @@ fun DollTypeChoiceContent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            OnboardingTopBar(page = 1)
+            OnboardingTopBar(
+                page = 1,
+                enabledGoBack = false
+            )
 
             Column(
                 modifier = Modifier
