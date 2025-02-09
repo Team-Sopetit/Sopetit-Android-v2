@@ -4,8 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,6 +21,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sopetit.design_system.DollNamingBtn
 import com.sopetit.design_system.DollNamingSemiTitle
@@ -45,6 +50,10 @@ fun DollNamingContent(
     dollHelloList: List<DollHelloModel> = emptyList()
 ) {
     val composition by rememberLottieComposition(spec = dollHelloList[0].resource)
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = LottieConstants.IterateForever
+    )
 
     Box(
         modifier = Modifier
@@ -81,7 +90,11 @@ fun DollNamingContent(
                         .padding(top = 4.dp)
                 )
                 LottieAnimation(
-                    composition = composition
+                    composition = composition,
+                    progress = { progress },
+                    modifier = Modifier
+                        .size(250.dp)
+                        .padding(top = 4.dp)
                 )
             }
 
