@@ -10,25 +10,28 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.navigation.onBoardingNavGraph
+import com.sopetit.ui.util.DismissKeyboardOnClick
 
 @Composable
 fun MainScreen() {
 
     val navController = rememberNavController()
 
-    Scaffold(
-        bottomBar = { BottomNavBar() }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .statusBarsPadding()
-        ) {
-            NavHost(
-                navController = navController,
-                startDestination = NavRoutes.OnBoardingGraph.route
+    DismissKeyboardOnClick {
+        Scaffold(
+            bottomBar = { BottomNavBar() }
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .statusBarsPadding()
             ) {
-                onBoardingNavGraph(navController = navController)
+                NavHost(
+                    navController = navController,
+                    startDestination = NavRoutes.OnBoardingGraph.route
+                ) {
+                    onBoardingNavGraph(navController = navController)
+                }
             }
         }
     }
