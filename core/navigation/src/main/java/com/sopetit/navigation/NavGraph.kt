@@ -4,15 +4,19 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sopetit.core.enums.DollType
 import com.sopetit.onboarding.dollnaming.DollNamingScreen
 import com.sopetit.onboarding.dolltype.DollTypeChoiceScreen
 import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
 import com.sopetit.onboarding.storytelling.StoryTellingSecondScreen
 import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
+import kotlinx.coroutines.flow.SharedFlow
 
 fun NavGraphBuilder.onBoardingNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    setSelectedDollType: (DollType) -> Unit,
+    selectedDollType: SharedFlow<DollType>
 ) {
     navigation(
         startDestination = NavRoutes.StoryTellingFirstScreen.route,
@@ -38,12 +42,16 @@ fun NavGraphBuilder.onBoardingNavGraph(
 
         composable(NavRoutes.DollTypeChoiceScreen.route) {
             DollTypeChoiceScreen(
-                goToDollNamingPage = { navController.navigate(NavRoutes.DollNamingScreen.route) }
+                goToDollNamingPage = {
+                    setSelectedDollType(it)
+                    navController.navigate(NavRoutes.DollNamingScreen.route)
+                }
             )
         }
 
         composable(NavRoutes.DollNamingScreen.route) {
             DollNamingScreen(
+                selectedDollType = selectedDollType,
                 goToThemeChoicePage = { navController.navigate(NavRoutes.ThemeChoiceScreen.route) },
                 goBackToDollTypePage = { navController.popBackStack() }
             )

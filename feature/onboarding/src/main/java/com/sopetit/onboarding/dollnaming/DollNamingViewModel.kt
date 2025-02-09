@@ -6,6 +6,7 @@ import com.sopetit.design_system.R
 import com.sopetit.onboarding.model.DollHelloModel
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,6 +16,15 @@ class DollNamingViewModel @Inject constructor(
 
     init {
         initSetDollHelloList()
+    }
+
+    fun getSelectedDollType(dollType: DollType) {
+        updateState(
+            uiState.value.copy(
+                selectedDollType = dollType
+            )
+        )
+        Timber.d("[온보딩] dollType -> ${uiState.value.selectedDollType}")
     }
 
     private fun initSetDollHelloList() {

@@ -37,7 +37,7 @@ import com.sopetit.ui.common.topbar.OnboardingTopBar
 
 @Composable
 fun DollTypeChoiceScreen(
-    goToDollNamingPage: () -> Unit = {}
+    goToDollNamingPage: (DollType) -> Unit = {}
 ) {
 
     val viewModel: DollTypeChoiceViewModel = hiltViewModel()
@@ -48,7 +48,9 @@ fun DollTypeChoiceScreen(
         onSelectDollType = { dollType ->
             viewModel.setSelectedDollType(dollType)
         },
-        onClickBtnAction = { goToDollNamingPage() }
+        onClickBtnAction = {
+            goToDollNamingPage(uiState.selectedDollType)
+        }
     )
 }
 

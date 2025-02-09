@@ -39,6 +39,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.sopetit.core.enums.DollType
 import com.sopetit.design_system.DollNamingBtn
 import com.sopetit.design_system.DollNamingSemiTitle
 import com.sopetit.design_system.DollNamingTitle
@@ -52,14 +53,23 @@ import com.sopetit.design_system.SoftieTypo
 import com.sopetit.onboarding.model.DollHelloModel
 import com.sopetit.ui.common.item.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 fun DollNamingScreen(
+    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
     goToThemeChoicePage: () -> Unit = {},
     goBackToDollTypePage: () -> Unit = {}
 ) {
     val viewModel: DollNamingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(selectedDollType) {
+        selectedDollType.collect {
+            viewModel.getSelectedDollType(it)
+        }
+    }
 
     DollNamingContent(
         dollHelloList = uiState.dollHelloList,
