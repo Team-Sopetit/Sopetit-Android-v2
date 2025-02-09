@@ -104,11 +104,17 @@ fun DollTypeChoiceItem(
     selectedDollType: DollType = DollType.NONE
 ) {
 
-    val dollImgList: List<Int> = listOf(
+    val dollInBoxImgList: List<Int> = listOf(
         R.drawable.ic_doll_brown_box_in,
         R.drawable.ic_doll_gray_box_in,
         R.drawable.ic_doll_white_box_in,
         R.drawable.ic_doll_red_box_in
+    )
+    val dollUpBoxImgList: List<Int> = listOf(
+        R.drawable.ic_doll_brown_box_up,
+        R.drawable.ic_doll_gray_box_up,
+        R.drawable.ic_doll_white_box_up,
+        R.drawable.ic_doll_red_box_up
     )
     val dollTypeList: List<DollType> =
         listOf(DollType.BROWN, DollType.GRAY, DollType.WHITE, DollType.RED)
@@ -126,7 +132,7 @@ fun DollTypeChoiceItem(
         ) {
             itemsIndexed(dollTypeList, key = { _, item -> item }) { index, item ->
                 Image(
-                    painter = painterResource(id = dollImgList[index]),
+                    painter = painterResource(id = if (selectedDollType == item) dollUpBoxImgList[index] else dollInBoxImgList[index]),
                     contentDescription = "bear type",
                     modifier = Modifier
                         .size(160.dp)
