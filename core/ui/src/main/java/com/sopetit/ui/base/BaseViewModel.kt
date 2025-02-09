@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-abstract class BaseViewModel(
-    initialState: PageState
+abstract class BaseViewModel<STATE: PageState>(
+    initialState: STATE
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(initialState)
@@ -20,7 +20,7 @@ abstract class BaseViewModel(
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    protected fun updateState(state: PageState) {
+    protected fun updateState(state: STATE) {
         viewModelScope.launch {
             _uiState.update { state }
         }
