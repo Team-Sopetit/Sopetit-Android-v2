@@ -1,4 +1,4 @@
-package com.sopetit.core.enums
+package com.sopetit.domain.entity.enums
 
 enum class DollType(val value: String) {
     BROWN("BROWN"),

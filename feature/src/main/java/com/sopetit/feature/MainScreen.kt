@@ -12,7 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.sopetit.core.enums.DollType
+import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.ui.util.DismissKeyboardOnClick

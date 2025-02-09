@@ -1,7 +1,7 @@
 package com.sopetit.onboarding.dollnaming
 
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.sopetit.core.enums.DollType
+import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.design_system.R
 import com.sopetit.onboarding.model.DollHelloModel
 import com.sopetit.ui.base.BaseViewModel
