@@ -16,20 +16,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray300
+import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.SoftieTypo
 
 @Composable
 fun BottomRectangleBtn(
-    btnTextContent: String
+    btnTextContent: String,
+    isBtnActivated: Boolean = false
 ) {
     BottomRectangleBtnContent(
-        btnTextContent = btnTextContent
+        btnTextContent = btnTextContent,
+        isBtnActivated = isBtnActivated
     )
 }
 
 @Composable
 fun BottomRectangleBtnContent(
-    btnTextContent: String
+    btnTextContent: String,
+    isBtnActivated: Boolean = false
 ) {
     Box(
         modifier = Modifier
@@ -41,7 +45,7 @@ fun BottomRectangleBtnContent(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
                 .clip(RoundedCornerShape(10))
-                .background(Gray300)
+                .background(if (isBtnActivated) Gray650 else Gray300)
                 .wrapContentHeight()
         ) {
             Text(

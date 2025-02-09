@@ -93,7 +93,10 @@ fun DollTypeChoiceContent(
                 )
             }
 
-            BottomRectangleBtn(btnTextContent = DollTypeChoiceBtn)
+            BottomRectangleBtn(
+                btnTextContent = DollTypeChoiceBtn,
+                isBtnActivated = (selectedDollType != DollType.NONE)
+            )
         }
     }
 }
