@@ -14,10 +14,6 @@ class DollNamingViewModel @Inject constructor(
 
 ) : BaseViewModel<DollNamingPageState>(DollNamingPageState()) {
 
-    init {
-        initSetDollHelloList()
-    }
-
     fun getSelectedDollType(dollType: DollType) {
         updateState(
             uiState.value.copy(
@@ -25,33 +21,20 @@ class DollNamingViewModel @Inject constructor(
             )
         )
         Timber.d("[온보딩] dollType -> ${uiState.value.selectedDollType}")
+        initSetDollHelloResource(uiState.value.selectedDollType)
     }
 
-    private fun initSetDollHelloList() {
+    private fun initSetDollHelloResource(selectedDollType: DollType) {
+        val dollHelloList: List<DollHelloModel> = listOf(
+            DollHelloModel(id = 1, dollType = DollType.BROWN, resource = LottieCompositionSpec.RawRes(R.raw.brown_hello)),
+            DollHelloModel(id = 2, dollType = DollType.GRAY, resource = LottieCompositionSpec.RawRes(R.raw.gray_hello)),
+            DollHelloModel(id = 3, dollType = DollType.WHITE, resource = LottieCompositionSpec.RawRes(R.raw.white_hello)),
+            DollHelloModel(id = 4, dollType = DollType.RED, resource = LottieCompositionSpec.RawRes(R.raw.red_hello))
+        )
+
         updateState(
             uiState.value.copy(
-                dollHelloList = listOf(
-                    DollHelloModel(
-                        id = 1,
-                        dollType = DollType.BROWN,
-                        resource = LottieCompositionSpec.RawRes(R.raw.brown_hello)
-                    ),
-                    DollHelloModel(
-                        id = 2,
-                        dollType = DollType.GRAY,
-                        resource = LottieCompositionSpec.RawRes(R.raw.gray_hello)
-                    ),
-                    DollHelloModel(
-                        id = 3,
-                        dollType = DollType.WHITE,
-                        resource = LottieCompositionSpec.RawRes(R.raw.white_hello)
-                    ),
-                    DollHelloModel(
-                        id = 4,
-                        dollType = DollType.RED,
-                        resource = LottieCompositionSpec.RawRes(R.raw.red_hello)
-                    )
-                )
+                dollHelloResource = dollHelloList.first { it.dollType == selectedDollType }.resource
             )
         )
     }

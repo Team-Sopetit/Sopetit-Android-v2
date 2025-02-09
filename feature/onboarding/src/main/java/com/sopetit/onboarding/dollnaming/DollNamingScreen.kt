@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -48,9 +49,9 @@ import com.sopetit.design_system.Gray300
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.R
 import com.sopetit.design_system.Softie
 import com.sopetit.design_system.SoftieTypo
-import com.sopetit.onboarding.model.DollHelloModel
 import com.sopetit.ui.common.item.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -72,7 +73,7 @@ fun DollNamingScreen(
     }
 
     DollNamingContent(
-        dollHelloList = uiState.dollHelloList,
+        dollHelloResource = uiState.dollHelloResource,
         dollInputName = uiState.dollInputName,
         onValueChange = { newValue -> viewModel.onValueChange(newValue) },
         onClickBtnAction = { goToThemeChoicePage() },
@@ -82,13 +83,13 @@ fun DollNamingScreen(
 
 @Composable
 fun DollNamingContent(
-    dollHelloList: List<DollHelloModel> = emptyList(),
+    dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
     dollInputName: String = "",
     onValueChange: (String) -> Unit = {},
     onClickBtnAction: () -> Unit = {},
     onClickBackBtnAction: () -> Unit = {}
 ) {
-    val composition by rememberLottieComposition(spec = dollHelloList[0].resource)
+    val composition by rememberLottieComposition(spec = dollHelloResource)
     val progress by animateLottieCompositionAsState(
         composition = composition,
         iterations = LottieConstants.IterateForever
