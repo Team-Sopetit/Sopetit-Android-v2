@@ -1,10 +1,10 @@
 package com.sopetit.onboarding.dollnaming
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -154,6 +154,7 @@ fun DollNamingTextField(
             .fillMaxWidth()
             .padding(horizontal = 108.dp)
             .clip(RoundedCornerShape(99.dp))
+            .border(1.dp, Gray300, RoundedCornerShape(99.dp))
             .background(Gray0)
     ) {
         BasicTextField(
@@ -167,7 +168,10 @@ fun DollNamingTextField(
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
                 },
-            textStyle = SoftieTypo.body2.copy(color = Gray700),
+            textStyle = SoftieTypo.body2.copy(
+                color = Gray700,
+                textAlign = TextAlign.Center
+            ),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             ),
@@ -177,16 +181,17 @@ fun DollNamingTextField(
                 }
             ),
             decorationBox = { innerTextField ->
-                Row(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
+                    contentAlignment = Alignment.Center
                 ) {
                     if (textInput.isEmpty() && !isFocused) {
                         Text(
                             text = Softie,
                             style = SoftieTypo.body2,
-                            color = Gray300
+                            color = Gray300,
+                            textAlign = TextAlign.Center
                         )
                     }
                     innerTextField()
