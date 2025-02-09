@@ -41,6 +41,7 @@ compose-destination = "1.11.6"
 lottie = "6.5.2"
 androidx-paging = "3.3.2"
 coil = "2.7.0"
+coil-svg="2.2.2"
 kotlin-serialization-converter = "0.8.0"
 
 
@@ -128,6 +129,7 @@ compose-paging = { module = "androidx.paging:paging-compose", version.ref = "and
 
 # Coil
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil-svg"}
 
 
 [bundles]
