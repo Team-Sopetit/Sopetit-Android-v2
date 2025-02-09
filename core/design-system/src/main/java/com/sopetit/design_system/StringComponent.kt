@@ -1,7 +1,7 @@
 package com.sopetit.design_system
 
 // Common
-
+const val Softie = "소프티"
 
 // Onboarding
 const val StoryTellingContent1 = "오늘도 고된 하루였어.."

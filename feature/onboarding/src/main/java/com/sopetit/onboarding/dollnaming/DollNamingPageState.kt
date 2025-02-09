@@ -4,5 +4,6 @@ import com.sopetit.onboarding.model.DollHelloModel
 import com.sopetit.ui.base.PageState
 
 data class DollNamingPageState (
-    val dollHelloList: List<DollHelloModel> = emptyList()
+    val dollHelloList: List<DollHelloModel> = emptyList(),
+    val dollInputName: String = ""
 ): PageState
