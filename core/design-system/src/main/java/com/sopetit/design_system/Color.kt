@@ -67,3 +67,6 @@ val PurpleGradient = Brush.linearGradient(
 val Brown50 = Color(0xFFFFF7E6)
 val Brown100 = Color(0xFFD4BBA5)
 val Brown200 = Color(0xFFC4AC98)
+
+// Splash
+val SplashBottom = Color(0xFFCEB59E)
