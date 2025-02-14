@@ -37,19 +37,12 @@ fun SplashContent() {
             .fillMaxSize()
             .background(Brown50)
     ) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//        ) {
-//            SplashTitle()
-//        }
         SplashTitle()
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-//                .wrapContentHeight()
         ) {
             SplashBottomContent()
         }
@@ -92,14 +85,6 @@ fun SplashBottomContent() {
                 .background(SplashBottom)
                 .align(Alignment.BottomCenter)
         )
-
-//        Text(
-//            text = "테스트",
-//            modifier = Modifier
-//                .size(width = 319.dp, height = 278.dp)
-//                .offset(y = (-79).dp)
-//                .align(Alignment.Center)
-//        )
 
         Image(
             painter = painterResource(id = R.drawable.ic_splash_bear1),

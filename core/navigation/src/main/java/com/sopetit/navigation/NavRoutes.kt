@@ -2,6 +2,10 @@ package com.sopetit.navigation
 
 sealed class NavRoutes(val route: String) {
 
+    // Splash Graph
+    data object SplashGraph: NavRoutes("splash_graph")
+    data object SplashScreen: NavRoutes("splash")
+
     // OnBoarding Graph
     data object OnBoardingGraph: NavRoutes("onboarding_graph")
     data object StoryTellingFirstScreen: NavRoutes("story_telling_first")

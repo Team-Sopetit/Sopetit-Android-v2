@@ -11,7 +11,21 @@ import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
 import com.sopetit.onboarding.storytelling.StoryTellingSecondScreen
 import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
+import com.sopetit.splash.SplashScreen
 import kotlinx.coroutines.flow.SharedFlow
+
+fun NavGraphBuilder.splashNavGraph(
+    navController: NavHostController
+) {
+    navigation(
+        startDestination = NavRoutes.SplashScreen.route,
+        route = NavRoutes.SplashGraph.route
+    ) {
+        composable(NavRoutes.SplashScreen.route) {
+            SplashScreen()
+        }
+    }
+}
 
 fun NavGraphBuilder.onBoardingNavGraph(
     navController: NavHostController,

@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.navigation.onBoardingNavGraph
+import com.sopetit.navigation.splashNavGraph
 import com.sopetit.ui.util.DismissKeyboardOnClick
 import kotlinx.coroutines.launch
 
@@ -43,8 +44,11 @@ fun MainScreen() {
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = NavRoutes.OnBoardingGraph.route
+                    startDestination = NavRoutes.SplashGraph.route
                 ) {
+                    splashNavGraph(
+                        navController = navController
+                    )
                     onBoardingNavGraph(
                         navController = navController,
                         setSelectedDollType = selectedDollType,
@@ -57,4 +61,5 @@ fun MainScreen() {
 }
 
 @Composable
-fun BottomNavBar() {}
+fun BottomNavBar() {
+}
