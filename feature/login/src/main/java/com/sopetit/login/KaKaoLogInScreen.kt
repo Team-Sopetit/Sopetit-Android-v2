@@ -38,12 +38,8 @@ fun LogInScreen(
     val uiState: KaKaoLogInPageState by viewModel.uiState.collectAsStateWithLifecycle()
     val interactionSource = remember { MutableInteractionSource() }
 
-    LaunchedEffect(viewModel.isKaKaoLogInSuccess) {
-        viewModel.isKaKaoLogInSuccess.collect {
-            if (it) {
-                viewModel.postLogIn()
-            }
-        }
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) viewModel.postLogIn()
     }
 
     LaunchedEffect(Unit) {
