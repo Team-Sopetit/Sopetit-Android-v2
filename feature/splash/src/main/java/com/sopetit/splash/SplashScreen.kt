@@ -3,15 +3,11 @@ package com.sopetit.splash
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -22,9 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Brown50
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.SplashBottom
-import com.sopetit.design_system.SplashSemiTitle
+import com.sopetit.splash.component.SplashTitle
 import kotlinx.coroutines.delay
 
 @Composable
@@ -36,55 +31,64 @@ fun SplashScreen(
         delay(1500L)
         goToKaKaoLogIn()
     }
-    SplashContent()
+    SplashContent(
+        splashVersion = 0
+    )
 }
 
 @Composable
-fun SplashContent() {
+fun SplashContent(
+    splashVersion: Int = 0
+) {
+    when (splashVersion) {
+        0 -> SplashItemForVersion(
+            colorVersion = 0,
+            bottomContent = { SplashFirstBottomContent() }
+        )
+
+        1 -> SplashItemForVersion(
+            colorVersion = 0,
+            bottomContent = { SplashSecondThirdBottomContent() }
+        )
+
+        2 -> SplashItemForVersion(
+            colorVersion = 1,
+            bottomContent = { SplashSecondThirdBottomContent() }
+        )
+
+        3 -> SplashItemForVersion(
+            colorVersion = 1,
+            bottomContent = { SplashFourthBottomContent() }
+        )
+    }
+}
+
+@Composable
+fun SplashItemForVersion(
+    colorVersion: Int,
+    bottomContent: @Composable () -> Unit,
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brown50)
+            .background(if (colorVersion == 0) Brown50 else Gray650)
     ) {
-        SplashTitle()
+        SplashTitle(
+            contentColor = if (colorVersion == 0) Gray650 else Brown50
+        )
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
         ) {
-            SplashBottomContent()
+            bottomContent()
         }
     }
 }
 
 @Composable
-fun SplashTitle() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentSize()
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_splash_logo_black),
-            contentDescription = "splash logo",
-            modifier = Modifier
-                .padding(top = 143.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-        Text(
-            text = SplashSemiTitle,
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .align(Alignment.CenterHorizontally),
-            color = Gray650,
-            style = SoftieTypo.body1
-        )
-    }
-}
-
-@Composable
-fun SplashBottomContent() {
+fun SplashFirstBottomContent() {
 
     Box {
         Box(
@@ -105,6 +109,34 @@ fun SplashBottomContent() {
         )
     }
 }
+
+@Composable
+fun SplashSecondThirdBottomContent() {
+    Box {
+        Image(
+            painter = painterResource(id = R.drawable.ic_splash_bear2),
+            contentDescription = "splash bottom bear",
+            modifier = Modifier
+                .size(width = 286.dp, height = 499.dp)
+                .align(Alignment.BottomStart)
+        )
+    }
+}
+
+@Composable
+fun SplashFourthBottomContent() {
+    Box {
+        Image(
+            painter = painterResource(id = R.drawable.ic_splash_bear3),
+            contentDescription = "splash bottom bear",
+            modifier = Modifier
+                .size(width = 420.dp, height = 430.dp)
+                .offset(y = 30.dp)
+                .align(Alignment.BottomCenter)
+        )
+    }
+}
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
