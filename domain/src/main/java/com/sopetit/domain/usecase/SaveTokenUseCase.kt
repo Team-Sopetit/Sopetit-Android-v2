@@ -1,6 +1,6 @@
 package com.sopetit.domain.usecase
 
-import com.sopetit.domain.UseCase
+import com.sopetit.domain.base.UseCase
 import com.sopetit.domain.entity.response.TokenStoreModel
 import com.sopetit.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow

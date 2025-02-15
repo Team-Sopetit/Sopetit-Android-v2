@@ -1,6 +1,6 @@
 package com.sopetit.domain.usecase
 
-import com.sopetit.domain.UseCase
+import com.sopetit.domain.base.UseCase
 import com.sopetit.domain.entity.request.LogInRequestModel
 import com.sopetit.domain.entity.response.LogInResponseModel
 import com.sopetit.domain.repository.AuthRepository
