@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.LogInSpeechContent
@@ -33,7 +35,16 @@ fun LogInScreen(
     goToOnboarding: () -> Unit = {}
 ) {
     val viewModel: KaKaoLogInViewModel = hiltViewModel()
+    val uiState: KaKaoLogInPageState by viewModel.uiState.collectAsStateWithLifecycle()
     val interactionSource = remember { MutableInteractionSource() }
+
+    LaunchedEffect(viewModel.isKaKaoLogInSuccess) {
+        viewModel.isKaKaoLogInSuccess.collect {
+            if (it) {
+                viewModel.postLogIn()
+            }
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->

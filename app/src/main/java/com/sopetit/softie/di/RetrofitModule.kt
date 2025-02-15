@@ -8,6 +8,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -37,12 +39,15 @@ object RetrofitModule {
     fun providesAuthInterceptor(
         localDataSource: LocalDataStore
     ): Interceptor = Interceptor { chain ->
+        val tokenFlow = localDataSource.accessToken
+        val token = runBlocking { tokenFlow.first() }
+
         val request = chain.request()
         val response = chain.proceed(
             request
                 .newBuilder()
                 .addHeader(CONTENT_TYPE, APPLICATION_JSON)
-                .addHeader(AUTHORIZATION, BEARER + localDataSource.accessToken)
+                .addHeader(AUTHORIZATION, BEARER + token)
                 .build()
         )
         return@Interceptor response
