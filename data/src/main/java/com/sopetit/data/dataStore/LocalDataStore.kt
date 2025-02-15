@@ -1,6 +1,7 @@
 package com.sopetit.data.dataStore
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -18,10 +19,33 @@ class LocalDataStore(context: Context) {
             preferences[ACCESS_TOKEN_KEY]
         }
 
+    val refreshToken: Flow<String?> = dataStore.data
+        .map { preferences ->
+            preferences[REFRESH_TOKEN_KEY]
+        }
+
+    val isMemberDollExist: Flow<Boolean?> = dataStore.data
+        .map { preferences ->
+            preferences[IS_MEMBER_DOLL_EXIST]
+        }
+
     suspend fun saveAccessToken(token: String) {
         dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN_KEY] = token
             Timber.d("[datastore] access token: $token")
+        }
+    }
+
+    suspend fun saveRefreshToken(token: String) {
+        dataStore.edit { preferences ->
+            preferences[REFRESH_TOKEN_KEY] = token
+            Timber.d("[datastore] refresh token: $token")
+        }
+    }
+
+    suspend fun saveIsMemberDollExist(isDollExist: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[IS_MEMBER_DOLL_EXIST] = isDollExist
         }
     }
 
@@ -33,5 +57,7 @@ class LocalDataStore(context: Context) {
 
     companion object {
         val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
+        val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
+        val IS_MEMBER_DOLL_EXIST = booleanPreferencesKey("is_member_doll_exist")
     }
 }

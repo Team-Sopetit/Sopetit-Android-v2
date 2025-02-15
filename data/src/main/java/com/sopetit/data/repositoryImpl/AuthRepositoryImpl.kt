@@ -21,5 +21,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun saveToken(request: TokenStoreModel): Flow<Result<Unit>> = flow {
         localDataStore.saveAccessToken(request.accessToken)
+        localDataStore.saveRefreshToken(request.refreshToken)
+        localDataStore.saveIsMemberDollExist(request.isMemberDollExist)
     }
 }

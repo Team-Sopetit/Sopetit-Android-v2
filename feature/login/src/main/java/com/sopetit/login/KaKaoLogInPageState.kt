@@ -3,5 +3,5 @@ package com.sopetit.login
 import com.sopetit.ui.base.PageState
 
 data class KaKaoLogInPageState(
-    val isSuccess: Boolean = false
+    val isKaKaoLogInValid: Boolean = false
 ): PageState

@@ -3,6 +3,7 @@ package com.sopetit.login
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.sopetit.domain.entity.request.LogInRequestModel
+import com.sopetit.domain.entity.response.LogInResponseModel
 import com.sopetit.domain.entity.response.TokenStoreModel
 import com.sopetit.domain.usecase.PostLogInUseCase
 import com.sopetit.domain.usecase.SaveTokenUseCase
@@ -27,7 +28,8 @@ class KaKaoLogInViewModel @Inject constructor(
                 saveTokenUseCase(
                     request = TokenStoreModel(
                         accessToken = accessToken,
-                        refreshToken = ""
+                        refreshToken = "",
+                        isMemberDollExist = false
                     )
                 ).collect{ resultResponse(it, {}) }
             }
@@ -43,7 +45,7 @@ class KaKaoLogInViewModel @Inject constructor(
     private fun updateKaKaoLogInSuccess() {
         updateState(
             uiState.value.copy(
-                isSuccess = true
+                isKaKaoLogInValid = true
             )
         )
     }
@@ -53,13 +55,25 @@ class KaKaoLogInViewModel @Inject constructor(
             postLogInUseCase(
                 request = LogInRequestModel(SOCIAL_TYPE)
             ).collect {
-                resultResponse(it, {
-                    emitEventFlow(KaKaoLogInEvent.OnSuccessLogIn)
-                }, { error ->
+                resultResponse(it, ::onSuccessKaKaoLogIn) { error ->
                     Timber.d("[로그인] 서버 통신 실패 -> ${error.message}")
-                })
+                }
             }
         }
+    }
+
+    private fun onSuccessKaKaoLogIn(data: LogInResponseModel) {
+        viewModelScope.launch {
+            saveTokenUseCase(
+                request = TokenStoreModel(
+                    accessToken = data.accessToken,
+                    refreshToken = data.refreshToken,
+                    isMemberDollExist = data.isMemberDollExist
+                )
+            ).collect{resultResponse(it, {})}
+        }
+
+        emitEventFlow(KaKaoLogInEvent.OnSuccessLogIn)
     }
 
     companion object {
