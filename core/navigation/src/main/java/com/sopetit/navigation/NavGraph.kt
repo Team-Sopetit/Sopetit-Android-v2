@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.login.LogInScreen
 import com.sopetit.onboarding.dollnaming.DollNamingScreen
 import com.sopetit.onboarding.dolltype.DollTypeChoiceScreen
 import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
@@ -23,6 +24,19 @@ fun NavGraphBuilder.splashNavGraph(
     ) {
         composable(NavRoutes.SplashScreen.route) {
             SplashScreen()
+        }
+    }
+}
+
+fun NavGraphBuilder.logInNavGraph(
+    navController: NavHostController
+) {
+    navigation(
+        startDestination = NavRoutes.LogInScreen.route,
+        route = NavRoutes.LogInGraph.route
+    ) {
+        composable(NavRoutes.LogInScreen.route) {
+            LogInScreen()
         }
     }
 }

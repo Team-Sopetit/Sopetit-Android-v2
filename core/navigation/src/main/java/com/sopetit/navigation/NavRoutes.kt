@@ -6,6 +6,10 @@ sealed class NavRoutes(val route: String) {
     data object SplashGraph: NavRoutes("splash_graph")
     data object SplashScreen: NavRoutes("splash")
 
+    // LogIn Graph
+    data object LogInGraph: NavRoutes("login_graph")
+    data object LogInScreen: NavRoutes("login")
+
     // OnBoarding Graph
     data object OnBoardingGraph: NavRoutes("onboarding_graph")
     data object StoryTellingFirstScreen: NavRoutes("story_telling_first")
