@@ -3,6 +3,7 @@ package com.sopetit.login
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -31,6 +33,7 @@ fun LogInScreen(
     goToOnboarding: () -> Unit = {}
 ) {
     val viewModel: KaKaoLogInViewModel = hiltViewModel()
+    val interactionSource = remember { MutableInteractionSource() }
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
@@ -45,13 +48,15 @@ fun LogInScreen(
     LogInContent(
         startKaKaoLogIn = {
             viewModel.startKaKaoLogIn()
-        }
+        },
+        interactionSource = interactionSource
     )
 }
 
 @Composable
 fun LogInContent(
-    startKaKaoLogIn: () -> Unit = {}
+    startKaKaoLogIn: () -> Unit = {},
+    interactionSource: MutableInteractionSource = MutableInteractionSource()
 ) {
     Box(
         modifier = Modifier
@@ -97,7 +102,11 @@ fun LogInContent(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 104.dp)
-                    .clickable { startKaKaoLogIn() }
+                    .clickable(
+                        indication = null,
+                        interactionSource = interactionSource,
+                        onClick = { startKaKaoLogIn() }
+                    )
             )
         }
     }
