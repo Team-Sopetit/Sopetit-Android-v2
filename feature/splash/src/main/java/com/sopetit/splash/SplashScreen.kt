@@ -20,6 +20,7 @@ import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SplashBottom
 import com.sopetit.splash.component.SplashTitle
+import com.sopetit.splash.model.SplashVersionModel
 import kotlinx.coroutines.delay
 
 @Composable
@@ -40,41 +41,27 @@ fun SplashScreen(
 fun SplashContent(
     splashVersion: Int = 0
 ) {
-    when (splashVersion) {
-        0 -> SplashItemForVersion(
-            colorVersion = 0,
-            bottomContent = { SplashFirstBottomContent() }
-        )
+    val splashVersionList: List<SplashVersionModel> = listOf(
+        SplashVersionModel(colorVersion = 0) { SplashFirstBottomContent() },
+        SplashVersionModel(colorVersion = 0) { SplashSecondThirdBottomContent() },
+        SplashVersionModel(colorVersion = 1) { SplashSecondThirdBottomContent() },
+        SplashVersionModel(colorVersion = 1) { SplashFourthBottomContent() }
+    )
 
-        1 -> SplashItemForVersion(
-            colorVersion = 0,
-            bottomContent = { SplashSecondThirdBottomContent() }
-        )
-
-        2 -> SplashItemForVersion(
-            colorVersion = 1,
-            bottomContent = { SplashSecondThirdBottomContent() }
-        )
-
-        3 -> SplashItemForVersion(
-            colorVersion = 1,
-            bottomContent = { SplashFourthBottomContent() }
-        )
-    }
+    SplashItemForVersion(splashVersionModel = splashVersionList[splashVersion])
 }
 
 @Composable
 fun SplashItemForVersion(
-    colorVersion: Int,
-    bottomContent: @Composable () -> Unit,
+    splashVersionModel: SplashVersionModel
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(if (colorVersion == 0) Brown50 else Gray650)
+            .background(if (splashVersionModel.colorVersion == 0) Brown50 else Gray650)
     ) {
         SplashTitle(
-            contentColor = if (colorVersion == 0) Gray650 else Brown50
+            contentColor = if (splashVersionModel.colorVersion == 0) Gray650 else Brown50
         )
 
         Box(
@@ -82,7 +69,7 @@ fun SplashItemForVersion(
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
         ) {
-            bottomContent()
+            splashVersionModel.bottomContent()
         }
     }
 }
