@@ -1,10 +1,9 @@
 package com.sopetit.data.entity.response
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.Serializable
 
 //@Serializable
-data class LogInResponse(
+data class LogInResponseDto(
     @SerializedName("accessToken")
     val accessToken: String = "",
     @SerializedName("refreshToken")
