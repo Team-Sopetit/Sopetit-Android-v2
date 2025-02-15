@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 object ServiceModule {
 
     @Provides
-    fun provideAuthService(retrofit: Retrofit): AuthService {
+    fun provideAuthService(@SoftieRetrofit retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
     }
 }

@@ -1,4 +1,4 @@
-package com.sopetit.core.base
+package com.sopetit.domain
 
 import kotlinx.coroutines.flow.Flow
 
