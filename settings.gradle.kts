@@ -34,4 +34,5 @@ include(":core:navigation")
 include(":core:design-system")
 
 include(":feature:onboarding")
+include(":feature:login")
 include(":feature:splash")
