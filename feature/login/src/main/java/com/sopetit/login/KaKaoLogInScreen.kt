@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -26,8 +27,20 @@ import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 
 @Composable
-fun LogInScreen() {
+fun LogInScreen(
+    goToOnboarding: () -> Unit = {}
+) {
     val viewModel: KaKaoLogInViewModel = hiltViewModel()
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is KaKaoLogInEvent.OnSuccessLogIn -> {
+                    goToOnboarding()
+                }
+            }
+        }
+    }
 
     LogInContent(
         startKaKaoLogIn = {

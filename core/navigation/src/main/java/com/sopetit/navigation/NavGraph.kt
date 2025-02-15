@@ -38,7 +38,9 @@ fun NavGraphBuilder.logInNavGraph(
         route = NavRoutes.LogInGraph.route
     ) {
         composable(NavRoutes.LogInScreen.route) {
-            LogInScreen()
+            LogInScreen(
+                goToOnboarding = { navController.navigate(NavRoutes.StoryTellingFirstScreen.route) }
+            )
         }
     }
 }
