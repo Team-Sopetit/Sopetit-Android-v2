@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -22,18 +23,21 @@ import com.sopetit.design_system.SplashBottom
 import com.sopetit.splash.component.SplashTitle
 import com.sopetit.splash.model.SplashVersionModel
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 @Composable
 fun SplashScreen(
     goToKaKaoLogIn: () -> Unit = {}
 ) {
+    val randomSplashVersion: Int = remember { Random.nextInt(4) }
 
     LaunchedEffect(Unit) {
         delay(1500L)
         goToKaKaoLogIn()
     }
+
     SplashContent(
-        splashVersion = 0
+        splashVersion = randomSplashVersion
     )
 }
 
