@@ -12,4 +12,6 @@ dependencies {
     implementation(projects.core)
     implementation(projects.core.ui)
     implementation(projects.core.designSystem)
+
+    implementation(libs.kakao.auth)
 }

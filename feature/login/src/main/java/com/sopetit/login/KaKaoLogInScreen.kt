@@ -2,6 +2,7 @@ package com.sopetit.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.LogInSpeechContent
@@ -25,11 +27,19 @@ import com.sopetit.design_system.SoftieTypo
 
 @Composable
 fun LogInScreen() {
-    LogInContent()
+    val viewModel: KaKaoLogInViewModel = hiltViewModel()
+
+    LogInContent(
+        startKaKaoLogIn = {
+            viewModel.startKaKaoLogIn()
+        }
+    )
 }
 
 @Composable
-fun LogInContent() {
+fun LogInContent(
+    startKaKaoLogIn: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -74,6 +84,7 @@ fun LogInContent() {
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 104.dp)
+                    .clickable { startKaKaoLogIn() }
             )
         }
     }
