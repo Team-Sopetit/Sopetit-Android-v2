@@ -1,8 +1,8 @@
-package com.sopetit.domain.usecase
+package com.sopetit.domain.usecase.auth
 
 import com.sopetit.domain.base.UseCase
 import com.sopetit.domain.entity.request.LogInRequestModel
-import com.sopetit.domain.entity.response.LogInResponseModel
+import com.sopetit.domain.entity.response.auth.LogInResponseModel
 import com.sopetit.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

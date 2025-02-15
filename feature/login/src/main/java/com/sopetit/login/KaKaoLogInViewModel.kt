@@ -3,10 +3,10 @@ package com.sopetit.login
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.sopetit.domain.entity.request.LogInRequestModel
-import com.sopetit.domain.entity.response.LogInResponseModel
-import com.sopetit.domain.entity.response.TokenStoreModel
-import com.sopetit.domain.usecase.PostLogInUseCase
-import com.sopetit.domain.usecase.SaveTokenUseCase
+import com.sopetit.domain.entity.response.auth.LogInResponseModel
+import com.sopetit.domain.entity.response.auth.TokenStoreModel
+import com.sopetit.domain.usecase.auth.PostLogInUseCase
+import com.sopetit.domain.usecase.auth.SaveTokenUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

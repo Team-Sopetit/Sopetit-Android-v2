@@ -1,11 +1,11 @@
-package com.sopetit.data.mapper
+package com.sopetit.data.mapper.auth
 
 import com.sopetit.data.base.BaseMapper
 import com.sopetit.data.base.BaseResponse
 import com.sopetit.data.entity.request.LogInRequestDto
 import com.sopetit.data.entity.response.auth.LogInResponseDto
 import com.sopetit.domain.entity.request.LogInRequestModel
-import com.sopetit.domain.entity.response.LogInResponseModel
+import com.sopetit.domain.entity.response.auth.LogInResponseModel
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 

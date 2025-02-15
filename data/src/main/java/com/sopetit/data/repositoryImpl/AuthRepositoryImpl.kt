@@ -2,11 +2,11 @@ package com.sopetit.data.repositoryImpl
 
 import com.sopetit.data.dataSource.AuthDataSource
 import com.sopetit.data.dataStore.LocalDataStore
-import com.sopetit.data.mapper.LogInMapper
-import com.sopetit.data.mapper.LogInMapper.toDto
+import com.sopetit.data.mapper.auth.LogInMapper
+import com.sopetit.data.mapper.auth.LogInMapper.toDto
 import com.sopetit.domain.entity.request.LogInRequestModel
-import com.sopetit.domain.entity.response.LogInResponseModel
-import com.sopetit.domain.entity.response.TokenStoreModel
+import com.sopetit.domain.entity.response.auth.LogInResponseModel
+import com.sopetit.domain.entity.response.auth.TokenStoreModel
 import com.sopetit.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

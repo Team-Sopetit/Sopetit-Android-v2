@@ -1,4 +1,4 @@
-package com.sopetit.domain.entity.response
+package com.sopetit.domain.entity.response.auth
 
 data class TokenStoreModel (
     val accessToken: String = "",

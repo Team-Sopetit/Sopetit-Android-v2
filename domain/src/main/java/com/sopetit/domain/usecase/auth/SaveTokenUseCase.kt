@@ -1,7 +1,7 @@
-package com.sopetit.domain.usecase
+package com.sopetit.domain.usecase.auth
 
 import com.sopetit.domain.base.UseCase
-import com.sopetit.domain.entity.response.TokenStoreModel
+import com.sopetit.domain.entity.response.auth.TokenStoreModel
 import com.sopetit.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

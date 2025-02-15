@@ -1,8 +1,8 @@
 package com.sopetit.domain.repository
 
 import com.sopetit.domain.entity.request.LogInRequestModel
-import com.sopetit.domain.entity.response.LogInResponseModel
-import com.sopetit.domain.entity.response.TokenStoreModel
+import com.sopetit.domain.entity.response.auth.LogInResponseModel
+import com.sopetit.domain.entity.response.auth.TokenStoreModel
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
