@@ -6,7 +6,7 @@ import com.sopetit.domain.repository.ThemeRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ThemeListUseCase @Inject constructor(
+class GetThemeListUseCase @Inject constructor(
     private val themeRepository: ThemeRepository
 ) : UseCase<Unit, Result<ThemeListModel>>() {
 

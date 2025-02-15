@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.ThemeChoiceBtn
 import com.sopetit.ui.common.item.BottomRectangleBtn
@@ -17,6 +18,8 @@ import com.sopetit.ui.common.topbar.OnboardingTopBar
 fun ThemeChoiceScreen(
     goBackToDollNamingPage: () -> Unit = {}
 ) {
+    val viewModel: ThemeChoiceViewModel = hiltViewModel()
+
     ThemeChoiceContent(
         onClickBackBtnAction = { goBackToDollNamingPage() }
     )
