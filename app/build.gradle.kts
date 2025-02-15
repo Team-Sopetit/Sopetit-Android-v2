@@ -17,6 +17,12 @@ android {
     defaultConfig {
         val baseUrl = properties.getProperty("BASE_URL")
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+
+        val kakaoAppKey = properties.getProperty("KAKAO_APP_KEY")
+        buildConfigField("String", "KAKAO_APP_KEY", "\"${properties.getProperty("KAKAO_APP_KEY")}\"")
+        manifestPlaceholders["KAKAO_HOST_SCHEME"] = "kakao$kakaoAppKey"
+        versionCode = project.properties["version_code"]?.toString()?.toInt() ?: 1
+        versionName = project.properties["version"]?.toString() ?: "1.0.0"
     }
 }
 
@@ -31,4 +37,6 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.okhttp.urlconnection)
+
+    implementation(libs.kakao.auth)
 }

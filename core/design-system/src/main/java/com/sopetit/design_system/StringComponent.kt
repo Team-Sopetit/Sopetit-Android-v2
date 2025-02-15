@@ -3,6 +3,12 @@ package com.sopetit.design_system
 // Common
 const val Softie = "소프티"
 
+// Splash
+const val SplashSemiTitle = "하루를 바꾸는 가장 사소한 루틴"
+
+// LogIn
+const val LogInSpeechContent = "날 꺼내줘!"
+
 // Onboarding
 const val StoryTellingContent1 = "오늘도 고된 하루였어.."
 const val StoryTellingContent2 = "어? 집 앞에 이건 뭐지?"

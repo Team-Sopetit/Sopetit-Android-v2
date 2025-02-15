@@ -2,11 +2,14 @@ package com.sopetit.softie.di
 
 import com.sopetit.core.util.isJsonArray
 import com.sopetit.core.util.isJsonObject
+import com.sopetit.data.dataStore.LocalDataStore
 import com.sopetit.softie.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -33,13 +36,18 @@ object RetrofitModule {
     @Singleton
     @Provides
     @SoftieRetrofit
-    fun providesAuthInterceptor(): Interceptor = Interceptor { chain ->
+    fun providesAuthInterceptor(
+        localDataSource: LocalDataStore
+    ): Interceptor = Interceptor { chain ->
+        val tokenFlow = localDataSource.accessToken
+        val token = runBlocking { tokenFlow.first() }
+
         val request = chain.request()
         val response = chain.proceed(
             request
                 .newBuilder()
                 .addHeader(CONTENT_TYPE, APPLICATION_JSON)
-                .addHeader(AUTHORIZATION, BEARER + "token")
+                .addHeader(AUTHORIZATION, BEARER + token)
                 .build()
         )
         return@Interceptor response
