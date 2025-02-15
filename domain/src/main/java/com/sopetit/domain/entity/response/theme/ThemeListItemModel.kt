@@ -1,4 +1,4 @@
-package com.sopetit.domain.entity.response
+package com.sopetit.domain.entity.response.theme
 
 data class ThemeListItemModel (
     val themeId: Int = -1,
