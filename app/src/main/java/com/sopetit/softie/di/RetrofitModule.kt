@@ -2,6 +2,7 @@ package com.sopetit.softie.di
 
 import com.sopetit.core.util.isJsonArray
 import com.sopetit.core.util.isJsonObject
+import com.sopetit.data.dataStore.LocalDataStore
 import com.sopetit.softie.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -33,13 +34,15 @@ object RetrofitModule {
     @Singleton
     @Provides
     @SoftieRetrofit
-    fun providesAuthInterceptor(): Interceptor = Interceptor { chain ->
+    fun providesAuthInterceptor(
+        localDataSource: LocalDataStore
+    ): Interceptor = Interceptor { chain ->
         val request = chain.request()
         val response = chain.proceed(
             request
                 .newBuilder()
                 .addHeader(CONTENT_TYPE, APPLICATION_JSON)
-                .addHeader(AUTHORIZATION, BEARER + "token")
+                .addHeader(AUTHORIZATION, BEARER + localDataSource.accessToken)
                 .build()
         )
         return@Interceptor response
