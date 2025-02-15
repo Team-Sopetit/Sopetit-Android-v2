@@ -23,7 +23,9 @@ fun NavGraphBuilder.splashNavGraph(
         route = NavRoutes.SplashGraph.route
     ) {
         composable(NavRoutes.SplashScreen.route) {
-            SplashScreen()
+            SplashScreen(
+                goToKaKaoLogIn = { navController.navigate(NavRoutes.LogInScreen.route) }
+            )
         }
     }
 }
