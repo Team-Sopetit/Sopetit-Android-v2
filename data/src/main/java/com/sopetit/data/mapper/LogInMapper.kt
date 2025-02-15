@@ -3,7 +3,7 @@ package com.sopetit.data.mapper
 import com.sopetit.data.base.BaseMapper
 import com.sopetit.data.base.BaseResponse
 import com.sopetit.data.entity.request.LogInRequestDto
-import com.sopetit.data.entity.response.LogInResponseDto
+import com.sopetit.data.entity.response.auth.LogInResponseDto
 import com.sopetit.domain.entity.request.LogInRequestModel
 import com.sopetit.domain.entity.response.LogInResponseModel
 import kotlinx.coroutines.flow.Flow

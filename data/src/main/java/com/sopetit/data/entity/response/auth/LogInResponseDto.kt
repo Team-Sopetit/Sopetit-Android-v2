@@ -1,4 +1,4 @@
-package com.sopetit.data.entity.response
+package com.sopetit.data.entity.response.auth
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable

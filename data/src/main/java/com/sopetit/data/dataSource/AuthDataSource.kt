@@ -2,7 +2,7 @@ package com.sopetit.data.dataSource
 
 import com.sopetit.data.base.BaseResponse
 import com.sopetit.data.entity.request.LogInRequestDto
-import com.sopetit.data.entity.response.LogInResponseDto
+import com.sopetit.data.entity.response.auth.LogInResponseDto
 import retrofit2.Response
 
 interface AuthDataSource {
