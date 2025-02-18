@@ -28,7 +28,7 @@ import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 
 @Composable
-fun StoryTellingText(
+fun StoryTellingTextItem(
     storyContent: String,
     onClickAction: () -> Unit = {}
 ) {
