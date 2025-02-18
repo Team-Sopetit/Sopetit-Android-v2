@@ -54,4 +54,22 @@ class ThemeChoiceViewModel @Inject constructor(
         )
         Timber.d("[온보딩] theme list -> $data")
     }
+
+    fun setSelectedThemeIdList(themeId: Int) {
+        val newList: MutableList<Int> = mutableListOf()
+        newList.addAll(uiState.value.selectedThemeIdList)
+
+        if (!uiState.value.selectedThemeIdList.contains(themeId)) {
+            newList.add(themeId)
+        } else {
+            newList.remove(themeId)
+        }
+
+        updateState(
+            uiState.value.copy(
+                selectedThemeIdList = newList
+            )
+        )
+        Timber.d("[온보딩] selectedThemeIds -> $newList")
+    }
 }

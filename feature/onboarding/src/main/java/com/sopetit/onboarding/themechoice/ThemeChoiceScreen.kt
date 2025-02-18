@@ -3,6 +3,7 @@ package com.sopetit.onboarding.themechoice
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,7 +47,8 @@ fun ThemeChoiceScreen(
     ThemeChoiceContent(
         onClickBackBtnAction = { goBackToDollNamingPage() },
         themeList = uiState.themeList,
-        themeIconList = uiState.themeIconList
+        themeIconList = uiState.themeIconList,
+        onSelectThemeId = { newId -> viewModel.setSelectedThemeIdList(newId)}
     )
 }
 
@@ -54,7 +56,8 @@ fun ThemeChoiceScreen(
 fun ThemeChoiceContent(
     onClickBackBtnAction: () -> Unit = {},
     themeList: List<ThemeListItemModel> = emptyList(),
-    themeIconList: List<Int> = emptyList()
+    themeIconList: List<Int> = emptyList(),
+    onSelectThemeId: (Int) -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -79,7 +82,8 @@ fun ThemeChoiceContent(
             ) {
                 ThemeChoiceList(
                     themeList = themeList,
-                    themeIconList = themeIconList
+                    themeIconList = themeIconList,
+                    onSelectThemeId = onSelectThemeId
                 )
             }
 
@@ -93,7 +97,8 @@ fun ThemeChoiceContent(
 @Composable
 fun ThemeChoiceList(
     themeList: List<ThemeListItemModel> = emptyList(),
-    themeIconList: List<Int> = emptyList()
+    themeIconList: List<Int> = emptyList(),
+    onSelectThemeId: (Int) -> Unit = {}
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -105,7 +110,8 @@ fun ThemeChoiceList(
         itemsIndexed(themeList, key = { _, item -> item.themeId }) { _, item ->
             ThemeChoiceListItem(
                 themeItem = item,
-                themeItemIcon = themeIconList[item.themeId - 1]
+                themeItemIcon = themeIconList[item.themeId - 1],
+                onClick = { onSelectThemeId(item.themeId) }
             )
         }
     }
@@ -114,7 +120,8 @@ fun ThemeChoiceList(
 @Composable
 fun ThemeChoiceListItem(
     themeItem: ThemeListItemModel = ThemeListItemModel(),
-    themeItemIcon: Int = -1
+    themeItemIcon: Int = -1,
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -122,6 +129,7 @@ fun ThemeChoiceListItem(
             .clip(RoundedCornerShape(99.dp))
             .border(1.dp, Gray200, RoundedCornerShape(99.dp))
             .background(Gray0)
+            .clickable { onClick() }
     ) {
         Image(
             painter = painterResource(id = themeItemIcon),

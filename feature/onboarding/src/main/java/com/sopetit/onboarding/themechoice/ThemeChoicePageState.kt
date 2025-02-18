@@ -5,5 +5,6 @@ import com.sopetit.ui.base.PageState
 
 data class ThemeChoicePageState (
     val themeList: List<ThemeListItemModel> = emptyList(),
-    val themeIconList: List<Int> = emptyList()
+    val themeIconList: List<Int> = emptyList(),
+    val selectedThemeIdList: List<Int> = emptyList()
 ): PageState
