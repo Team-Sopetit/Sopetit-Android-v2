@@ -59,10 +59,15 @@ class ThemeChoiceViewModel @Inject constructor(
         val newList: MutableList<Int> = mutableListOf()
         newList.addAll(uiState.value.selectedThemeIdList)
 
-        if (!uiState.value.selectedThemeIdList.contains(themeId)) {
-            newList.add(themeId)
-        } else {
-            newList.remove(themeId)
+        when (uiState.value.selectedThemeIdList.contains(themeId)) {
+            true -> {
+                newList.remove(themeId)
+            }
+            false -> {
+                if (uiState.value.selectedThemeIdList.size < 3) {
+                    newList.add(themeId)
+                }
+            }
         }
 
         updateState(
