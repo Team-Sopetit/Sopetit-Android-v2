@@ -36,6 +36,8 @@ import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeChoiceBtn
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
+import com.sopetit.ui.common.content.TopBarFaceSpeechContent
+import com.sopetit.ui.common.content.TopBearFaceSpeech
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 
 @Composable
@@ -83,6 +85,8 @@ fun ThemeChoiceContent(
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                TopBearFaceSpeech()
+
                 ThemeChoiceList(
                     themeList = themeList,
                     themeIconList = themeIconList,
