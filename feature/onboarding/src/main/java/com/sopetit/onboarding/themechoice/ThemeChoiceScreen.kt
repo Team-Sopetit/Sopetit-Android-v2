@@ -48,7 +48,8 @@ fun ThemeChoiceScreen(
         onClickBackBtnAction = { goBackToDollNamingPage() },
         themeList = uiState.themeList,
         themeIconList = uiState.themeIconList,
-        onSelectThemeId = { newId -> viewModel.setSelectedThemeIdList(newId)}
+        onSelectThemeId = { newId -> viewModel.setSelectedThemeIdList(newId)},
+        selectedThemeIdList = uiState.selectedThemeIdList
     )
 }
 
@@ -57,7 +58,8 @@ fun ThemeChoiceContent(
     onClickBackBtnAction: () -> Unit = {},
     themeList: List<ThemeListItemModel> = emptyList(),
     themeIconList: List<Int> = emptyList(),
-    onSelectThemeId: (Int) -> Unit = {}
+    onSelectThemeId: (Int) -> Unit = {},
+    selectedThemeIdList: List<Int> = emptyList()
 ) {
     Box(
         modifier = Modifier
@@ -88,7 +90,8 @@ fun ThemeChoiceContent(
             }
 
             BottomRectangleBtn(
-                btnTextContent = ThemeChoiceBtn
+                btnTextContent = ThemeChoiceBtn,
+                isBtnActivated = (selectedThemeIdList.size >= 3)
             )
         }
     }
