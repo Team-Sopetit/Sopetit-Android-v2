@@ -32,25 +32,17 @@ class KaKaoLogInViewModel @Inject constructor(
                         isMemberDollExist = false
                     )
                 ).collect{ resultResponse(it, {}) }
+
+                postLogIn()
             }
         }.handleResult(token, error)
-
-        updateKaKaoLogInSuccess()
     }
 
     fun startKaKaoLogIn() {
         kakaoLoginService.startKaKaoLogIn(kakaoLogInCallback)
     }
 
-    private fun updateKaKaoLogInSuccess() {
-        updateState(
-            uiState.value.copy(
-                isKaKaoLogInValid = true
-            )
-        )
-    }
-
-    fun postLogIn() {
+    private fun postLogIn() {
         viewModelScope.launch {
             postLogInUseCase(
                 request = LogInRequestModel(SOCIAL_TYPE)
@@ -71,9 +63,9 @@ class KaKaoLogInViewModel @Inject constructor(
                     isMemberDollExist = data.isMemberDollExist
                 )
             ).collect{resultResponse(it, {})}
-        }
 
-        emitEventFlow(KaKaoLogInEvent.OnSuccessLogIn)
+            emitEventFlow(KaKaoLogInEvent.OnSuccessLogIn)
+        }
     }
 
     companion object {
