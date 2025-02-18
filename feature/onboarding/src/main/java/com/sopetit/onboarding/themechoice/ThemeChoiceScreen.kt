@@ -35,7 +35,7 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeChoiceBtn
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
-import com.sopetit.ui.common.item.BottomRectangleBtn
+import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 
 @Composable
