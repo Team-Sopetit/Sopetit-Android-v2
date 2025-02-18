@@ -1,6 +1,7 @@
 package com.sopetit.onboarding.themechoice
 
 import androidx.lifecycle.viewModelScope
+import com.sopetit.design_system.R
 import com.sopetit.domain.entity.response.theme.ThemeListModel
 import com.sopetit.domain.usecase.theme.GetThemeListUseCase
 import com.sopetit.ui.base.BaseViewModel
@@ -17,7 +18,24 @@ class ThemeChoiceViewModel @Inject constructor(
 ) {
 
     init {
+        initSetThemeIconList()
         initGetThemeList()
+    }
+
+    private fun initSetThemeIconList() {
+        updateState(
+            uiState.value.copy(
+                themeIconList = listOf(
+                    R.drawable.ic_theme1,
+                    R.drawable.ic_theme2,
+                    R.drawable.ic_theme3,
+                    R.drawable.ic_theme4,
+                    R.drawable.ic_theme5,
+                    R.drawable.ic_theme6,
+                    R.drawable.ic_theme7
+                )
+            )
+        )
     }
 
     private fun initGetThemeList() {

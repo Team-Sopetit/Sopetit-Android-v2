@@ -30,7 +30,6 @@ import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeChoiceBtn
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
@@ -46,14 +45,16 @@ fun ThemeChoiceScreen(
 
     ThemeChoiceContent(
         onClickBackBtnAction = { goBackToDollNamingPage() },
-        themeList = uiState.themeList
+        themeList = uiState.themeList,
+        themeIconList = uiState.themeIconList
     )
 }
 
 @Composable
 fun ThemeChoiceContent(
     onClickBackBtnAction: () -> Unit = {},
-    themeList: List<ThemeListItemModel> = emptyList()
+    themeList: List<ThemeListItemModel> = emptyList(),
+    themeIconList: List<Int> = emptyList()
 ) {
     Box(
         modifier = Modifier
@@ -77,7 +78,8 @@ fun ThemeChoiceContent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 ThemeChoiceList(
-                    themeList = themeList
+                    themeList = themeList,
+                    themeIconList = themeIconList
                 )
             }
 
@@ -90,7 +92,8 @@ fun ThemeChoiceContent(
 
 @Composable
 fun ThemeChoiceList(
-    themeList: List<ThemeListItemModel> = emptyList()
+    themeList: List<ThemeListItemModel> = emptyList(),
+    themeIconList: List<Int> = emptyList()
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -101,7 +104,8 @@ fun ThemeChoiceList(
     ) {
         itemsIndexed(themeList, key = { _, item -> item.themeId }) { _, item ->
             ThemeChoiceListItem(
-                themeItem = item
+                themeItem = item,
+                themeItemIcon = themeIconList[item.themeId - 1]
             )
         }
     }
@@ -109,7 +113,8 @@ fun ThemeChoiceList(
 
 @Composable
 fun ThemeChoiceListItem(
-    themeItem: ThemeListItemModel = ThemeListItemModel()
+    themeItem: ThemeListItemModel = ThemeListItemModel(),
+    themeItemIcon: Int = -1
 ) {
     Row(
         modifier = Modifier
@@ -119,7 +124,7 @@ fun ThemeChoiceListItem(
             .background(Gray0)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_theme1),
+            painter = painterResource(id = themeItemIcon),
             contentDescription = "theme icon",
             modifier = Modifier
                 .padding(start = 20.dp)
@@ -132,7 +137,7 @@ fun ThemeChoiceListItem(
             color = Gray700,
             style = SoftieTypo.body1,
             modifier = Modifier
-                .padding(vertical = 12.dp)
+                .padding(vertical = 15.dp)
                 .padding(start = 6.dp, end = 20.dp)
         )
     }
