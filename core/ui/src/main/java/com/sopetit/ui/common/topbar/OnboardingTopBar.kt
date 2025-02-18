@@ -47,7 +47,7 @@ fun OnboardingTopBar(
 @Composable
 fun OnboardingTopBarContent(
     boxIndex: Int = 0,
-    enabledGoBack: Boolean = false,
+    enabledGoBack: Boolean = true,
     onClickAction: () -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource()
 ) {
@@ -56,13 +56,14 @@ fun OnboardingTopBarContent(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .wrapContentSize(Alignment.Center)
     ) {
         if (enabledGoBack) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = "back",
                 modifier = Modifier
-                    .padding(start = 20.dp)
+                    .align(Alignment.Start)
                     .padding(vertical = 14.dp)
                     .size(28.dp)
                     .clickable(
@@ -76,19 +77,13 @@ fun OnboardingTopBarContent(
             Spacer(modifier = Modifier.height(24.dp))
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.Center),
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(5.dp)
-            ) {
-                items(4, key = { it }) { index ->
-                    OnboardingTopBarItem(
-                        boxActivation = (index <= boxIndex)
-                    )
-                }
+            items(4, key = { it }) { index ->
+                OnboardingTopBarItem(
+                    boxActivation = (index <= boxIndex)
+                )
             }
         }
     }
