@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray50
+import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeChoiceBtn
@@ -48,7 +49,7 @@ fun ThemeChoiceScreen(
         onClickBackBtnAction = { goBackToDollNamingPage() },
         themeList = uiState.themeList,
         themeIconList = uiState.themeIconList,
-        onSelectThemeId = { newId -> viewModel.setSelectedThemeIdList(newId)},
+        onSelectThemeId = { newId -> viewModel.setSelectedThemeIdList(newId) },
         selectedThemeIdList = uiState.selectedThemeIdList
     )
 }
@@ -85,7 +86,8 @@ fun ThemeChoiceContent(
                 ThemeChoiceList(
                     themeList = themeList,
                     themeIconList = themeIconList,
-                    onSelectThemeId = onSelectThemeId
+                    onSelectThemeId = onSelectThemeId,
+                    selectedThemeIdList = selectedThemeIdList
                 )
             }
 
@@ -101,7 +103,8 @@ fun ThemeChoiceContent(
 fun ThemeChoiceList(
     themeList: List<ThemeListItemModel> = emptyList(),
     themeIconList: List<Int> = emptyList(),
-    onSelectThemeId: (Int) -> Unit = {}
+    onSelectThemeId: (Int) -> Unit = {},
+    selectedThemeIdList: List<Int> = emptyList()
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -114,7 +117,8 @@ fun ThemeChoiceList(
             ThemeChoiceListItem(
                 themeItem = item,
                 themeItemIcon = themeIconList[item.themeId - 1],
-                onClick = { onSelectThemeId(item.themeId) }
+                onClick = { onSelectThemeId(item.themeId) },
+                isSelectedTheme = selectedThemeIdList.contains(item.themeId)
             )
         }
     }
@@ -124,14 +128,15 @@ fun ThemeChoiceList(
 fun ThemeChoiceListItem(
     themeItem: ThemeListItemModel = ThemeListItemModel(),
     themeItemIcon: Int = -1,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    isSelectedTheme: Boolean = false
 ) {
     Row(
         modifier = Modifier
             .wrapContentHeight()
             .clip(RoundedCornerShape(99.dp))
-            .border(1.dp, Gray200, RoundedCornerShape(99.dp))
-            .background(Gray0)
+            .border(1.dp, if (isSelectedTheme) Gray650 else Gray200, RoundedCornerShape(99.dp))
+            .background(if (isSelectedTheme) Gray200 else Gray0)
             .clickable { onClick() }
     ) {
         Image(
