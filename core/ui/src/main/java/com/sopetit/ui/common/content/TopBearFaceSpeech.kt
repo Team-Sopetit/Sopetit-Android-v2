@@ -20,7 +20,7 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeChoiceTopSpeech
-import com.sopetit.ui.common.type.BearFaceType
+import com.sopetit.ui.common.type.BearType
 import timber.log.Timber
 
 @Composable
@@ -47,7 +47,7 @@ fun TopBarFaceSpeechContent(
         Timber.d("[온보딩] topbear dollType -> $dollType")
 
         Image(
-            painter = painterResource(id = BearFaceType.getDollFace(dollType)),
+            painter = painterResource(id = BearType.getDollFace(dollType)),
             contentDescription = "bear face",
             modifier = Modifier
                 .padding(top = 5.dp)

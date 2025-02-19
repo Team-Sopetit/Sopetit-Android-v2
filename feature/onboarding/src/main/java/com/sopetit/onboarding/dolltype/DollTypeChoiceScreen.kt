@@ -34,7 +34,7 @@ import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
-import com.sopetit.ui.common.type.BearFaceType
+import com.sopetit.ui.common.type.BearType
 
 @Composable
 fun DollTypeChoiceScreen(
@@ -129,9 +129,9 @@ fun DollTypeChoiceItem(
             horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            itemsIndexed(BearFaceType.entries, key = { _, item -> item.id }) { _, item ->
+            itemsIndexed(BearType.entries, key = { _, item -> item.id }) { _, item ->
                 Image(
-                    painter = painterResource(id = BearFaceType.getDollBox(item.dollType, (selectedDollType.value == item.dollType))),
+                    painter = painterResource(id = BearType.getDollBox(item.dollType, (selectedDollType.value == item.dollType))),
                     contentDescription = "bear type",
                     modifier = Modifier
                         .size(160.dp)
