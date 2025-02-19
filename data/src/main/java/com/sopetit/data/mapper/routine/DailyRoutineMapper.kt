@@ -2,7 +2,6 @@ package com.sopetit.data.mapper.routine
 
 import com.sopetit.data.base.BaseMapper
 import com.sopetit.data.base.BaseResponse
-import com.sopetit.data.entity.request.routine.DailyRoutineListRequestDto
 import com.sopetit.data.entity.response.routine.DailyRoutineListResponseDto
 import com.sopetit.domain.entity.request.routine.DailyRoutineListRequestModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
@@ -12,9 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 object DailyRoutineMapper : BaseMapper() {
-    fun DailyRoutineListRequestModel.toDto() = DailyRoutineListRequestDto(
-        themeIds = themeIdList
-    )
+    fun DailyRoutineListRequestModel.toDto() = themeIdList
 
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<DailyRoutineListResponseDto>>): Flow<Result<DailyRoutineListThemeTotalModel>> {
         return baseMapper(
