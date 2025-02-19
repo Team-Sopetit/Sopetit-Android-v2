@@ -47,7 +47,8 @@ import kotlinx.coroutines.flow.SharedFlow
 @Composable
 fun ThemeChoiceScreen(
     selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
-    goBackToDollNamingPage: () -> Unit = {}
+    goBackToDollNamingPage: () -> Unit = {},
+    goToRoutineChoicePage: (List<Int>) -> Unit = {}
 ) {
     val viewModel: ThemeChoiceViewModel = hiltViewModel()
     val uiState: ThemeChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -63,7 +64,10 @@ fun ThemeChoiceScreen(
         selectedDollType = uiState.selectedDollType,
         themeList = uiState.themeList,
         onSelectThemeId = { newId -> viewModel.setSelectedThemeIdList(newId) },
-        selectedThemeIdList = uiState.selectedThemeIdList
+        selectedThemeIdList = uiState.selectedThemeIdList,
+        onClickBtnAction = {
+            goToRoutineChoicePage(uiState.selectedThemeIdList)
+        }
     )
 }
 
@@ -73,7 +77,8 @@ fun ThemeChoiceContent(
     selectedDollType: DollType = DollType.NONE,
     themeList: List<ThemeListItemModel> = emptyList(),
     onSelectThemeId: (Int) -> Unit = {},
-    selectedThemeIdList: List<Int> = emptyList()
+    selectedThemeIdList: List<Int> = emptyList(),
+    onClickBtnAction: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -109,7 +114,8 @@ fun ThemeChoiceContent(
 
             BottomRectangleBtn(
                 btnTextContent = ThemeChoiceBtn,
-                isBtnActivated = (selectedThemeIdList.size >= 3)
+                isBtnActivated = (selectedThemeIdList.size >= 3),
+                onClickAction = onClickBtnAction
             )
         }
     }
