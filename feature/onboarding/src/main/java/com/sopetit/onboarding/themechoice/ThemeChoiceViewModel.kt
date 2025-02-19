@@ -65,7 +65,7 @@ class ThemeChoiceViewModel @Inject constructor(
 
         updateState(
             uiState.value.copy(
-                selectedThemeIdList = newList
+                selectedThemeIdList = newList.sorted()
             )
         )
     }
