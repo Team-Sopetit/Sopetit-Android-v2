@@ -40,7 +40,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.design_system.DollNamingBtn
 import com.sopetit.design_system.DollNamingSemiTitle
 import com.sopetit.design_system.DollNamingTitle
@@ -52,6 +51,7 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.Softie
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 import kotlinx.coroutines.flow.MutableSharedFlow

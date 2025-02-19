@@ -34,6 +34,7 @@ import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.onboarding.model.DollTypeModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
+import com.sopetit.ui.common.type.BearFaceType
 
 @Composable
 fun DollTypeChoiceScreen(
@@ -44,7 +45,7 @@ fun DollTypeChoiceScreen(
     val uiState: DollTypeChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     DollTypeChoiceContent(
-        dollTypeList = uiState.dollTypeList,
+//        dollTypeList = uiState.dollTypeList,
         selectedDollType = uiState.selectedDollType,
         onSelectDollType = { dollType ->
             viewModel.setSelectedDollType(dollType)
@@ -57,7 +58,7 @@ fun DollTypeChoiceScreen(
 
 @Composable
 fun DollTypeChoiceContent(
-    dollTypeList: List<DollTypeModel> = emptyList(),
+//    dollTypeList: List<DollTypeModel> = emptyList(),
     onSelectDollType: (DollType) -> Unit = {},
     selectedDollType: DollType = DollType.NONE,
     onClickBtnAction: () -> Unit = {}
@@ -99,7 +100,7 @@ fun DollTypeChoiceContent(
                 )
 
                 DollTypeChoiceItem(
-                    dollTypeList = dollTypeList,
+//                    dollTypeList = dollTypeList,
                     selectedDollType = selectedDollType,
                     onSelectDollType = onSelectDollType
                 )
@@ -116,7 +117,7 @@ fun DollTypeChoiceContent(
 
 @Composable
 fun DollTypeChoiceItem(
-    dollTypeList: List<DollTypeModel> = emptyList(),
+//    dollTypeList: List<DollTypeModel> = emptyList(),
     onSelectDollType: (DollType) -> Unit = {},
     selectedDollType: DollType = DollType.NONE
 ) {
@@ -132,14 +133,16 @@ fun DollTypeChoiceItem(
             horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            itemsIndexed(dollTypeList, key = { _, item -> item.id }) { _, item ->
+            itemsIndexed(BearFaceType.entries, key = { _, item -> item.id }) { _, item ->
                 Image(
-                    painter = painterResource(id = if (selectedDollType == item.dollType) item.dollUpBox else item.dollInBox),
+//                    painter = painterResource(id = if (selectedDollType == item.dollType) item.dollUpBox else item.dollInBox),
+                    painter = painterResource(id = BearFaceType.getDollBox(item.dollType, (selectedDollType.value == item.dollType))),
                     contentDescription = "bear type",
                     modifier = Modifier
                         .size(160.dp)
                         .align(Alignment.Center)
-                        .clickable { onSelectDollType(item.dollType) }
+//                        .clickable { onSelectDollType(item.dollType) }
+                        .clickable { onSelectDollType(DollType.stringToEnum(item.dollType))}
                 )
             }
         }

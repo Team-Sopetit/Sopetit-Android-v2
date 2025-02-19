@@ -6,5 +6,5 @@ import com.sopetit.ui.base.PageState
 
 data class DollTypeChoicePageState (
     val selectedDollType: DollType = DollType.NONE,
-    val dollTypeList: List<DollTypeModel> = emptyList()
+//    val dollTypeList: List<DollTypeModel> = emptyList()
 ): PageState
