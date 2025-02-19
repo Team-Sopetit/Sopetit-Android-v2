@@ -12,4 +12,5 @@ class MainViewModel @Inject constructor(
 ): BaseViewModel<MainPageState>(MainPageState()) {
 
     val selectedDollType = MutableSharedFlow<DollType>(replay = 1)
+    val selectedThemeIds = MutableSharedFlow<List<Int>>(replay = 1)
 }

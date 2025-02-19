@@ -8,6 +8,7 @@ import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.login.LogInScreen
 import com.sopetit.onboarding.dollnaming.DollNamingScreen
 import com.sopetit.onboarding.dolltype.DollTypeChoiceScreen
+import com.sopetit.onboarding.routinechoice.RoutineChoiceScreen
 import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
 import com.sopetit.onboarding.storytelling.StoryTellingSecondScreen
 import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
@@ -48,7 +49,9 @@ fun NavGraphBuilder.logInNavGraph(
 fun NavGraphBuilder.onBoardingNavGraph(
     navController: NavHostController,
     setSelectedDollType: (DollType) -> Unit,
-    selectedDollType: SharedFlow<DollType>
+    selectedDollType: SharedFlow<DollType>,
+    setSelectedThemeIds: (List<Int>) -> Unit,
+    selectedThemeIds: SharedFlow<List<Int>>
 ) {
     navigation(
         startDestination = NavRoutes.StoryTellingFirstScreen.route,
@@ -92,7 +95,17 @@ fun NavGraphBuilder.onBoardingNavGraph(
         composable(NavRoutes.ThemeChoiceScreen.route) {
             ThemeChoiceScreen(
                 selectedDollType = selectedDollType,
-                goBackToDollNamingPage = { navController.popBackStack() }
+                goBackToDollNamingPage = { navController.popBackStack() },
+                goToRoutineChoicePage = {
+                    setSelectedThemeIds(it)
+                    navController.navigate(NavRoutes.RoutineChoiceScreen.route)
+                }
+            )
+        }
+
+        composable(NavRoutes.RoutineChoiceScreen.route) {
+            RoutineChoiceScreen(
+                goBackToThemeChoicePage = { navController.popBackStack() }
             )
         }
     }

@@ -33,6 +33,11 @@ fun MainScreen() {
             viewModel.selectedDollType.emit(it)
         }
     }
+    val selectedThemeIds: (List<Int>) -> Unit = {
+        scope.launch {
+            viewModel.selectedThemeIds.emit(it)
+        }
+    }
 
     DismissKeyboardOnClick {
         Scaffold(
@@ -56,7 +61,9 @@ fun MainScreen() {
                     onBoardingNavGraph(
                         navController = navController,
                         setSelectedDollType = selectedDollType,
-                        selectedDollType = viewModel.selectedDollType
+                        selectedDollType = viewModel.selectedDollType,
+                        setSelectedThemeIds = selectedThemeIds,
+                        selectedThemeIds = viewModel.selectedThemeIds
                     )
                 }
             }
