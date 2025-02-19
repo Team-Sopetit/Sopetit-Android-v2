@@ -10,4 +10,8 @@ object EndPoints {
     object Theme {
         const val THEME = "/api/v2/themes"
     }
+
+    object Routine {
+        const val ROUTINE = "api/v2/routines/daily"
+    }
 }
