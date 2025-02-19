@@ -40,6 +40,7 @@ import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.content.TopBearFaceSpeech
 import com.sopetit.ui.common.topbar.OnboardingTopBar
+import com.sopetit.ui.common.type.ThemeIconType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -61,7 +62,6 @@ fun ThemeChoiceScreen(
         onClickBackBtnAction = { goBackToDollNamingPage() },
         selectedDollType = uiState.selectedDollType,
         themeList = uiState.themeList,
-        themeIconList = uiState.themeIconList,
         onSelectThemeId = { newId -> viewModel.setSelectedThemeIdList(newId) },
         selectedThemeIdList = uiState.selectedThemeIdList
     )
@@ -72,7 +72,6 @@ fun ThemeChoiceContent(
     onClickBackBtnAction: () -> Unit = {},
     selectedDollType: DollType = DollType.NONE,
     themeList: List<ThemeListItemModel> = emptyList(),
-    themeIconList: List<Int> = emptyList(),
     onSelectThemeId: (Int) -> Unit = {},
     selectedThemeIdList: List<Int> = emptyList()
 ) {
@@ -103,7 +102,6 @@ fun ThemeChoiceContent(
 
                 ThemeChoiceList(
                     themeList = themeList,
-                    themeIconList = themeIconList,
                     onSelectThemeId = onSelectThemeId,
                     selectedThemeIdList = selectedThemeIdList
                 )
@@ -120,7 +118,6 @@ fun ThemeChoiceContent(
 @Composable
 fun ThemeChoiceList(
     themeList: List<ThemeListItemModel> = emptyList(),
-    themeIconList: List<Int> = emptyList(),
     onSelectThemeId: (Int) -> Unit = {},
     selectedThemeIdList: List<Int> = emptyList()
 ) {
@@ -134,7 +131,7 @@ fun ThemeChoiceList(
         itemsIndexed(themeList, key = { _, item -> item.themeId }) { _, item ->
             ThemeChoiceListItem(
                 themeItem = item,
-                themeItemIcon = themeIconList[item.themeId - 1],
+                themeItemIcon = ThemeIconType.getThemeIcon(item.themeId),
                 onClick = { onSelectThemeId(item.themeId) },
                 isSelectedTheme = selectedThemeIdList.contains(item.themeId)
             )
