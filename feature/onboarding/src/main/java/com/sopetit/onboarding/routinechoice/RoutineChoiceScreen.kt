@@ -15,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.RoutineChoiceBtn
 import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.content.TopBearFaceSpeech
 import com.sopetit.ui.common.topbar.OnboardingTopBar
@@ -24,26 +25,34 @@ import kotlinx.coroutines.flow.SharedFlow
 @Composable
 fun RoutineChoiceScreen(
     goBackToThemeChoicePage: () -> Unit = {},
-    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
-    selectedThemeIdList: SharedFlow<List<Int>> = MutableSharedFlow()
+//    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
+    memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
+//    selectedDollType: DollType = DollType.NONE,
+//    selectedThemeIdList: SharedFlow<List<Int>> = MutableSharedFlow()
 ) {
     val viewModel: RoutineChoiceViewModel = hiltViewModel()
     val uiState: RoutineChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(selectedDollType) {
-        selectedDollType.collect {
-            viewModel.getSelectedDollType(it)
-        }
-    }
-    LaunchedEffect(selectedThemeIdList) {
-        selectedThemeIdList.collect {
-            viewModel.getSelectedThemeIdList(it)
+//    LaunchedEffect(selectedDollType) {
+//        selectedDollType.collect {
+//            viewModel.getSelectedDollType(it)
+//        }
+//    }
+//    LaunchedEffect(selectedThemeIdList) {
+//        selectedThemeIdList.collect {
+//            viewModel.getSelectedThemeIdList(it)
+//        }
+//    }
+    LaunchedEffect(memberModel) {
+        memberModel.collect {
+//            viewModel.getSelectedDollType(it)
+            viewModel.getMemberModel(it)
         }
     }
 
     RoutineChoiceContent(
         onClickBackBtnAction = { goBackToThemeChoicePage() },
-        selectedDollType = uiState.selectedDollType
+        selectedDollType = uiState.memberModel.dollType
     )
 }
 

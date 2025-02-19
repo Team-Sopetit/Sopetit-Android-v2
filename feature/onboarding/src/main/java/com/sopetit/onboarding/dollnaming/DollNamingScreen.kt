@@ -52,31 +52,45 @@ import com.sopetit.design_system.R
 import com.sopetit.design_system.Softie
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import timber.log.Timber
 
 @Composable
 fun DollNamingScreen(
-    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
-    goToThemeChoicePage: () -> Unit = {},
+//    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
+    memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
+//    selectedDollType: DollType = DollType.NONE,
+    goToThemeChoicePage: (CreateMemberModel) -> Unit = {},
     goBackToDollTypePage: () -> Unit = {}
 ) {
     val viewModel: DollNamingViewModel = hiltViewModel()
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState: DollNamingPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(selectedDollType) {
-        selectedDollType.collect {
-            viewModel.getSelectedDollType(it)
+    LaunchedEffect(memberModel) {
+        memberModel.collect {
+//            viewModel.getSelectedDollType(it)
+            viewModel.getMemberModel(it)
         }
     }
+
+//    var selectedType by remember { mutableStateOf(DollType.NONE) }
+//
+//    LaunchedEffect(selectedDollType) {
+//        selectedType = selectedDollType
+//        Timber.d("[온보딩] dollType -> $selectedDollType && $selectedType")
+//        viewModel.initSetDollHelloResource(selectedType)
+//    }
+
 
     DollNamingContent(
         dollHelloResource = uiState.dollHelloResource,
         dollInputName = uiState.dollInputName,
         onValueChange = { newValue -> viewModel.onValueChange(newValue) },
-        onClickBtnAction = { goToThemeChoicePage() },
+        onClickBtnAction = { goToThemeChoicePage(viewModel.updateMemberModel()) },
         onClickBackBtnAction = { goBackToDollTypePage() }
     )
 }

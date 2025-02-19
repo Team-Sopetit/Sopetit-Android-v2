@@ -2,6 +2,7 @@ package com.sopetit.onboarding.dolltype
 
 import com.sopetit.design_system.R
 import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.onboarding.model.DollTypeModel
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,4 +37,6 @@ class DollTypeChoiceViewModel @Inject constructor(
             )
         )
     }
+
+    fun setMemberModel() = CreateMemberModel(dollType = uiState.value.selectedDollType)
 }

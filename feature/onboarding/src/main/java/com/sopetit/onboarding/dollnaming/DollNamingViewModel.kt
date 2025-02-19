@@ -3,6 +3,7 @@ package com.sopetit.onboarding.dollnaming
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.design_system.R
+import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.onboarding.model.DollHelloModel
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,20 @@ class DollNamingViewModel @Inject constructor(
         initSetDollHelloResource(uiState.value.selectedDollType)
     }
 
+    fun getMemberModel(memberModel: CreateMemberModel) {
+        updateState(
+            uiState.value.copy(
+                memberModel = memberModel
+            )
+        )
+        Timber.d("[온보딩] (dollNaming) member -> ${uiState.value.memberModel}")
+        initSetDollHelloResource(uiState.value.memberModel.dollType)
+    }
+
+    fun updateMemberModel() = CreateMemberModel(dollType = uiState.value.memberModel.dollType, dollName = uiState.value.dollInputName)
+
     private fun initSetDollHelloResource(selectedDollType: DollType) {
+//        Timber.d("[온보딩] dollType -> $selectedDollType")
         val dollHelloList: List<DollHelloModel> = listOf(
             DollHelloModel(id = 1, dollType = DollType.BROWN, resource = LottieCompositionSpec.RawRes(R.raw.brown_hello)),
             DollHelloModel(id = 2, dollType = DollType.GRAY, resource = LottieCompositionSpec.RawRes(R.raw.gray_hello)),

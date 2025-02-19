@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.login.LogInScreen
 import com.sopetit.onboarding.dollnaming.DollNamingScreen
 import com.sopetit.onboarding.dolltype.DollTypeChoiceScreen
@@ -48,10 +48,13 @@ fun NavGraphBuilder.logInNavGraph(
 
 fun NavGraphBuilder.onBoardingNavGraph(
     navController: NavHostController,
-    setSelectedDollType: (DollType) -> Unit,
-    selectedDollType: SharedFlow<DollType>,
-    setSelectedThemeIds: (List<Int>) -> Unit,
-    selectedThemeIds: SharedFlow<List<Int>>
+//    setSelectedDollType: (DollType) -> Unit,
+//    selectedDollType: SharedFlow<DollType>,
+    setMemberModel: (CreateMemberModel) -> Unit,
+    memberModel: SharedFlow<CreateMemberModel>,
+//    selectedDollType: DollType,
+//    setSelectedThemeIds: (List<Int>) -> Unit,
+//    selectedThemeIds: SharedFlow<List<Int>>
 ) {
     navigation(
         startDestination = NavRoutes.StoryTellingFirstScreen.route,
@@ -78,7 +81,8 @@ fun NavGraphBuilder.onBoardingNavGraph(
         composable(NavRoutes.DollTypeChoiceScreen.route) {
             DollTypeChoiceScreen(
                 goToDollNamingPage = {
-                    setSelectedDollType(it)
+//                    setSelectedDollType(it)
+                    setMemberModel(it)
                     navController.navigate(NavRoutes.DollNamingScreen.route)
                 }
             )
@@ -86,18 +90,24 @@ fun NavGraphBuilder.onBoardingNavGraph(
 
         composable(NavRoutes.DollNamingScreen.route) {
             DollNamingScreen(
-                selectedDollType = selectedDollType,
-                goToThemeChoicePage = { navController.navigate(NavRoutes.ThemeChoiceScreen.route) },
+//                selectedDollType = selectedDollType,
+                memberModel = memberModel,
+                goToThemeChoicePage = {
+                    setMemberModel(it)
+                    navController.navigate(NavRoutes.ThemeChoiceScreen.route)
+                },
                 goBackToDollTypePage = { navController.popBackStack() }
             )
         }
 
         composable(NavRoutes.ThemeChoiceScreen.route) {
             ThemeChoiceScreen(
-                selectedDollType = selectedDollType,
+//                selectedDollType = selectedDollType,
+                memberModel = memberModel,
                 goBackToDollNamingPage = { navController.popBackStack() },
                 goToRoutineChoicePage = {
-                    setSelectedThemeIds(it)
+//                    setSelectedThemeIds(it)
+                    setMemberModel(it)
                     navController.navigate(NavRoutes.RoutineChoiceScreen.route)
                 }
             )
@@ -106,8 +116,9 @@ fun NavGraphBuilder.onBoardingNavGraph(
         composable(NavRoutes.RoutineChoiceScreen.route) {
             RoutineChoiceScreen(
                 goBackToThemeChoicePage = { navController.popBackStack() },
-                selectedDollType = selectedDollType,
-                selectedThemeIdList = selectedThemeIds
+//                selectedDollType = selectedDollType,
+                memberModel = memberModel,
+//                selectedThemeIdList = selectedThemeIds
             )
         }
     }

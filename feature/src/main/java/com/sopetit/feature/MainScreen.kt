@@ -13,6 +13,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
@@ -24,13 +25,18 @@ import kotlinx.coroutines.launch
 fun MainScreen() {
 
     val viewModel: MainViewModel = hiltViewModel()
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState: MainPageState by viewModel.uiState.collectAsStateWithLifecycle()
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
 
-    val selectedDollType: (DollType) -> Unit = {
+//    val selectedDollType: (DollType) -> Unit = {
+//        scope.launch {
+//            viewModel.selectedDollType.emit(it)
+//        }
+//    }
+    val settingMemberModel: (CreateMemberModel) -> Unit = {
         scope.launch {
-            viewModel.selectedDollType.emit(it)
+            viewModel.memberModel.emit(it)
         }
     }
     val selectedThemeIds: (List<Int>) -> Unit = {
@@ -60,10 +66,14 @@ fun MainScreen() {
                     )
                     onBoardingNavGraph(
                         navController = navController,
-                        setSelectedDollType = selectedDollType,
-                        selectedDollType = viewModel.selectedDollType,
-                        setSelectedThemeIds = selectedThemeIds,
-                        selectedThemeIds = viewModel.selectedThemeIds
+//                        setSelectedDollType = selectedDollType,
+//                        setSelectedDollType = { viewModel.setSelectedDollType(it) },
+//                        selectedDollType = viewModel.selectedDollType,
+                        setMemberModel = settingMemberModel,
+                        memberModel = viewModel.memberModel,
+//                        selectedDollType = uiState.selectedDollType,
+//                        setSelectedThemeIds = selectedThemeIds,
+//                        selectedThemeIds = viewModel.selectedThemeIds
                     )
                 }
             }

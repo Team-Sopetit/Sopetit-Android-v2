@@ -9,13 +9,6 @@ enum class BearFaceType(
     val dollInBox: Int,
     val dollUpBox: Int
 ) {
-//    NONE(
-//        0,
-//        "NONE",
-//        R.drawable.ic_brown_face,
-//        R.drawable.ic_doll_brown_box_in,
-//        R.drawable.ic_doll_brown_box_up
-//    ),
     BROWN(
         1,
         "BROWN",
@@ -47,7 +40,7 @@ enum class BearFaceType(
 
     companion object {
         fun getDollFace(dollType: String): Int =
-            entries.firstOrNull { it.dollType == dollType }?.dollFace ?: -1
+            entries.firstOrNull { it.dollType == dollType }?.dollFace ?: R.drawable.ic_brown_face
 
         fun getDollBox(dollType: String, isDollSelected: Boolean): Int =
             when (isDollSelected) {

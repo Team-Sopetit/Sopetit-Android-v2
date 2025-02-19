@@ -31,6 +31,7 @@ import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.onboarding.model.DollTypeModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
@@ -38,7 +39,7 @@ import com.sopetit.ui.common.type.BearFaceType
 
 @Composable
 fun DollTypeChoiceScreen(
-    goToDollNamingPage: (DollType) -> Unit = {}
+    goToDollNamingPage: (CreateMemberModel) -> Unit = {}
 ) {
 
     val viewModel: DollTypeChoiceViewModel = hiltViewModel()
@@ -51,7 +52,7 @@ fun DollTypeChoiceScreen(
             viewModel.setSelectedDollType(dollType)
         },
         onClickBtnAction = {
-            goToDollNamingPage(uiState.selectedDollType)
+            goToDollNamingPage(viewModel.setMemberModel())
         }
     )
 }

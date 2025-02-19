@@ -36,6 +36,7 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeChoiceBtn
 import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.content.TopBearFaceSpeech
@@ -43,30 +44,36 @@ import com.sopetit.ui.common.topbar.OnboardingTopBar
 import com.sopetit.ui.common.type.ThemeIconType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @Composable
 fun ThemeChoiceScreen(
-    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
+//    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
+    memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
+//    selectedDollType: DollType = DollType.NONE,
     goBackToDollNamingPage: () -> Unit = {},
-    goToRoutineChoicePage: (List<Int>) -> Unit = {}
+    goToRoutineChoicePage: (CreateMemberModel) -> Unit = {}
 ) {
     val viewModel: ThemeChoiceViewModel = hiltViewModel()
     val uiState: ThemeChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(selectedDollType) {
-        selectedDollType.collect {
-            viewModel.getSelectedDollType(it)
+    LaunchedEffect(memberModel) {
+        memberModel.collect {
+//            viewModel.getSelectedDollType(it)
+            viewModel.getMemberModel(it)
         }
     }
 
     ThemeChoiceContent(
         onClickBackBtnAction = { goBackToDollNamingPage() },
-        selectedDollType = uiState.selectedDollType,
+        selectedDollType = uiState.memberModel.dollType,
+//        selectedDollType = selectedDollType,
         themeList = uiState.themeList,
         onSelectThemeId = { newId -> viewModel.setSelectedThemeIdList(newId) },
         selectedThemeIdList = uiState.selectedThemeIdList,
         onClickBtnAction = {
-            goToRoutineChoicePage(uiState.selectedThemeIdList)
+            goToRoutineChoicePage(viewModel.updateMemberModel())
         }
     )
 }

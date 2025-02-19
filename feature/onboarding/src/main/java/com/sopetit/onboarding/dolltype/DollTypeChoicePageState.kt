@@ -1,6 +1,7 @@
 package com.sopetit.onboarding.dolltype
 
 import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.onboarding.model.DollTypeModel
 import com.sopetit.ui.base.PageState
 
