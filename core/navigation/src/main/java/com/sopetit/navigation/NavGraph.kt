@@ -48,13 +48,8 @@ fun NavGraphBuilder.logInNavGraph(
 
 fun NavGraphBuilder.onBoardingNavGraph(
     navController: NavHostController,
-//    setSelectedDollType: (DollType) -> Unit,
-//    selectedDollType: SharedFlow<DollType>,
     setMemberModel: (CreateMemberModel) -> Unit,
     memberModel: SharedFlow<CreateMemberModel>,
-//    selectedDollType: DollType,
-//    setSelectedThemeIds: (List<Int>) -> Unit,
-//    selectedThemeIds: SharedFlow<List<Int>>
 ) {
     navigation(
         startDestination = NavRoutes.StoryTellingFirstScreen.route,
@@ -81,7 +76,6 @@ fun NavGraphBuilder.onBoardingNavGraph(
         composable(NavRoutes.DollTypeChoiceScreen.route) {
             DollTypeChoiceScreen(
                 goToDollNamingPage = {
-//                    setSelectedDollType(it)
                     setMemberModel(it)
                     navController.navigate(NavRoutes.DollNamingScreen.route)
                 }
@@ -90,7 +84,6 @@ fun NavGraphBuilder.onBoardingNavGraph(
 
         composable(NavRoutes.DollNamingScreen.route) {
             DollNamingScreen(
-//                selectedDollType = selectedDollType,
                 memberModel = memberModel,
                 goToThemeChoicePage = {
                     setMemberModel(it)
@@ -102,11 +95,9 @@ fun NavGraphBuilder.onBoardingNavGraph(
 
         composable(NavRoutes.ThemeChoiceScreen.route) {
             ThemeChoiceScreen(
-//                selectedDollType = selectedDollType,
                 memberModel = memberModel,
                 goBackToDollNamingPage = { navController.popBackStack() },
                 goToRoutineChoicePage = {
-//                    setSelectedThemeIds(it)
                     setMemberModel(it)
                     navController.navigate(NavRoutes.RoutineChoiceScreen.route)
                 }
@@ -116,9 +107,7 @@ fun NavGraphBuilder.onBoardingNavGraph(
         composable(NavRoutes.RoutineChoiceScreen.route) {
             RoutineChoiceScreen(
                 goBackToThemeChoicePage = { navController.popBackStack() },
-//                selectedDollType = selectedDollType,
-                memberModel = memberModel,
-//                selectedThemeIdList = selectedThemeIds
+                memberModel = memberModel
             )
         }
     }

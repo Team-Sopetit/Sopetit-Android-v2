@@ -51,19 +51,15 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.Softie
 import com.sopetit.design_system.SoftieTypo
-import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import timber.log.Timber
 
 @Composable
 fun DollNamingScreen(
-//    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
     memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
-//    selectedDollType: DollType = DollType.NONE,
     goToThemeChoicePage: (CreateMemberModel) -> Unit = {},
     goBackToDollTypePage: () -> Unit = {}
 ) {
@@ -72,19 +68,9 @@ fun DollNamingScreen(
 
     LaunchedEffect(memberModel) {
         memberModel.collect {
-//            viewModel.getSelectedDollType(it)
             viewModel.getMemberModel(it)
         }
     }
-
-//    var selectedType by remember { mutableStateOf(DollType.NONE) }
-//
-//    LaunchedEffect(selectedDollType) {
-//        selectedType = selectedDollType
-//        Timber.d("[온보딩] dollType -> $selectedDollType && $selectedType")
-//        viewModel.initSetDollHelloResource(selectedType)
-//    }
-
 
     DollNamingContent(
         dollHelloResource = uiState.dollHelloResource,

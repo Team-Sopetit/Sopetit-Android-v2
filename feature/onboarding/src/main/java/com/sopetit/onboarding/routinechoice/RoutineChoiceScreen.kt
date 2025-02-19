@@ -25,27 +25,13 @@ import kotlinx.coroutines.flow.SharedFlow
 @Composable
 fun RoutineChoiceScreen(
     goBackToThemeChoicePage: () -> Unit = {},
-//    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
     memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
-//    selectedDollType: DollType = DollType.NONE,
-//    selectedThemeIdList: SharedFlow<List<Int>> = MutableSharedFlow()
 ) {
     val viewModel: RoutineChoiceViewModel = hiltViewModel()
     val uiState: RoutineChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
-//    LaunchedEffect(selectedDollType) {
-//        selectedDollType.collect {
-//            viewModel.getSelectedDollType(it)
-//        }
-//    }
-//    LaunchedEffect(selectedThemeIdList) {
-//        selectedThemeIdList.collect {
-//            viewModel.getSelectedThemeIdList(it)
-//        }
-//    }
     LaunchedEffect(memberModel) {
         memberModel.collect {
-//            viewModel.getSelectedDollType(it)
             viewModel.getMemberModel(it)
         }
     }

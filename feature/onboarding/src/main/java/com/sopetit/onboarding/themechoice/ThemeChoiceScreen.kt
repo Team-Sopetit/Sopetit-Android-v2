@@ -44,14 +44,10 @@ import com.sopetit.ui.common.topbar.OnboardingTopBar
 import com.sopetit.ui.common.type.ThemeIconType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collectLatest
-import timber.log.Timber
 
 @Composable
 fun ThemeChoiceScreen(
-//    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
     memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
-//    selectedDollType: DollType = DollType.NONE,
     goBackToDollNamingPage: () -> Unit = {},
     goToRoutineChoicePage: (CreateMemberModel) -> Unit = {}
 ) {
@@ -60,7 +56,6 @@ fun ThemeChoiceScreen(
 
     LaunchedEffect(memberModel) {
         memberModel.collect {
-//            viewModel.getSelectedDollType(it)
             viewModel.getMemberModel(it)
         }
     }
@@ -68,7 +63,6 @@ fun ThemeChoiceScreen(
     ThemeChoiceContent(
         onClickBackBtnAction = { goBackToDollNamingPage() },
         selectedDollType = uiState.memberModel.dollType,
-//        selectedDollType = selectedDollType,
         themeList = uiState.themeList,
         onSelectThemeId = { newId -> viewModel.setSelectedThemeIdList(newId) },
         selectedThemeIdList = uiState.selectedThemeIdList,

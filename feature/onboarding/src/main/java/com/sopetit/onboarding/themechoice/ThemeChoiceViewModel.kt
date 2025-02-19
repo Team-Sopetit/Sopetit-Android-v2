@@ -1,7 +1,6 @@
 package com.sopetit.onboarding.themechoice
 
 import androidx.lifecycle.viewModelScope
-import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.theme.ThemeListModel
 import com.sopetit.domain.usecase.theme.GetThemeListUseCase
@@ -21,15 +20,6 @@ class ThemeChoiceViewModel @Inject constructor(
     init {
         initGetThemeList()
     }
-
-//    fun getSelectedDollType(dollType: DollType) {
-//        updateState(
-//            uiState.value.copy(
-//                selectedDollType = dollType
-//            )
-//        )
-//        Timber.d("[온보딩] themechoice VM dollType -> ${uiState.value.selectedDollType}")
-//    }
 
     fun getMemberModel(memberModel: CreateMemberModel) {
         updateState(
@@ -56,7 +46,6 @@ class ThemeChoiceViewModel @Inject constructor(
                 themeList = data.themes
             )
         )
-        Timber.d("[온보딩] theme list -> $data")
     }
 
     fun setSelectedThemeIdList(themeId: Int) {
@@ -79,6 +68,5 @@ class ThemeChoiceViewModel @Inject constructor(
                 selectedThemeIdList = newList
             )
         )
-        Timber.d("[온보딩] selectedThemeIds -> $newList")
     }
 }
