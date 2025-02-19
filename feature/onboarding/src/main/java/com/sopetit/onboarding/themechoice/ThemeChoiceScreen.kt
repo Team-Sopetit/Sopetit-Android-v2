@@ -34,9 +34,9 @@ import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeChoiceBtn
+import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
-import com.sopetit.ui.common.content.TopBarFaceSpeechContent
 import com.sopetit.ui.common.content.TopBearFaceSpeech
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 
@@ -85,7 +85,9 @@ fun ThemeChoiceContent(
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TopBearFaceSpeech()
+                TopBearFaceSpeech(
+                    dollType = DollType.RED.value
+                )
 
                 ThemeChoiceList(
                     themeList = themeList,

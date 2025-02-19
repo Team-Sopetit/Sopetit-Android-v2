@@ -1,8 +1,6 @@
 package com.sopetit.ui.common.content
 
-import android.widget.Space
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,15 +20,22 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeChoiceTopSpeech
+import com.sopetit.ui.common.type.BearFaceType
 
 @Composable
-fun TopBearFaceSpeech() {
+fun TopBearFaceSpeech(
+    dollType: String
+) {
 
-    TopBarFaceSpeechContent()
+    TopBarFaceSpeechContent(
+        dollType = dollType
+    )
 }
 
 @Composable
-fun TopBarFaceSpeechContent() {
+fun TopBarFaceSpeechContent(
+    dollType: String = ""
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,7 +44,7 @@ fun TopBarFaceSpeechContent() {
             .wrapContentHeight()
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_brown_face),
+            painter = painterResource(id = BearFaceType.getDollFace(dollType)),
             contentDescription = "bear face",
             modifier = Modifier
                 .padding(top = 5.dp)
