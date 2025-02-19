@@ -2,6 +2,7 @@ package com.sopetit.onboarding.themechoice
 
 import androidx.lifecycle.viewModelScope
 import com.sopetit.design_system.R
+import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.response.theme.ThemeListModel
 import com.sopetit.domain.usecase.theme.GetThemeListUseCase
 import com.sopetit.ui.base.BaseViewModel
@@ -20,6 +21,14 @@ class ThemeChoiceViewModel @Inject constructor(
     init {
         initSetThemeIconList()
         initGetThemeList()
+    }
+
+    fun getSelectedDollType(dollType: DollType) {
+        updateState(
+            uiState.value.copy(
+                selectedDollType = dollType
+            )
+        )
     }
 
     private fun initSetThemeIconList() {

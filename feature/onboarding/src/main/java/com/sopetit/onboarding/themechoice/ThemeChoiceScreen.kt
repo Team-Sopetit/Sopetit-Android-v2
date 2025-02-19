@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,16 +40,26 @@ import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.content.TopBearFaceSpeech
 import com.sopetit.ui.common.topbar.OnboardingTopBar
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 fun ThemeChoiceScreen(
+    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
     goBackToDollNamingPage: () -> Unit = {}
 ) {
     val viewModel: ThemeChoiceViewModel = hiltViewModel()
     val uiState: ThemeChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(selectedDollType) {
+        selectedDollType.collect {
+            viewModel.getSelectedDollType(it)
+        }
+    }
+
     ThemeChoiceContent(
         onClickBackBtnAction = { goBackToDollNamingPage() },
+        selectedDollType = uiState.selectedDollType,
         themeList = uiState.themeList,
         themeIconList = uiState.themeIconList,
         onSelectThemeId = { newId -> viewModel.setSelectedThemeIdList(newId) },
@@ -59,6 +70,7 @@ fun ThemeChoiceScreen(
 @Composable
 fun ThemeChoiceContent(
     onClickBackBtnAction: () -> Unit = {},
+    selectedDollType: DollType = DollType.NONE,
     themeList: List<ThemeListItemModel> = emptyList(),
     themeIconList: List<Int> = emptyList(),
     onSelectThemeId: (Int) -> Unit = {},
@@ -86,7 +98,7 @@ fun ThemeChoiceContent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 TopBearFaceSpeech(
-                    dollType = DollType.RED.value
+                    dollType = selectedDollType.value
                 )
 
                 ThemeChoiceList(
