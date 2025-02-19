@@ -35,6 +35,7 @@ import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeChoiceBtn
+import com.sopetit.design_system.ThemeChoiceTopSpeech
 import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
@@ -103,7 +104,8 @@ fun ThemeChoiceContent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 TopBearFaceSpeech(
-                    dollType = selectedDollType.value
+                    dollType = selectedDollType.value,
+                    speechContent = ThemeChoiceTopSpeech
                 )
 
                 ThemeChoiceList(

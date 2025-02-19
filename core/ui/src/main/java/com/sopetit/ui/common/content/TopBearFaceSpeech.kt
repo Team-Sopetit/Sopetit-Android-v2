@@ -14,28 +14,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
-import com.sopetit.design_system.ThemeChoiceTopSpeech
 import com.sopetit.ui.common.type.BearType
-import timber.log.Timber
 
 @Composable
 fun TopBearFaceSpeech(
-    dollType: String
+    dollType: String,
+    speechContent: String
 ) {
 
     TopBarFaceSpeechContent(
-        dollType = dollType
+        dollType = dollType,
+        speechContent = speechContent
     )
 }
 
 @Composable
 fun TopBarFaceSpeechContent(
-    dollType: String = ""
+    dollType: String = "",
+    speechContent: String = ""
 ) {
     Row(
         modifier = Modifier
@@ -44,7 +46,6 @@ fun TopBarFaceSpeechContent(
             .padding(top = 24.dp)
             .wrapContentHeight()
     ) {
-        Timber.d("[온보딩] topbear dollType -> $dollType")
 
         Image(
             painter = painterResource(id = BearType.getDollFace(dollType)),
@@ -57,7 +58,8 @@ fun TopBarFaceSpeechContent(
         Spacer(modifier = Modifier.padding(start = 14.dp))
 
         Text(
-            text = ThemeChoiceTopSpeech,
+            text = speechContent,
+            textAlign = TextAlign.Center,
             color = Gray700,
             style = SoftieTypo.bubble2,
             modifier = Modifier

@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.RoutineChoiceBtn
+import com.sopetit.design_system.RoutineChoiceTopOriginalSpeech
 import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
@@ -68,7 +69,10 @@ fun RoutineChoiceContent(
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TopBearFaceSpeech(dollType = selectedDollType.value)
+                TopBearFaceSpeech(
+                    dollType = selectedDollType.value,
+                    speechContent = RoutineChoiceTopOriginalSpeech
+                )
             }
 
             BottomRectangleBtn(
