@@ -105,7 +105,9 @@ fun NavGraphBuilder.onBoardingNavGraph(
 
         composable(NavRoutes.RoutineChoiceScreen.route) {
             RoutineChoiceScreen(
-                goBackToThemeChoicePage = { navController.popBackStack() }
+                goBackToThemeChoicePage = { navController.popBackStack() },
+                selectedDollType = selectedDollType,
+                selectedThemeIdList = selectedThemeIds
             )
         }
     }

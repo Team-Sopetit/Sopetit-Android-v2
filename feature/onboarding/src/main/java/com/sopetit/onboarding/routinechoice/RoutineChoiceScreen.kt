@@ -5,26 +5,52 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.RoutineChoiceBtn
+import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.ui.common.button.BottomRectangleBtn
+import com.sopetit.ui.common.content.TopBearFaceSpeech
 import com.sopetit.ui.common.topbar.OnboardingTopBar
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 fun RoutineChoiceScreen(
-    goBackToThemeChoicePage: () -> Unit = {}
+    goBackToThemeChoicePage: () -> Unit = {},
+    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
+    selectedThemeIdList: SharedFlow<List<Int>> = MutableSharedFlow()
 ) {
+    val viewModel: RoutineChoiceViewModel = hiltViewModel()
+    val uiState: RoutineChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(selectedDollType) {
+        selectedDollType.collect {
+            viewModel.getSelectedDollType(it)
+        }
+    }
+    LaunchedEffect(selectedThemeIdList) {
+        selectedThemeIdList.collect {
+            viewModel.getSelectedThemeIdList(it)
+        }
+    }
+
     RoutineChoiceContent(
-        onClickBackBtnAction = { goBackToThemeChoicePage() }
+        onClickBackBtnAction = { goBackToThemeChoicePage() },
+        selectedDollType = uiState.selectedDollType
     )
 }
 
 @Composable
 fun RoutineChoiceContent(
     onClickBackBtnAction: () -> Unit = {},
+    selectedDollType: DollType = DollType.NONE,
 ) {
     Box(
         modifier = Modifier
@@ -47,7 +73,7 @@ fun RoutineChoiceContent(
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                //
+                TopBearFaceSpeech(dollType = selectedDollType.value)
             }
 
             BottomRectangleBtn(
