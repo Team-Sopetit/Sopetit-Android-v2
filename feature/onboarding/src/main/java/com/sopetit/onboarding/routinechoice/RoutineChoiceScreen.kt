@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,12 +32,12 @@ import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.R
 import com.sopetit.design_system.RoutineChoiceBtn
 import com.sopetit.design_system.RoutineChoiceTopOriginalSpeech
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.onboarding.model.SelectedThemeItem
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.content.TopBearFaceSpeech
 import com.sopetit.ui.common.topbar.OnboardingTopBar
@@ -59,7 +60,8 @@ fun RoutineChoiceScreen(
 
     RoutineChoiceContent(
         onClickBackBtnAction = { goBackToThemeChoicePage() },
-        selectedDollType = uiState.memberModel.dollType
+        selectedDollType = uiState.memberModel.dollType,
+        selectedThemeList = uiState.selectedThemeList
     )
 }
 
@@ -67,6 +69,7 @@ fun RoutineChoiceScreen(
 fun RoutineChoiceContent(
     onClickBackBtnAction: () -> Unit = {},
     selectedDollType: DollType = DollType.NONE,
+    selectedThemeList: List<SelectedThemeItem> = emptyList()
 ) {
     Box(
         modifier = Modifier
@@ -96,7 +99,9 @@ fun RoutineChoiceContent(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                RoutineChoiceTopTheme()
+                RoutineChoiceTopTheme(
+                    selectedThemeList = selectedThemeList
+                )
             }
 
             BottomRectangleBtn(
@@ -107,7 +112,9 @@ fun RoutineChoiceContent(
 }
 
 @Composable
-fun RoutineChoiceTopTheme() {
+fun RoutineChoiceTopTheme(
+    selectedThemeList: List<SelectedThemeItem> = emptyList()
+) {
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
@@ -119,15 +126,21 @@ fun RoutineChoiceTopTheme() {
             modifier = Modifier
                 .padding(vertical = 4.dp, horizontal = 4.dp)
         ) {
-            items(3, key = { it }) { index ->
-                RoutineChoiceTopThemeItem()
+            itemsIndexed(selectedThemeList, key = { _, item -> item.themeId }) { _, item ->
+                RoutineChoiceTopThemeItem(
+                    title = item.title,
+                    themeIcon = item.themeIcon
+                )
             }
         }
     }
 }
 
 @Composable
-fun RoutineChoiceTopThemeItem() {
+fun RoutineChoiceTopThemeItem(
+    title: String = "",
+    themeIcon: Int = -1
+) {
     Box(
         modifier = Modifier
             .width(106.dp)
@@ -140,14 +153,14 @@ fun RoutineChoiceTopThemeItem() {
                 .align(Alignment.Center)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_theme1),
+                painter = painterResource(id = themeIcon),
                 contentDescription = "theme icon",
                 modifier = Modifier
                     .size(16.dp)
             )
 
             Text(
-                text = "한 걸음 성장",
+                text = title,
                 color = Gray700,
                 style = SoftieTypo.body2,
                 modifier = Modifier
