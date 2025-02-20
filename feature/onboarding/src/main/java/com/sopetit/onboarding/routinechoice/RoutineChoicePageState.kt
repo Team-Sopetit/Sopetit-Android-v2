@@ -1,6 +1,7 @@
 package com.sopetit.onboarding.routinechoice
 
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.onboarding.model.SelectedThemeItem
@@ -11,5 +12,6 @@ data class RoutineChoicePageState(
     val originalThemeList: List<ThemeListItemModel> = emptyList(),
     val chipThemeList: List<SelectedThemeItem> = emptyList(),
     val selectedThemeId: Int = -1,
-    val routineTotalList: List<DailyRoutineListModel> = emptyList()
+    val routineTotalList: List<DailyRoutineListModel> = emptyList(),
+    val selectedRoutineList: List<DailyRoutineListItemModel> = emptyList()
 ) : PageState

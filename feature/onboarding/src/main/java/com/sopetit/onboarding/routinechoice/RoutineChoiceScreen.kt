@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,9 +39,11 @@ import com.sopetit.design_system.RoutineChoiceTopOriginalSpeech
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
 import com.sopetit.onboarding.model.SelectedThemeItem
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.content.TopBearFaceSpeech
+import com.sopetit.ui.common.item.DailyRoutineListItem
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -64,7 +67,8 @@ fun RoutineChoiceScreen(
         selectedDollType = uiState.memberModel.dollType,
         chipThemeList = uiState.chipThemeList,
         onSelectThemeId = { viewModel.setSelectedThemeId(it) },
-        selectedThemeId = uiState.selectedThemeId
+        selectedThemeId = uiState.selectedThemeId,
+        selectedRoutineList = uiState.selectedRoutineList
     )
 }
 
@@ -74,8 +78,10 @@ fun RoutineChoiceContent(
     selectedDollType: DollType = DollType.NONE,
     chipThemeList: List<SelectedThemeItem> = emptyList(),
     onSelectThemeId: (Int) -> Unit = {},
-    selectedThemeId: Int = -1
+    selectedThemeId: Int = -1,
+    selectedRoutineList: List<DailyRoutineListItemModel> = emptyList()
 ) {
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -108,6 +114,10 @@ fun RoutineChoiceContent(
                     chipThemeList = chipThemeList,
                     onSelectThemeId = onSelectThemeId,
                     selectedThemeId = selectedThemeId
+                )
+
+                RoutineChoiceForThemeContent(
+                    routineList = selectedRoutineList
                 )
             }
 
@@ -179,6 +189,25 @@ fun RoutineChoiceTopThemeItem(
                 style = SoftieTypo.body2,
                 modifier = Modifier
                     .padding(start = 2.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun RoutineChoiceForThemeContent(
+    routineList: List<DailyRoutineListItemModel> = emptyList()
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 10.dp, bottom = 29.dp)
+            .padding(horizontal = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        itemsIndexed(routineList, key = { index, item -> item.routineId }) { index, item ->
+            DailyRoutineListItem(
+                routineContent = item.content
             )
         }
     }

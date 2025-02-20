@@ -63,16 +63,7 @@ class RoutineChoiceViewModel @Inject constructor(
     }
 
     private fun onSuccessGetDailyRoutine(data: DailyRoutineListThemeTotalModel) {
-        updateState(
-            uiState.value.copy(
-                routineTotalList = data.themeTotalList
-            )
-        )
-
-        setSelectedThemeList(data.themeTotalList)
-    }
-
-    private fun setSelectedThemeList(routines: List<DailyRoutineListModel>) {
+        val routines: List<DailyRoutineListModel> = data.themeTotalList
         val chipThemeList: List<SelectedThemeItem> = listOf(
             mapSelectedThemeItem(routines, 0),
             mapSelectedThemeItem(routines, 1),
@@ -81,8 +72,10 @@ class RoutineChoiceViewModel @Inject constructor(
 
         updateState(
             uiState.value.copy(
+                routineTotalList = routines,
                 chipThemeList = chipThemeList,
-                selectedThemeId = chipThemeList[0].themeId
+                selectedThemeId = chipThemeList[0].themeId,
+                selectedRoutineList = routines[0].routines
             )
         )
     }
@@ -99,7 +92,8 @@ class RoutineChoiceViewModel @Inject constructor(
     fun setSelectedThemeId(themeId: Int) {
         updateState(
             uiState.value.copy(
-                selectedThemeId = themeId
+                selectedThemeId = themeId,
+                selectedRoutineList = uiState.value.routineTotalList.find { it.themeId == themeId }?.routines ?: emptyList()
             )
         )
     }
