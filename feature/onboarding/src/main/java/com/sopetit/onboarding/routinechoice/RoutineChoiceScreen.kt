@@ -2,6 +2,7 @@ package com.sopetit.onboarding.routinechoice
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,7 +62,9 @@ fun RoutineChoiceScreen(
     RoutineChoiceContent(
         onClickBackBtnAction = { goBackToThemeChoicePage() },
         selectedDollType = uiState.memberModel.dollType,
-        chipThemeList = uiState.chipThemeList
+        chipThemeList = uiState.chipThemeList,
+        onSelectThemeId = { viewModel.setSelectedThemeId(it) },
+        selectedThemeId = uiState.selectedThemeId
     )
 }
 
@@ -69,7 +72,9 @@ fun RoutineChoiceScreen(
 fun RoutineChoiceContent(
     onClickBackBtnAction: () -> Unit = {},
     selectedDollType: DollType = DollType.NONE,
-    chipThemeList: List<SelectedThemeItem> = emptyList()
+    chipThemeList: List<SelectedThemeItem> = emptyList(),
+    onSelectThemeId: (Int) -> Unit = {},
+    selectedThemeId: Int = -1
 ) {
     Box(
         modifier = Modifier
@@ -100,7 +105,9 @@ fun RoutineChoiceContent(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 RoutineChoiceTopTheme(
-                    chipThemeList = chipThemeList
+                    chipThemeList = chipThemeList,
+                    onSelectThemeId = onSelectThemeId,
+                    selectedThemeId = selectedThemeId
                 )
             }
 
@@ -113,7 +120,9 @@ fun RoutineChoiceContent(
 
 @Composable
 fun RoutineChoiceTopTheme(
-    chipThemeList: List<SelectedThemeItem> = emptyList()
+    chipThemeList: List<SelectedThemeItem> = emptyList(),
+    onSelectThemeId: (Int) -> Unit = {},
+    selectedThemeId: Int = -1
 ) {
     Row(
         modifier = Modifier
@@ -129,7 +138,9 @@ fun RoutineChoiceTopTheme(
             itemsIndexed(chipThemeList, key = { _, item -> item.themeId }) { _, item ->
                 RoutineChoiceTopThemeItem(
                     title = item.title,
-                    themeIcon = item.themeIcon
+                    themeIcon = item.themeIcon,
+                    onClick = { onSelectThemeId(item.themeId) },
+                    isSelectedTheme = selectedThemeId == item.themeId
                 )
             }
         }
@@ -139,13 +150,16 @@ fun RoutineChoiceTopTheme(
 @Composable
 fun RoutineChoiceTopThemeItem(
     title: String = "",
-    themeIcon: Int = -1
+    themeIcon: Int = -1,
+    onClick: () -> Unit = {},
+    isSelectedTheme: Boolean = false
 ) {
     Box(
         modifier = Modifier
             .width(106.dp)
             .clip(RoundedCornerShape(5.dp))
-            .background(Gray0)
+            .background(if (isSelectedTheme) Gray0 else Gray200)
+            .clickable { onClick() }
     ) {
         Row(
             modifier = Modifier

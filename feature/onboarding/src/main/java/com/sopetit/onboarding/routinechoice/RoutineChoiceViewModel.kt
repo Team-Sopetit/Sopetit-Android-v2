@@ -95,4 +95,11 @@ class RoutineChoiceViewModel @Inject constructor(
             )
         }
 
+    fun setSelectedThemeId(themeId: Int) {
+        updateState(
+            uiState.value.copy(
+                selectedThemeId = themeId
+            )
+        )
+    }
 }

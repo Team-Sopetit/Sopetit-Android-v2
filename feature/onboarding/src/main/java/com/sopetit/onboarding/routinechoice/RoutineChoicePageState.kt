@@ -10,5 +10,6 @@ data class RoutineChoicePageState(
     val memberModel: CreateMemberModel = CreateMemberModel(),
     val originalThemeList: List<ThemeListItemModel> = emptyList(),
     val chipThemeList: List<SelectedThemeItem> = emptyList(),
+    val selectedThemeId: Int = -1,
     val routineTotalList: List<DailyRoutineListModel> = emptyList()
 ) : PageState
