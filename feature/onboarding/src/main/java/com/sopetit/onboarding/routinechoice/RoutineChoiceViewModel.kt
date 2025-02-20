@@ -75,7 +75,7 @@ class RoutineChoiceViewModel @Inject constructor(
                 routineTotalList = routines,
                 chipThemeList = chipThemeList,
                 selectedThemeId = chipThemeList[0].themeId,
-                selectedRoutineList = routines[0].routines
+                eachThemeRoutineList = routines[0].routines
             )
         )
     }
@@ -93,8 +93,33 @@ class RoutineChoiceViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 selectedThemeId = themeId,
-                selectedRoutineList = uiState.value.routineTotalList.find { it.themeId == themeId }?.routines ?: emptyList()
+                eachThemeRoutineList = uiState.value.routineTotalList.find { it.themeId == themeId }?.routines ?: emptyList()
             )
         )
+    }
+
+    fun setSelectedRoutineIdList(routineId: Int) {
+        val newList: MutableList<Int> = mutableListOf()
+        newList.addAll(uiState.value.selectedRoutineIdList)
+
+        when (uiState.value.selectedRoutineIdList.contains(routineId)) {
+            true -> {
+                newList.remove(routineId)
+            }
+
+            false -> {
+                if (uiState.value.selectedRoutineIdList.size < 3) {
+                    newList.add(routineId)
+                }
+            }
+        }
+
+        updateState(
+            uiState.value.copy(
+                selectedRoutineIdList = newList
+            )
+        )
+
+        Timber.d("[온보딩] 선택한 루틴 리스트 -> $newList")
     }
 }

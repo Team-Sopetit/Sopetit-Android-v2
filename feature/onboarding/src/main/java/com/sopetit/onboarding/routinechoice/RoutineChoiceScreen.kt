@@ -68,7 +68,9 @@ fun RoutineChoiceScreen(
         chipThemeList = uiState.chipThemeList,
         onSelectThemeId = { viewModel.setSelectedThemeId(it) },
         selectedThemeId = uiState.selectedThemeId,
-        selectedRoutineList = uiState.selectedRoutineList
+        eachThemeRoutineList = uiState.eachThemeRoutineList,
+        onSelectRoutine = { viewModel.setSelectedRoutineIdList(it) },
+        selectedRoutineIdList = uiState.selectedRoutineIdList
     )
 }
 
@@ -79,7 +81,9 @@ fun RoutineChoiceContent(
     chipThemeList: List<SelectedThemeItem> = emptyList(),
     onSelectThemeId: (Int) -> Unit = {},
     selectedThemeId: Int = -1,
-    selectedRoutineList: List<DailyRoutineListItemModel> = emptyList()
+    eachThemeRoutineList: List<DailyRoutineListItemModel> = emptyList(),
+    onSelectRoutine: (Int) -> Unit = {},
+    selectedRoutineIdList: List<Int> = emptyList()
 ) {
 
     Box(
@@ -117,7 +121,9 @@ fun RoutineChoiceContent(
                 )
 
                 RoutineChoiceForThemeContent(
-                    routineList = selectedRoutineList
+                    routineList = eachThemeRoutineList,
+                    onSelectRoutine = onSelectRoutine,
+                    selectedRoutineIdList = selectedRoutineIdList
                 )
             }
 
@@ -196,7 +202,9 @@ fun RoutineChoiceTopThemeItem(
 
 @Composable
 fun RoutineChoiceForThemeContent(
-    routineList: List<DailyRoutineListItemModel> = emptyList()
+    routineList: List<DailyRoutineListItemModel> = emptyList(),
+    onSelectRoutine: (Int) -> Unit = {},
+    selectedRoutineIdList: List<Int> = emptyList()
 ) {
     LazyColumn(
         modifier = Modifier
@@ -207,7 +215,9 @@ fun RoutineChoiceForThemeContent(
     ) {
         itemsIndexed(routineList, key = { index, item -> item.routineId }) { index, item ->
             DailyRoutineListItem(
-                routineContent = item.content
+                routineContent = item.content,
+                onClickAction = { onSelectRoutine(item.routineId) },
+                isRoutineSelected = selectedRoutineIdList.contains(item.routineId)
             )
         }
     }
