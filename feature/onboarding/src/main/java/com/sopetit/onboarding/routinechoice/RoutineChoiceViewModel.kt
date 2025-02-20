@@ -73,7 +73,7 @@ class RoutineChoiceViewModel @Inject constructor(
     }
 
     private fun setSelectedThemeList(routines: List<DailyRoutineListModel>) {
-        val selectedThemeList: List<SelectedThemeItem> = listOf(
+        val chipThemeList: List<SelectedThemeItem> = listOf(
             mapSelectedThemeItem(routines, 0),
             mapSelectedThemeItem(routines, 1),
             mapSelectedThemeItem(routines, 2)
@@ -81,7 +81,8 @@ class RoutineChoiceViewModel @Inject constructor(
 
         updateState(
             uiState.value.copy(
-                chipThemeList = selectedThemeList
+                chipThemeList = chipThemeList,
+                selectedThemeId = chipThemeList[0].themeId
             )
         )
     }
