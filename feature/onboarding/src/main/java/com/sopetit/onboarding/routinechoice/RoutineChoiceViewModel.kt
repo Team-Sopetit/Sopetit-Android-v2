@@ -39,7 +39,7 @@ class RoutineChoiceViewModel @Inject constructor(
     private fun onSuccessGetThemeList(data: ThemeListModel) {
         updateState(
             uiState.value.copy(
-                themeList = data.themes
+                originalThemeList = data.themes
             )
         )
     }
@@ -74,19 +74,25 @@ class RoutineChoiceViewModel @Inject constructor(
 
     private fun setSelectedThemeList(routines: List<DailyRoutineListModel>) {
         val selectedThemeList: List<SelectedThemeItem> = listOf(
-            mapSelectedThemeItem(routines, 0), mapSelectedThemeItem(routines, 1), mapSelectedThemeItem(routines, 2)
+            mapSelectedThemeItem(routines, 0),
+            mapSelectedThemeItem(routines, 1),
+            mapSelectedThemeItem(routines, 2)
         )
 
         updateState(
             uiState.value.copy(
-                selectedThemeList = selectedThemeList
+                chipThemeList = selectedThemeList
             )
         )
     }
 
     private fun mapSelectedThemeItem(routines: List<DailyRoutineListModel>, index: Int) =
-        with (routines) {
-            SelectedThemeItem(themeId = get(index).themeId, title = uiState.value.themeList.first { get(index).themeId == it.themeId }.title, themeIcon = ThemeIconType.getThemeIcon(get(index).themeId))
+        with(routines) {
+            SelectedThemeItem(
+                themeId = get(index).themeId,
+                title = uiState.value.originalThemeList.first { get(index).themeId == it.themeId }.title,
+                themeIcon = ThemeIconType.getThemeIcon(get(index).themeId)
+            )
         }
 
 }

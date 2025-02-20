@@ -61,7 +61,7 @@ fun RoutineChoiceScreen(
     RoutineChoiceContent(
         onClickBackBtnAction = { goBackToThemeChoicePage() },
         selectedDollType = uiState.memberModel.dollType,
-        selectedThemeList = uiState.selectedThemeList
+        chipThemeList = uiState.chipThemeList
     )
 }
 
@@ -69,7 +69,7 @@ fun RoutineChoiceScreen(
 fun RoutineChoiceContent(
     onClickBackBtnAction: () -> Unit = {},
     selectedDollType: DollType = DollType.NONE,
-    selectedThemeList: List<SelectedThemeItem> = emptyList()
+    chipThemeList: List<SelectedThemeItem> = emptyList()
 ) {
     Box(
         modifier = Modifier
@@ -100,7 +100,7 @@ fun RoutineChoiceContent(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 RoutineChoiceTopTheme(
-                    selectedThemeList = selectedThemeList
+                    chipThemeList = chipThemeList
                 )
             }
 
@@ -113,7 +113,7 @@ fun RoutineChoiceContent(
 
 @Composable
 fun RoutineChoiceTopTheme(
-    selectedThemeList: List<SelectedThemeItem> = emptyList()
+    chipThemeList: List<SelectedThemeItem> = emptyList()
 ) {
     Row(
         modifier = Modifier
@@ -126,7 +126,7 @@ fun RoutineChoiceTopTheme(
             modifier = Modifier
                 .padding(vertical = 4.dp, horizontal = 4.dp)
         ) {
-            itemsIndexed(selectedThemeList, key = { _, item -> item.themeId }) { _, item ->
+            itemsIndexed(chipThemeList, key = { _, item -> item.themeId }) { _, item ->
                 RoutineChoiceTopThemeItem(
                     title = item.title,
                     themeIcon = item.themeIcon

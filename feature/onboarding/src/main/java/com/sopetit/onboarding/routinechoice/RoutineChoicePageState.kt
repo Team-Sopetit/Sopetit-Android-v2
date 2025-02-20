@@ -8,7 +8,7 @@ import com.sopetit.ui.base.PageState
 
 data class RoutineChoicePageState(
     val memberModel: CreateMemberModel = CreateMemberModel(),
-    val themeList: List<ThemeListItemModel> = emptyList(),
-    val selectedThemeList: List<SelectedThemeItem> = emptyList(),
+    val originalThemeList: List<ThemeListItemModel> = emptyList(),
+    val chipThemeList: List<SelectedThemeItem> = emptyList(),
     val routineTotalList: List<DailyRoutineListModel> = emptyList()
 ) : PageState
