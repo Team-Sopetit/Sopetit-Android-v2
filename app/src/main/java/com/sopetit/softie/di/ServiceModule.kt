@@ -1,6 +1,7 @@
 package com.sopetit.softie.di
 
 import com.sopetit.data.service.AuthService
+import com.sopetit.data.service.MemberService
 import com.sopetit.data.service.RoutineService
 import com.sopetit.data.service.ThemeService
 import dagger.Module
@@ -26,5 +27,10 @@ object ServiceModule {
     @Provides
     fun provideRoutineService(@SoftieRetrofit retrofit: Retrofit): RoutineService {
         return retrofit.create(RoutineService::class.java)
+    }
+
+    @Provides
+    fun provideMemberService(@SoftieRetrofit retrofit: Retrofit): MemberService {
+        return retrofit.create(MemberService::class.java)
     }
 }
