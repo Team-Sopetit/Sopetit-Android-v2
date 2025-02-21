@@ -68,6 +68,7 @@ fun RoutineChoiceScreen(
         onClickBackBtnAction = { goBackToThemeChoicePage() },
         selectedDollType = uiState.memberModel.dollType,
         chipThemeList = uiState.chipThemeList,
+        selectedRoutineNumForTheme = uiState.selectedRoutineNumForTheme,
         onSelectThemeId = { viewModel.setSelectedThemeId(it) },
         selectedThemeId = uiState.selectedThemeId,
         isAfterRoutineSelect = uiState.isAfterRoutineSelect,
@@ -82,6 +83,7 @@ fun RoutineChoiceContent(
     onClickBackBtnAction: () -> Unit = {},
     selectedDollType: DollType = DollType.NONE,
     chipThemeList: List<SelectedThemeItem> = emptyList(),
+    selectedRoutineNumForTheme: List<Int> = listOf(0, 0, 0),
     onSelectThemeId: (Int) -> Unit = {},
     selectedThemeId: Int = -1,
     isAfterRoutineSelect: Boolean = false,
@@ -123,6 +125,7 @@ fun RoutineChoiceContent(
 
                 RoutineChoiceTopTheme(
                     chipThemeList = chipThemeList,
+                    selectedRoutineNumForTheme = selectedRoutineNumForTheme,
                     onSelectThemeId = onSelectThemeId,
                     selectedThemeId = selectedThemeId
                 )
@@ -144,6 +147,7 @@ fun RoutineChoiceContent(
 @Composable
 fun RoutineChoiceTopTheme(
     chipThemeList: List<SelectedThemeItem> = emptyList(),
+    selectedRoutineNumForTheme: List<Int> = listOf(0, 0, 0),
     onSelectThemeId: (Int) -> Unit = {},
     selectedThemeId: Int = -1
 ) {
@@ -158,9 +162,9 @@ fun RoutineChoiceTopTheme(
             modifier = Modifier
                 .padding(vertical = 4.dp, horizontal = 4.dp)
         ) {
-            itemsIndexed(chipThemeList, key = { _, item -> item.themeId }) { _, item ->
+            itemsIndexed(chipThemeList, key = { _, item -> item.themeId }) { index, item ->
                 RoutineChoiceTopThemeItem(
-                    title = item.title,
+                    title = if (selectedRoutineNumForTheme[index] == 0) item.title else "${item.title} ${selectedRoutineNumForTheme[index]}",
                     themeIcon = item.themeIcon,
                     onClick = { onSelectThemeId(item.themeId) },
                     isSelectedTheme = selectedThemeId == item.themeId

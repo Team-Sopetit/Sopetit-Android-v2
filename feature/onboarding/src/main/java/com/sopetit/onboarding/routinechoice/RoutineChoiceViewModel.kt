@@ -100,16 +100,22 @@ class RoutineChoiceViewModel @Inject constructor(
 
     fun setSelectedRoutineIdList(routineId: Int) {
         val newList: MutableList<Int> = mutableListOf()
+        val newSelectedRoutineNumForTheme: MutableList<Int> = mutableListOf()
+        val index = uiState.value.chipThemeList.indexOfFirst { it.themeId == uiState.value.selectedThemeId }
+
         newList.addAll(uiState.value.selectedRoutineIdList)
+        newSelectedRoutineNumForTheme.addAll(uiState.value.selectedRoutineNumForTheme)
 
         when (uiState.value.selectedRoutineIdList.contains(routineId)) {
             true -> {
                 newList.remove(routineId)
+                newSelectedRoutineNumForTheme[index] = newSelectedRoutineNumForTheme[index] - 1
             }
 
             false -> {
                 if (uiState.value.selectedRoutineIdList.size < 3) {
                     newList.add(routineId)
+                    newSelectedRoutineNumForTheme[index] = newSelectedRoutineNumForTheme[index] + 1
                 }
             }
         }
@@ -117,10 +123,11 @@ class RoutineChoiceViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 isAfterRoutineSelect = true,
-                selectedRoutineIdList = newList
+                selectedRoutineIdList = newList,
+                selectedRoutineNumForTheme = newSelectedRoutineNumForTheme
             )
         )
 
-        Timber.d("[온보딩] 선택한 루틴 리스트 -> $newList")
+        Timber.d("[온보딩] 선택한 루틴 리스트 -> $newList && index: $index  list: $newSelectedRoutineNumForTheme")
     }
 }
