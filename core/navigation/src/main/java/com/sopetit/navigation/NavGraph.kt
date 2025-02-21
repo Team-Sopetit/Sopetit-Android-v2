@@ -18,7 +18,7 @@ import com.sopetit.splash.SplashScreen
 import kotlinx.coroutines.flow.SharedFlow
 
 fun NavGraphBuilder.splashNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = NavRoutes.SplashScreen.route,
@@ -33,7 +33,7 @@ fun NavGraphBuilder.splashNavGraph(
 }
 
 fun NavGraphBuilder.logInNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = NavRoutes.LogInScreen.route,
@@ -41,7 +41,12 @@ fun NavGraphBuilder.logInNavGraph(
     ) {
         composable(NavRoutes.LogInScreen.route) {
             LogInScreen(
-                goToOnboarding = { navController.navigate(NavRoutes.StoryTellingFirstScreen.route) }
+                goToOnboarding = {
+                    navController.navigate(NavRoutes.StoryTellingFirstScreen.route)
+//                    {
+//                        popUpTo(NavRoutes.SplashGraph.route) { inclusive = true }
+//                    }
+                }
             )
         }
     }
@@ -111,14 +116,18 @@ fun NavGraphBuilder.onBoardingNavGraph(
                 goBackToThemeChoicePage = { navController.popBackStack() },
                 memberModel = memberModel,
                 showSnackBar = showSnackBar,
-                goToHomePage = { navController.navigate(NavRoutes.HomeScreen.route) }
+                goToHomePage = {
+                    navController.navigate(NavRoutes.HomeScreen.route) {
+                        popUpTo(0)
+                    }
+                }
             )
         }
     }
 }
 
 fun NavGraphBuilder.homeNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = NavRoutes.HomeScreen.route,
