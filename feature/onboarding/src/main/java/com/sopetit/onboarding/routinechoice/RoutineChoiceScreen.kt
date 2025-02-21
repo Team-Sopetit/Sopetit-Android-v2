@@ -55,6 +55,7 @@ import kotlinx.coroutines.flow.SharedFlow
 fun RoutineChoiceScreen(
     goBackToThemeChoicePage: () -> Unit = {},
     memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
+    goToHomePage: () -> Unit = {}
 ) {
     val viewModel: RoutineChoiceViewModel = hiltViewModel()
     val uiState: RoutineChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -75,7 +76,8 @@ fun RoutineChoiceScreen(
         isAfterRoutineSelect = uiState.isAfterRoutineSelect,
         eachThemeRoutineList = uiState.eachThemeRoutineList,
         onSelectRoutine = { viewModel.setSelectedRoutineIdList(it) },
-        selectedRoutineIdList = uiState.selectedRoutineIdList
+        selectedRoutineIdList = uiState.selectedRoutineIdList,
+        onClickBtnAction = { goToHomePage() }
     )
 }
 
@@ -90,7 +92,8 @@ fun RoutineChoiceContent(
     isAfterRoutineSelect: Boolean = false,
     eachThemeRoutineList: List<DailyRoutineListItemModel> = emptyList(),
     onSelectRoutine: (Int) -> Unit = {},
-    selectedRoutineIdList: List<Int> = emptyList()
+    selectedRoutineIdList: List<Int> = emptyList(),
+    onClickBtnAction: () -> Unit = {}
 ) {
 
     Box(
@@ -141,6 +144,8 @@ fun RoutineChoiceContent(
 
             BottomRectangleBtn(
                 btnTextContent = RoutineChoiceBtn,
+                isBtnActivated = (selectedRoutineIdList.size == 3),
+                onClickAction = onClickBtnAction
             )
         }
     }

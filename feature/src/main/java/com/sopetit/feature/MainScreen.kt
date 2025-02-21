@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.navigation.NavRoutes
+import com.sopetit.navigation.homeNavGraph
 import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.splashNavGraph
@@ -54,6 +55,9 @@ fun MainScreen() {
                         navController = navController,
                         setMemberModel = settingMemberModel,
                         memberModel = viewModel.memberModel,
+                    )
+                    homeNavGraph(
+                        navController = navController
                     )
                 }
             }

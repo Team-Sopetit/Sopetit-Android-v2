@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.home.HomeScreen
 import com.sopetit.login.LogInScreen
 import com.sopetit.onboarding.dollnaming.DollNamingScreen
 import com.sopetit.onboarding.dolltype.DollTypeChoiceScreen
@@ -107,8 +108,22 @@ fun NavGraphBuilder.onBoardingNavGraph(
         composable(NavRoutes.RoutineChoiceScreen.route) {
             RoutineChoiceScreen(
                 goBackToThemeChoicePage = { navController.popBackStack() },
-                memberModel = memberModel
+                memberModel = memberModel,
+                goToHomePage = { navController.navigate(NavRoutes.HomeScreen.route) }
             )
+        }
+    }
+}
+
+fun NavGraphBuilder.homeNavGraph(
+    navController: NavHostController
+) {
+    navigation(
+        startDestination = NavRoutes.HomeScreen.route,
+        route = NavRoutes.HomeGraph.route
+    ) {
+        composable(NavRoutes.HomeScreen.route) {
+            HomeScreen()
         }
     }
 }
