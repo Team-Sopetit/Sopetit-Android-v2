@@ -116,6 +116,7 @@ class RoutineChoiceViewModel @Inject constructor(
 
         updateState(
             uiState.value.copy(
+                isAfterRoutineSelect = true,
                 selectedRoutineIdList = newList
             )
         )

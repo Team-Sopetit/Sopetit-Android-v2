@@ -13,6 +13,7 @@ data class RoutineChoicePageState(
     val chipThemeList: List<SelectedThemeItem> = emptyList(),
     val selectedThemeId: Int = -1,
     val routineTotalList: List<DailyRoutineListModel> = emptyList(),
+    val isAfterRoutineSelect: Boolean = false,
     val eachThemeRoutineList: List<DailyRoutineListItemModel> = emptyList(),
     val selectedRoutineIdList: List<Int> = emptyList()
 ) : PageState

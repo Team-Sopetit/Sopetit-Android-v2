@@ -35,6 +35,8 @@ import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.RoutineChoiceBtn
+import com.sopetit.design_system.RoutineChoiceTopNumSpeech
+import com.sopetit.design_system.RoutineChoiceTopNumSpeechAfter
 import com.sopetit.design_system.RoutineChoiceTopOriginalSpeech
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.enums.DollType
@@ -68,6 +70,7 @@ fun RoutineChoiceScreen(
         chipThemeList = uiState.chipThemeList,
         onSelectThemeId = { viewModel.setSelectedThemeId(it) },
         selectedThemeId = uiState.selectedThemeId,
+        isAfterRoutineSelect = uiState.isAfterRoutineSelect,
         eachThemeRoutineList = uiState.eachThemeRoutineList,
         onSelectRoutine = { viewModel.setSelectedRoutineIdList(it) },
         selectedRoutineIdList = uiState.selectedRoutineIdList
@@ -81,6 +84,7 @@ fun RoutineChoiceContent(
     chipThemeList: List<SelectedThemeItem> = emptyList(),
     onSelectThemeId: (Int) -> Unit = {},
     selectedThemeId: Int = -1,
+    isAfterRoutineSelect: Boolean = false,
     eachThemeRoutineList: List<DailyRoutineListItemModel> = emptyList(),
     onSelectRoutine: (Int) -> Unit = {},
     selectedRoutineIdList: List<Int> = emptyList()
@@ -109,7 +113,10 @@ fun RoutineChoiceContent(
             ) {
                 TopBearFaceSpeech(
                     dollType = selectedDollType.value,
-                    speechContent = RoutineChoiceTopOriginalSpeech
+                    speechContent = if (isAfterRoutineSelect) RoutineChoiceTopNumSpeech else RoutineChoiceTopOriginalSpeech,
+                    isHighlightSpeechExist = isAfterRoutineSelect,
+                    highlightSpeech = "${selectedRoutineIdList.size}/3",
+                    speechContentAfterHighlight = RoutineChoiceTopNumSpeechAfter
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
