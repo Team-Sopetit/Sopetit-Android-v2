@@ -66,6 +66,16 @@ fun RoutineChoiceScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is RoutineChoiceEvent.OnSuccessCreateMember -> {
+                    goToHomePage()
+                }
+            }
+        }
+    }
+
     RoutineChoiceContent(
         onClickBackBtnAction = { goBackToThemeChoicePage() },
         selectedDollType = uiState.memberModel.dollType,
@@ -77,7 +87,7 @@ fun RoutineChoiceScreen(
         eachThemeRoutineList = uiState.eachThemeRoutineList,
         onSelectRoutine = { viewModel.setSelectedRoutineIdList(it) },
         selectedRoutineIdList = uiState.selectedRoutineIdList,
-        onClickBtnAction = { goToHomePage() }
+        onClickBtnAction = { viewModel.createMember() }
     )
 }
 

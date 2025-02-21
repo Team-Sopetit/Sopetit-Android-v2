@@ -11,7 +11,7 @@ object CreateMemberMapper : BaseMapper() {
     fun CreateMemberModel.toDto() = CreateMemberRequestDto(
         name = dollName,
         dollType = dollType.value,
-        routines = selectedThemeIdList
+        routines = selectedRoutineIdList
     )
 
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<Unit>>): Flow<Result<Unit>> {

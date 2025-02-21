@@ -6,6 +6,7 @@ import com.sopetit.domain.entity.request.routine.DailyRoutineListRequestModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListThemeTotalModel
 import com.sopetit.domain.entity.response.theme.ThemeListModel
+import com.sopetit.domain.usecase.member.PostCreateMemberUseCase
 import com.sopetit.domain.usecase.routine.GetDailyRoutineUseCase
 import com.sopetit.domain.usecase.theme.GetThemeListUseCase
 import com.sopetit.onboarding.model.SelectedThemeItem
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RoutineChoiceViewModel @Inject constructor(
     private val getThemeListUseCase: GetThemeListUseCase,
-    private val getDailyRoutineUseCase: GetDailyRoutineUseCase
+    private val getDailyRoutineUseCase: GetDailyRoutineUseCase,
+    private val postCreateMemberUseCase: PostCreateMemberUseCase
 ) : BaseViewModel<RoutineChoicePageState>(
     RoutineChoicePageState()
 ) {
@@ -129,5 +131,17 @@ class RoutineChoiceViewModel @Inject constructor(
         )
 
         Timber.d("[온보딩] 선택한 루틴 리스트 -> $newList && index: $index  list: $newSelectedRoutineNumForTheme")
+    }
+
+    private fun updateMemberModel() = CreateMemberModel(dollType = uiState.value.memberModel.dollType, dollName = uiState.value.memberModel.dollName, selectedRoutineIdList = uiState.value.selectedRoutineIdList)
+
+    fun createMember() {
+        viewModelScope.launch {
+            postCreateMemberUseCase(
+                request = updateMemberModel()
+            ).collect { resultResponse(it, {})}
+
+            emitEventFlow(RoutineChoiceEvent.OnSuccessCreateMember)
+        }
     }
 }
