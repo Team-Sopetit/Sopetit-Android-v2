@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,6 +18,7 @@ import com.sopetit.navigation.homeNavGraph
 import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.splashNavGraph
+import com.sopetit.ui.common.item.CommonSnackBar
 import com.sopetit.ui.util.DismissKeyboardOnClick
 import kotlinx.coroutines.launch
 
@@ -25,6 +28,11 @@ fun MainScreen() {
     val viewModel: MainViewModel = hiltViewModel()
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
+    val snackBarHost = remember { SnackbarHostState() }
+
+    val showSnackBar: (String) -> Unit = { message ->
+        scope.launch { snackBarHost.showSnackbar(message = message) }
+    }
 
     val settingMemberModel: (CreateMemberModel) -> Unit = {
         scope.launch {
@@ -34,7 +42,8 @@ fun MainScreen() {
 
     DismissKeyboardOnClick {
         Scaffold(
-            bottomBar = { BottomNavBar() }
+            bottomBar = { BottomNavBar() },
+            snackbarHost = { CommonSnackBar(hostState = snackBarHost) }
         ) { innerPadding ->
             Box(
                 modifier = Modifier
@@ -54,6 +63,7 @@ fun MainScreen() {
                     onBoardingNavGraph(
                         navController = navController,
                         setMemberModel = settingMemberModel,
+                        showSnackBar = showSnackBar,
                         memberModel = viewModel.memberModel,
                     )
                     homeNavGraph(

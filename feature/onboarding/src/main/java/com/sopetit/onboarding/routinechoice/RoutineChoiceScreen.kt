@@ -36,6 +36,7 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.Red200
 import com.sopetit.design_system.RoutineChoiceBtn
+import com.sopetit.design_system.RoutineChoiceSnackBar
 import com.sopetit.design_system.RoutineChoiceTopNumSpeech
 import com.sopetit.design_system.RoutineChoiceTopNumSpeechAfter
 import com.sopetit.design_system.RoutineChoiceTopOriginalSpeech
@@ -55,6 +56,7 @@ import kotlinx.coroutines.flow.SharedFlow
 fun RoutineChoiceScreen(
     goBackToThemeChoicePage: () -> Unit = {},
     memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
+    showSnackBar: (String) -> Unit,
     goToHomePage: () -> Unit = {}
 ) {
     val viewModel: RoutineChoiceViewModel = hiltViewModel()
@@ -71,6 +73,9 @@ fun RoutineChoiceScreen(
             when (event) {
                 is RoutineChoiceEvent.OnSuccessCreateMember -> {
                     goToHomePage()
+                }
+                is RoutineChoiceEvent.IsOverRoutineNumSize -> {
+                    showSnackBar(RoutineChoiceSnackBar)
                 }
             }
         }

@@ -30,3 +30,4 @@ const val RoutineChoiceTopOriginalSpeech = "처음에는 작고 가볍게 시작
 const val RoutineChoiceTopNumSpeech = "아래에서 루틴을 골라봐\n지금까지 "
 const val RoutineChoiceTopNumSpeechAfter = "개를 추가했어!"
 const val RoutineChoiceBtn = "루틴을 3개 선택해 주세요"
+const val RoutineChoiceSnackBar = "3개만 선택할 수 있어요"

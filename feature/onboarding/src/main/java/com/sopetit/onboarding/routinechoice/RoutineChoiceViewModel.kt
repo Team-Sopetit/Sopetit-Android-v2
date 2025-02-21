@@ -21,7 +21,7 @@ import javax.inject.Inject
 class RoutineChoiceViewModel @Inject constructor(
     private val getThemeListUseCase: GetThemeListUseCase,
     private val getDailyRoutineUseCase: GetDailyRoutineUseCase,
-    private val postCreateMemberUseCase: PostCreateMemberUseCase
+    private val postCreateMemberUseCase: PostCreateMemberUseCase,
 ) : BaseViewModel<RoutineChoicePageState>(
     RoutineChoicePageState()
 ) {
@@ -95,7 +95,8 @@ class RoutineChoiceViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 selectedThemeId = themeId,
-                eachThemeRoutineList = uiState.value.routineTotalList.find { it.themeId == themeId }?.routines ?: emptyList()
+                eachThemeRoutineList = uiState.value.routineTotalList.find { it.themeId == themeId }?.routines
+                    ?: emptyList()
             )
         )
     }
@@ -103,7 +104,8 @@ class RoutineChoiceViewModel @Inject constructor(
     fun setSelectedRoutineIdList(routineId: Int) {
         val newList: MutableList<Int> = mutableListOf()
         val newSelectedRoutineNumForTheme: MutableList<Int> = mutableListOf()
-        val index = uiState.value.chipThemeList.indexOfFirst { it.themeId == uiState.value.selectedThemeId }
+        val index =
+            uiState.value.chipThemeList.indexOfFirst { it.themeId == uiState.value.selectedThemeId }
 
         newList.addAll(uiState.value.selectedRoutineIdList)
         newSelectedRoutineNumForTheme.addAll(uiState.value.selectedRoutineNumForTheme)
@@ -118,6 +120,8 @@ class RoutineChoiceViewModel @Inject constructor(
                 if (uiState.value.selectedRoutineIdList.size < 3) {
                     newList.add(routineId)
                     newSelectedRoutineNumForTheme[index] = newSelectedRoutineNumForTheme[index] + 1
+                } else {
+                    emitEventFlow(RoutineChoiceEvent.IsOverRoutineNumSize)
                 }
             }
         }
@@ -133,13 +137,17 @@ class RoutineChoiceViewModel @Inject constructor(
         Timber.d("[온보딩] 선택한 루틴 리스트 -> $newList && index: $index  list: $newSelectedRoutineNumForTheme")
     }
 
-    private fun updateMemberModel() = CreateMemberModel(dollType = uiState.value.memberModel.dollType, dollName = uiState.value.memberModel.dollName, selectedRoutineIdList = uiState.value.selectedRoutineIdList)
+    private fun updateMemberModel() = CreateMemberModel(
+        dollType = uiState.value.memberModel.dollType,
+        dollName = uiState.value.memberModel.dollName,
+        selectedRoutineIdList = uiState.value.selectedRoutineIdList
+    )
 
     fun createMember() {
         viewModelScope.launch {
             postCreateMemberUseCase(
                 request = updateMemberModel()
-            ).collect { resultResponse(it, {})}
+            ).collect { resultResponse(it, {}) }
 
             emitEventFlow(RoutineChoiceEvent.OnSuccessCreateMember)
         }

@@ -49,6 +49,7 @@ fun NavGraphBuilder.logInNavGraph(
 
 fun NavGraphBuilder.onBoardingNavGraph(
     navController: NavHostController,
+    showSnackBar: (String) -> Unit,
     setMemberModel: (CreateMemberModel) -> Unit,
     memberModel: SharedFlow<CreateMemberModel>,
 ) {
@@ -109,6 +110,7 @@ fun NavGraphBuilder.onBoardingNavGraph(
             RoutineChoiceScreen(
                 goBackToThemeChoicePage = { navController.popBackStack() },
                 memberModel = memberModel,
+                showSnackBar = showSnackBar,
                 goToHomePage = { navController.navigate(NavRoutes.HomeScreen.route) }
             )
         }
