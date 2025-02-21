@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -20,6 +21,7 @@ import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.splashNavGraph
 import com.sopetit.ui.common.item.CommonSnackBar
 import com.sopetit.ui.util.DismissKeyboardOnClick
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -31,7 +33,16 @@ fun MainScreen() {
     val snackBarHost = remember { SnackbarHostState() }
 
     val showSnackBar: (String) -> Unit = { message ->
-        scope.launch { snackBarHost.showSnackbar(message = message) }
+        scope.launch {
+            val job = scope.launch {
+                snackBarHost.showSnackbar(
+                    message = message,
+                    duration = SnackbarDuration.Indefinite
+                )
+            }
+            delay(1000L)
+            job.cancel()
+        }
     }
 
     val settingMemberModel: (CreateMemberModel) -> Unit = {
