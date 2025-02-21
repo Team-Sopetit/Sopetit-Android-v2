@@ -14,4 +14,8 @@ object EndPoints {
     object Routine {
         const val ROUTINE = "api/v2/routines/daily"
     }
+
+    object Member {
+        const val MEMBER = "/api/v1/members"
+    }
 }
