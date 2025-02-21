@@ -39,7 +39,6 @@ import com.sopetit.design_system.ThemeChoiceBtn
 import com.sopetit.design_system.ThemeChoiceSpeechHighLight
 import com.sopetit.design_system.ThemeChoiceTopOriginalSpeech
 import com.sopetit.design_system.ThemeChoiceTopOriginalSpeechAfter
-import com.sopetit.design_system.ThemeChoiceTopOriginalSpeechHighlight
 import com.sopetit.design_system.ThemeChoiceTopSpeech
 import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
@@ -67,6 +66,7 @@ fun ThemeChoiceScreen(
     }
 
     ThemeChoiceContent(
+        dollName = uiState.memberModel.dollName,
         isFirstChoicePage = uiState.isFirstChoicePage,
         onClickFirstPage = { viewModel.clickFirstPage() },
         onClickBackBtnAction = { goBackToDollNamingPage() },
@@ -82,6 +82,7 @@ fun ThemeChoiceScreen(
 
 @Composable
 fun ThemeChoiceContent(
+    dollName: String = "",
     isFirstChoicePage: Boolean = true,
     onClickFirstPage: () -> Unit = {},
     onClickBackBtnAction: () -> Unit = {},
@@ -114,11 +115,7 @@ fun ThemeChoiceContent(
             ) {
                 TopBearFaceSpeech(
                     dollType = selectedDollType.value,
-                    speechContent = if (isFirstChoicePage) ThemeChoiceTopOriginalSpeech else ThemeChoiceTopSpeech,
-                    isHighlightSpeechExist = isFirstChoicePage,
-                    highlightSpeech = ThemeChoiceTopOriginalSpeechHighlight,
-                    highlightColor = ThemeChoiceSpeechHighLight,
-                    speechContentAfterHighlight = ThemeChoiceTopOriginalSpeechAfter
+                    speechContent = ThemeChoiceTopSpeech
                 )
 
                 ThemeChoiceList(
@@ -141,7 +138,18 @@ fun ThemeChoiceContent(
                     .fillMaxSize()
                     .background(Gray1000)
                     .clickable { onClickFirstPage() }
-            )
+            ) {
+                Box(modifier = Modifier.padding(top = 65.dp)) {
+                    TopBearFaceSpeech(
+                        dollType = selectedDollType.value,
+                        speechContent = ThemeChoiceTopOriginalSpeech,
+                        isHighlightSpeechExist = isFirstChoicePage,
+                        highlightSpeech = dollName,
+                        highlightColor = ThemeChoiceSpeechHighLight,
+                        speechContentAfterHighlight = ThemeChoiceTopOriginalSpeechAfter
+                    )
+                }
+            }
         }
     }
 }
