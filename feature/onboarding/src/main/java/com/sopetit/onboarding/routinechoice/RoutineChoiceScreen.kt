@@ -34,6 +34,7 @@ import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.Red200
 import com.sopetit.design_system.RoutineChoiceBtn
 import com.sopetit.design_system.RoutineChoiceTopNumSpeech
 import com.sopetit.design_system.RoutineChoiceTopNumSpeechAfter
@@ -118,6 +119,7 @@ fun RoutineChoiceContent(
                     speechContent = if (isAfterRoutineSelect) RoutineChoiceTopNumSpeech else RoutineChoiceTopOriginalSpeech,
                     isHighlightSpeechExist = isAfterRoutineSelect,
                     highlightSpeech = "${selectedRoutineIdList.size}/3",
+                    highlightColor = Red200,
                     speechContentAfterHighlight = RoutineChoiceTopNumSpeechAfter
                 )
 

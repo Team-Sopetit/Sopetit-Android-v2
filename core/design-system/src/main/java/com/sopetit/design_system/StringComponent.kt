@@ -23,6 +23,9 @@ const val DollNamingBtn = "이 이름이 좋겠어"
 
 const val ThemeChoiceBtn = "다 선택했어"
 const val ThemeChoiceTopSpeech = "내가 원하는 모습을 선택해봐!\n처음엔 3개만 선택할 수 있어"
+const val ThemeChoiceTopOriginalSpeech = "안녕 난 "
+const val ThemeChoiceTopOriginalSpeechHighlight = "애착이"
+const val ThemeChoiceTopOriginalSpeechAfter = "!\n나와 함께 루틴을 만들어볼까?"
 
 const val RoutineChoiceTopOriginalSpeech = "처음에는 작고 가볍게 시작하기 위해\n3개의 루틴만 선택할 수 있어!"
 const val RoutineChoiceTopNumSpeech = "아래에서 루틴을 골라봐\n지금까지 "

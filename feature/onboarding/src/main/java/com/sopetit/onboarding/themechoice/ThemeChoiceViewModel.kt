@@ -21,6 +21,14 @@ class ThemeChoiceViewModel @Inject constructor(
         initGetThemeList()
     }
 
+    fun clickFirstPage() {
+        updateState(
+            uiState.value.copy(
+                isFirstChoicePage = false
+            )
+        )
+    }
+
     fun getMemberModel(memberModel: CreateMemberModel) {
         updateState(
             uiState.value.copy(

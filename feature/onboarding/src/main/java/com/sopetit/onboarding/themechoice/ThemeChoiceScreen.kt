@@ -29,12 +29,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Gray0
+import com.sopetit.design_system.Gray1000
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeChoiceBtn
+import com.sopetit.design_system.ThemeChoiceSpeechHighLight
+import com.sopetit.design_system.ThemeChoiceTopOriginalSpeech
+import com.sopetit.design_system.ThemeChoiceTopOriginalSpeechAfter
+import com.sopetit.design_system.ThemeChoiceTopOriginalSpeechHighlight
 import com.sopetit.design_system.ThemeChoiceTopSpeech
 import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
@@ -62,6 +67,8 @@ fun ThemeChoiceScreen(
     }
 
     ThemeChoiceContent(
+        isFirstChoicePage = uiState.isFirstChoicePage,
+        onClickFirstPage = { viewModel.clickFirstPage() },
         onClickBackBtnAction = { goBackToDollNamingPage() },
         selectedDollType = uiState.memberModel.dollType,
         themeList = uiState.themeList,
@@ -75,6 +82,8 @@ fun ThemeChoiceScreen(
 
 @Composable
 fun ThemeChoiceContent(
+    isFirstChoicePage: Boolean = true,
+    onClickFirstPage: () -> Unit = {},
     onClickBackBtnAction: () -> Unit = {},
     selectedDollType: DollType = DollType.NONE,
     themeList: List<ThemeListItemModel> = emptyList(),
@@ -105,7 +114,11 @@ fun ThemeChoiceContent(
             ) {
                 TopBearFaceSpeech(
                     dollType = selectedDollType.value,
-                    speechContent = ThemeChoiceTopSpeech
+                    speechContent = if (isFirstChoicePage) ThemeChoiceTopOriginalSpeech else ThemeChoiceTopSpeech,
+                    isHighlightSpeechExist = isFirstChoicePage,
+                    highlightSpeech = ThemeChoiceTopOriginalSpeechHighlight,
+                    highlightColor = ThemeChoiceSpeechHighLight,
+                    speechContentAfterHighlight = ThemeChoiceTopOriginalSpeechAfter
                 )
 
                 ThemeChoiceList(
@@ -119,6 +132,15 @@ fun ThemeChoiceContent(
                 btnTextContent = ThemeChoiceBtn,
                 isBtnActivated = (selectedThemeIdList.size >= 3),
                 onClickAction = onClickBtnAction
+            )
+        }
+
+        if (isFirstChoicePage) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Gray1000)
+                    .clickable { onClickFirstPage() }
             )
         }
     }

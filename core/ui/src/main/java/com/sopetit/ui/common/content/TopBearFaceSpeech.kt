@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -22,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.Red200
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.ui.common.type.BearType
 
@@ -32,6 +32,7 @@ fun TopBearFaceSpeech(
     speechContent: String,
     isHighlightSpeechExist: Boolean = false,
     highlightSpeech: String = "",
+    highlightColor: Color = Color.Transparent,
     speechContentAfterHighlight: String = ""
 ) {
 
@@ -40,6 +41,7 @@ fun TopBearFaceSpeech(
         speechContent = speechContent,
         isHighlightSpeechExist = isHighlightSpeechExist,
         highlightSpeech = highlightSpeech,
+        highlightColor = highlightColor,
         speechContentAfterHighlight = speechContentAfterHighlight
     )
 }
@@ -50,6 +52,7 @@ fun TopBarFaceSpeechContent(
     speechContent: String = "",
     isHighlightSpeechExist: Boolean = false,
     highlightSpeech: String = "",
+    highlightColor: Color = Color.Transparent,
     speechContentAfterHighlight: String = ""
 ) {
     Row(
@@ -74,7 +77,7 @@ fun TopBarFaceSpeechContent(
             text = buildAnnotatedString {
                 if (isHighlightSpeechExist) {
                     append(speechContent)
-                    withStyle(style = SpanStyle(color = Red200)) { append(highlightSpeech) }
+                    withStyle(style = SpanStyle(color = highlightColor)) { append(highlightSpeech) }
                     append(speechContentAfterHighlight)
                 } else append(speechContent)
             },
