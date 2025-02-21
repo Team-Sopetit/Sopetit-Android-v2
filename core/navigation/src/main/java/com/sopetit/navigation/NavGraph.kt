@@ -4,10 +4,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.home.HomeScreen
 import com.sopetit.login.LogInScreen
 import com.sopetit.onboarding.dollnaming.DollNamingScreen
 import com.sopetit.onboarding.dolltype.DollTypeChoiceScreen
+import com.sopetit.onboarding.routinechoice.RoutineChoiceScreen
 import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
 import com.sopetit.onboarding.storytelling.StoryTellingSecondScreen
 import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
@@ -16,7 +18,7 @@ import com.sopetit.splash.SplashScreen
 import kotlinx.coroutines.flow.SharedFlow
 
 fun NavGraphBuilder.splashNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = NavRoutes.SplashScreen.route,
@@ -31,7 +33,7 @@ fun NavGraphBuilder.splashNavGraph(
 }
 
 fun NavGraphBuilder.logInNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = NavRoutes.LogInScreen.route,
@@ -39,7 +41,12 @@ fun NavGraphBuilder.logInNavGraph(
     ) {
         composable(NavRoutes.LogInScreen.route) {
             LogInScreen(
-                goToOnboarding = { navController.navigate(NavRoutes.StoryTellingFirstScreen.route) }
+                goToOnboarding = {
+                    navController.navigate(NavRoutes.StoryTellingFirstScreen.route)
+//                    {
+//                        popUpTo(NavRoutes.SplashGraph.route) { inclusive = true }
+//                    }
+                }
             )
         }
     }
@@ -47,8 +54,9 @@ fun NavGraphBuilder.logInNavGraph(
 
 fun NavGraphBuilder.onBoardingNavGraph(
     navController: NavHostController,
-    setSelectedDollType: (DollType) -> Unit,
-    selectedDollType: SharedFlow<DollType>
+    showSnackBar: (String) -> Unit,
+    setMemberModel: (CreateMemberModel) -> Unit,
+    memberModel: SharedFlow<CreateMemberModel>,
 ) {
     navigation(
         startDestination = NavRoutes.StoryTellingFirstScreen.route,
@@ -75,7 +83,7 @@ fun NavGraphBuilder.onBoardingNavGraph(
         composable(NavRoutes.DollTypeChoiceScreen.route) {
             DollTypeChoiceScreen(
                 goToDollNamingPage = {
-                    setSelectedDollType(it)
+                    setMemberModel(it)
                     navController.navigate(NavRoutes.DollNamingScreen.route)
                 }
             )
@@ -83,16 +91,50 @@ fun NavGraphBuilder.onBoardingNavGraph(
 
         composable(NavRoutes.DollNamingScreen.route) {
             DollNamingScreen(
-                selectedDollType = selectedDollType,
-                goToThemeChoicePage = { navController.navigate(NavRoutes.ThemeChoiceScreen.route) },
+                memberModel = memberModel,
+                goToThemeChoicePage = {
+                    setMemberModel(it)
+                    navController.navigate(NavRoutes.ThemeChoiceScreen.route)
+                },
                 goBackToDollTypePage = { navController.popBackStack() }
             )
         }
 
         composable(NavRoutes.ThemeChoiceScreen.route) {
             ThemeChoiceScreen(
-                goBackToDollNamingPage = { navController.popBackStack() }
+                memberModel = memberModel,
+                goBackToDollNamingPage = { navController.popBackStack() },
+                goToRoutineChoicePage = {
+                    setMemberModel(it)
+                    navController.navigate(NavRoutes.RoutineChoiceScreen.route)
+                }
             )
+        }
+
+        composable(NavRoutes.RoutineChoiceScreen.route) {
+            RoutineChoiceScreen(
+                goBackToThemeChoicePage = { navController.popBackStack() },
+                memberModel = memberModel,
+                showSnackBar = showSnackBar,
+                goToHomePage = {
+                    navController.navigate(NavRoutes.HomeScreen.route) {
+                        popUpTo(0)
+                    }
+                }
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.homeNavGraph(
+    navController: NavHostController,
+) {
+    navigation(
+        startDestination = NavRoutes.HomeScreen.route,
+        route = NavRoutes.HomeGraph.route
+    ) {
+        composable(NavRoutes.HomeScreen.route) {
+            HomeScreen()
         }
     }
 }

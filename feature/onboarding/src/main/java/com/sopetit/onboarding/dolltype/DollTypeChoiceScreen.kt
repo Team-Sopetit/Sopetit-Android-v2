@@ -31,33 +31,32 @@ import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.enums.DollType
-import com.sopetit.onboarding.model.DollTypeModel
-import com.sopetit.ui.common.item.BottomRectangleBtn
+import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
+import com.sopetit.ui.common.type.BearType
 
 @Composable
 fun DollTypeChoiceScreen(
-    goToDollNamingPage: (DollType) -> Unit = {}
+    goToDollNamingPage: (CreateMemberModel) -> Unit = {}
 ) {
 
     val viewModel: DollTypeChoiceViewModel = hiltViewModel()
     val uiState: DollTypeChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     DollTypeChoiceContent(
-        dollTypeList = uiState.dollTypeList,
         selectedDollType = uiState.selectedDollType,
         onSelectDollType = { dollType ->
             viewModel.setSelectedDollType(dollType)
         },
         onClickBtnAction = {
-            goToDollNamingPage(uiState.selectedDollType)
+            goToDollNamingPage(viewModel.setMemberModel())
         }
     )
 }
 
 @Composable
 fun DollTypeChoiceContent(
-    dollTypeList: List<DollTypeModel> = emptyList(),
     onSelectDollType: (DollType) -> Unit = {},
     selectedDollType: DollType = DollType.NONE,
     onClickBtnAction: () -> Unit = {}
@@ -99,7 +98,6 @@ fun DollTypeChoiceContent(
                 )
 
                 DollTypeChoiceItem(
-                    dollTypeList = dollTypeList,
                     selectedDollType = selectedDollType,
                     onSelectDollType = onSelectDollType
                 )
@@ -116,7 +114,6 @@ fun DollTypeChoiceContent(
 
 @Composable
 fun DollTypeChoiceItem(
-    dollTypeList: List<DollTypeModel> = emptyList(),
     onSelectDollType: (DollType) -> Unit = {},
     selectedDollType: DollType = DollType.NONE
 ) {
@@ -132,14 +129,14 @@ fun DollTypeChoiceItem(
             horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            itemsIndexed(dollTypeList, key = { _, item -> item.id }) { _, item ->
+            itemsIndexed(BearType.entries, key = { _, item -> item.id }) { _, item ->
                 Image(
-                    painter = painterResource(id = if (selectedDollType == item.dollType) item.dollUpBox else item.dollInBox),
+                    painter = painterResource(id = BearType.getDollBox(item.dollType, (selectedDollType.value == item.dollType))),
                     contentDescription = "bear type",
                     modifier = Modifier
                         .size(160.dp)
                         .align(Alignment.Center)
-                        .clickable { onSelectDollType(item.dollType) }
+                        .clickable { onSelectDollType(DollType.stringToEnum(item.dollType))}
                 )
             }
         }

@@ -14,4 +14,5 @@ dependencies {
     implementation(projects.feature.splash)
     implementation(projects.feature.login)
     implementation(projects.feature.onboarding)
+    implementation(projects.feature.home)
 }

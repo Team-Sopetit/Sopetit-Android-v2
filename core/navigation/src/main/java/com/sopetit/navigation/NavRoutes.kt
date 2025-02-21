@@ -19,4 +19,9 @@ sealed class NavRoutes(val route: String) {
     data object DollTypeChoiceScreen: NavRoutes("doll_type_choice")
     data object DollNamingScreen: NavRoutes("doll_naming")
     data object ThemeChoiceScreen: NavRoutes("theme_choice")
+    data object RoutineChoiceScreen: NavRoutes("routine_choice")
+
+    // Home Graph
+    data object HomeGraph: NavRoutes("home_graph")
+    data object HomeScreen: NavRoutes("home")
 }

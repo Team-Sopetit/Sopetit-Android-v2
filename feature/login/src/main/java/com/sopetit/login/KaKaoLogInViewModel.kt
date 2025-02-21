@@ -3,10 +3,10 @@ package com.sopetit.login
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.sopetit.domain.entity.request.LogInRequestModel
-import com.sopetit.domain.entity.response.LogInResponseModel
-import com.sopetit.domain.entity.response.TokenStoreModel
-import com.sopetit.domain.usecase.PostLogInUseCase
-import com.sopetit.domain.usecase.SaveTokenUseCase
+import com.sopetit.domain.entity.response.auth.LogInResponseModel
+import com.sopetit.domain.entity.response.auth.TokenStoreModel
+import com.sopetit.domain.usecase.auth.PostLogInUseCase
+import com.sopetit.domain.usecase.auth.SaveTokenUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -32,25 +32,17 @@ class KaKaoLogInViewModel @Inject constructor(
                         isMemberDollExist = false
                     )
                 ).collect{ resultResponse(it, {}) }
+
+                postLogIn()
             }
         }.handleResult(token, error)
-
-        updateKaKaoLogInSuccess()
     }
 
     fun startKaKaoLogIn() {
         kakaoLoginService.startKaKaoLogIn(kakaoLogInCallback)
     }
 
-    private fun updateKaKaoLogInSuccess() {
-        updateState(
-            uiState.value.copy(
-                isKaKaoLogInValid = true
-            )
-        )
-    }
-
-    fun postLogIn() {
+    private fun postLogIn() {
         viewModelScope.launch {
             postLogInUseCase(
                 request = LogInRequestModel(SOCIAL_TYPE)
@@ -71,9 +63,9 @@ class KaKaoLogInViewModel @Inject constructor(
                     isMemberDollExist = data.isMemberDollExist
                 )
             ).collect{resultResponse(it, {})}
-        }
 
-        emitEventFlow(KaKaoLogInEvent.OnSuccessLogIn)
+            emitEventFlow(KaKaoLogInEvent.OnSuccessLogIn)
+        }
     }
 
     companion object {

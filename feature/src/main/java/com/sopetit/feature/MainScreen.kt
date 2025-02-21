@@ -4,39 +4,57 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.sopetit.domain.entity.enums.DollType
+import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.navigation.NavRoutes
+import com.sopetit.navigation.homeNavGraph
 import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.splashNavGraph
+import com.sopetit.ui.common.item.CommonSnackBar
 import com.sopetit.ui.util.DismissKeyboardOnClick
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen() {
 
     val viewModel: MainViewModel = hiltViewModel()
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
+    val snackBarHost = remember { SnackbarHostState() }
 
-    val selectedDollType: (DollType) -> Unit = {
+    val showSnackBar: (String) -> Unit = { message ->
         scope.launch {
-            viewModel.selectedDollType.emit(it)
+            val job = scope.launch {
+                snackBarHost.showSnackbar(
+                    message = message,
+                    duration = SnackbarDuration.Indefinite
+                )
+            }
+            delay(1000L)
+            job.cancel()
+        }
+    }
+
+    val settingMemberModel: (CreateMemberModel) -> Unit = {
+        scope.launch {
+            viewModel.memberModel.emit(it)
         }
     }
 
     DismissKeyboardOnClick {
         Scaffold(
-            bottomBar = { BottomNavBar() }
+            bottomBar = { BottomNavBar() },
+            snackbarHost = { CommonSnackBar(hostState = snackBarHost) }
         ) { innerPadding ->
             Box(
                 modifier = Modifier
@@ -55,8 +73,12 @@ fun MainScreen() {
                     )
                     onBoardingNavGraph(
                         navController = navController,
-                        setSelectedDollType = selectedDollType,
-                        selectedDollType = viewModel.selectedDollType
+                        setMemberModel = settingMemberModel,
+                        showSnackBar = showSnackBar,
+                        memberModel = viewModel.memberModel,
+                    )
+                    homeNavGraph(
+                        navController = navController
                     )
                 }
             }

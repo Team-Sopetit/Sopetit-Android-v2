@@ -3,7 +3,7 @@ package com.sopetit.data.dataSource.dataSourceImpl
 import com.sopetit.data.base.BaseResponse
 import com.sopetit.data.dataSource.AuthDataSource
 import com.sopetit.data.entity.request.LogInRequestDto
-import com.sopetit.data.entity.response.LogInResponseDto
+import com.sopetit.data.entity.response.auth.LogInResponseDto
 import com.sopetit.data.service.AuthService
 import retrofit2.Response
 import javax.inject.Inject

@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.R
 import com.sopetit.design_system.StoryTellingContent2
-import com.sopetit.ui.common.item.StoryTellingText
+import com.sopetit.ui.common.item.StoryTellingTextItem
 
 @Composable
 fun StoryTellingSecondScreen(
@@ -69,7 +69,7 @@ fun StoryTellingSecondContent(
                 )
             }
 
-            StoryTellingText(
+            StoryTellingTextItem(
                 storyContent = StoryTellingContent2,
                 onClickAction = onClickContent
             )

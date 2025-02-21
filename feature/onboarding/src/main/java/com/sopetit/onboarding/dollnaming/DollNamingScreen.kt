@@ -40,7 +40,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.design_system.DollNamingBtn
 import com.sopetit.design_system.DollNamingSemiTitle
 import com.sopetit.design_system.DollNamingTitle
@@ -52,23 +51,24 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.Softie
 import com.sopetit.design_system.SoftieTypo
-import com.sopetit.ui.common.item.BottomRectangleBtn
+import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 fun DollNamingScreen(
-    selectedDollType: SharedFlow<DollType> = MutableSharedFlow(),
-    goToThemeChoicePage: () -> Unit = {},
+    memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
+    goToThemeChoicePage: (CreateMemberModel) -> Unit = {},
     goBackToDollTypePage: () -> Unit = {}
 ) {
     val viewModel: DollNamingViewModel = hiltViewModel()
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState: DollNamingPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(selectedDollType) {
-        selectedDollType.collect {
-            viewModel.getSelectedDollType(it)
+    LaunchedEffect(memberModel) {
+        memberModel.collect {
+            viewModel.getMemberModel(it)
         }
     }
 
@@ -76,7 +76,7 @@ fun DollNamingScreen(
         dollHelloResource = uiState.dollHelloResource,
         dollInputName = uiState.dollInputName,
         onValueChange = { newValue -> viewModel.onValueChange(newValue) },
-        onClickBtnAction = { goToThemeChoicePage() },
+        onClickBtnAction = { goToThemeChoicePage(viewModel.updateMemberModel()) },
         onClickBackBtnAction = { goBackToDollTypePage() }
     )
 }
