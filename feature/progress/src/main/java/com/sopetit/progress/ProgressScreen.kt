@@ -1,4 +1,4 @@
-package com.sopetit.achieve
+package com.sopetit.progress
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,25 +10,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sopetit.design_system.Gray50
 
 @Composable
-fun AchieveScreen() {
-    AchieveContent()
+fun ProgressScreen() {
+    ProgressContent()
 }
 
 @Composable
-fun AchieveContent() {
+fun ProgressContent() {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Gray50)
     ) {
         Text(
-            text = "달성도"
+            text = "진행 중"
         )
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PreviewAchieve() {
-    AchieveContent()
+fun PreviewProgress() {
+    ProgressContent()
 }

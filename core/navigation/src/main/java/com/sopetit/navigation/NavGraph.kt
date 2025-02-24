@@ -15,6 +15,7 @@ import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
 import com.sopetit.onboarding.storytelling.StoryTellingSecondScreen
 import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
+import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -149,6 +150,19 @@ fun NavGraphBuilder.achieveNavGraph(
     ) {
         composable(NavRoutes.AchieveScreen.route) {
             AchieveScreen()
+        }
+    }
+}
+
+fun NavGraphBuilder.progressNavGraph(
+    navController: NavHostController,
+) {
+    navigation(
+        startDestination = NavRoutes.ProgressScreen.route,
+        route = NavRoutes.ProgressGraph.route
+    ) {
+        composable(NavRoutes.ProgressScreen.route) {
+            ProgressScreen()
         }
     }
 }
