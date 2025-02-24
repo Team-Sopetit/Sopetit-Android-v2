@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sopetit.achieve.AchieveScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.home.HomeScreen
 import com.sopetit.login.LogInScreen
@@ -135,6 +136,19 @@ fun NavGraphBuilder.homeNavGraph(
     ) {
         composable(NavRoutes.HomeScreen.route) {
             HomeScreen()
+        }
+    }
+}
+
+fun NavGraphBuilder.achieveNavGraph(
+    navController: NavHostController,
+) {
+    navigation(
+        startDestination = NavRoutes.AchieveScreen.route,
+        route = NavRoutes.AchieveGraph.route
+    ) {
+        composable(NavRoutes.AchieveScreen.route) {
+            AchieveScreen()
         }
     }
 }

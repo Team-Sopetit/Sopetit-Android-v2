@@ -15,4 +15,6 @@ dependencies {
     implementation(projects.feature.login)
     implementation(projects.feature.onboarding)
     implementation(projects.feature.home)
+    implementation(projects.feature.achieve)
+    implementation(projects.feature.progress)
 }
