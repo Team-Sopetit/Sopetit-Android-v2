@@ -44,10 +44,14 @@ fun NavGraphBuilder.logInNavGraph(
         composable(NavRoutes.LogInScreen.route) {
             LogInScreen(
                 goToOnboarding = {
-                    navController.navigate(NavRoutes.StoryTellingFirstScreen.route)
-//                    {
-//                        popUpTo(NavRoutes.SplashGraph.route) { inclusive = true }
-//                    }
+                    navController.navigate(NavRoutes.StoryTellingFirstScreen.route) {
+                        popUpTo(0)
+                    }
+                },
+                goToHome = {
+                    navController.navigate(NavRoutes.HomeScreen.route) {
+                        popUpTo(0)
+                    }
                 }
             )
         }
