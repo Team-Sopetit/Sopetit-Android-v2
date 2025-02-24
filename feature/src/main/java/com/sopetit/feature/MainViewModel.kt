@@ -1,6 +1,5 @@
 package com.sopetit.feature
 
-import com.sopetit.core.enums.BottomNavType
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.ui.base.BaseViewModel

@@ -18,13 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sopetit.core.enums.BottomNavType
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
-import com.sopetit.navigation.NavRoutes
+import com.sopetit.feature.BottomNavType
 
 @Composable
 fun BottomNavBar(
@@ -44,7 +42,10 @@ fun BottomNavBar(
     ) {
 
         BottomNavItem(
-            navIcon = if (type == BottomNavType.PROGRESS) R.drawable.ic_bottom_progress_on else R.drawable.ic_bottom_progress_off,
+            navIcon = BottomNavType.getBottomNavIcon(
+                BottomNavType.PROGRESS,
+                (type == BottomNavType.PROGRESS)
+            ),
             isSelected = (type == BottomNavType.PROGRESS),
             type = BottomNavType.PROGRESS,
             onClick = onClick,
@@ -52,7 +53,10 @@ fun BottomNavBar(
         )
 
         BottomNavItem(
-            navIcon = if (type == BottomNavType.HOME) R.drawable.ic_bottom_home_on else R.drawable.ic_bottom_home_off,
+            navIcon = BottomNavType.getBottomNavIcon(
+                BottomNavType.HOME,
+                (type == BottomNavType.HOME)
+            ),
             isSelected = (type == BottomNavType.HOME),
             type = BottomNavType.HOME,
             onClick = onClick,
@@ -60,7 +64,10 @@ fun BottomNavBar(
         )
 
         BottomNavItem(
-            navIcon = if (type == BottomNavType.ACHIEVE) R.drawable.ic_bottom_achieve_on else R.drawable.ic_bottom_achieve_off,
+            navIcon = BottomNavType.getBottomNavIcon(
+                BottomNavType.ACHIEVE,
+                (type == BottomNavType.ACHIEVE)
+            ),
             isSelected = (type == BottomNavType.ACHIEVE),
             type = BottomNavType.ACHIEVE,
             onClick = onClick,
@@ -83,23 +90,7 @@ fun BottomNavItem(
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = {
-                    when (type) {
-                        BottomNavType.HOME -> {
-                            onClick(NavRoutes.HomeScreen.route)
-                        }
-
-                        BottomNavType.ACHIEVE -> {
-                            onClick(NavRoutes.AchieveScreen.route)
-                        }
-
-                        BottomNavType.PROGRESS -> {
-                            onClick(NavRoutes.ProgressScreen.route)
-                        }
-
-                        BottomNavType.DEFAULT -> {}
-                    }
-                }
+                onClick = { onClick(BottomNavType.getDestination(type)) }
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

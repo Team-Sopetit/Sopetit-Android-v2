@@ -1,6 +1,10 @@
 package com.sopetit.feature
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -16,11 +20,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.sopetit.core.enums.BottomNavType
 import com.sopetit.design_system.Gray0
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.feature.component.BottomNavBar
@@ -79,7 +83,9 @@ fun MainScreen() {
             bottomBar = {
                 AnimatedVisibility(
                     visible = uiState.bottomNavType != BottomNavType.DEFAULT,
-                    modifier = Modifier.background(Gray0)
+                    modifier = Modifier.background(Gray0),
+                    enter = fadeIn() + slideIn { IntOffset(0, 0) },
+                    exit = fadeOut() + slideOut { IntOffset(0, 0) }
                 ) {
                     BottomNavBar(
                         modifier = Modifier.navigationBarsPadding(),
