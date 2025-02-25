@@ -32,7 +32,8 @@ class HomeViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 homeMemberModel = data,
-                dollHelloResource = BearType.getDollHelloResource(data.dollType)
+                dollHelloResource = BearType.getDollHelloResource(data.dollType),
+                randomSelectedConversation = data.conversations[0]
             )
         )
     }

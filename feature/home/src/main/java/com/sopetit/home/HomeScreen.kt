@@ -1,5 +1,6 @@
 package com.sopetit.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,6 +41,7 @@ import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.HomeRainbowSomTitle
+import com.sopetit.design_system.HomeSomCount
 import com.sopetit.design_system.HomeSomTitle
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
@@ -51,6 +53,7 @@ fun HomeScreen() {
 
     HomeScreenContent(
         backGroundImg = uiState.homeMemberModel.frameImageUrl,
+        conversation = uiState.randomSelectedConversation,
         dollName = uiState.homeMemberModel.name,
         dollHelloResource = uiState.dollHelloResource,
         dailyCottonCount = uiState.homeMemberModel.dailyCottonCount,
@@ -61,6 +64,7 @@ fun HomeScreen() {
 @Composable
 fun HomeScreenContent(
     backGroundImg: String = "",
+    conversation: String = "",
     dollName: String = "",
     dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
     dailyCottonCount: Int = -1,
@@ -109,6 +113,7 @@ fun HomeScreenContent(
         }
 
         HomeDollBoxContent(
+            conversation = conversation,
             dollHelloResource = dollHelloResource
         )
 
@@ -147,6 +152,7 @@ fun HomeScreenContent(
 
 @Composable
 fun HomeDollBoxContent(
+    conversation: String = "",
     dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
 ) {
     val composition by rememberLottieComposition(spec = dollHelloResource)
@@ -170,7 +176,7 @@ fun HomeDollBoxContent(
                 modifier = Modifier.matchParentSize()
             )
             Text(
-                text = "안녕? 기다리고 있었어",
+                text = conversation,
                 color = Gray700,
                 style = SoftieTypo.bubble1,
                 textAlign = TextAlign.Center,
@@ -215,6 +221,7 @@ fun HomeCottonCount(
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun HomeCottonCountItem(
     cottonCountTitle: String = "",
@@ -244,7 +251,7 @@ fun HomeCottonCountItem(
             Spacer(modifier = Modifier.width(4.dp))
 
             Text(
-                text = "${cottonCount}개",
+                text = String.format(HomeSomCount, cottonCount),
                 color = Gray400,
                 style = SoftieTypo.body2
             )

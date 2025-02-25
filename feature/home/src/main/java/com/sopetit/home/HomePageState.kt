@@ -8,4 +8,5 @@ import com.sopetit.ui.base.PageState
 data class HomePageState(
     val homeMemberModel: GetMemberModel = GetMemberModel(),
     val dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
+    val randomSelectedConversation: String = ""
 ) : PageState
