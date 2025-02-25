@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.usecase.member.GetMemberUseCase
 import com.sopetit.ui.base.BaseViewModel
+import com.sopetit.ui.common.type.BearType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,7 +31,8 @@ class HomeViewModel @Inject constructor(
     private fun onSuccessGetMember(data: GetMemberModel) {
         updateState(
             uiState.value.copy(
-                homeMemberModel = data
+                homeMemberModel = data,
+                dollHelloResource = BearType.getDollHelloResource(data.dollType)
             )
         )
     }
