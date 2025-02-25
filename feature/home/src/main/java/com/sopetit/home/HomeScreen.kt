@@ -2,9 +2,13 @@ package com.sopetit.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -35,7 +39,7 @@ fun HomeScreen() {
 @Composable
 fun HomeScreenContent(
     backGroundImg: String = "",
-    dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello)
+    dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
 ) {
 
     val composition by rememberLottieComposition(spec = dollHelloResource)
@@ -64,6 +68,26 @@ fun HomeScreenContent(
                 .padding(top = 11.dp, start = 20.dp)
                 .size(width = 60.dp, height = 18.dp)
         )
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .wrapContentSize()
+                .padding(top = 1.dp, end = 20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_home_clova),
+                contentDescription = "home clova icon"
+            )
+
+            Spacer(modifier = Modifier.width(13.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_home_settings),
+                contentDescription = "home setting icon"
+            )
+        }
 
         LottieAnimation(
             composition = composition,
