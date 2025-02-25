@@ -1,20 +1,31 @@
 package com.sopetit.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,7 +34,15 @@ import coil.compose.rememberAsyncImagePainter
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.sopetit.design_system.Brown100
+import com.sopetit.design_system.Brown200
+import com.sopetit.design_system.Gray0
+import com.sopetit.design_system.Gray400
+import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.HomeRainbowSomTitle
+import com.sopetit.design_system.HomeSomTitle
 import com.sopetit.design_system.R
+import com.sopetit.design_system.SoftieTypo
 
 @Composable
 fun HomeScreen() {
@@ -32,21 +51,21 @@ fun HomeScreen() {
 
     HomeScreenContent(
         backGroundImg = uiState.homeMemberModel.frameImageUrl,
-        dollHelloResource = uiState.dollHelloResource
+        dollName = uiState.homeMemberModel.name,
+        dollHelloResource = uiState.dollHelloResource,
+        dailyCottonCount = uiState.homeMemberModel.dailyCottonCount,
+        happinessCottonCount = uiState.homeMemberModel.happinessCottonCount
     )
 }
 
 @Composable
 fun HomeScreenContent(
     backGroundImg: String = "",
+    dollName: String = "",
     dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
+    dailyCottonCount: Int = -1,
+    happinessCottonCount: Int = -1,
 ) {
-
-    val composition by rememberLottieComposition(spec = dollHelloResource)
-//    val progress by animateLottieCompositionAsState(
-//        composition = composition,
-//        iterations = LottieConstants.IterateForever
-//    )
 
     Box(
         modifier = Modifier
@@ -89,12 +108,154 @@ fun HomeScreenContent(
             )
         }
 
-        LottieAnimation(
-            composition = composition,
-//            progress = { progress },
+        HomeDollBoxContent(
+            dollHelloResource = dollHelloResource
+        )
+
+        Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 80.dp)
+                .wrapContentHeight()
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .clip(RoundedCornerShape(99.dp))
+                    .border(1.dp, Brown200, RoundedCornerShape(99.dp))
+                    .background(Brown100)
+            ) {
+                Text(
+                    text = dollName,
+                    color = Gray700,
+                    style = SoftieTypo.bubble2,
+                    modifier = Modifier
+                        .padding(vertical = 9.dp, horizontal = 13.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(62.dp))
+
+            HomeCottonCount(
+                dailyCottonCount = dailyCottonCount,
+                happinessCottonCount = happinessCottonCount
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeDollBoxContent(
+    dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
+) {
+    val composition by rememberLottieComposition(spec = dollHelloResource)
+
+    Column(
+        modifier = Modifier
+            .padding(top = 200.dp)
+            .wrapContentHeight()
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_home_speech),
+                contentDescription = null,
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier.matchParentSize()
+            )
+            Text(
+                text = "안녕? 기다리고 있었어",
+                color = Gray700,
+                style = SoftieTypo.bubble1,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(top = 21.dp, bottom = 29.dp, start = 32.dp, end = 33.dp)
+            )
+        }
+
+        LottieAnimation(
+            composition = composition,
+            modifier = Modifier
+                .offset(y = (-130).dp)
+        )
+    }
+}
+
+@Composable
+fun HomeCottonCount(
+    dailyCottonCount: Int = -1,
+    happinessCottonCount: Int = -1,
+) {
+    Row(
+        modifier = Modifier
+            .padding(bottom = 22.dp)
+            .padding(horizontal = 22.dp)
+            .wrapContentSize(Alignment.Center)
+    ) {
+        HomeCottonCountItem(
+            cottonCountTitle = HomeSomTitle,
+            cottonCountImg = R.drawable.ic_som,
+            cottonCount = dailyCottonCount
+        )
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        HomeCottonCountItem(
+            cottonCountTitle = HomeRainbowSomTitle,
+            cottonCountImg = R.drawable.ic_som_rainbow,
+            cottonCount = happinessCottonCount
+        )
+    }
+}
+
+@Composable
+fun HomeCottonCountItem(
+    cottonCountTitle: String = "",
+    cottonCountImg: Int = -1,
+    cottonCount: Int = -1,
+) {
+    Column(
+        modifier = Modifier
+            .width(160.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Gray0),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(top = 13.dp)
+                .align(Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = cottonCountImg),
+                contentDescription = "cotton img",
+                modifier = Modifier
+                    .size(30.dp)
+            )
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            Text(
+                text = "${cottonCount}개",
+                color = Gray400,
+                style = SoftieTypo.body2
+            )
+        }
+
+        Text(
+            text = cottonCountTitle,
+            color = Gray700,
+            style = SoftieTypo.body2,
+            modifier = Modifier
+                .padding(top = 4.dp, bottom = 13.dp)
         )
     }
 }
