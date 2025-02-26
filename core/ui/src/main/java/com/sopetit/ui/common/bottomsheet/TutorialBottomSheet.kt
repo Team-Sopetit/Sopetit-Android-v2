@@ -4,7 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -28,6 +30,7 @@ import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.TutorialNextBtn
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
+import com.sopetit.ui.common.item.PagerIndicator
 
 @Composable
 fun TutorialBottomSheet(
@@ -105,6 +108,10 @@ fun TutorialBottomSheetContent(
                 )
             }
         }
+
+        PagerIndicator(pageNumber = pagerState.pageCount, currentPage = currentPage)
+
+        Spacer(modifier = Modifier.height(30.dp))
 
         BottomRectangleBtn(
             btnTextContent = TutorialNextBtn,
