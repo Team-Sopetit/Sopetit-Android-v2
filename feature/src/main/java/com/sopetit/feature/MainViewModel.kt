@@ -1,6 +1,7 @@
 package com.sopetit.feature
 
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,6 +43,14 @@ class MainViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 bottomNavType = type
+            )
+        )
+    }
+
+    fun setTutorials(tutorials: List<TutorialModel>) {
+        updateState(
+            uiState.value.copy(
+                tutorials = tutorials
             )
         )
     }

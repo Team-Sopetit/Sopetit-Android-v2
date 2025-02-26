@@ -38,6 +38,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.sopetit.design_system.Gray0
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.feature.component.BottomNavBar
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.navigation.achieveNavGraph
@@ -80,7 +81,8 @@ fun MainScreen() {
             job.cancel()
         }
     }
-    val showBottomSheet: () -> Unit = {
+    val showTutorialBottomSheet: (List<TutorialModel>) -> Unit = { tutorials ->
+        viewModel.setTutorials(tutorials)
         scope.launch { sheetState.show() }
     }
 
@@ -117,7 +119,9 @@ fun MainScreen() {
                         .navigationBarsPadding(),
                     label = ""
                 ) {
-                    TutorialBottomSheet()
+                    TutorialBottomSheet(
+                        tutorials = uiState.tutorials
+                    )
                 }
             },
             sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
@@ -173,7 +177,7 @@ fun MainScreen() {
                         )
                         homeNavGraph(
                             navController = navController,
-                            showTutorialBottomSheet = showBottomSheet
+                            showTutorialBottomSheet = showTutorialBottomSheet
                         )
                         progressNavGraph(
                             navController = navController

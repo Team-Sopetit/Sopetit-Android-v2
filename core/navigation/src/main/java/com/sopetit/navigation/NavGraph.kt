@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sopetit.achieve.AchieveScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.home.HomeScreen
 import com.sopetit.login.LogInScreen
 import com.sopetit.onboarding.dollnaming.DollNamingScreen
@@ -134,7 +135,7 @@ fun NavGraphBuilder.onBoardingNavGraph(
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
-    showTutorialBottomSheet: () -> Unit
+    showTutorialBottomSheet: (List<TutorialModel>) -> Unit
 ) {
     navigation(
         startDestination = NavRoutes.HomeScreen.route,

@@ -51,17 +51,18 @@ import com.sopetit.design_system.HomeSomCount
 import com.sopetit.design_system.HomeSomTitle
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.response.screen.TutorialModel
 
 @Composable
 fun HomeScreen(
-    showTutorialBottomSheet: () -> Unit = {},
+    showTutorialBottomSheet: (List<TutorialModel>) -> Unit = {},
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState: HomePageState by viewModel.uiState.collectAsStateWithLifecycle()
     val interactionSource = remember { MutableInteractionSource() }
 
     if (uiState.isTutorialValid) {
-        showTutorialBottomSheet()
+        showTutorialBottomSheet(uiState.tutorialList)
     }
 
     HomeScreenContent(

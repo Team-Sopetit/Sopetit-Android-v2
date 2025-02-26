@@ -21,15 +21,24 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.TutorialFirstTitle
 import com.sopetit.design_system.TutorialNextBtn
+import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
+import timber.log.Timber
 
 @Composable
-fun TutorialBottomSheet() {
-    TutorialBottomSheetContent()
+fun TutorialBottomSheet(
+    tutorials: List<TutorialModel>
+) {
+    TutorialBottomSheetContent(
+        tutorials = tutorials
+    )
 }
 
 @Composable
-fun TutorialBottomSheetContent() {
+fun TutorialBottomSheetContent(
+    tutorials: List<TutorialModel> = emptyList()
+) {
+    Timber.d("[테스트] -> $tutorials")
     Column(
         modifier = Modifier
             .fillMaxWidth()
