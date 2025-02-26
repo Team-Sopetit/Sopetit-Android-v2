@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,25 +53,32 @@ import com.sopetit.design_system.SoftieTypo
 fun HomeScreen() {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState: HomePageState by viewModel.uiState.collectAsStateWithLifecycle()
+    val interactionSource = remember { MutableInteractionSource() }
 
     HomeScreenContent(
+        interactionSource = interactionSource,
         backGroundImg = uiState.homeMemberModel.frameImageUrl,
         conversation = uiState.randomSelectedConversation,
         dollName = uiState.homeMemberModel.name,
         dollHelloResource = uiState.dollHelloResource,
         dailyCottonCount = uiState.homeMemberModel.dailyCottonCount,
-        happinessCottonCount = uiState.homeMemberModel.happinessCottonCount
+        happinessCottonCount = uiState.homeMemberModel.happinessCottonCount,
+        onClickDoll = {
+            viewModel.updateRandomConversation()
+        }
     )
 }
 
 @Composable
 fun HomeScreenContent(
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
     backGroundImg: String = "",
     conversation: String = "",
     dollName: String = "",
     dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
     dailyCottonCount: Int = -1,
     happinessCottonCount: Int = -1,
+    onClickDoll: () -> Unit = {},
 ) {
 
     Box(
@@ -113,8 +123,10 @@ fun HomeScreenContent(
         }
 
         HomeDollBoxContent(
+            interactionSource = interactionSource,
             conversation = conversation,
-            dollHelloResource = dollHelloResource
+            dollHelloResource = dollHelloResource,
+            onClickDoll = onClickDoll
         )
 
         Column(
@@ -152,8 +164,10 @@ fun HomeScreenContent(
 
 @Composable
 fun HomeDollBoxContent(
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
     conversation: String = "",
     dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
+    onClickDoll: () -> Unit = {},
 ) {
     val composition by rememberLottieComposition(spec = dollHelloResource)
 
@@ -172,7 +186,6 @@ fun HomeDollBoxContent(
             Image(
                 painter = painterResource(id = R.drawable.ic_home_speech),
                 contentDescription = null,
-                contentScale = ContentScale.FillWidth,
                 modifier = Modifier.matchParentSize()
             )
             Text(
@@ -181,7 +194,6 @@ fun HomeDollBoxContent(
                 style = SoftieTypo.bubble1,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .align(Alignment.Center)
                     .padding(top = 21.dp, bottom = 29.dp, start = 32.dp, end = 33.dp)
             )
         }
@@ -190,6 +202,11 @@ fun HomeDollBoxContent(
             composition = composition,
             modifier = Modifier
                 .offset(y = (-130).dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource,
+                    onClick = { onClickDoll() }
+                )
         )
     }
 }

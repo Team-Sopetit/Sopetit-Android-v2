@@ -8,6 +8,7 @@ import com.sopetit.ui.common.type.BearType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -34,6 +35,18 @@ class HomeViewModel @Inject constructor(
                 homeMemberModel = data,
                 dollHelloResource = BearType.getDollHelloResource(data.dollType),
                 randomSelectedConversation = data.conversations[0]
+            )
+        )
+    }
+
+    fun updateRandomConversation() {
+        val randomSplashIndex: Int =
+            Random.nextInt(uiState.value.homeMemberModel.conversations.size)
+
+        updateState(
+            uiState.value.copy(
+                randomSelectedConversation = uiState.value.homeMemberModel.conversations[randomSplashIndex]
+
             )
         )
     }
