@@ -122,12 +122,17 @@ fun HomeScreenContent(
             )
         }
 
-        HomeDollBoxContent(
-            interactionSource = interactionSource,
-            conversation = conversation,
-            dollHelloResource = dollHelloResource,
-            onClickDoll = onClickDoll
-        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        ) {
+            HomeDollBoxContent(
+                interactionSource = interactionSource,
+                conversation = conversation,
+                dollHelloResource = dollHelloResource,
+                onClickDoll = onClickDoll
+            )
+        }
 
         Column(
             modifier = Modifier
@@ -171,21 +176,22 @@ fun HomeDollBoxContent(
 ) {
     val composition by rememberLottieComposition(spec = dollHelloResource)
 
-    Column(
+    Box(
         modifier = Modifier
-            .padding(top = 200.dp)
             .wrapContentHeight()
             .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Box(
             modifier = Modifier
+                .align(Alignment.BottomCenter)
                 .wrapContentSize()
+                .offset(y = (-510).dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_home_speech),
                 contentDescription = null,
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier.matchParentSize()
             )
             Text(
@@ -201,7 +207,7 @@ fun HomeDollBoxContent(
         LottieAnimation(
             composition = composition,
             modifier = Modifier
-                .offset(y = (-130).dp)
+                .align(Alignment.BottomCenter)
                 .clickable(
                     indication = null,
                     interactionSource = interactionSource,
