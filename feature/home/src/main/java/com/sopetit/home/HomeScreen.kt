@@ -23,7 +23,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sopetit.design_system.Brown100
 import com.sopetit.design_system.Brown200
@@ -175,6 +178,15 @@ fun HomeDollBoxContent(
     onClickDoll: () -> Unit = {},
 ) {
     val composition by rememberLottieComposition(spec = dollHelloResource)
+    var isPlaying by remember { mutableStateOf(true) }
+    var isClickedReplay by remember { mutableStateOf(false) }
+
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        isPlaying = isPlaying,
+        iterations = 1,
+        restartOnPlay = true,
+    )
 
     Box(
         modifier = Modifier
@@ -206,12 +218,28 @@ fun HomeDollBoxContent(
 
         LottieAnimation(
             composition = composition,
+            progress = {
+                if (progress >= 1.0f) isPlaying = false
+
+                if (isClickedReplay) {
+                    isClickedReplay = false
+                    isPlaying = true
+                }
+
+                progress
+            },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .clickable(
                     indication = null,
                     interactionSource = interactionSource,
-                    onClick = { onClickDoll() }
+                    onClick = {
+                        if (!isPlaying) {
+                            onClickDoll()
+                            isPlaying = true
+                            isClickedReplay = true
+                        }
+                    }
                 )
         )
     }
