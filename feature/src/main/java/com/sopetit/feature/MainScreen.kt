@@ -105,7 +105,7 @@ fun MainScreen() {
             sheetState = sheetState,
             sheetContent = {
                 AnimatedContent(
-                    targetState = BottomSheetType.TUTORIAL,
+                    targetState = uiState.bottomSheetType,
                     transitionSpec = {
                         fadeIn(animationSpec = tween(500)) togetherWith fadeOut(
                             animationSpec = tween(
@@ -118,10 +118,16 @@ fun MainScreen() {
                         .wrapContentHeight()
                         .navigationBarsPadding(),
                     label = ""
-                ) {
-                    TutorialBottomSheet(
-                        tutorials = uiState.tutorials
-                    )
+                ) { currentSheet ->
+                    when (currentSheet) {
+                        BottomSheetType.TUTORIAL -> {
+                            TutorialBottomSheet(
+                                tutorials = uiState.tutorials
+                            )
+                        }
+
+                        BottomSheetType.DEFAULT -> {}
+                    }
                 }
             },
             sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),

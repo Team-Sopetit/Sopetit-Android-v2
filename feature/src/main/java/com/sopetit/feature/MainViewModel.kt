@@ -4,6 +4,7 @@ import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.ui.base.BaseViewModel
+import com.sopetit.ui.common.type.BottomSheetType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
@@ -50,7 +51,8 @@ class MainViewModel @Inject constructor(
     fun setTutorials(tutorials: List<TutorialModel>) {
         updateState(
             uiState.value.copy(
-                tutorials = tutorials
+                tutorials = tutorials,
+                bottomSheetType = BottomSheetType.TUTORIAL
             )
         )
     }
