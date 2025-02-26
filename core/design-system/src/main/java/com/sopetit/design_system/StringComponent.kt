@@ -32,6 +32,10 @@ const val RoutineChoiceTopNumSpeechAfter = "개를 추가했어!"
 const val RoutineChoiceBtn = "루틴을 3개 선택해 주세요"
 const val RoutineChoiceSnackBar = "3개만 선택할 수 있어요"
 
+// Tutorial
+const val TutorialNextBtn = "다음"
+const val TutorialFirstTitle = "데일리 루틴"
+
 // Home
 const val HomeSomTitle = "솜뭉치 주기"
 const val HomeRainbowSomTitle = "무지개 솜뭉치 주기"

@@ -54,7 +54,7 @@ fun BottomRectangleBtnContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
-                .clip(RoundedCornerShape(10))
+                .clip(RoundedCornerShape(10.dp))
                 .background(if (isBtnActivated) Gray650 else Gray300)
                 .wrapContentHeight()
                 .clickable(
