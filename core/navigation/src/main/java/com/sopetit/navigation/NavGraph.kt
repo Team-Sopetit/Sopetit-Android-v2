@@ -134,13 +134,16 @@ fun NavGraphBuilder.onBoardingNavGraph(
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
+    showTutorialBottomSheet: () -> Unit
 ) {
     navigation(
         startDestination = NavRoutes.HomeScreen.route,
         route = NavRoutes.HomeGraph.route
     ) {
         composable(NavRoutes.HomeScreen.route) {
-            HomeScreen()
+            HomeScreen(
+                showTutorialBottomSheet = showTutorialBottomSheet
+            )
         }
     }
 }

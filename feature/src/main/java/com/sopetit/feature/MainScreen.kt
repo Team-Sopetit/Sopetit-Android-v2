@@ -63,6 +63,10 @@ fun MainScreen() {
     val scope = rememberCoroutineScope()
     val snackBarHost = remember { SnackbarHostState() }
     val interactionSource = remember { MutableInteractionSource() }
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
 
     val showSnackBar: (String) -> Unit = { message ->
         scope.launch {
@@ -76,11 +80,9 @@ fun MainScreen() {
             job.cancel()
         }
     }
-
-    val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = true
-    )
+    val showBottomSheet: () -> Unit = {
+        scope.launch { sheetState.show() }
+    }
 
     val settingMemberModel: (CreateMemberModel) -> Unit = {
         scope.launch {
@@ -170,7 +172,8 @@ fun MainScreen() {
                             memberModel = viewModel.memberModel,
                         )
                         homeNavGraph(
-                            navController = navController
+                            navController = navController,
+                            showTutorialBottomSheet = showBottomSheet
                         )
                         progressNavGraph(
                             navController = navController
