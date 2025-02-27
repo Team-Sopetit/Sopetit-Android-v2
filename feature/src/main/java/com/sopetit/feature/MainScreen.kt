@@ -91,6 +91,11 @@ fun MainScreen() {
             viewModel.memberModel.emit(it)
         }
     }
+    val setTutorialValid: (Boolean) -> Unit = {
+        scope.launch {
+            viewModel.isTutorialValid.emit(it)
+        }
+    }
 
     LaunchedEffect(navController) {
         navController.currentBackStackEntryFlow
@@ -123,7 +128,12 @@ fun MainScreen() {
                         BottomSheetType.TUTORIAL -> {
                             TutorialBottomSheet(
                                 tutorials = uiState.tutorials,
-                                closeTutorials = { scope.launch { sheetState.hide() } }
+                                closeTutorials = {
+                                    scope.launch {
+                                        sheetState.hide()
+                                        viewModel.isTutorialValid.emit(false)
+                                    }
+                                }
                             )
                         }
 
@@ -174,7 +184,8 @@ fun MainScreen() {
                             navController = navController
                         )
                         logInNavGraph(
-                            navController = navController
+                            navController = navController,
+                            setTutorialValid = setTutorialValid
                         )
                         onBoardingNavGraph(
                             navController = navController,
@@ -184,7 +195,8 @@ fun MainScreen() {
                         )
                         homeNavGraph(
                             navController = navController,
-                            showTutorialBottomSheet = showTutorialBottomSheet
+                            showTutorialBottomSheet = showTutorialBottomSheet,
+                            isTutorialValid = viewModel.isTutorialValid
                         )
                         progressNavGraph(
                             navController = navController

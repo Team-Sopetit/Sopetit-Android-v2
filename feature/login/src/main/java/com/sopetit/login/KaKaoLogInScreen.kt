@@ -32,8 +32,8 @@ import com.sopetit.design_system.SoftieTypo
 
 @Composable
 fun LogInScreen(
-    goToOnboarding: () -> Unit = {},
-    goToHome: () -> Unit = {},
+    goToOnboarding: (Boolean) -> Unit = {},
+    goToHome: (Boolean) -> Unit = {},
 ) {
     val viewModel: KaKaoLogInViewModel = hiltViewModel()
     val uiState: KaKaoLogInPageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -43,11 +43,11 @@ fun LogInScreen(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is KaKaoLogInEvent.GoToOnBoardingPage -> {
-                    goToOnboarding()
+                    goToOnboarding(true)
                 }
 
                 is KaKaoLogInEvent.GoToHomePage -> {
-                    goToHome()
+                    goToHome(false)
                 }
             }
         }

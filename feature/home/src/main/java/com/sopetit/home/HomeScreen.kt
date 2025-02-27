@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,17 +53,24 @@ import com.sopetit.design_system.HomeSomTitle
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.screen.TutorialModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 fun HomeScreen(
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit = {},
+    isTutorialValid: SharedFlow<Boolean> = MutableSharedFlow()
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState: HomePageState by viewModel.uiState.collectAsStateWithLifecycle()
     val interactionSource = remember { MutableInteractionSource() }
 
-    if (uiState.isTutorialValid) {
-        showTutorialBottomSheet(uiState.tutorialList)
+    LaunchedEffect(isTutorialValid) {
+        isTutorialValid.collect {
+            if (it) {
+                showTutorialBottomSheet(uiState.tutorialList)
+            }
+        }
     }
 
     HomeScreenContent(

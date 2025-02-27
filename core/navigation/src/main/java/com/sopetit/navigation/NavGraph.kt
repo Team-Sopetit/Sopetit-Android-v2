@@ -37,6 +37,7 @@ fun NavGraphBuilder.splashNavGraph(
 
 fun NavGraphBuilder.logInNavGraph(
     navController: NavHostController,
+    setTutorialValid: (Boolean) -> Unit
 ) {
     navigation(
         startDestination = NavRoutes.LogInScreen.route,
@@ -45,11 +46,13 @@ fun NavGraphBuilder.logInNavGraph(
         composable(NavRoutes.LogInScreen.route) {
             LogInScreen(
                 goToOnboarding = {
+                    setTutorialValid(it)
                     navController.navigate(NavRoutes.StoryTellingFirstScreen.route) {
                         popUpTo(0)
                     }
                 },
                 goToHome = {
+                    setTutorialValid(it)
                     navController.navigate(NavRoutes.HomeScreen.route) {
                         popUpTo(0)
                     }
@@ -135,7 +138,8 @@ fun NavGraphBuilder.onBoardingNavGraph(
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
-    showTutorialBottomSheet: (List<TutorialModel>) -> Unit
+    showTutorialBottomSheet: (List<TutorialModel>) -> Unit,
+    isTutorialValid: SharedFlow<Boolean>,
 ) {
     navigation(
         startDestination = NavRoutes.HomeScreen.route,
@@ -143,7 +147,8 @@ fun NavGraphBuilder.homeNavGraph(
     ) {
         composable(NavRoutes.HomeScreen.route) {
             HomeScreen(
-                showTutorialBottomSheet = showTutorialBottomSheet
+                showTutorialBottomSheet = showTutorialBottomSheet,
+                isTutorialValid = isTutorialValid
             )
         }
     }

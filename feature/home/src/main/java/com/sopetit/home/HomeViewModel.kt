@@ -85,4 +85,12 @@ class HomeViewModel @Inject constructor(
             )
         )
     }
+
+    fun updateTutorialValid(isValid: Boolean) {
+        updateState(
+            uiState.value.copy(
+                isTutorialValid = isValid
+            )
+        )
+    }
 }
