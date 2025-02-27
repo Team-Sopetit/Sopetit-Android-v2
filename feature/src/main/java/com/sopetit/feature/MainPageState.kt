@@ -1,0 +1,11 @@
+package com.sopetit.feature
+
+import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.ui.base.PageState
+import com.sopetit.ui.common.type.BottomSheetType
+
+data class MainPageState(
+    val bottomNavType: BottomNavType = BottomNavType.DEFAULT,
+    val bottomSheetType: BottomSheetType = BottomSheetType.DEFAULT,
+    val tutorials: List<TutorialModel> = emptyList(),
+) : PageState

@@ -1,7 +1,11 @@
 package com.sopetit.ui.common.type
 
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.sopetit.design_system.Brown
+import com.sopetit.design_system.Gray
 import com.sopetit.design_system.R
+import com.sopetit.design_system.Red
+import com.sopetit.design_system.White
 
 enum class BearType(
     val id: Int,
@@ -13,7 +17,7 @@ enum class BearType(
 ) {
     BROWN(
         1,
-        "BROWN",
+        Brown,
         R.drawable.ic_brown_face,
         R.drawable.ic_doll_brown_box_in,
         R.drawable.ic_doll_brown_box_up,
@@ -21,7 +25,7 @@ enum class BearType(
     ),
     GRAY(
         2,
-        "GRAY",
+        Gray,
         R.drawable.ic_gray_face,
         R.drawable.ic_doll_gray_box_in,
         R.drawable.ic_doll_gray_box_up,
@@ -29,7 +33,7 @@ enum class BearType(
     ),
     WHITE(
         3,
-        "WHITE",
+        White,
         R.drawable.ic_white_face,
         R.drawable.ic_doll_white_box_in,
         R.drawable.ic_doll_white_box_up,
@@ -37,7 +41,7 @@ enum class BearType(
     ),
     RED(
         4,
-        "RED",
+        Red,
         R.drawable.ic_red_face,
         R.drawable.ic_doll_red_box_in,
         R.drawable.ic_doll_red_box_up,

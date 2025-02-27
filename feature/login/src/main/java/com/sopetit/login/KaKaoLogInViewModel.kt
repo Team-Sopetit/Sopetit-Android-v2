@@ -17,8 +17,8 @@ import javax.inject.Inject
 class KaKaoLogInViewModel @Inject constructor(
     private val kakaoLoginService: KaKaoLogInService,
     private val postLogInUseCase: PostLogInUseCase,
-    private val saveTokenUseCase: SaveTokenUseCase
-): BaseViewModel<KaKaoLogInPageState>(
+    private val saveTokenUseCase: SaveTokenUseCase,
+) : BaseViewModel<KaKaoLogInPageState>(
     KaKaoLogInPageState()
 ) {
 
@@ -31,7 +31,7 @@ class KaKaoLogInViewModel @Inject constructor(
                         refreshToken = "",
                         isMemberDollExist = false
                     )
-                ).collect{ resultResponse(it, {}) }
+                ).collect { resultResponse(it, {}) }
 
                 postLogIn()
             }
@@ -62,9 +62,16 @@ class KaKaoLogInViewModel @Inject constructor(
                     refreshToken = data.refreshToken,
                     isMemberDollExist = data.isMemberDollExist
                 )
-            ).collect{resultResponse(it, {})}
+            ).collect { resultResponse(it, {}) }
 
-            emitEventFlow(KaKaoLogInEvent.OnSuccessLogIn)
+            setDestination(data.isMemberDollExist)
+        }
+    }
+
+    private fun setDestination(isMemberDollExist: Boolean) {
+        when (isMemberDollExist) {
+            true -> emitEventFlow(KaKaoLogInEvent.GoToHomePage)
+            false -> emitEventFlow(KaKaoLogInEvent.GoToOnBoardingPage)
         }
     }
 

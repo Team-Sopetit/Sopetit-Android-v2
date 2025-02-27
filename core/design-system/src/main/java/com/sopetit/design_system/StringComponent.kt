@@ -2,6 +2,16 @@ package com.sopetit.design_system
 
 // Common
 const val Softie = "소프티"
+const val Empty = ""
+const val Home = "홈"
+const val Progress = "진행 중"
+const val Achieve = "달성도"
+
+// DollType
+const val Brown = "BROWN"
+const val Gray = "GRAY"
+const val White = "WHITE"
+const val Red = "RED"
 
 // Splash
 const val SplashSemiTitle = "하루를 바꾸는 가장 사소한 루틴"
@@ -31,3 +41,13 @@ const val RoutineChoiceTopNumSpeech = "아래에서 루틴을 골라봐\n지금�
 const val RoutineChoiceTopNumSpeechAfter = "개를 추가했어!"
 const val RoutineChoiceBtn = "루틴을 3개 선택해 주세요"
 const val RoutineChoiceSnackBar = "3개만 선택할 수 있어요"
+
+// Tutorial
+const val TutorialNextBtn = "다음"
+const val TutorialStartBtn = "시작하기"
+const val TutorialFirstTitle = "데일리 루틴"
+
+// Home
+const val HomeSomTitle = "솜뭉치 주기"
+const val HomeRainbowSomTitle = "무지개 솜뭉치 주기"
+const val HomeSomCount = "%d개"

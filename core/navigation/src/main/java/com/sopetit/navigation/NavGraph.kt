@@ -4,7 +4,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sopetit.achieve.AchieveScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.home.HomeScreen
 import com.sopetit.login.LogInScreen
 import com.sopetit.onboarding.dollnaming.DollNamingScreen
@@ -14,6 +16,7 @@ import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
 import com.sopetit.onboarding.storytelling.StoryTellingSecondScreen
 import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
+import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -34,6 +37,7 @@ fun NavGraphBuilder.splashNavGraph(
 
 fun NavGraphBuilder.logInNavGraph(
     navController: NavHostController,
+    setTutorialValid: (Boolean) -> Unit
 ) {
     navigation(
         startDestination = NavRoutes.LogInScreen.route,
@@ -42,10 +46,16 @@ fun NavGraphBuilder.logInNavGraph(
         composable(NavRoutes.LogInScreen.route) {
             LogInScreen(
                 goToOnboarding = {
-                    navController.navigate(NavRoutes.StoryTellingFirstScreen.route)
-//                    {
-//                        popUpTo(NavRoutes.SplashGraph.route) { inclusive = true }
-//                    }
+                    setTutorialValid(it)
+                    navController.navigate(NavRoutes.StoryTellingFirstScreen.route) {
+                        popUpTo(0)
+                    }
+                },
+                goToHome = {
+                    setTutorialValid(it)
+                    navController.navigate(NavRoutes.HomeScreen.route) {
+                        popUpTo(0)
+                    }
                 }
             )
         }
@@ -128,13 +138,44 @@ fun NavGraphBuilder.onBoardingNavGraph(
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
+    showTutorialBottomSheet: (List<TutorialModel>) -> Unit,
+    isTutorialValid: SharedFlow<Boolean>,
 ) {
     navigation(
         startDestination = NavRoutes.HomeScreen.route,
         route = NavRoutes.HomeGraph.route
     ) {
         composable(NavRoutes.HomeScreen.route) {
-            HomeScreen()
+            HomeScreen(
+                showTutorialBottomSheet = showTutorialBottomSheet,
+                isTutorialValid = isTutorialValid
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.achieveNavGraph(
+    navController: NavHostController,
+) {
+    navigation(
+        startDestination = NavRoutes.AchieveScreen.route,
+        route = NavRoutes.AchieveGraph.route
+    ) {
+        composable(NavRoutes.AchieveScreen.route) {
+            AchieveScreen()
+        }
+    }
+}
+
+fun NavGraphBuilder.progressNavGraph(
+    navController: NavHostController,
+) {
+    navigation(
+        startDestination = NavRoutes.ProgressScreen.route,
+        route = NavRoutes.ProgressGraph.route
+    ) {
+        composable(NavRoutes.ProgressScreen.route) {
+            ProgressScreen()
         }
     }
 }
