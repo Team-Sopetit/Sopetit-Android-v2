@@ -34,6 +34,7 @@ const val RoutineChoiceSnackBar = "3개만 선택할 수 있어요"
 
 // Tutorial
 const val TutorialNextBtn = "다음"
+const val TutorialStartBtn = "시작하기"
 const val TutorialFirstTitle = "데일리 루틴"
 
 // Home

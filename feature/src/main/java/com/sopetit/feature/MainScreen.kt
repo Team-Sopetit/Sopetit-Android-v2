@@ -122,7 +122,8 @@ fun MainScreen() {
                     when (currentSheet) {
                         BottomSheetType.TUTORIAL -> {
                             TutorialBottomSheet(
-                                tutorials = uiState.tutorials
+                                tutorials = uiState.tutorials,
+                                closeTutorials = { scope.launch { sheetState.hide() } }
                             )
                         }
 

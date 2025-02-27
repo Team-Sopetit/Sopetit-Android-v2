@@ -16,6 +16,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,26 +29,35 @@ import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.TutorialNextBtn
+import com.sopetit.design_system.TutorialStartBtn
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.item.PagerIndicator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun TutorialBottomSheet(
     tutorials: List<TutorialModel>,
+    closeTutorials: () -> Unit = {},
 ) {
+    val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(pageCount = { tutorials.size })
 
     TutorialBottomSheetContent(
+        scope = scope,
         tutorials = tutorials,
-        pagerState = pagerState
+        pagerState = pagerState,
+        onClickStartBtn = { closeTutorials() }
     )
 }
 
 @Composable
 fun TutorialBottomSheetContent(
+    scope: CoroutineScope,
     tutorials: List<TutorialModel> = emptyList(),
     pagerState: PagerState,
+    onClickStartBtn: () -> Unit = {},
 ) {
     val currentPage = pagerState.currentPage
 
@@ -114,8 +124,15 @@ fun TutorialBottomSheetContent(
         Spacer(modifier = Modifier.height(30.dp))
 
         BottomRectangleBtn(
-            btnTextContent = TutorialNextBtn,
-            isBtnActivated = true
+            btnTextContent = if (currentPage == 2) TutorialStartBtn else TutorialNextBtn,
+            isBtnActivated = true,
+            onClickAction = {
+                if (currentPage < 2) {
+                    scope.launch { pagerState.scrollToPage(currentPage + 1) }
+                } else {
+                    onClickStartBtn()
+                }
+            }
         )
     }
 }
