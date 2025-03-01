@@ -54,3 +54,5 @@ const val HomeSomCount = "%d개"
 
 // Progress
 const val ProgressTitleDate = "%04d년 %02d월 %02d일"
+const val ProgressChallengeEmptyTitle = "챌린지를 추가해 볼까요?"
+const val ProgressChallengeAddTitle = "루틴 추가하기"

@@ -1,23 +1,42 @@
 package com.sopetit.progress
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sopetit.design_system.Gray200
+import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray50
+import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.ProgressChallengeAddTitle
+import com.sopetit.design_system.ProgressChallengeEmptyTitle
 import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.SoftieTypo
 import org.threeten.bp.LocalDate
+import com.sopetit.design_system.R
 
 @Composable
 fun ProgressScreen() {
@@ -54,7 +73,7 @@ fun ProgressContent(
                 .padding(vertical = 16.dp)
         )
 
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
         ) {
@@ -65,7 +84,57 @@ fun ProgressContent(
 
 @Composable
 fun ProgressRoutineContent() {
-    //
+    ProgressChallengeEmptyRoutine()
+}
+
+@Composable
+fun ProgressChallengeEmptyRoutine() {
+    Column(
+        modifier = Modifier
+            .padding(top = 4.dp)
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = ProgressChallengeEmptyTitle,
+            color = Gray500,
+            style = SoftieTypo.body2
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        RoutineAddBtnContent()
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_challenge_empty),
+            contentDescription = "empty challenge",
+            modifier = Modifier
+                .padding(top = 21.dp)
+                .size(width = 78.dp, height = 56.dp)
+        )
+
+        Divider(color = Gray200, thickness = 2.dp)
+    }
+}
+
+@Composable
+fun RoutineAddBtnContent() {
+    Box(
+        modifier = Modifier
+            .wrapContentSize()
+            .clip(RoundedCornerShape(100.dp))
+            .background(Gray200)
+            .border(1.dp, color = Gray400, RoundedCornerShape(100.dp))
+    ) {
+        Text(
+            text = ProgressChallengeAddTitle,
+            color = Gray500,
+            style = SoftieTypo.caption1,
+            modifier = Modifier
+                .padding(vertical = 8.dp, horizontal = 12.dp)
+        )
+    }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
