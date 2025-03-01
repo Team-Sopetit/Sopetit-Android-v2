@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.ProgressTitleDate
@@ -18,6 +21,9 @@ import org.threeten.bp.LocalDate
 
 @Composable
 fun ProgressScreen() {
+
+    val viewModel: ProgressViewModel = hiltViewModel()
+    val uiState: ProgressPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val today = LocalDate.now()
 
@@ -32,7 +38,7 @@ fun ProgressScreen() {
 fun ProgressContent(
     todayYear: Int = 0,
     todayMonth: Int = 0,
-    todayDay: Int = 0
+    todayDay: Int = 0,
 ) {
     Column(
         modifier = Modifier
