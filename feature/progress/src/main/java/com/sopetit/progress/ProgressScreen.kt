@@ -33,10 +33,12 @@ import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.ProgressChallengeAddTitle
 import com.sopetit.design_system.ProgressChallengeEmptyTitle
+import com.sopetit.design_system.ProgressDailyTitle
 import com.sopetit.design_system.ProgressTitleDate
+import com.sopetit.design_system.Question
+import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import org.threeten.bp.LocalDate
-import com.sopetit.design_system.R
 
 @Composable
 fun ProgressScreen() {
@@ -85,6 +87,30 @@ fun ProgressContent(
 @Composable
 fun ProgressRoutineContent() {
     ProgressChallengeEmptyRoutine()
+
+    ProgressDailyRoutine()
+}
+
+@Composable
+fun ProgressDailyRoutine() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        RoutineTitleContent(title = ProgressDailyTitle)
+
+        Column(
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .padding(horizontal = 20.dp)
+        ) {
+            Text(
+                text = "산뜻한 일상",
+                color = Gray500,
+                style = SoftieTypo.body2
+            )
+        }
+    }
 }
 
 @Composable
@@ -115,6 +141,43 @@ fun ProgressChallengeEmptyRoutine() {
         )
 
         Divider(color = Gray200, thickness = 2.dp)
+    }
+}
+
+@Composable
+fun RoutineTitleContent(
+    title: String,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(top = 16.dp, end = 11.dp)
+    ) {
+        Text(
+            text = title,
+            color = Gray700,
+            style = SoftieTypo.head4,
+            modifier = Modifier
+                .padding(start = 20.dp)
+                .padding(vertical = 9.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(9.dp)
+                .size(20.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(Gray200)
+        ) {
+            Text(
+                text = Question,
+                color = Gray500,
+                style = SoftieTypo.caption2,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
     }
 }
 
