@@ -12,4 +12,7 @@ dependencies {
     implementation(projects.core)
     implementation(projects.core.ui)
     implementation(projects.core.designSystem)
+
+    // ThreeTen
+    implementation(libs.threeten)
 }

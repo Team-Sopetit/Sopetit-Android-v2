@@ -51,3 +51,6 @@ const val TutorialFirstTitle = "데일리 루틴"
 const val HomeSomTitle = "솜뭉치 주기"
 const val HomeRainbowSomTitle = "무지개 솜뭉치 주기"
 const val HomeSomCount = "%d개"
+
+// Progress
+const val ProgressTitleDate = "%04d년 %02d월 %02d일"
