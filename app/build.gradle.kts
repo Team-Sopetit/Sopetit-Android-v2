@@ -39,4 +39,7 @@ dependencies {
     implementation(libs.okhttp.urlconnection)
 
     implementation(libs.kakao.auth)
+
+    // ThreeTen
+    implementation(libs.threeten)
 }
