@@ -38,6 +38,7 @@ import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.ui.common.item.MemberDailyRoutineListItem
 import org.threeten.bp.LocalDate
 
 @Composable
@@ -109,6 +110,10 @@ fun ProgressDailyRoutine() {
                 color = Gray500,
                 style = SoftieTypo.body2
             )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            MemberDailyRoutineListItem()
         }
     }
 }
