@@ -39,6 +39,8 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.ProgressChallengeAddTitle
 import com.sopetit.design_system.ProgressChallengeEmptyTitle
 import com.sopetit.design_system.ProgressChallengeTitle
+import com.sopetit.design_system.ProgressDailyEmptyAddTitle
+import com.sopetit.design_system.ProgressDailyEmptyTitle
 import com.sopetit.design_system.ProgressDailyTitle
 import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
@@ -47,6 +49,7 @@ import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineListModel
 import com.sopetit.ui.common.content.ChallengeRoutineBox
+import com.sopetit.ui.common.content.EmptyRoutineScreen
 import com.sopetit.ui.common.item.MemberDailyRoutineListItem
 import com.sopetit.ui.common.type.ThemeIconType
 import org.threeten.bp.LocalDate
@@ -115,9 +118,31 @@ fun ProgressRoutineContent(
         ProgressChallengeEmptyRoutine()
     }
 
-    ProgressDailyRoutine(
-        memberDailyRoutineList = memberDailyRoutineList
-    )
+    if (memberDailyRoutineList.isNotEmpty()) {
+        ProgressDailyRoutine(
+            memberDailyRoutineList = memberDailyRoutineList
+        )
+    } else {
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(top = 64.dp)
+        ) {
+            EmptyRoutineScreen(
+                titleContent = ProgressDailyEmptyTitle,
+                titleColor = Gray500,
+                titleStyle = SoftieTypo.body2,
+                btnBackgroundColor = Gray200,
+                btnCornerShape = 100,
+                btnBorderColor = Gray400,
+                btnTextContent = ProgressDailyEmptyAddTitle,
+                btnTextColor = Gray500,
+                btnTextStyle = SoftieTypo.caption1,
+                btnVerticalPadding = 8,
+                btnHorizontalPadding = 12
+            )
+        }
+    }
 }
 
 @Composable
