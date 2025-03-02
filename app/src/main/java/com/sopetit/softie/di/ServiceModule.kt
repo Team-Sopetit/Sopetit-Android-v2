@@ -1,6 +1,7 @@
 package com.sopetit.softie.di
 
 import com.sopetit.data.service.AuthService
+import com.sopetit.data.service.MemberChallengeService
 import com.sopetit.data.service.MemberRoutineService
 import com.sopetit.data.service.MemberService
 import com.sopetit.data.service.RoutineService
@@ -38,5 +39,10 @@ object ServiceModule {
     @Provides
     fun provideMemberRoutineService(@SoftieRetrofit retrofit: Retrofit): MemberRoutineService {
         return retrofit.create(MemberRoutineService::class.java)
+    }
+
+    @Provides
+    fun provideMemberChallengeService(@SoftieRetrofit retrofit: Retrofit): MemberChallengeService {
+        return retrofit.create(MemberChallengeService::class.java)
     }
 }
