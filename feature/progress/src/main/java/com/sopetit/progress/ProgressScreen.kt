@@ -2,7 +2,6 @@ package com.sopetit.progress
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,23 +30,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
+import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.ProgressChallengeAddTitle
 import com.sopetit.design_system.ProgressChallengeEmptyTitle
 import com.sopetit.design_system.ProgressChallengeTitle
-import com.sopetit.design_system.ProgressDailyEmptyAddTitle
 import com.sopetit.design_system.ProgressDailyEmptyTitle
 import com.sopetit.design_system.ProgressDailyTitle
+import com.sopetit.design_system.ProgressEmptyAddTitle
+import com.sopetit.design_system.ProgressEmptyTitle
 import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineListModel
+import com.sopetit.ui.common.button.RoundCornerShapeBtn
 import com.sopetit.ui.common.content.ChallengeRoutineBox
 import com.sopetit.ui.common.content.EmptyRoutineScreen
 import com.sopetit.ui.common.item.MemberDailyRoutineListItem
@@ -110,37 +112,57 @@ fun ProgressRoutineContent(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
 ) {
-    if (memberChallenge.memberChallengeId != -1) {
-        ProgressChallenge(
-            memberChallenge = memberChallenge
-        )
-    } else {
-        ProgressChallengeEmptyRoutine()
-    }
-
-    if (memberDailyRoutineList.isNotEmpty()) {
-        ProgressDailyRoutine(
-            memberDailyRoutineList = memberDailyRoutineList
-        )
-    } else {
-        Box(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(top = 64.dp)
-        ) {
+    if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
+        Box(modifier = Modifier
+            .wrapContentSize()
+            .padding(top = 150.dp)) {
             EmptyRoutineScreen(
-                titleContent = ProgressDailyEmptyTitle,
+                titleContent = ProgressEmptyTitle,
                 titleColor = Gray500,
-                titleStyle = SoftieTypo.body2,
-                btnBackgroundColor = Gray200,
+                titleStyle = SoftieTypo.head3,
+                btnBackgroundColor = Gray650,
                 btnCornerShape = 100,
-                btnBorderColor = Gray400,
-                btnTextContent = ProgressDailyEmptyAddTitle,
-                btnTextColor = Gray500,
+                btnBorderColor = Gray650,
+                btnTextContent = ProgressEmptyAddTitle,
+                btnTextColor = Gray0,
                 btnTextStyle = SoftieTypo.caption1,
-                btnVerticalPadding = 8,
-                btnHorizontalPadding = 12
+                btnVerticalPadding = 12,
+                btnHorizontalPadding = 16
             )
+        }
+    } else {
+        if (memberChallenge.memberChallengeId != -1) {
+            ProgressChallenge(
+                memberChallenge = memberChallenge
+            )
+        } else {
+            ProgressChallengeEmptyRoutine()
+        }
+
+        if (memberDailyRoutineList.isNotEmpty()) {
+            ProgressDailyRoutine(
+                memberDailyRoutineList = memberDailyRoutineList
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(top = 64.dp)
+            ) {
+                EmptyRoutineScreen(
+                    titleContent = ProgressDailyEmptyTitle,
+                    titleColor = Gray500,
+                    titleStyle = SoftieTypo.body2,
+                    btnBackgroundColor = Gray200,
+                    btnCornerShape = 100,
+                    btnBorderColor = Gray400,
+                    btnTextContent = ProgressEmptyAddTitle,
+                    btnTextColor = Gray500,
+                    btnTextStyle = SoftieTypo.caption1,
+                    btnVerticalPadding = 8,
+                    btnHorizontalPadding = 12
+                )
+            }
         }
     }
 }
@@ -228,7 +250,16 @@ fun ProgressChallengeEmptyRoutine() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        RoutineAddBtnContent()
+        RoundCornerShapeBtn(
+            backgroundColor = Gray200,
+            cornerShape = 100,
+            borderColor = Gray400,
+            textContent = ProgressEmptyAddTitle,
+            textColor = Gray500,
+            textStyle = SoftieTypo.caption1,
+            verticalPadding = 8,
+            horizontalPadding = 12
+        )
 
         Image(
             painter = painterResource(id = R.drawable.ic_challenge_empty),
@@ -276,25 +307,6 @@ fun RoutineTitleContent(
                 modifier = Modifier.align(Alignment.Center)
             )
         }
-    }
-}
-
-@Composable
-fun RoutineAddBtnContent() {
-    Box(
-        modifier = Modifier
-            .wrapContentSize()
-            .clip(RoundedCornerShape(100.dp))
-            .background(Gray200)
-            .border(1.dp, color = Gray400, RoundedCornerShape(100.dp))
-    ) {
-        Text(
-            text = ProgressChallengeAddTitle,
-            color = Gray500,
-            style = SoftieTypo.caption1,
-            modifier = Modifier
-                .padding(vertical = 8.dp, horizontal = 12.dp)
-        )
     }
 }
 
