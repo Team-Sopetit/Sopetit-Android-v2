@@ -25,13 +25,18 @@ import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 
 @Composable
-fun MemberDailyRoutineListItem() {
-    MemberDailyRoutineListItemContent()
+fun MemberDailyRoutineListItem(
+    routineContent: String
+) {
+    MemberDailyRoutineListItemContent(
+        routineContent = routineContent
+    )
 }
 
 @Composable
 fun MemberDailyRoutineListItemContent(
     isRoutineAchieve: Boolean = false,
+    routineContent: String = ""
 ) {
     Box(
         modifier = Modifier
@@ -58,7 +63,7 @@ fun MemberDailyRoutineListItemContent(
             )
 
             Text(
-                text = "일어나면 5분 안에 이불 개기",
+                text = routineContent,
                 color = Gray700,
                 style = SoftieTypo.body2,
                 modifier = Modifier

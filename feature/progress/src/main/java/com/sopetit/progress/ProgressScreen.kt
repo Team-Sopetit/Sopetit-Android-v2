@@ -3,16 +3,21 @@ package com.sopetit.progress
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
@@ -38,7 +43,9 @@ import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineListModel
 import com.sopetit.ui.common.item.MemberDailyRoutineListItem
+import com.sopetit.ui.common.type.ThemeIconType
 import org.threeten.bp.LocalDate
 
 @Composable
@@ -52,7 +59,8 @@ fun ProgressScreen() {
     ProgressContent(
         todayYear = today.year,
         todayMonth = today.monthValue,
-        todayDay = today.dayOfMonth
+        todayDay = today.dayOfMonth,
+        memberDailyRoutineList = uiState.memberDailyRoutineList
     )
 }
 
@@ -61,6 +69,7 @@ fun ProgressContent(
     todayYear: Int = 0,
     todayMonth: Int = 0,
     todayDay: Int = 0,
+    memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
 ) {
     Column(
         modifier = Modifier
@@ -80,40 +89,68 @@ fun ProgressContent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            ProgressRoutineContent()
+            ProgressRoutineContent(
+                memberDailyRoutineList = memberDailyRoutineList
+            )
         }
     }
 }
 
 @Composable
-fun ProgressRoutineContent() {
+fun ProgressRoutineContent(
+    memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
+) {
     ProgressChallengeEmptyRoutine()
 
-    ProgressDailyRoutine()
+    ProgressDailyRoutine(
+        memberDailyRoutineList = memberDailyRoutineList
+    )
 }
 
 @Composable
-fun ProgressDailyRoutine() {
+fun ProgressDailyRoutine(
+    memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         RoutineTitleContent(title = ProgressDailyTitle)
 
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .padding(top = 12.dp)
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = "산뜻한 일상",
-                color = Gray500,
-                style = SoftieTypo.body2
-            )
+            itemsIndexed(
+                memberDailyRoutineList,
+                key = { index, themeItem -> themeItem.themeId }) { index, themeItem ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(id = ThemeIconType.getThemeIcon(themeItem.themeId)),
+                        contentDescription = "theme icon",
+                        modifier = Modifier
+                            .size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(2.dp))
+                    Text(
+                        text = themeItem.themeName,
+                        color = Gray500,
+                        style = SoftieTypo.body2
+                    )
+                }
 
-            Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-            MemberDailyRoutineListItem()
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    themeItem.routines.forEach { routineItem ->
+                        MemberDailyRoutineListItem(routineContent = routineItem.content)
+                    }
+                }
+            }
         }
     }
 }
