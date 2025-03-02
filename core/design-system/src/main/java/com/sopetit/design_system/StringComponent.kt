@@ -3,9 +3,11 @@ package com.sopetit.design_system
 // Common
 const val Softie = "소프티"
 const val Empty = ""
+const val Question = "?"
 const val Home = "홈"
 const val Progress = "진행 중"
 const val Achieve = "달성도"
+const val Complete = "완료하기"
 
 // DollType
 const val Brown = "BROWN"
@@ -51,3 +53,12 @@ const val TutorialFirstTitle = "데일리 루틴"
 const val HomeSomTitle = "솜뭉치 주기"
 const val HomeRainbowSomTitle = "무지개 솜뭉치 주기"
 const val HomeSomCount = "%d개"
+
+// Progress
+const val ProgressTitleDate = "%04d년 %02d월 %02d일"
+const val ProgressChallengeEmptyTitle = "챌린지를 추가해 볼까요?"
+const val ProgressDailyTitle = "매일 매일, 데일리 루틴"
+const val ProgressChallengeTitle = "하루에 한 번, 오늘의 도전!"
+const val ProgressDailyEmptyTitle = "데일리 루틴을 추가해 볼까요?"
+const val ProgressEmptyAddTitle = "루틴 추가하기"
+const val ProgressEmptyTitle = "진행 중인 루틴이 없어요"

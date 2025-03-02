@@ -9,28 +9,34 @@ import retrofit2.Response
 abstract class BaseMapper {
 
     fun <DTO, MODEL> baseMapper(
-        apiCall: suspend () -> Response<BaseResponse<DTO>>,
-        responseToModel: (DTO?) -> MODEL
+        apiCall: suspend () -> Response<BaseResponse<DTO>>?,
+        responseToModel: (DTO?) -> MODEL,
     ): Flow<Result<MODEL>> = flow {
         val response = apiCall()
+        val defaultModel = responseToModel(null)
 
-        when (response.isSuccessful) {
-            true -> {
-                val apiResponse = response.body() as BaseResponse
-                val data = responseToModel(apiResponse.data)
+        response?.let {
+            when (response.isSuccessful) {
+                true -> {
+                    val apiResponse: BaseResponse<DTO> = response.body() ?: BaseResponse()
+                    val data = responseToModel(apiResponse.data) ?: defaultModel
 
-                emit(Result.success(data))
+                    emit(Result.success(data))
+                }
+
+                false -> {
+                    val errorBody = response.errorBody()?.string() ?: ""
+                    val errorMessage = fromGson<DTO>(errorBody).message
+
+                    emit(Result.failure(Exception(errorMessage)))
+                }
             }
-            false -> {
-                val errorBody = response.errorBody()?.string() ?: ""
-                val errorMessage = fromGson<DTO>(errorBody).message
+        } ?: emit(Result.success(defaultModel))
 
-                emit(Result.failure(Exception(errorMessage)))
-            }
-        }
     }
 
     private fun <T> fromGson(json: String?): BaseResponse<T> {
-        return Gson().fromJson(json, object : TypeToken<BaseResponse<T>>() {}.type) ?: BaseResponse()
+        return Gson().fromJson(json, object : TypeToken<BaseResponse<T>>() {}.type)
+            ?: BaseResponse()
     }
 }

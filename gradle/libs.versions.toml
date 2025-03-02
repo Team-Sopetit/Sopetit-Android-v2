@@ -109,6 +109,9 @@ okhttp-urlconnection = { module = "com.squareup.okhttp3:okhttp-urlconnection", v
 # DataStore
 androidx-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
+# ThreeTen
+threeten = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threeten" }
+
 # Compose
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }

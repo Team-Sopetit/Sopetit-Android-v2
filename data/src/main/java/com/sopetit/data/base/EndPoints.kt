@@ -18,4 +18,12 @@ object EndPoints {
     object Member {
         const val MEMBER = "/api/v1/members"
     }
+
+    object MemberRoutine {
+        const val MEMBERROUTINE = "/api/v2/routines/daily/member"
+    }
+
+    object MemberChallenge {
+        const val MEMBERCHALLENGE = "/api/v2/members/challenges"
+    }
 }
