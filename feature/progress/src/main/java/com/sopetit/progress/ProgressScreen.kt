@@ -43,6 +43,7 @@ import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineListModel
 import com.sopetit.ui.common.item.MemberDailyRoutineListItem
 import com.sopetit.ui.common.type.ThemeIconType
@@ -60,6 +61,7 @@ fun ProgressScreen() {
         todayYear = today.year,
         todayMonth = today.monthValue,
         todayDay = today.dayOfMonth,
+        memberChallenge = uiState.memberChallenge,
         memberDailyRoutineList = uiState.memberDailyRoutineList
     )
 }
@@ -69,6 +71,7 @@ fun ProgressContent(
     todayYear: Int = 0,
     todayMonth: Int = 0,
     todayDay: Int = 0,
+    memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
 ) {
     Column(
@@ -90,6 +93,7 @@ fun ProgressContent(
                 .fillMaxSize()
         ) {
             ProgressRoutineContent(
+                memberChallenge = memberChallenge,
                 memberDailyRoutineList = memberDailyRoutineList
             )
         }
@@ -98,13 +102,27 @@ fun ProgressContent(
 
 @Composable
 fun ProgressRoutineContent(
+    memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
 ) {
-    ProgressChallengeEmptyRoutine()
+    if (memberChallenge.memberChallengeId != -1) {
+        ProgressChallenge(
+            memberChallenge = memberChallenge
+        )
+    } else {
+        ProgressChallengeEmptyRoutine()
+    }
 
     ProgressDailyRoutine(
         memberDailyRoutineList = memberDailyRoutineList
     )
+}
+
+@Composable
+fun ProgressChallenge(
+    memberChallenge: MemberChallengeModel = MemberChallengeModel(),
+) {
+    //
 }
 
 @Composable
