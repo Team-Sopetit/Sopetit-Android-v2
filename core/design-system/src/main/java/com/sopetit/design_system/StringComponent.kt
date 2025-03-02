@@ -7,6 +7,7 @@ const val Question = "?"
 const val Home = "홈"
 const val Progress = "진행 중"
 const val Achieve = "달성도"
+const val Complete = "완료하기"
 
 // DollType
 const val Brown = "BROWN"
@@ -58,3 +59,4 @@ const val ProgressTitleDate = "%04d년 %02d월 %02d일"
 const val ProgressChallengeEmptyTitle = "챌린지를 추가해 볼까요?"
 const val ProgressChallengeAddTitle = "루틴 추가하기"
 const val ProgressDailyTitle = "매일 매일, 데일리 루틴"
+const val ProgressChallengeTitle = "하루에 한 번, 오늘의 도전!"

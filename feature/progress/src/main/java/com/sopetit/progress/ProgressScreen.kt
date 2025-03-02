@@ -38,6 +38,7 @@ import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.ProgressChallengeAddTitle
 import com.sopetit.design_system.ProgressChallengeEmptyTitle
+import com.sopetit.design_system.ProgressChallengeTitle
 import com.sopetit.design_system.ProgressDailyTitle
 import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
@@ -45,6 +46,7 @@ import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineListModel
+import com.sopetit.ui.common.content.ChallengeRoutineBox
 import com.sopetit.ui.common.item.MemberDailyRoutineListItem
 import com.sopetit.ui.common.type.ThemeIconType
 import org.threeten.bp.LocalDate
@@ -122,7 +124,18 @@ fun ProgressRoutineContent(
 fun ProgressChallenge(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
 ) {
-    //
+    Column {
+        RoutineTitleContent(title = ProgressChallengeTitle)
+
+        Box(
+            modifier = Modifier
+                .padding(vertical = 16.dp, horizontal = 20.dp)
+        ) {
+            ChallengeRoutineBox(challengeModel = memberChallenge)
+        }
+
+        Divider(color = Gray200, thickness = 2.dp)
+    }
 }
 
 @Composable
