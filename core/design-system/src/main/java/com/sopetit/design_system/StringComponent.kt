@@ -8,6 +8,7 @@ const val Home = "홈"
 const val Progress = "진행 중"
 const val Achieve = "달성도"
 const val Complete = "완료하기"
+const val Delete = "삭제하기"
 
 // DollType
 const val Brown = "BROWN"

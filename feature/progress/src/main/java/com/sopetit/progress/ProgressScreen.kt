@@ -49,8 +49,10 @@ import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineListModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.ui.common.button.RoundCornerShapeBtn
 import com.sopetit.ui.common.content.ChallengeRoutineBox
 import com.sopetit.ui.common.content.EmptyRoutineScreen
@@ -60,7 +62,7 @@ import org.threeten.bp.LocalDate
 
 @Composable
 fun ProgressScreen(
-    showRoutineBottomSheet: () -> Unit = {},
+    showRoutineBottomSheet: (RoutineDetailModel) -> Unit = {},
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -75,7 +77,9 @@ fun ProgressScreen(
         todayDay = today.dayOfMonth,
         memberChallenge = uiState.memberChallenge,
         memberDailyRoutineList = uiState.memberDailyRoutineList,
-        onClickRoutineDetail = { showRoutineBottomSheet() },
+        onClickRoutineDetail = { routine ->
+            showRoutineBottomSheet(routine)
+        },
         interactionSource = interactionSource
     )
 }
@@ -87,7 +91,7 @@ fun ProgressContent(
     todayDay: Int = 0,
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
-    onClickRoutineDetail: () -> Unit = {},
+    onClickRoutineDetail: (RoutineDetailModel) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
@@ -121,7 +125,7 @@ fun ProgressContent(
 fun ProgressRoutineContent(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
-    onClickRoutineDetail: () -> Unit,
+    onClickRoutineDetail: (RoutineDetailModel) -> Unit,
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
         Box(
@@ -185,7 +189,7 @@ fun ProgressRoutineContent(
 @Composable
 fun ProgressChallenge(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
-    onClickRoutineDetail: () -> Unit,
+    onClickRoutineDetail: (RoutineDetailModel) -> Unit,
 ) {
     Column {
         RoutineTitleContent(
@@ -198,7 +202,17 @@ fun ProgressChallenge(
         ) {
             ChallengeRoutineBox(
                 challengeModel = memberChallenge,
-                onClickDetailAction = onClickRoutineDetail
+                onClickDetailAction = {
+                    onClickRoutineDetail(
+                        RoutineDetailModel(
+                            routineType = RoutineType.Challenge,
+                            content = memberChallenge.content,
+                            explainDetail = memberChallenge.description,
+                            time = memberChallenge.timeTaken,
+                            place = memberChallenge.place
+                        )
+                    )
+                }
             )
         }
 
@@ -209,7 +223,7 @@ fun ProgressChallenge(
 @Composable
 fun ProgressDailyRoutine(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
-    onClickRoutineDetail: () -> Unit,
+    onClickRoutineDetail: (RoutineDetailModel) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -251,7 +265,14 @@ fun ProgressDailyRoutine(
                     themeItem.routines.forEach { routineItem ->
                         MemberDailyRoutineListItem(
                             routineContent = routineItem.content,
-                            onClickDetailAction = onClickRoutineDetail
+                            onClickDetailAction = {
+                                onClickRoutineDetail(
+                                    RoutineDetailModel(
+                                        routineType = RoutineType.Daily,
+                                        content = routineItem.content
+                                    )
+                                )
+                            }
                         )
                     }
                 }
