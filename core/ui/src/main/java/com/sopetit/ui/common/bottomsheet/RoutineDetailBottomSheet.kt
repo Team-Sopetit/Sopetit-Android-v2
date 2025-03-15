@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sopetit.design_system.Delete
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray300
@@ -27,14 +28,22 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.Red200
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.enums.RoutineType
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 
 @Composable
-fun RoutineDetailBottomSheet() {
-    RoutineDetailContent()
+fun RoutineDetailBottomSheet(
+    routine: RoutineDetailModel,
+) {
+    RoutineDetailContent(
+        routine = routine
+    )
 }
 
 @Composable
-fun RoutineDetailContent() {
+fun RoutineDetailContent(
+    routine: RoutineDetailModel = RoutineDetailModel(),
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,23 +52,33 @@ fun RoutineDetailContent() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "챌린지",
+            text = routine.routineType.typeName,
             color = Gray700,
             style = SoftieTypo.head4,
             modifier = Modifier
                 .padding(top = 24.dp)
         )
 
-        RoutineDetailTitleBox()
+        RoutineDetailTitleBox(
+            content = routine.content
+        )
 
-        ChallengeRoutineDetail()
+        if (routine.routineType == RoutineType.Challenge) {
+            ChallengeRoutineDetail(
+                explainDetail = routine.explainDetail,
+                time = routine.time,
+                place = routine.place
+            )
+        }
 
         RoutineDeleteBtn()
     }
 }
 
 @Composable
-fun RoutineDetailTitleBox() {
+fun RoutineDetailTitleBox(
+    content: String,
+) {
     Box(
         modifier = Modifier
             .padding(vertical = 16.dp)
@@ -69,7 +88,7 @@ fun RoutineDetailTitleBox() {
             .border(width = 1.dp, color = Gray300, shape = RoundedCornerShape(10.dp))
     ) {
         Text(
-            text = "일어나면 5분 안에 이불 개기",
+            text = content,
             color = Gray700,
             style = SoftieTypo.body1,
             modifier = Modifier
@@ -80,10 +99,14 @@ fun RoutineDetailTitleBox() {
 }
 
 @Composable
-fun ChallengeRoutineDetail() {
+fun ChallengeRoutineDetail(
+    explainDetail: String,
+    time: String,
+    place: String,
+) {
     Column {
         Text(
-            text = "평소에 바빠서 연락하지 못한 사람이 있다면 안부인사 개인톡을 보내 봐. 꼭 만나서 밥을 먹거나 하지 않아도 연락 한 통이 나와 그 사람을 연결하는 방법이 될 수 있어",
+            text = explainDetail,
             color = Gray500,
             style = SoftieTypo.body2,
         )
@@ -102,7 +125,7 @@ fun ChallengeRoutineDetail() {
 
 
             Text(
-                text = "5~10분",
+                text = time,
                 color = Gray500,
                 style = SoftieTypo.caption1,
                 modifier = Modifier.padding(start = 6.dp)
@@ -121,7 +144,7 @@ fun ChallengeRoutineDetail() {
             )
 
             Text(
-                text = "회사 옥상, 점심식사 후 돌아가는 길",
+                text = place,
                 color = Gray500,
                 style = SoftieTypo.caption1,
                 modifier = Modifier.padding(start = 6.dp)
@@ -155,7 +178,7 @@ fun RoutineDeleteBtn() {
             )
 
             Text(
-                text = "삭제하기",
+                text = Delete,
                 color = Gray0,
                 style = SoftieTypo.body1,
                 modifier = Modifier.padding(start = 4.dp)
