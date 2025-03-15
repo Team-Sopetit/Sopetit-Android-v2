@@ -57,4 +57,12 @@ class MainViewModel @Inject constructor(
             )
         )
     }
+
+    fun setRoutineDetail() {
+        updateState(
+            uiState.value.copy(
+                bottomSheetType = BottomSheetType.ROUTINE
+            )
+        )
+    }
 }

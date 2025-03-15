@@ -37,7 +37,7 @@ fun NavGraphBuilder.splashNavGraph(
 
 fun NavGraphBuilder.logInNavGraph(
     navController: NavHostController,
-    setTutorialValid: (Boolean) -> Unit
+    setTutorialValid: (Boolean) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.LogInScreen.route,
@@ -169,13 +169,16 @@ fun NavGraphBuilder.achieveNavGraph(
 
 fun NavGraphBuilder.progressNavGraph(
     navController: NavHostController,
+    showRoutineBottomSheet: () -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
         route = NavRoutes.ProgressGraph.route
     ) {
         composable(NavRoutes.ProgressScreen.route) {
-            ProgressScreen()
+            ProgressScreen(
+                showRoutineBottomSheet = showRoutineBottomSheet
+            )
         }
     }
 }

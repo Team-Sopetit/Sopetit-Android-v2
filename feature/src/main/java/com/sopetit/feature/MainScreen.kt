@@ -47,6 +47,7 @@ import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.progressNavGraph
 import com.sopetit.navigation.splashNavGraph
+import com.sopetit.ui.common.bottomsheet.RoutineDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
 import com.sopetit.ui.common.item.CommonSnackBar
 import com.sopetit.ui.common.type.BottomSheetType
@@ -83,6 +84,10 @@ fun MainScreen() {
     }
     val showTutorialBottomSheet: (List<TutorialModel>) -> Unit = { tutorials ->
         viewModel.setTutorials(tutorials)
+        scope.launch { sheetState.show() }
+    }
+    val showRoutineBottomSheet: () -> Unit = {
+        viewModel.setRoutineDetail()
         scope.launch { sheetState.show() }
     }
 
@@ -135,6 +140,10 @@ fun MainScreen() {
                                     }
                                 }
                             )
+                        }
+
+                        BottomSheetType.ROUTINE -> {
+                            RoutineDetailBottomSheet()
                         }
 
                         BottomSheetType.DEFAULT -> {}
@@ -199,7 +208,8 @@ fun MainScreen() {
                             isTutorialValid = viewModel.isTutorialValid
                         )
                         progressNavGraph(
-                            navController = navController
+                            navController = navController,
+                            showRoutineBottomSheet = showRoutineBottomSheet
                         )
                         achieveNavGraph(
                             navController = navController

@@ -2,6 +2,8 @@ package com.sopetit.progress
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +24,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,10 +60,13 @@ import com.sopetit.ui.common.type.ThemeIconType
 import org.threeten.bp.LocalDate
 
 @Composable
-fun ProgressScreen() {
+fun ProgressScreen(
+    showRoutineBottomSheet: () -> Unit = {},
+) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
     val uiState: ProgressPageState by viewModel.uiState.collectAsStateWithLifecycle()
+    val interactionSource = remember { MutableInteractionSource() }
 
     val today = LocalDate.now()
 
@@ -69,7 +75,9 @@ fun ProgressScreen() {
         todayMonth = today.monthValue,
         todayDay = today.dayOfMonth,
         memberChallenge = uiState.memberChallenge,
-        memberDailyRoutineList = uiState.memberDailyRoutineList
+        memberDailyRoutineList = uiState.memberDailyRoutineList,
+        onClickRoutineQuestion = { showRoutineBottomSheet() },
+        interactionSource = interactionSource
     )
 }
 
@@ -80,6 +88,8 @@ fun ProgressContent(
     todayDay: Int = 0,
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
+    onClickRoutineQuestion: () -> Unit = {},
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
         modifier = Modifier
@@ -101,7 +111,9 @@ fun ProgressContent(
         ) {
             ProgressRoutineContent(
                 memberChallenge = memberChallenge,
-                memberDailyRoutineList = memberDailyRoutineList
+                memberDailyRoutineList = memberDailyRoutineList,
+                interactionSource = interactionSource,
+                onClickRoutineQuestion = onClickRoutineQuestion
             )
         }
     }
@@ -111,11 +123,15 @@ fun ProgressContent(
 fun ProgressRoutineContent(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
+    onClickRoutineQuestion: () -> Unit,
+    interactionSource: MutableInteractionSource,
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
-        Box(modifier = Modifier
-            .wrapContentSize()
-            .padding(top = 150.dp)) {
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(top = 150.dp)
+        ) {
             EmptyRoutineScreen(
                 titleContent = ProgressEmptyTitle,
                 titleColor = Gray500,
@@ -133,7 +149,9 @@ fun ProgressRoutineContent(
     } else {
         if (memberChallenge.memberChallengeId != -1) {
             ProgressChallenge(
-                memberChallenge = memberChallenge
+                memberChallenge = memberChallenge,
+                interactionSource = interactionSource,
+                onClickRoutineQuestion = onClickRoutineQuestion
             )
         } else {
             ProgressChallengeEmptyRoutine()
@@ -141,7 +159,9 @@ fun ProgressRoutineContent(
 
         if (memberDailyRoutineList.isNotEmpty()) {
             ProgressDailyRoutine(
-                memberDailyRoutineList = memberDailyRoutineList
+                memberDailyRoutineList = memberDailyRoutineList,
+                interactionSource = interactionSource,
+                onClickRoutineQuestion = onClickRoutineQuestion
             )
         } else {
             Box(
@@ -170,9 +190,15 @@ fun ProgressRoutineContent(
 @Composable
 fun ProgressChallenge(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
+    onClickRoutineQuestion: () -> Unit,
+    interactionSource: MutableInteractionSource,
 ) {
     Column {
-        RoutineTitleContent(title = ProgressChallengeTitle)
+        RoutineTitleContent(
+            title = ProgressChallengeTitle,
+            interactionSource = interactionSource,
+            onClickRoutineQuestion = onClickRoutineQuestion
+        )
 
         Box(
             modifier = Modifier
@@ -188,12 +214,18 @@ fun ProgressChallenge(
 @Composable
 fun ProgressDailyRoutine(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
+    onClickRoutineQuestion: () -> Unit,
+    interactionSource: MutableInteractionSource,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        RoutineTitleContent(title = ProgressDailyTitle)
+        RoutineTitleContent(
+            title = ProgressDailyTitle,
+            onClickRoutineQuestion = onClickRoutineQuestion,
+            interactionSource = interactionSource
+        )
 
         LazyColumn(
             modifier = Modifier
@@ -276,6 +308,8 @@ fun ProgressChallengeEmptyRoutine() {
 @Composable
 fun RoutineTitleContent(
     title: String,
+    onClickRoutineQuestion: () -> Unit,
+    interactionSource: MutableInteractionSource,
 ) {
     Box(
         modifier = Modifier
@@ -299,6 +333,11 @@ fun RoutineTitleContent(
                 .size(20.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .background(Gray200)
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource,
+                    onClick = { onClickRoutineQuestion() }
+                )
         ) {
             Text(
                 text = Question,
