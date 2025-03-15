@@ -1,6 +1,7 @@
 package com.sopetit.feature
 
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.ui.base.BaseViewModel
@@ -58,9 +59,10 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    fun setRoutineDetail() {
+    fun setRoutineDetail(routine: RoutineDetailModel) {
         updateState(
             uiState.value.copy(
+                routineDetail = routine,
                 bottomSheetType = BottomSheetType.ROUTINE
             )
         )

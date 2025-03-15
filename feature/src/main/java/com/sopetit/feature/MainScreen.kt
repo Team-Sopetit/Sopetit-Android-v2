@@ -38,6 +38,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.sopetit.design_system.Gray0
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.feature.component.BottomNavBar
 import com.sopetit.navigation.NavRoutes
@@ -86,8 +87,8 @@ fun MainScreen() {
         viewModel.setTutorials(tutorials)
         scope.launch { sheetState.show() }
     }
-    val showRoutineBottomSheet: () -> Unit = {
-        viewModel.setRoutineDetail()
+    val showRoutineBottomSheet: (RoutineDetailModel) -> Unit = { routine ->
+        viewModel.setRoutineDetail(routine)
         scope.launch { sheetState.show() }
     }
 
@@ -143,7 +144,9 @@ fun MainScreen() {
                         }
 
                         BottomSheetType.ROUTINE -> {
-                            RoutineDetailBottomSheet()
+                            RoutineDetailBottomSheet(
+                                routine = uiState.routineDetail
+                            )
                         }
 
                         BottomSheetType.DEFAULT -> {}

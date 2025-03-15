@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sopetit.achieve.AchieveScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.home.HomeScreen
 import com.sopetit.login.LogInScreen
@@ -169,7 +170,7 @@ fun NavGraphBuilder.achieveNavGraph(
 
 fun NavGraphBuilder.progressNavGraph(
     navController: NavHostController,
-    showRoutineBottomSheet: () -> Unit,
+    showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
