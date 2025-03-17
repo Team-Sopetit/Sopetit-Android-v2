@@ -3,10 +3,12 @@ package com.sopetit.progress
 import androidx.lifecycle.viewModelScope
 import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
+import com.sopetit.domain.entity.response.memberroutine.AchieveDailyRoutineModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineTotalModel
 import com.sopetit.domain.usecase.memberchallenge.AchieveMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.DeleteMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.GetMemberChallengeUseCase
+import com.sopetit.domain.usecase.memberroutine.AchieveDailyRoutineUseCase
 import com.sopetit.domain.usecase.memberroutine.DeleteMemberDailyRoutineUseCase
 import com.sopetit.domain.usecase.memberroutine.GetMemberDailyRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
@@ -21,6 +23,7 @@ class ProgressViewModel @Inject constructor(
     private val deleteMemberDailyRoutineUseCase: DeleteMemberDailyRoutineUseCase,
     private val deleteMemberChallengeUseCase: DeleteMemberChallengeUseCase,
     private val achieveMemberChallengeUseCase: AchieveMemberChallengeUseCase,
+    private val achieveDailyRoutineUseCase: AchieveDailyRoutineUseCase
 ) : BaseViewModel<ProgressPageState>(
     ProgressPageState()
 ) {
@@ -97,9 +100,21 @@ class ProgressViewModel @Inject constructor(
         }
     }
 
-    fun achieveDailyRoutine() {
+    fun achieveDailyRoutine(routineId: Int) {
         viewModelScope.launch {
-            //
+            achieveDailyRoutineUseCase(request = routineId).collect {
+                resultResponse(it, ::onSuccessAchieveMemberDailyRoutine)
+            }
         }
+    }
+
+    private fun onSuccessAchieveMemberDailyRoutine(data: AchieveDailyRoutineModel) {
+        updateState(
+            uiState.value.copy(
+                memberAchieveDailyRoutine = data
+            )
+        )
+
+        initGetMemberDailyRoutine()
     }
 }

@@ -106,8 +106,8 @@ fun ProgressScreen(
         onClickChallengeAchieveBtn = {
             viewModel.achieveChallengeRoutine()
         },
-        onClickDailyAchieve = {
-            viewModel.achieveDailyRoutine()
+        onClickDailyAchieve = { routineId ->
+            viewModel.achieveDailyRoutine(routineId)
         }
     )
 }
@@ -121,7 +121,7 @@ fun ProgressContent(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit = {},
     onClickChallengeAchieveBtn: () -> Unit = {},
-    onClickDailyAchieve:() -> Unit = {},
+    onClickDailyAchieve:(Int) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
@@ -159,7 +159,7 @@ fun ProgressRoutineContent(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickChallengeAchieveBtn: () -> Unit = {},
-    onClickDailyAchieve:() -> Unit
+    onClickDailyAchieve:(Int) -> Unit
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
         Box(
@@ -263,7 +263,7 @@ fun ProgressChallenge(
 fun ProgressDailyRoutine(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
-    onClickDailyAchieve:() -> Unit
+    onClickDailyAchieve:(Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -315,7 +315,7 @@ fun ProgressDailyRoutine(
                                     )
                                 )
                             },
-                            onClickDailyAchieve = { onClickDailyAchieve() }
+                            onClickDailyAchieve = { onClickDailyAchieve(routineItem.routineId) }
                         )
                     }
                 }
