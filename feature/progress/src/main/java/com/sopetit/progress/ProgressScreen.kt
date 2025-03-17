@@ -61,12 +61,11 @@ import com.sopetit.ui.common.item.MemberDailyRoutineListItem
 import com.sopetit.ui.common.type.ThemeIconType
 import kotlinx.coroutines.flow.SharedFlow
 import org.threeten.bp.LocalDate
-import timber.log.Timber
 
 @Composable
 fun ProgressScreen(
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit = {},
-    deleteRoutineId: SharedFlow<Int?>,
+    deleteRoutineId: SharedFlow<Int>,
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -77,7 +76,7 @@ fun ProgressScreen(
 
     LaunchedEffect(deleteRoutineId) {
         deleteRoutineId.collect {
-            Timber.d("[삭제할 id] $it")
+            viewModel.deleteDailyRoutine(it)
         }
     }
 

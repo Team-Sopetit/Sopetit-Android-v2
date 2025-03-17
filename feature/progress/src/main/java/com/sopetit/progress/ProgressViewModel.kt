@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineTotalModel
 import com.sopetit.domain.usecase.memberchallenge.GetMemberChallengeUseCase
+import com.sopetit.domain.usecase.memberroutine.DeleteMemberDailyRoutineUseCase
 import com.sopetit.domain.usecase.memberroutine.GetMemberDailyRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +15,7 @@ import javax.inject.Inject
 class ProgressViewModel @Inject constructor(
     private val getMemberDailyRoutineUseCase: GetMemberDailyRoutineUseCase,
     private val getMemberChallengeUseCase: GetMemberChallengeUseCase,
+    private val deleteMemberDailyRoutineUseCase: DeleteMemberDailyRoutineUseCase,
 ) : BaseViewModel<ProgressPageState>(
     ProgressPageState()
 ) {
@@ -53,5 +55,17 @@ class ProgressViewModel @Inject constructor(
                 memberDailyRoutineList = data.routines
             )
         )
+    }
+
+    fun deleteDailyRoutine(routineId: Int) {
+        viewModelScope.launch {
+            deleteMemberDailyRoutineUseCase(
+                request = listOf(routineId)
+            ).collect {
+                resultResponse(it, {
+                    initGetMemberDailyRoutine()
+                })
+            }
+        }
     }
 }
