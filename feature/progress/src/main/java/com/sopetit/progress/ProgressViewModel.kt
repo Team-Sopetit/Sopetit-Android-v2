@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineTotalModel
+import com.sopetit.domain.usecase.memberchallenge.AchieveMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.DeleteMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.GetMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberroutine.DeleteMemberDailyRoutineUseCase
@@ -11,7 +12,6 @@ import com.sopetit.domain.usecase.memberroutine.GetMemberDailyRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +20,7 @@ class ProgressViewModel @Inject constructor(
     private val getMemberChallengeUseCase: GetMemberChallengeUseCase,
     private val deleteMemberDailyRoutineUseCase: DeleteMemberDailyRoutineUseCase,
     private val deleteMemberChallengeUseCase: DeleteMemberChallengeUseCase,
+    private val achieveMemberChallengeUseCase: AchieveMemberChallengeUseCase,
 ) : BaseViewModel<ProgressPageState>(
     ProgressPageState()
 ) {
@@ -72,9 +73,7 @@ class ProgressViewModel @Inject constructor(
             deleteMemberDailyRoutineUseCase(
                 request = listOf(routineId)
             ).collect {
-                resultResponse(it, {
-                    initGetMemberDailyRoutine()
-                })
+                resultResponse(it, { initGetMemberDailyRoutine() })
             }
         }
     }
@@ -82,14 +81,16 @@ class ProgressViewModel @Inject constructor(
     private fun deleteChallengeRoutine() {
         viewModelScope.launch {
             deleteMemberChallengeUseCase(request = Unit).collect {
-                resultResponse(it, {
-                    initGetMemberChallenge()
-                })
+                resultResponse(it, { initGetMemberChallenge() })
             }
         }
     }
 
     fun achieveChallengeRoutine() {
-        Timber.d("[테스트] 챌린지 달성")
+        viewModelScope.launch {
+            achieveMemberChallengeUseCase(request = Unit).collect {
+                resultResponse(it, { initGetMemberChallenge() })
+            }
+        }
     }
 }
