@@ -68,4 +68,12 @@ class MainViewModel @Inject constructor(
             )
         )
     }
+
+    fun updateChallengeAchieve(isValid: Boolean) {
+        updateState(
+            uiState.value.copy(
+                isChallengeAchieveShowValid = isValid
+            )
+        )
+    }
 }

@@ -9,5 +9,6 @@ data class MainPageState(
     val bottomNavType: BottomNavType = BottomNavType.DEFAULT,
     val bottomSheetType: BottomSheetType = BottomSheetType.DEFAULT,
     val tutorials: List<TutorialModel> = emptyList(),
-    val routineDetail: RoutineDetailModel = RoutineDetailModel()
+    val routineDetail: RoutineDetailModel = RoutineDetailModel(),
+    val isChallengeAchieveShowValid: Boolean = false,
 ) : PageState

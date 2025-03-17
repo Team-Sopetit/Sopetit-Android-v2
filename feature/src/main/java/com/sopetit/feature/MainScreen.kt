@@ -11,6 +11,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -36,7 +37,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sopetit.design_system.Gray0
+import com.sopetit.design_system.Gray1000
+import com.sopetit.design_system.R
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -219,13 +226,33 @@ fun MainScreen() {
                         progressNavGraph(
                             navController = navController,
                             showRoutineBottomSheet = showRoutineBottomSheet,
-                            deleteRoutineId = viewModel.deleteRoutineId
+                            deleteRoutineId = viewModel.deleteRoutineId,
+                            showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) }
                         )
                         achieveNavGraph(
                             navController = navController
                         )
                     }
                 }
+            }
+        }
+
+        if (uiState.isChallengeAchieveShowValid) {
+            val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.happy_complete_som))
+            val progress by animateLottieCompositionAsState(composition = composition)
+
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .background(Gray1000)) {
+                LottieAnimation(
+                    composition = composition,
+                    progress = {
+                        if (progress >= 1.0f) viewModel.updateChallengeAchieve(false)
+
+                        progress
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }
