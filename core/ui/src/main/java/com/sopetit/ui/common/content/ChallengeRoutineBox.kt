@@ -37,13 +37,15 @@ import com.sopetit.ui.common.type.ThemeIconType
 fun ChallengeRoutineBox(
     challengeModel: MemberChallengeModel,
     onClickDetailAction: () -> Unit,
+    onClickAchievement: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     ChallengeRoutineContent(
         challengeModel = challengeModel,
         onClickRoutineDetail = { onClickDetailAction() },
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
+        onClickAchievement = onClickAchievement
     )
 }
 
@@ -52,6 +54,7 @@ fun ChallengeRoutineContent(
     challengeModel: MemberChallengeModel = MemberChallengeModel(),
     onClickRoutineDetail: () -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    onClickAchievement: () -> Unit = {},
 ) {
     val themeType: ThemeIconType = ThemeIconType.mapThemeIconType(challengeModel.theme.themeId)
 
@@ -118,6 +121,11 @@ fun ChallengeRoutineContent(
                     .wrapContentSize()
                     .clip(RoundedCornerShape(100.dp))
                     .background(Gray650)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = { onClickAchievement() }
+                    )
             ) {
                 Text(
                     text = Complete,

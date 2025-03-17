@@ -89,7 +89,10 @@ fun ProgressScreen(
         onClickRoutineDetail = { routine ->
             showRoutineBottomSheet(routine)
         },
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
+        onClickChallengeAchieveBtn = {
+            viewModel.achieveChallengeRoutine()
+        }
     )
 }
 
@@ -101,6 +104,7 @@ fun ProgressContent(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit = {},
+    onClickChallengeAchieveBtn: () -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
@@ -124,7 +128,8 @@ fun ProgressContent(
             ProgressRoutineContent(
                 memberChallenge = memberChallenge,
                 memberDailyRoutineList = memberDailyRoutineList,
-                onClickRoutineDetail = onClickRoutineDetail
+                onClickRoutineDetail = onClickRoutineDetail,
+                onClickChallengeAchieveBtn = onClickChallengeAchieveBtn
             )
         }
     }
@@ -135,6 +140,7 @@ fun ProgressRoutineContent(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
+    onClickChallengeAchieveBtn: () -> Unit = {}
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
         Box(
@@ -160,7 +166,8 @@ fun ProgressRoutineContent(
         if (memberChallenge.memberChallengeId != -1) {
             ProgressChallenge(
                 memberChallenge = memberChallenge,
-                onClickRoutineDetail = onClickRoutineDetail
+                onClickRoutineDetail = onClickRoutineDetail,
+                onClickAchievement = onClickChallengeAchieveBtn
             )
         } else {
             ProgressChallengeEmptyRoutine()
@@ -199,6 +206,7 @@ fun ProgressRoutineContent(
 fun ProgressChallenge(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
+    onClickAchievement: () -> Unit = {},
 ) {
     Column {
         RoutineTitleContent(
@@ -222,7 +230,8 @@ fun ProgressChallenge(
                             place = memberChallenge.place
                         )
                     )
-                }
+                },
+                onClickAchievement = onClickAchievement
             )
         }
 

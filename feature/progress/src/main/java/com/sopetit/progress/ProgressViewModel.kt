@@ -11,6 +11,7 @@ import com.sopetit.domain.usecase.memberroutine.GetMemberDailyRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -86,5 +87,9 @@ class ProgressViewModel @Inject constructor(
                 })
             }
         }
+    }
+
+    fun achieveChallengeRoutine() {
+        Timber.d("[테스트] 챌린지 달성")
     }
 }
