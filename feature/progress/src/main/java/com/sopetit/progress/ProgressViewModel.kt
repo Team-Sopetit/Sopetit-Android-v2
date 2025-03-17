@@ -89,8 +89,19 @@ class ProgressViewModel @Inject constructor(
     fun achieveChallengeRoutine() {
         viewModelScope.launch {
             achieveMemberChallengeUseCase(request = Unit).collect {
-                resultResponse(it, { initGetMemberChallenge() })
+                resultResponse(it, {
+                    initGetMemberChallenge()
+                    updateChallengeAchieve(isValid = true)
+                })
             }
         }
+    }
+
+    fun updateChallengeAchieve(isValid: Boolean) {
+        updateState(
+            uiState.value.copy(
+                isChallengeAchieveShowValid = isValid
+            )
+        )
     }
 }

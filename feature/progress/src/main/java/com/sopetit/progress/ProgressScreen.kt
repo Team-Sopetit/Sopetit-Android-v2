@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +34,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sopetit.design_system.Gray0
+import com.sopetit.design_system.Gray1000
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray50
@@ -73,6 +79,8 @@ fun ProgressScreen(
     val interactionSource = remember { MutableInteractionSource() }
 
     val today = LocalDate.now()
+//    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.happy_complete_som))
+//    val progress by animateLottieCompositionAsState(composition = composition)
 
     LaunchedEffect(deleteRoutineId) {
         deleteRoutineId.collect {
@@ -94,6 +102,25 @@ fun ProgressScreen(
             viewModel.achieveChallengeRoutine()
         }
     )
+
+    if (uiState.isChallengeAchieveShowValid) {
+        val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.happy_complete_som))
+        val progress by animateLottieCompositionAsState(composition = composition)
+
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(Gray1000)) {
+            LottieAnimation(
+                composition = composition,
+                progress = {
+                    if (progress >= 1.0f) viewModel.updateChallengeAchieve(false)
+
+                    progress
+                },
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
 }
 
 @Composable
@@ -140,7 +167,7 @@ fun ProgressRoutineContent(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
-    onClickChallengeAchieveBtn: () -> Unit = {}
+    onClickChallengeAchieveBtn: () -> Unit = {},
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
         Box(

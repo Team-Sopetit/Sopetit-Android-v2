@@ -7,4 +7,5 @@ import com.sopetit.ui.base.PageState
 data class ProgressPageState(
     val memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     val memberChallenge: MemberChallengeModel = MemberChallengeModel(),
+    val isChallengeAchieveShowValid: Boolean = false,
 ) : PageState
