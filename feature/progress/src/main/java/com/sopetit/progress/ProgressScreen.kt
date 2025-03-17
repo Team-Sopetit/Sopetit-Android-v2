@@ -65,7 +65,7 @@ import org.threeten.bp.LocalDate
 @Composable
 fun ProgressScreen(
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit = {},
-    deleteRoutineId: SharedFlow<Int>,
+    deleteRoutineId: SharedFlow<RoutineDetailModel>,
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -76,7 +76,7 @@ fun ProgressScreen(
 
     LaunchedEffect(deleteRoutineId) {
         deleteRoutineId.collect {
-            viewModel.deleteDailyRoutine(it)
+            viewModel.deleteRoutine(it.routineType, it.routineId)
         }
     }
 

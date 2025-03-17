@@ -37,7 +37,7 @@ import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 @Composable
 fun RoutineDetailBottomSheet(
     routine: RoutineDetailModel,
-    onClickRoutineDeleteBtn: (Int) -> Unit = {},
+    onClickRoutineDeleteBtn: (RoutineDetailModel) -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -51,7 +51,7 @@ fun RoutineDetailBottomSheet(
 @Composable
 fun RoutineDetailContent(
     routine: RoutineDetailModel = RoutineDetailModel(),
-    onClickDeleteBtnAction: (Int) -> Unit = {},
+    onClickDeleteBtnAction: (RoutineDetailModel) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
@@ -83,7 +83,7 @@ fun RoutineDetailContent(
 
         RoutineDeleteBtn(
             interactionSource = interactionSource,
-            onClickBtnAction = { onClickDeleteBtnAction(routine.routineId) }
+            onClickBtnAction = { onClickDeleteBtnAction(routine) }
         )
     }
 }

@@ -1,6 +1,7 @@
 package com.sopetit.progress
 
 import androidx.lifecycle.viewModelScope
+import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineTotalModel
 import com.sopetit.domain.usecase.memberchallenge.GetMemberChallengeUseCase
@@ -57,7 +58,22 @@ class ProgressViewModel @Inject constructor(
         )
     }
 
-    fun deleteDailyRoutine(routineId: Int) {
+    fun deleteRoutine(routineType: RoutineType, routineId: Int) {
+//        viewModelScope.launch {
+//            deleteMemberDailyRoutineUseCase(
+//                request = listOf(routineId)
+//            ).collect {
+//                resultResponse(it, {
+//                    if (routineType == RoutineType.Daily) initGetMemberDailyRoutine() else initGetMemberChallenge()
+//                })
+//            }
+//        }
+        if (routineType == RoutineType.Daily)
+            deleteDailyRoutine(routineId)
+        else deleteChallengeRoutine(routineId)
+    }
+
+    private fun deleteDailyRoutine(routineId: Int) {
         viewModelScope.launch {
             deleteMemberDailyRoutineUseCase(
                 request = listOf(routineId)
@@ -67,5 +83,9 @@ class ProgressViewModel @Inject constructor(
                 })
             }
         }
+    }
+
+    private fun deleteChallengeRoutine(routineId: Int) {
+        //
     }
 }

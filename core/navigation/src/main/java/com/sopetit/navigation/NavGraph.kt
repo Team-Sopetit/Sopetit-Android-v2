@@ -171,7 +171,7 @@ fun NavGraphBuilder.achieveNavGraph(
 fun NavGraphBuilder.progressNavGraph(
     navController: NavHostController,
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
-    deleteRoutineId: SharedFlow<Int>,
+    deleteRoutineId: SharedFlow<RoutineDetailModel>,
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,

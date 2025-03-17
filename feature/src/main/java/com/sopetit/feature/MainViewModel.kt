@@ -19,7 +19,7 @@ class MainViewModel @Inject constructor(
 
     val memberModel = MutableSharedFlow<CreateMemberModel>(replay = 1)
     val isTutorialValid = MutableSharedFlow<Boolean>(replay = 1)
-    val deleteRoutineId = MutableSharedFlow<Int>()
+    val deleteRoutineId = MutableSharedFlow<RoutineDetailModel>()
 
     fun setBottomNavType(route: String?) {
         val type = when (route) {
