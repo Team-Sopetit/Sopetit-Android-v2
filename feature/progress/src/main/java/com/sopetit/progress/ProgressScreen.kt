@@ -80,9 +80,13 @@ fun ProgressScreen(
             viewModel.deleteRoutine(it.routineType, it.routineId)
         }
     }
-    LaunchedEffect(viewModel.isChallengeAchieveShowValid) {
-        viewModel.isChallengeAchieveShowValid.collect {
-            showChallengeAchieveSom(it)
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is ProgressEvent.OnShowChallengeAchieveSom -> {
+                    showChallengeAchieveSom(true)
+                }
+            }
         }
     }
 

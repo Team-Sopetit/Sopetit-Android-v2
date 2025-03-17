@@ -11,7 +11,6 @@ import com.sopetit.domain.usecase.memberroutine.DeleteMemberDailyRoutineUseCase
 import com.sopetit.domain.usecase.memberroutine.GetMemberDailyRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,8 +24,6 @@ class ProgressViewModel @Inject constructor(
 ) : BaseViewModel<ProgressPageState>(
     ProgressPageState()
 ) {
-
-    val isChallengeAchieveShowValid = MutableSharedFlow<Boolean>()
 
     init {
         initGetMemberChallenge()
@@ -95,7 +92,7 @@ class ProgressViewModel @Inject constructor(
                 resultResponse(it, {
                     initGetMemberChallenge()
                 })
-                isChallengeAchieveShowValid.emit(true)
+                emitEventFlow(ProgressEvent.OnShowChallengeAchieveSom)
             }
         }
     }
