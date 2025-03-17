@@ -80,7 +80,7 @@ fun MainScreen() {
     )
 
     val snackBarPadding = remember { mutableStateOf(0) }
-    val snackBarIcon = remember { mutableStateOf( R.drawable.ic_snackbar_caution) }
+    val snackBarIcon = remember { mutableStateOf(R.drawable.ic_snackbar_caution) }
     val showSnackBar: (String, Int, Int) -> Unit = { message, paddingBottom, icon ->
         scope.launch {
             val job = scope.launch {
@@ -239,6 +239,7 @@ fun MainScreen() {
                             showRoutineBottomSheet = showRoutineBottomSheet,
                             deleteRoutineId = viewModel.deleteRoutineId,
                             showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) },
+                            showChallengeDailySom = { viewModel.updateDailyAchieve(it) },
                             showSnackBar = showSnackBar
                         )
                         achieveNavGraph(
@@ -262,6 +263,27 @@ fun MainScreen() {
                     composition = composition,
                     progress = {
                         if (progress >= 1.0f) viewModel.updateChallengeAchieve(false)
+
+                        progress
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+
+        if (uiState.isDailyAchieveShowValid) {
+            val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.daily_complete_som))
+            val progress by animateLottieCompositionAsState(composition = composition)
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Gray1000)
+            ) {
+                LottieAnimation(
+                    composition = composition,
+                    progress = {
+                        if (progress >= 1.0f) viewModel.updateDailyAchieve(false)
 
                         progress
                     },

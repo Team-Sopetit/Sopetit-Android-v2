@@ -41,6 +41,7 @@ import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.MemberChallengeAchieve
+import com.sopetit.design_system.MemberDailyAchieve
 import com.sopetit.design_system.ProgressChallengeEmptyTitle
 import com.sopetit.design_system.ProgressChallengeTitle
 import com.sopetit.design_system.ProgressDailyEmptyTitle
@@ -68,6 +69,7 @@ fun ProgressScreen(
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit = {},
     deleteRoutineId: SharedFlow<RoutineDetailModel>,
     showChallengeAchieveSom: (Boolean) -> Unit = {},
+    showChallengeDailySom: (Boolean) -> Unit = {},
     showSnackBar: (String, Int, Int) -> Unit,
 ) {
 
@@ -88,6 +90,10 @@ fun ProgressScreen(
                 is ProgressEvent.OnShowChallengeAchieveSom -> {
                     showChallengeAchieveSom(true)
                     showSnackBar(MemberChallengeAchieve, 24, R.drawable.ic_som_rainbow)
+                }
+                is ProgressEvent.OnShowDailyAchieveSom -> {
+                    showChallengeDailySom(true)
+                    showSnackBar(MemberDailyAchieve, 24, R.drawable.ic_som)
                 }
             }
         }

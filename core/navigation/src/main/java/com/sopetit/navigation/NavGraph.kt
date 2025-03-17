@@ -173,6 +173,7 @@ fun NavGraphBuilder.progressNavGraph(
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
     deleteRoutineId: SharedFlow<RoutineDetailModel>,
     showChallengeAchieveSom: (Boolean) -> Unit,
+    showChallengeDailySom: (Boolean) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
 ) {
     navigation(
@@ -184,6 +185,7 @@ fun NavGraphBuilder.progressNavGraph(
                 showRoutineBottomSheet = showRoutineBottomSheet,
                 deleteRoutineId = deleteRoutineId,
                 showChallengeAchieveSom = showChallengeAchieveSom,
+                showChallengeDailySom = showChallengeDailySom,
                 showSnackBar = showSnackBar
             )
         }

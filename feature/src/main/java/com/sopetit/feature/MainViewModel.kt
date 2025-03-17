@@ -76,4 +76,12 @@ class MainViewModel @Inject constructor(
             )
         )
     }
+
+    fun updateDailyAchieve(isValid: Boolean) {
+        updateState(
+            uiState.value.copy(
+                isDailyAchieveShowValid = isValid
+            )
+        )
+    }
 }

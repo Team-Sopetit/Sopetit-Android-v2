@@ -116,5 +116,7 @@ class ProgressViewModel @Inject constructor(
         )
 
         initGetMemberDailyRoutine()
+
+        if (data.hasCotton) emitEventFlow(ProgressEvent.OnShowDailyAchieveSom)
     }
 }
