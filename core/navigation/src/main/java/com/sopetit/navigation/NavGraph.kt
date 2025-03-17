@@ -172,7 +172,8 @@ fun NavGraphBuilder.progressNavGraph(
     navController: NavHostController,
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
     deleteRoutineId: SharedFlow<RoutineDetailModel>,
-    showChallengeAchieveSom: (Boolean) -> Unit
+    showChallengeAchieveSom: (Boolean) -> Unit,
+    showSnackBar: (String) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
@@ -182,7 +183,8 @@ fun NavGraphBuilder.progressNavGraph(
             ProgressScreen(
                 showRoutineBottomSheet = showRoutineBottomSheet,
                 deleteRoutineId = deleteRoutineId,
-                showChallengeAchieveSom = showChallengeAchieveSom
+                showChallengeAchieveSom = showChallengeAchieveSom,
+                showSnackBar = showSnackBar
             )
         }
     }

@@ -40,6 +40,7 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.MemberChallengeAchieve
 import com.sopetit.design_system.ProgressChallengeEmptyTitle
 import com.sopetit.design_system.ProgressChallengeTitle
 import com.sopetit.design_system.ProgressDailyEmptyTitle
@@ -67,6 +68,7 @@ fun ProgressScreen(
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit = {},
     deleteRoutineId: SharedFlow<RoutineDetailModel>,
     showChallengeAchieveSom: (Boolean) -> Unit = {},
+    showSnackBar: (String) -> Unit,
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -85,6 +87,7 @@ fun ProgressScreen(
             when (event) {
                 is ProgressEvent.OnShowChallengeAchieveSom -> {
                     showChallengeAchieveSom(true)
+                    showSnackBar(MemberChallengeAchieve)
                 }
             }
         }

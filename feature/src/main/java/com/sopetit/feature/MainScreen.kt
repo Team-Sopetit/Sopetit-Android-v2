@@ -227,7 +227,8 @@ fun MainScreen() {
                             navController = navController,
                             showRoutineBottomSheet = showRoutineBottomSheet,
                             deleteRoutineId = viewModel.deleteRoutineId,
-                            showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) }
+                            showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) },
+                            showSnackBar = showSnackBar
                         )
                         achieveNavGraph(
                             navController = navController
@@ -241,9 +242,11 @@ fun MainScreen() {
             val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.happy_complete_som))
             val progress by animateLottieCompositionAsState(composition = composition)
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(Gray1000)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Gray1000)
+            ) {
                 LottieAnimation(
                     composition = composition,
                     progress = {
