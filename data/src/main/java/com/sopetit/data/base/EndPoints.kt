@@ -22,6 +22,8 @@ object EndPoints {
     object MemberRoutine {
         const val MEMBERROUTINE = "/api/v1/routines/daily/member"
         const val MEMBERROUTINE2 = "/api/v2/routines/daily/member"
+
+        const val ROUTINEACHIEVE = "$MEMBERROUTINE/routine/{routineId}"
     }
 
     object MemberChallenge {
