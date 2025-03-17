@@ -42,6 +42,8 @@ import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.MemberChallengeAchieve
 import com.sopetit.design_system.MemberDailyAchieve
+import com.sopetit.design_system.MemberDailyAchieveCancel
+import com.sopetit.design_system.MemberDailyAchieveHasSomFalse
 import com.sopetit.design_system.ProgressChallengeEmptyTitle
 import com.sopetit.design_system.ProgressChallengeTitle
 import com.sopetit.design_system.ProgressDailyEmptyTitle
@@ -91,9 +93,18 @@ fun ProgressScreen(
                     showChallengeAchieveSom(true)
                     showSnackBar(MemberChallengeAchieve, 24, R.drawable.ic_som_rainbow)
                 }
+
                 is ProgressEvent.OnShowDailyAchieveSom -> {
                     showChallengeDailySom(true)
                     showSnackBar(MemberDailyAchieve, 24, R.drawable.ic_som)
+                }
+
+                is ProgressEvent.OnShowDailyAchieveHasSomFalse -> {
+                    showSnackBar(MemberDailyAchieveHasSomFalse, 24, R.drawable.ic_snackbar_caution)
+                }
+
+                is ProgressEvent.OnShowDailyAchieveCancel -> {
+                    showSnackBar(MemberDailyAchieveCancel, 24, R.drawable.ic_toast_check)
                 }
             }
         }
@@ -127,7 +138,7 @@ fun ProgressContent(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit = {},
     onClickChallengeAchieveBtn: () -> Unit = {},
-    onClickDailyAchieve:(Int) -> Unit = {},
+    onClickDailyAchieve: (Int) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
@@ -165,7 +176,7 @@ fun ProgressRoutineContent(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickChallengeAchieveBtn: () -> Unit = {},
-    onClickDailyAchieve:(Int) -> Unit
+    onClickDailyAchieve: (Int) -> Unit,
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
         Box(
@@ -269,7 +280,7 @@ fun ProgressChallenge(
 fun ProgressDailyRoutine(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
-    onClickDailyAchieve:(Int) -> Unit
+    onClickDailyAchieve: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier

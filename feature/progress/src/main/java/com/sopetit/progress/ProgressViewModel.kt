@@ -117,6 +117,13 @@ class ProgressViewModel @Inject constructor(
 
         initGetMemberDailyRoutine()
 
-        if (data.hasCotton) emitEventFlow(ProgressEvent.OnShowDailyAchieveSom)
+        checkDailyAchieveResult(data.isAchieve, data.hasCotton)
+    }
+
+    private fun checkDailyAchieveResult(isAchieve: Boolean, hasCotton: Boolean) {
+        if (isAchieve) {
+            if (hasCotton) emitEventFlow(ProgressEvent.OnShowDailyAchieveSom)
+            else emitEventFlow(ProgressEvent.OnShowDailyAchieveHasSomFalse)
+        } else emitEventFlow(ProgressEvent.OnShowDailyAchieveCancel)
     }
 }
