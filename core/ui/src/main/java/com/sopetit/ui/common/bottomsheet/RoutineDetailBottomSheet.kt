@@ -3,6 +3,8 @@ package com.sopetit.ui.common.bottomsheet
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,15 +37,22 @@ import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 @Composable
 fun RoutineDetailBottomSheet(
     routine: RoutineDetailModel,
+    onClickRoutineDeleteBtn: (Int) -> Unit = {},
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     RoutineDetailContent(
-        routine = routine
+        routine = routine,
+        onClickDeleteBtnAction = onClickRoutineDeleteBtn,
+        interactionSource = interactionSource
     )
 }
 
 @Composable
 fun RoutineDetailContent(
     routine: RoutineDetailModel = RoutineDetailModel(),
+    onClickDeleteBtnAction: (Int) -> Unit = {},
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
         modifier = Modifier
@@ -71,7 +81,10 @@ fun RoutineDetailContent(
             )
         }
 
-        RoutineDeleteBtn()
+        RoutineDeleteBtn(
+            interactionSource = interactionSource,
+            onClickBtnAction = { onClickDeleteBtnAction(routine.routineId) }
+        )
     }
 }
 
@@ -155,13 +168,21 @@ fun ChallengeRoutineDetail(
 }
 
 @Composable
-fun RoutineDeleteBtn() {
+fun RoutineDeleteBtn(
+    onClickBtnAction: () -> Unit = {},
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
+) {
     Box(
         modifier = Modifier
             .padding(vertical = 32.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
-            .background(Red200),
+            .background(Red200)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = { onClickBtnAction() }
+            ),
     ) {
         Row(
             modifier = Modifier

@@ -171,6 +171,7 @@ fun NavGraphBuilder.achieveNavGraph(
 fun NavGraphBuilder.progressNavGraph(
     navController: NavHostController,
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    deleteRoutineId: SharedFlow<Int?>,
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
@@ -178,7 +179,8 @@ fun NavGraphBuilder.progressNavGraph(
     ) {
         composable(NavRoutes.ProgressScreen.route) {
             ProgressScreen(
-                showRoutineBottomSheet = showRoutineBottomSheet
+                showRoutineBottomSheet = showRoutineBottomSheet,
+                deleteRoutineId = deleteRoutineId
             )
         }
     }

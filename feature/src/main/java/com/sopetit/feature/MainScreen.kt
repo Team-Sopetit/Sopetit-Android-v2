@@ -145,7 +145,13 @@ fun MainScreen() {
 
                         BottomSheetType.ROUTINE -> {
                             RoutineDetailBottomSheet(
-                                routine = uiState.routineDetail
+                                routine = uiState.routineDetail,
+                                onClickRoutineDeleteBtn = {
+                                    scope.launch {
+                                        viewModel.deleteRoutineId.emit(it)
+                                        sheetState.hide()
+                                    }
+                                }
                             )
                         }
 
@@ -212,7 +218,8 @@ fun MainScreen() {
                         )
                         progressNavGraph(
                             navController = navController,
-                            showRoutineBottomSheet = showRoutineBottomSheet
+                            showRoutineBottomSheet = showRoutineBottomSheet,
+                            deleteRoutineId = viewModel.deleteRoutineId
                         )
                         achieveNavGraph(
                             navController = navController

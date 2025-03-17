@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -58,11 +59,14 @@ import com.sopetit.ui.common.content.ChallengeRoutineBox
 import com.sopetit.ui.common.content.EmptyRoutineScreen
 import com.sopetit.ui.common.item.MemberDailyRoutineListItem
 import com.sopetit.ui.common.type.ThemeIconType
+import kotlinx.coroutines.flow.SharedFlow
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 
 @Composable
 fun ProgressScreen(
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit = {},
+    deleteRoutineId: SharedFlow<Int?>,
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -70,6 +74,12 @@ fun ProgressScreen(
     val interactionSource = remember { MutableInteractionSource() }
 
     val today = LocalDate.now()
+
+    LaunchedEffect(deleteRoutineId) {
+        deleteRoutineId.collect {
+            Timber.d("[삭제할 id] $it")
+        }
+    }
 
     ProgressContent(
         todayYear = today.year,
@@ -205,6 +215,7 @@ fun ProgressChallenge(
                 onClickDetailAction = {
                     onClickRoutineDetail(
                         RoutineDetailModel(
+                            routineId = memberChallenge.memberChallengeId,
                             routineType = RoutineType.Challenge,
                             content = memberChallenge.content,
                             explainDetail = memberChallenge.description,
@@ -268,6 +279,7 @@ fun ProgressDailyRoutine(
                             onClickDetailAction = {
                                 onClickRoutineDetail(
                                     RoutineDetailModel(
+                                        routineId = routineItem.routineId,
                                         routineType = RoutineType.Daily,
                                         content = routineItem.content
                                     )
