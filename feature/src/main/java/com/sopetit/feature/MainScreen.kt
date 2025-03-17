@@ -84,12 +84,12 @@ fun MainScreen() {
     val showSnackBar: (String, Int, Int) -> Unit = { message, paddingBottom, icon ->
         scope.launch {
             val job = scope.launch {
+                snackBarPadding.value = paddingBottom
+                snackBarIcon.value = icon
                 snackBarHost.showSnackbar(
                     message = message,
                     duration = SnackbarDuration.Indefinite
                 )
-                snackBarPadding.value = paddingBottom
-                snackBarIcon.value = icon
             }
             delay(1000L)
             job.cancel()
