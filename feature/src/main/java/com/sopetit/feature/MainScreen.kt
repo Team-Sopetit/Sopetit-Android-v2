@@ -27,6 +27,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -78,13 +79,17 @@ fun MainScreen() {
         skipHalfExpanded = true
     )
 
-    val showSnackBar: (String) -> Unit = { message ->
+    val snackBarPadding = remember { mutableStateOf(0) }
+    val snackBarIcon = remember { mutableStateOf( R.drawable.ic_snackbar_caution) }
+    val showSnackBar: (String, Int, Int) -> Unit = { message, paddingBottom, icon ->
         scope.launch {
             val job = scope.launch {
                 snackBarHost.showSnackbar(
                     message = message,
                     duration = SnackbarDuration.Indefinite
                 )
+                snackBarPadding.value = paddingBottom
+                snackBarIcon.value = icon
             }
             delay(1000L)
             job.cancel()
@@ -194,7 +199,13 @@ fun MainScreen() {
                         )
                     }
                 },
-                snackbarHost = { CommonSnackBar(hostState = snackBarHost) }
+                snackbarHost = {
+                    CommonSnackBar(
+                        hostState = snackBarHost,
+                        paddingBottom = snackBarPadding.value,
+                        iconResource = snackBarIcon.value
+                    )
+                }
             ) { innerPadding ->
                 Box(
                     modifier = Modifier

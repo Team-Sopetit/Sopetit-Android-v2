@@ -65,7 +65,7 @@ fun NavGraphBuilder.logInNavGraph(
 
 fun NavGraphBuilder.onBoardingNavGraph(
     navController: NavHostController,
-    showSnackBar: (String) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
     setMemberModel: (CreateMemberModel) -> Unit,
     memberModel: SharedFlow<CreateMemberModel>,
 ) {
@@ -173,7 +173,7 @@ fun NavGraphBuilder.progressNavGraph(
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
     deleteRoutineId: SharedFlow<RoutineDetailModel>,
     showChallengeAchieveSom: (Boolean) -> Unit,
-    showSnackBar: (String) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,

@@ -68,7 +68,7 @@ fun ProgressScreen(
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit = {},
     deleteRoutineId: SharedFlow<RoutineDetailModel>,
     showChallengeAchieveSom: (Boolean) -> Unit = {},
-    showSnackBar: (String) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -87,7 +87,7 @@ fun ProgressScreen(
             when (event) {
                 is ProgressEvent.OnShowChallengeAchieveSom -> {
                     showChallengeAchieveSom(true)
-                    showSnackBar(MemberChallengeAchieve)
+                    showSnackBar(MemberChallengeAchieve, 24, R.drawable.ic_som_rainbow)
                 }
             }
         }

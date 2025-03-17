@@ -44,6 +44,7 @@ import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
+import com.sopetit.design_system.R
 import com.sopetit.onboarding.model.SelectedThemeItem
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.content.TopBearFaceSpeech
@@ -56,7 +57,7 @@ import kotlinx.coroutines.flow.SharedFlow
 fun RoutineChoiceScreen(
     goBackToThemeChoicePage: () -> Unit = {},
     memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
-    showSnackBar: (String) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
     goToHomePage: () -> Unit = {}
 ) {
     val viewModel: RoutineChoiceViewModel = hiltViewModel()
@@ -75,7 +76,7 @@ fun RoutineChoiceScreen(
                     goToHomePage()
                 }
                 is RoutineChoiceEvent.IsOverRoutineNumSize -> {
-                    showSnackBar(RoutineChoiceSnackBar)
+                    showSnackBar(RoutineChoiceSnackBar, 104, R.drawable.ic_snackbar_caution)
                 }
             }
         }
