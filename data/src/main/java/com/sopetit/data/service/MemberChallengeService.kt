@@ -6,6 +6,7 @@ import com.sopetit.data.entity.response.memberchallenge.GetMemberChallengeRespon
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 
 interface MemberChallengeService {
 
@@ -14,4 +15,7 @@ interface MemberChallengeService {
 
     @DELETE(EndPoints.MemberChallenge.MEMBERCHALLENGE)
     suspend fun deleteMemberChallenge(): Response<BaseResponse<Unit>>
+
+    @PATCH(EndPoints.MemberChallenge.CHALLENGEACHIEVE)
+    suspend fun achieveMemberChallenge(): Response<BaseResponse<Unit>>
 }

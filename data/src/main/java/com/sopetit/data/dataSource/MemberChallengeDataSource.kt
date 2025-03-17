@@ -8,4 +8,6 @@ interface MemberChallengeDataSource {
     suspend fun getMemberChallenge(): Response<BaseResponse<GetMemberChallengeResponseDto>>
 
     suspend fun deleteMemberChallenge(): Response<BaseResponse<Unit>>
+
+    suspend fun achieveMemberChallenge(): Response<BaseResponse<Unit>>
 }

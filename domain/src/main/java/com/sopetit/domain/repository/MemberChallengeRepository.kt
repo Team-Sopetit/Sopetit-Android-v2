@@ -7,4 +7,6 @@ interface MemberChallengeRepository {
     suspend fun getMemberChallenge(): Flow<Result<MemberChallengeModel>>
 
     suspend fun deleteMemberChallenge(): Flow<Result<Unit>>
+
+    suspend fun achieveMemberChallenge(): Flow<Result<Unit>>
 }

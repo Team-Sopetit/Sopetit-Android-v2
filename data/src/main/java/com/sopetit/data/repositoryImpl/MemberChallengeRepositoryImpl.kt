@@ -1,6 +1,7 @@
 package com.sopetit.data.repositoryImpl
 
 import com.sopetit.data.dataSource.MemberChallengeDataSource
+import com.sopetit.data.mapper.memberchallenge.AchieveMemberChallengeMapper
 import com.sopetit.data.mapper.memberchallenge.DeleteMemberChallengeMapper
 import com.sopetit.data.mapper.memberchallenge.GetMemberChallengeMapper
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
@@ -17,4 +18,7 @@ class MemberChallengeRepositoryImpl @Inject constructor(
 
     override suspend fun deleteMemberChallenge(): Flow<Result<Unit>> =
         DeleteMemberChallengeMapper.responseToModel(apiCall = { memberChallengeDataSource.deleteMemberChallenge() })
+
+    override suspend fun achieveMemberChallenge(): Flow<Result<Unit>> =
+        AchieveMemberChallengeMapper.responseToModel(apiCall = { memberChallengeDataSource.achieveMemberChallenge() })
 }

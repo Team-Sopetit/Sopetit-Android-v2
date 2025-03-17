@@ -26,5 +26,6 @@ object EndPoints {
 
     object MemberChallenge {
         const val MEMBERCHALLENGE = "/api/v2/members/challenges"
+        const val CHALLENGEACHIEVE = "$MEMBERCHALLENGE/achievement"
     }
 }
