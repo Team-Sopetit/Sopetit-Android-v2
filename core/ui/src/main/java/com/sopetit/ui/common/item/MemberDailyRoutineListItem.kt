@@ -29,15 +29,19 @@ import com.sopetit.design_system.SoftieTypo
 
 @Composable
 fun MemberDailyRoutineListItem(
+    isRoutineAchieve: Boolean,
     routineContent: String,
     onClickDetailAction: () -> Unit,
+    onClickDailyAchieve:() -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     MemberDailyRoutineListItemContent(
+        isRoutineAchieve = isRoutineAchieve,
         routineContent = routineContent,
         onClickRoutineDetail = { onClickDetailAction() },
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
+        onClickDailyAchieve = { onClickDailyAchieve() }
     )
 }
 
@@ -47,6 +51,7 @@ fun MemberDailyRoutineListItemContent(
     routineContent: String = "",
     onClickRoutineDetail: () -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    onClickDailyAchieve:() -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -70,6 +75,11 @@ fun MemberDailyRoutineListItemContent(
                 modifier = Modifier
                     .padding(9.dp)
                     .size(20.dp)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = { onClickDailyAchieve() }
+                    )
             )
 
             Text(

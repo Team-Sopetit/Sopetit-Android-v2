@@ -96,4 +96,10 @@ class ProgressViewModel @Inject constructor(
             }
         }
     }
+
+    fun achieveDailyRoutine() {
+        viewModelScope.launch {
+            //
+        }
+    }
 }

@@ -105,6 +105,9 @@ fun ProgressScreen(
         interactionSource = interactionSource,
         onClickChallengeAchieveBtn = {
             viewModel.achieveChallengeRoutine()
+        },
+        onClickDailyAchieve = {
+            viewModel.achieveDailyRoutine()
         }
     )
 }
@@ -118,6 +121,7 @@ fun ProgressContent(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit = {},
     onClickChallengeAchieveBtn: () -> Unit = {},
+    onClickDailyAchieve:() -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
@@ -142,7 +146,8 @@ fun ProgressContent(
                 memberChallenge = memberChallenge,
                 memberDailyRoutineList = memberDailyRoutineList,
                 onClickRoutineDetail = onClickRoutineDetail,
-                onClickChallengeAchieveBtn = onClickChallengeAchieveBtn
+                onClickChallengeAchieveBtn = onClickChallengeAchieveBtn,
+                onClickDailyAchieve = onClickDailyAchieve
             )
         }
     }
@@ -154,6 +159,7 @@ fun ProgressRoutineContent(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickChallengeAchieveBtn: () -> Unit = {},
+    onClickDailyAchieve:() -> Unit
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
         Box(
@@ -189,7 +195,8 @@ fun ProgressRoutineContent(
         if (memberDailyRoutineList.isNotEmpty()) {
             ProgressDailyRoutine(
                 memberDailyRoutineList = memberDailyRoutineList,
-                onClickRoutineDetail = onClickRoutineDetail
+                onClickRoutineDetail = onClickRoutineDetail,
+                onClickDailyAchieve = onClickDailyAchieve
             )
         } else {
             Box(
@@ -256,6 +263,7 @@ fun ProgressChallenge(
 fun ProgressDailyRoutine(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
+    onClickDailyAchieve:() -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -296,6 +304,7 @@ fun ProgressDailyRoutine(
                 ) {
                     themeItem.routines.forEach { routineItem ->
                         MemberDailyRoutineListItem(
+                            isRoutineAchieve = routineItem.isAchieve,
                             routineContent = routineItem.content,
                             onClickDetailAction = {
                                 onClickRoutineDetail(
@@ -305,7 +314,8 @@ fun ProgressDailyRoutine(
                                         content = routineItem.content
                                     )
                                 )
-                            }
+                            },
+                            onClickDailyAchieve = { onClickDailyAchieve() }
                         )
                     }
                 }
