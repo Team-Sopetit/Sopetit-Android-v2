@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface MemberChallengeRepository {
     suspend fun getMemberChallenge(): Flow<Result<MemberChallengeModel>>
+
+    suspend fun deleteMemberChallenge(): Flow<Result<Unit>>
 }

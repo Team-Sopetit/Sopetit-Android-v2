@@ -6,4 +6,6 @@ import retrofit2.Response
 
 interface MemberChallengeDataSource {
     suspend fun getMemberChallenge(): Response<BaseResponse<GetMemberChallengeResponseDto>>
+
+    suspend fun deleteMemberChallenge(): Response<BaseResponse<Unit>>
 }

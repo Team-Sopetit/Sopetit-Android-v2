@@ -14,4 +14,7 @@ class MemberChallengeDataSourceImpl @Inject constructor(
     override suspend fun getMemberChallenge(): Response<BaseResponse<GetMemberChallengeResponseDto>> =
         memberChallengeService.getMemberChallenge()
 
+    override suspend fun deleteMemberChallenge(): Response<BaseResponse<Unit>> =
+        memberChallengeService.deleteMemberChallenge()
+
 }
