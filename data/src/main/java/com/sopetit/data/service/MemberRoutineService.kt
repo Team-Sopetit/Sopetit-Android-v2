@@ -2,12 +2,11 @@ package com.sopetit.data.service
 
 import com.sopetit.data.base.BaseResponse
 import com.sopetit.data.base.EndPoints
-import com.sopetit.data.entity.request.routine.DeleteMemberDailyRoutineRequestDto
 import com.sopetit.data.entity.response.memberroutine.GetMemberRoutineResponseDto
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface MemberRoutineService {
 
@@ -16,6 +15,6 @@ interface MemberRoutineService {
 
     @DELETE(EndPoints.MemberRoutine.MEMBERROUTINE)
     suspend fun deleteMemberDailyRoutine(
-        @Body body: DeleteMemberDailyRoutineRequestDto,
+        @Query("routines") body: List<Int>,
     ): Response<BaseResponse<Unit>>
 }
