@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineTotalModel
+import com.sopetit.domain.usecase.memberchallenge.DeleteMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.GetMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberroutine.DeleteMemberDailyRoutineUseCase
 import com.sopetit.domain.usecase.memberroutine.GetMemberDailyRoutineUseCase
@@ -17,6 +18,7 @@ class ProgressViewModel @Inject constructor(
     private val getMemberDailyRoutineUseCase: GetMemberDailyRoutineUseCase,
     private val getMemberChallengeUseCase: GetMemberChallengeUseCase,
     private val deleteMemberDailyRoutineUseCase: DeleteMemberDailyRoutineUseCase,
+    private val deleteMemberChallengeUseCase: DeleteMemberChallengeUseCase,
 ) : BaseViewModel<ProgressPageState>(
     ProgressPageState()
 ) {
@@ -59,18 +61,9 @@ class ProgressViewModel @Inject constructor(
     }
 
     fun deleteRoutine(routineType: RoutineType, routineId: Int) {
-//        viewModelScope.launch {
-//            deleteMemberDailyRoutineUseCase(
-//                request = listOf(routineId)
-//            ).collect {
-//                resultResponse(it, {
-//                    if (routineType == RoutineType.Daily) initGetMemberDailyRoutine() else initGetMemberChallenge()
-//                })
-//            }
-//        }
         if (routineType == RoutineType.Daily)
             deleteDailyRoutine(routineId)
-        else deleteChallengeRoutine(routineId)
+        else deleteChallengeRoutine()
     }
 
     private fun deleteDailyRoutine(routineId: Int) {
@@ -85,7 +78,13 @@ class ProgressViewModel @Inject constructor(
         }
     }
 
-    private fun deleteChallengeRoutine(routineId: Int) {
-        //
+    private fun deleteChallengeRoutine() {
+        viewModelScope.launch {
+            deleteMemberChallengeUseCase(request = Unit).collect {
+                resultResponse(it, {
+                    initGetMemberChallenge()
+                })
+            }
+        }
     }
 }
