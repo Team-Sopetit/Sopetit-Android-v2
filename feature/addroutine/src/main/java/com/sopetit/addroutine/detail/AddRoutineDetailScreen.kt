@@ -41,6 +41,7 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.IsExistedMemberSnackBar
 import com.sopetit.design_system.R
 import com.sopetit.design_system.RoutineAddBtn
 import com.sopetit.design_system.SoftieTypo
@@ -77,6 +78,9 @@ fun AddRoutineDetailScreen(
                 is AddRoutineDetailEvent.IsOverChallengeSelected -> {
                     showSnackBar(ChallengeSelectedSnackBar, 114, R.drawable.ic_snackbar_caution)
                 }
+                is AddRoutineDetailEvent.IsRoutineExistedInMember -> {
+                    showSnackBar(IsExistedMemberSnackBar, 114, R.drawable.ic_snackbar_caution)
+                }
             }
         }
     }
@@ -109,7 +113,7 @@ fun AddRoutineDetailContent(
     onClickChallengeDetail: (ChallengeItemModel) -> Unit = {},
     onSelectChallenge: (Int) -> Unit = {},
     selectedChallengeId: Int = -1,
-    onSelectDaily: (Int) -> Unit = {},
+    onSelectDaily: (DailyThemeRoutineItemModel) -> Unit = {},
     selectedDailyIdList: List<Int> = emptyList(),
 ) {
     Column(
@@ -259,7 +263,7 @@ fun SelectedRoutineContent(
     onClickChallengeDetail: (ChallengeItemModel) -> Unit,
     onSelectChallenge: (Int) -> Unit,
     selectedChallengeId: Int,
-    onSelectDaily: (Int) -> Unit,
+    onSelectDaily: (DailyThemeRoutineItemModel) -> Unit,
     selectedDailyIdList: List<Int>,
 ) {
     when (selectedRoutine) {
@@ -285,7 +289,7 @@ fun SelectedRoutineContent(
 @Composable
 fun DailyRoutineContent(
     dailyRoutineList: List<DailyThemeRoutineItemModel>,
-    onSelectDaily: (Int) -> Unit,
+    onSelectDaily: (DailyThemeRoutineItemModel) -> Unit,
     selectedDailyIdList: List<Int>,
 ) {
     LazyColumn(
@@ -296,7 +300,7 @@ fun DailyRoutineContent(
         items(dailyRoutineList) { routine ->
             DailyRoutineListItem(
                 routineContent = routine.content,
-                onClickAction = { onSelectDaily(routine.id) },
+                onClickAction = { onSelectDaily(routine) },
                 isRoutineSelected = selectedDailyIdList.contains(routine.id)
             )
         }

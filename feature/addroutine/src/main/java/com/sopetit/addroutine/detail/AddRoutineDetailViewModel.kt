@@ -108,17 +108,21 @@ class AddRoutineDetailViewModel @Inject constructor(
         )
     }
 
-    fun updateSelectedDaily(dailyId: Int) {
+    fun updateSelectedDaily(daily: DailyThemeRoutineItemModel) {
         val newList: MutableList<Int> = mutableListOf()
 
         newList.addAll(uiState.value.selectedDailyIdList)
 
-        when (uiState.value.selectedDailyIdList.contains(dailyId)) {
+        when (uiState.value.selectedDailyIdList.contains(daily.id)) {
             true -> {
-                newList.remove(dailyId)
+                newList.remove(daily.id)
             }
             false -> {
-                newList.add(dailyId)
+                if (daily.existedInMember) {
+                    emitEventFlow(AddRoutineDetailEvent.IsRoutineExistedInMember)
+                } else {
+                    newList.add(daily.id)
+                }
             }
         }
 
