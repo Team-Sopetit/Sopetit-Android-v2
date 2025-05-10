@@ -20,4 +20,12 @@ class AddRoutineDetailViewModel @Inject constructor(
             )
         )
     }
+
+    fun setSelectedRoutineTab(tab: String) {
+        updateState(
+            uiState.value.copy(
+                selectedRoutineTab = tab
+            )
+        )
+    }
 }

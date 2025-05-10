@@ -9,6 +9,8 @@ const val Progress = "진행 중"
 const val Achieve = "달성도"
 const val Complete = "완료하기"
 const val Delete = "삭제하기"
+const val DailyRoutine = "데일리 루틴"
+const val ChallengeRoutine = "챌린지"
 
 // DollType
 const val Brown = "BROWN"
@@ -75,3 +77,4 @@ const val TooltipDailyContent = "매일 꾸준히 실천할 수 있는 루틴이
 // Add Routine
 const val AddRoutineTitle = "루틴 추가"
 const val RoutineAllTitle = "전체 루틴 테마"
+const val RoutineAddBtn = "루틴 %d개 추가하기"
