@@ -71,3 +71,6 @@ const val TooltipChallenge = "챌린지란?"
 const val TooltipChallengeContent = "하루동안 도전해보고 싶은 일을 담은 루틴이에요. 집중할 수 있도록 하나씩만 도전할 수 있어요."
 const val TooltipDaily = "데일리 루틴이란?"
 const val TooltipDailyContent = "매일 꾸준히 실천할 수 있는 루틴이에요. 매일 하고 싶은 습관을 만들어 보세요."
+
+// Add Routine
+const val AddRoutineTitle = "루틴 추가"

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
@@ -59,6 +60,7 @@ import com.sopetit.design_system.ProgressEmptyTitle
 import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
 import com.sopetit.design_system.R
+import com.sopetit.design_system.Red200
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.TooltipChallenge
 import com.sopetit.design_system.TooltipChallengeContent
@@ -197,6 +199,7 @@ fun ProgressContent(
                     .align(Alignment.BottomEnd)
                     .padding(end = 20.dp, bottom = 20.dp)
                     .size(50.dp)
+                    .background(color = Red200, shape = CircleShape)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_add),

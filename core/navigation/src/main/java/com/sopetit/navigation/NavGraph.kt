@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sopetit.achieve.AchieveScreen
+import com.sopetit.addroutine.AddRoutineScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -189,8 +190,24 @@ fun NavGraphBuilder.progressNavGraph(
                 showChallengeAchieveSom = showChallengeAchieveSom,
                 showChallengeDailySom = showChallengeDailySom,
                 showSnackBar = showSnackBar,
-                showTooltip = showToolTip
+                showTooltip = showToolTip,
+                goToAddRoutinePage = {
+                    navController.navigate(NavRoutes.AddRoutineScreen.route)
+                }
             )
+        }
+    }
+}
+
+fun NavGraphBuilder.addRoutineNavGraph(
+    navController: NavHostController
+) {
+    navigation(
+        startDestination = NavRoutes.AddRoutineScreen.route,
+        route = NavRoutes.AddRoutineGraph.route
+    ) {
+        composable(NavRoutes.AddRoutineScreen.route) {
+            AddRoutineScreen()
         }
     }
 }

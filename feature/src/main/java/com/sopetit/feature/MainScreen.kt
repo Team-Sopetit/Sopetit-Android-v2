@@ -54,7 +54,6 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray1000
-import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
@@ -65,6 +64,7 @@ import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.feature.component.BottomNavBar
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.navigation.achieveNavGraph
+import com.sopetit.navigation.addRoutineNavGraph
 import com.sopetit.navigation.homeNavGraph
 import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
@@ -256,11 +256,13 @@ fun MainScreen() {
                             showChallengeDailySom = { viewModel.updateDailyAchieve(it) },
                             showSnackBar = showSnackBar,
                             showToolTip = { offset, title, content ->
-//                                viewModel.updateTooltipState(true, it)
                                 viewModel.initSetTooltip(true, offset, title, content)
                             }
                         )
                         achieveNavGraph(
+                            navController = navController
+                        )
+                        addRoutineNavGraph(
                             navController = navController
                         )
                     }
