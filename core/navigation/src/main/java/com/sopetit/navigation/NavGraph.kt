@@ -11,6 +11,7 @@ import com.sopetit.addroutine.detail.AddRoutineDetailScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.home.HomeScreen
 import com.sopetit.login.LogInScreen
 import com.sopetit.onboarding.dollnaming.DollNamingScreen
@@ -202,8 +203,8 @@ fun NavGraphBuilder.progressNavGraph(
 
 fun NavGraphBuilder.addRoutineNavGraph(
     navController: NavHostController,
-    setSelectedThemeId: (Int) -> Unit,
-    selectedThemeId: SharedFlow<Int>
+    setSelectedThemeId: (ThemeListItemModel) -> Unit,
+    selectedThemeId: SharedFlow<ThemeListItemModel>
 ) {
     navigation(
         startDestination = NavRoutes.AddRoutineScreen.route,

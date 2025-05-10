@@ -40,7 +40,7 @@ import com.sopetit.ui.common.type.ThemeIconType
 
 @Composable
 fun AddRoutineScreen(
-    goToDetailPage: (Int) -> Unit
+    goToDetailPage: (ThemeListItemModel) -> Unit
 ) {
 
     val viewModel: AddRoutineViewModel = hiltViewModel()
@@ -55,7 +55,7 @@ fun AddRoutineScreen(
 @Composable
 fun AddRoutineContent(
     routineThemeList: List<ThemeListItemModel> = emptyList(),
-    onClickTheme: (Int) -> Unit = {}
+    onClickTheme: (ThemeListItemModel) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -103,7 +103,7 @@ fun AddRoutineContent(
 @Composable
 fun RoutineThemeList(
     routineThemeList: List<ThemeListItemModel>,
-    onClickTheme: (Int) -> Unit
+    onClickTheme: (ThemeListItemModel) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -116,7 +116,7 @@ fun RoutineThemeList(
                 themeId = theme.themeId,
                 themeTitle = theme.title,
                 themeSubTitle = theme.subTitle,
-                onClickAction = { onClickTheme(theme.themeId) }
+                onClickAction = { onClickTheme(theme) }
             )
         }
     }

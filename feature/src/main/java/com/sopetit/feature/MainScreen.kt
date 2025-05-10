@@ -61,6 +61,7 @@ import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.feature.component.BottomNavBar
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.navigation.achieveNavGraph
@@ -128,9 +129,9 @@ fun MainScreen() {
             viewModel.isTutorialValid.emit(it)
         }
     }
-    val setSelectedThemeId: (Int) -> Unit = {
+    val setSelectedTheme: (ThemeListItemModel) -> Unit = {
         scope.launch {
-            viewModel.selectedThemeId.emit(it)
+            viewModel.selectedTheme.emit(it)
         }
     }
 
@@ -269,8 +270,8 @@ fun MainScreen() {
                         )
                         addRoutineNavGraph(
                             navController = navController,
-                            setSelectedThemeId = setSelectedThemeId,
-                            selectedThemeId = viewModel.selectedThemeId
+                            setSelectedThemeId = setSelectedTheme,
+                            selectedThemeId = viewModel.selectedTheme
                         )
                     }
                 }

@@ -1,5 +1,6 @@
 package com.sopetit.addroutine.detail
 
+import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -11,10 +12,11 @@ class AddRoutineDetailViewModel @Inject constructor(
     AddRoutineDetailPageState()
 ) {
 
-    fun setSelectedThemeId(themeId: Int) {
+    fun setSelectedTheme(theme: ThemeListItemModel) {
         updateState(
             uiState.value.copy(
-                selectedThemeId = themeId
+                selectedThemeId = theme.themeId,
+                selectedTheme = theme
             )
         )
     }
