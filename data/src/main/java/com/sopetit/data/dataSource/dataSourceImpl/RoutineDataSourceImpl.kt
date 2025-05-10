@@ -2,6 +2,7 @@ package com.sopetit.data.dataSource.dataSourceImpl
 
 import com.sopetit.data.base.BaseResponse
 import com.sopetit.data.dataSource.RoutineDataSource
+import com.sopetit.data.entity.response.routine.ChallengeResponseDto
 import com.sopetit.data.entity.response.routine.DailyRoutineListResponseDto
 import com.sopetit.data.entity.response.routine.DailyThemeRoutineResponseDto
 import com.sopetit.data.service.RoutineService
@@ -17,4 +18,7 @@ data class RoutineDataSourceImpl @Inject constructor(
 
     override suspend fun getDailyThemeRoutine(request: Int): Response<BaseResponse<DailyThemeRoutineResponseDto>> =
         routineService.dailyThemeRoutine(request)
+
+    override suspend fun getChallengeRoutine(request: Int): Response<BaseResponse<ChallengeResponseDto>> =
+        routineService.challenge(request)
 }

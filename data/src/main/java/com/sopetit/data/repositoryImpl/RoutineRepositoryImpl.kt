@@ -1,10 +1,12 @@
 package com.sopetit.data.repositoryImpl
 
 import com.sopetit.data.dataSource.RoutineDataSource
+import com.sopetit.data.mapper.routine.ChallengeMapper
 import com.sopetit.data.mapper.routine.DailyRoutineMapper
 import com.sopetit.data.mapper.routine.DailyRoutineMapper.toDto
 import com.sopetit.data.mapper.routine.DailyThemeRoutineMapper
 import com.sopetit.domain.entity.request.routine.DailyRoutineListRequestModel
+import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListThemeTotalModel
 import com.sopetit.domain.repository.RoutineRepository
@@ -24,4 +26,7 @@ class RoutineRepositoryImpl @Inject constructor(
                 request
             )
         })
+
+    override suspend fun getChallenge(request: Int): Flow<Result<List<ChallengeItemModel>>> =
+        ChallengeMapper.responseToModel(apiCall = { routineDataSource.getChallengeRoutine(request) })
 }

@@ -4,6 +4,7 @@ import com.sopetit.data.base.BaseResponse
 import com.sopetit.data.base.EndPoints
 import com.sopetit.data.entity.response.routine.DailyRoutineListResponseDto
 import com.sopetit.data.entity.response.routine.DailyThemeRoutineResponseDto
+import com.sopetit.data.entity.response.routine.ChallengeResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,4 +21,9 @@ interface RoutineService {
     suspend fun dailyThemeRoutine(
         @Path("themeId") themeId: Int
     ): Response<BaseResponse<DailyThemeRoutineResponseDto>>
+
+    @GET(EndPoints.Routine.CHALLENGE)
+    suspend fun challenge(
+        @Query("themeId") themeId: Int
+    ): Response<BaseResponse<ChallengeResponseDto>>
 }
