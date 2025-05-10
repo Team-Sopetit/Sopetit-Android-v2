@@ -14,5 +14,6 @@ data class AddRoutineDetailPageState (
     val dailyRoutineList: List<DailyRoutineListItemModel> = emptyList(),
     val challengeList: List<ChallengeItemModel> = emptyList(),
     val routineBottomSheetModel: RoutineDetailModel = RoutineDetailModel(),
-    val selectedChallengeIdList: List<Int> = listOf(-1)
+    val selectedChallengeIdList: List<Int> = listOf(-1),
+    val selectedDailyIdList: List<Int> = emptyList()
 ): PageState

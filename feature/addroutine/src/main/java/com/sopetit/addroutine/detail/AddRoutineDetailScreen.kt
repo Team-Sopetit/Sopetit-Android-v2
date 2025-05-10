@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
@@ -92,7 +93,9 @@ fun AddRoutineDetailScreen(
             showChallengeDetailBottomSheet(viewModel.setRoutineBottomSheetModel(challenge))
         },
         onSelectChallenge = { viewModel.updateSelectedChallenge(it) },
-        selectedChallengeId = uiState.selectedChallengeIdList[0]
+        selectedChallengeId = uiState.selectedChallengeIdList[0],
+        onSelectDaily = { viewModel.updateSelectedDaily(it) },
+        selectedDailyIdList = uiState.selectedDailyIdList
     )
 }
 
@@ -107,6 +110,8 @@ fun AddRoutineDetailContent(
     onClickChallengeDetail: (ChallengeItemModel) -> Unit = {},
     onSelectChallenge: (Int) -> Unit = {},
     selectedChallengeId: Int = -1,
+    onSelectDaily: (Int) -> Unit = {},
+    selectedDailyIdList: List<Int> = emptyList(),
 ) {
     Column(
         modifier = Modifier
@@ -158,7 +163,9 @@ fun AddRoutineDetailContent(
                 challengeList = challengeList,
                 onClickChallengeDetail = onClickChallengeDetail,
                 onSelectChallenge = onSelectChallenge,
-                selectedChallengeId = selectedChallengeId
+                selectedChallengeId = selectedChallengeId,
+                selectedDailyIdList = selectedDailyIdList,
+                onSelectDaily = onSelectDaily
             )
         }
 
@@ -253,9 +260,18 @@ fun SelectedRoutineContent(
     onClickChallengeDetail: (ChallengeItemModel) -> Unit,
     onSelectChallenge: (Int) -> Unit,
     selectedChallengeId: Int,
+    onSelectDaily: (Int) -> Unit,
+    selectedDailyIdList: List<Int>,
 ) {
     when (selectedRoutine) {
-        DailyRoutine -> DailyRoutineContent(dailyRoutineList = dailyRoutineList)
+        DailyRoutine -> {
+            DailyRoutineContent(
+                dailyRoutineList = dailyRoutineList,
+                onSelectDaily = onSelectDaily,
+                selectedDailyIdList = selectedDailyIdList
+            )
+        }
+
         ChallengeRoutine -> {
             ChallengeRoutineContent(
                 challengeList = challengeList,
@@ -270,6 +286,8 @@ fun SelectedRoutineContent(
 @Composable
 fun DailyRoutineContent(
     dailyRoutineList: List<DailyRoutineListItemModel>,
+    onSelectDaily: (Int) -> Unit,
+    selectedDailyIdList: List<Int>,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -278,7 +296,9 @@ fun DailyRoutineContent(
     ) {
         items(dailyRoutineList) { routine ->
             DailyRoutineListItem(
-                routineContent = routine.content
+                routineContent = routine.content,
+                onClickAction = { onSelectDaily(routine.routineId) },
+                isRoutineSelected = selectedDailyIdList.contains(routine.routineId)
             )
         }
     }
