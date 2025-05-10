@@ -14,5 +14,7 @@ data class MainPageState(
     val isChallengeAchieveShowValid: Boolean = false,
     val isDailyAchieveShowValid: Boolean = false,
     val isTooltipShowValid: Boolean = false,
-    val tooltipOffSet: IntOffset = IntOffset.Zero
+    val tooltipOffSet: IntOffset = IntOffset.Zero,
+    val tooltipTitle: String = "",
+    val tooltipContent: String = ""
 ) : PageState

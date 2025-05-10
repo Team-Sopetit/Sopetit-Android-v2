@@ -8,15 +8,20 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ModalBottomSheetLayout
@@ -35,6 +40,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
@@ -49,6 +55,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray1000
 import com.sopetit.design_system.Gray200
+import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
@@ -248,7 +255,10 @@ fun MainScreen() {
                             showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) },
                             showChallengeDailySom = { viewModel.updateDailyAchieve(it) },
                             showSnackBar = showSnackBar,
-                            showToolTip = { viewModel.updateTooltipState(true, it) }
+                            showToolTip = { offset, title, content ->
+//                                viewModel.updateTooltipState(true, it)
+                                viewModel.initSetTooltip(true, offset, title, content)
+                            }
                         )
                         achieveNavGraph(
                             navController = navController
@@ -306,22 +316,54 @@ fun MainScreen() {
                     .fillMaxSize()
                     .background(Gray1000)
                     .clickable(
-                        onClick = { viewModel.updateTooltipState(false, uiState.tooltipOffSet) }
+                        onClick = { viewModel.updateTooltipState(false) }
                     )
             ) {
                 Popup(
                     alignment = Alignment.TopEnd,
                     offset = uiState.tooltipOffSet
                 ) {
-                    Box(
+                    Column(
                         modifier = Modifier
                             .padding(end = 20.dp)
-                            .background(Gray200, RoundedCornerShape(6.dp))
+                            .background(Gray0, RoundedCornerShape(10.dp))
+                            .width(272.dp)
                     ) {
+                        Row(
+                            modifier = Modifier
+                                .padding(start = 16.dp, end = 12.dp, top = 12.dp)
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = uiState.tooltipTitle,
+                                color = Gray700,
+                                style = SoftieTypo.head4,
+                                modifier = Modifier
+                                    .weight(1f)
+                            )
+                            
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_close),
+                                contentDescription = "close tooltip",
+                                modifier = Modifier
+                                    .size(18.dp)
+                                    .clickable(
+                                        onClick = { viewModel.updateTooltipState(false) },
+                                        interactionSource = interactionSource,
+                                        indication = null
+                                    )
+                            )
+                        }
+
                         Text(
-                            text = "이것은 tooltip",
-                            color = Gray700,
-                            style = SoftieTypo.caption1
+                            text = uiState.tooltipContent,
+                            color = Gray650,
+                            style = SoftieTypo.caption1,
+                            modifier = Modifier
+                                .padding(top = 6.dp, bottom = 16.dp)
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth()
                         )
                     }
                 }

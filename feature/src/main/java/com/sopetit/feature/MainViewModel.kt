@@ -86,11 +86,21 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    fun updateTooltipState(isValid: Boolean, intOffset: IntOffset) {
+    fun initSetTooltip(isValid: Boolean, intOffset: IntOffset, title: String, content: String) {
         updateState(
             uiState.value.copy(
                 isTooltipShowValid = isValid,
-                tooltipOffSet = intOffset
+                tooltipOffSet = intOffset,
+                tooltipTitle = title,
+                tooltipContent = content
+            )
+        )
+    }
+
+    fun updateTooltipState(isValid: Boolean) {
+        updateState(
+            uiState.value.copy(
+                isTooltipShowValid = isValid,
             )
         )
     }

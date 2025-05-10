@@ -27,7 +27,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,7 +37,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Gray0
@@ -62,6 +60,10 @@ import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.design_system.TooltipChallenge
+import com.sopetit.design_system.TooltipChallengeContent
+import com.sopetit.design_system.TooltipDaily
+import com.sopetit.design_system.TooltipDailyContent
 import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineListModel
@@ -81,7 +83,7 @@ fun ProgressScreen(
     showChallengeAchieveSom: (Boolean) -> Unit = {},
     showChallengeDailySom: (Boolean) -> Unit = {},
     showSnackBar: (String, Int, Int) -> Unit,
-    showTooltip: (IntOffset) -> Unit
+    showTooltip: (IntOffset, String, String) -> Unit
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -135,7 +137,9 @@ fun ProgressScreen(
         onClickDailyAchieve = { routineId ->
             viewModel.achieveDailyRoutine(routineId)
         },
-        onClickTooltipBtn = { showTooltip(it) }
+        onClickTooltipBtn = { offset, title, content ->
+            showTooltip(offset, title, content)
+        }
     )
 }
 
@@ -150,7 +154,7 @@ fun ProgressContent(
     onClickChallengeAchieveBtn: () -> Unit = {},
     onClickDailyAchieve: (Int) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
-    onClickTooltipBtn: (IntOffset) -> Unit = {}
+    onClickTooltipBtn: (IntOffset, String, String) -> Unit = { offset: IntOffset, title: String, content: String -> }
 ) {
     Column(
         modifier = Modifier
@@ -176,7 +180,8 @@ fun ProgressContent(
                 onClickRoutineDetail = onClickRoutineDetail,
                 onClickChallengeAchieveBtn = onClickChallengeAchieveBtn,
                 onClickDailyAchieve = onClickDailyAchieve,
-                onClickTooltipBtn = onClickTooltipBtn
+                onClickTooltipBtn = onClickTooltipBtn,
+                interactionSource = interactionSource
             )
         }
     }
@@ -189,7 +194,8 @@ fun ProgressRoutineContent(
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickChallengeAchieveBtn: () -> Unit = {},
     onClickDailyAchieve: (Int) -> Unit,
-    onClickTooltipBtn: (IntOffset) -> Unit
+    onClickTooltipBtn: (IntOffset, String, String) -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
         Box(
@@ -217,7 +223,8 @@ fun ProgressRoutineContent(
                 memberChallenge = memberChallenge,
                 onClickRoutineDetail = onClickRoutineDetail,
                 onClickAchievement = onClickChallengeAchieveBtn,
-                onClickTooltipBtn = onClickTooltipBtn
+                onClickTooltipBtn = onClickTooltipBtn,
+                interactionSource = interactionSource
             )
         } else {
             ProgressChallengeEmptyRoutine()
@@ -228,7 +235,8 @@ fun ProgressRoutineContent(
                 memberDailyRoutineList = memberDailyRoutineList,
                 onClickRoutineDetail = onClickRoutineDetail,
                 onClickDailyAchieve = onClickDailyAchieve,
-                onClickTooltipBtn = onClickTooltipBtn
+                onClickTooltipBtn = onClickTooltipBtn,
+                interactionSource = interactionSource
             )
         } else {
             Box(
@@ -259,12 +267,16 @@ fun ProgressChallenge(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickAchievement: () -> Unit = {},
-    onClickTooltipBtn: (IntOffset) -> Unit
+    onClickTooltipBtn: (IntOffset, String, String) -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
     Column {
         RoutineTitleContent(
             title = ProgressChallengeTitle,
-            onClickTooltipBtn = onClickTooltipBtn
+            onClickTooltipBtn = { offset ->
+                onClickTooltipBtn(offset, TooltipChallenge, TooltipChallengeContent)
+            },
+            interactionSource = interactionSource
         )
 
         Box(
@@ -298,7 +310,8 @@ fun ProgressDailyRoutine(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickDailyAchieve: (Int) -> Unit,
-    onClickTooltipBtn: (IntOffset) -> Unit
+    onClickTooltipBtn: (IntOffset, String, String) -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
     Column(
         modifier = Modifier
@@ -306,7 +319,10 @@ fun ProgressDailyRoutine(
     ) {
         RoutineTitleContent(
             title = ProgressDailyTitle,
-            onClickTooltipBtn = onClickTooltipBtn
+            onClickTooltipBtn = { offset ->
+                onClickTooltipBtn(offset, TooltipDaily, TooltipDailyContent)
+            },
+            interactionSource = interactionSource
         )
 
         LazyColumn(
@@ -403,7 +419,8 @@ fun ProgressChallengeEmptyRoutine() {
 @Composable
 fun RoutineTitleContent(
     title: String,
-    onClickTooltipBtn: (IntOffset) -> Unit
+    onClickTooltipBtn: (IntOffset) -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
     val density = LocalDensity.current
     val tooltipOffset = remember { mutableStateOf(IntOffset.Zero) }
@@ -432,13 +449,14 @@ fun RoutineTitleContent(
 
             Box(
                 modifier = Modifier
-                .align(Alignment.CenterEnd)
-//                .padding(9.dp)
+                    .align(Alignment.CenterEnd)
                     .size(20.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .background(Gray200)
                     .clickable(
-                        onClick = { onClickTooltipBtn(tooltipOffset.value)  }
+                        onClick = { onClickTooltipBtn(tooltipOffset.value) },
+                        interactionSource = interactionSource,
+                        indication = null
                     )
                     .onGloballyPositioned { coordinates ->
                         val windowPosition = coordinates.localToWindow(Offset.Zero)
