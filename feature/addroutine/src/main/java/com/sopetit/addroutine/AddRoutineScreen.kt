@@ -3,6 +3,7 @@ package com.sopetit.addroutine
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,19 +39,23 @@ import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.type.ThemeIconType
 
 @Composable
-fun AddRoutineScreen() {
+fun AddRoutineScreen(
+    goToDetailPage: (Int) -> Unit
+) {
 
     val viewModel: AddRoutineViewModel = hiltViewModel()
     val uiState: AddRoutinePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     AddRoutineContent(
-        routineThemeList = uiState.routineThemeList
+        routineThemeList = uiState.routineThemeList,
+        onClickTheme = { goToDetailPage(it) }
     )
 }
 
 @Composable
 fun AddRoutineContent(
-    routineThemeList: List<ThemeListItemModel> = emptyList()
+    routineThemeList: List<ThemeListItemModel> = emptyList(),
+    onClickTheme: (Int) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -89,14 +94,16 @@ fun AddRoutineContent(
         )
 
         RoutineThemeList(
-            routineThemeList = routineThemeList
+            routineThemeList = routineThemeList,
+            onClickTheme = onClickTheme
         )
     }
 }
 
 @Composable
 fun RoutineThemeList(
-    routineThemeList: List<ThemeListItemModel>
+    routineThemeList: List<ThemeListItemModel>,
+    onClickTheme: (Int) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -108,7 +115,8 @@ fun RoutineThemeList(
             RoutineThemeListItem(
                 themeId = theme.themeId,
                 themeTitle = theme.title,
-                themeSubTitle = theme.subTitle
+                themeSubTitle = theme.subTitle,
+                onClickAction = { onClickTheme(theme.themeId) }
             )
         }
     }
@@ -118,14 +126,18 @@ fun RoutineThemeList(
 fun RoutineThemeListItem(
     themeId: Int,
     themeTitle: String,
-    themeSubTitle: String
+    themeSubTitle: String,
+    onClickAction: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .background(Gray0)
-            .border(1.dp, color = Gray200, shape = RoundedCornerShape(10.dp)),
+            .border(1.dp, color = Gray200, shape = RoundedCornerShape(10.dp))
+            .clickable(
+                onClick = onClickAction
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(

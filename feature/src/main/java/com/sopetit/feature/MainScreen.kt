@@ -128,6 +128,11 @@ fun MainScreen() {
             viewModel.isTutorialValid.emit(it)
         }
     }
+    val setSelectedThemeId: (Int) -> Unit = {
+        scope.launch {
+            viewModel.selectedThemeId.emit(it)
+        }
+    }
 
     LaunchedEffect(navController) {
         navController.currentBackStackEntryFlow
@@ -263,7 +268,9 @@ fun MainScreen() {
                             navController = navController
                         )
                         addRoutineNavGraph(
-                            navController = navController
+                            navController = navController,
+                            setSelectedThemeId = setSelectedThemeId,
+                            selectedThemeId = viewModel.selectedThemeId
                         )
                     }
                 }
@@ -344,7 +351,7 @@ fun MainScreen() {
                                 modifier = Modifier
                                     .weight(1f)
                             )
-                            
+
                             Image(
                                 painter = painterResource(id = R.drawable.ic_close),
                                 contentDescription = "close tooltip",

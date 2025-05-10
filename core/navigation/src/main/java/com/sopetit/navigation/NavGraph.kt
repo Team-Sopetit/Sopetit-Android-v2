@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sopetit.achieve.AchieveScreen
 import com.sopetit.addroutine.AddRoutineScreen
+import com.sopetit.addroutine.detail.AddRoutineDetailScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -200,14 +201,27 @@ fun NavGraphBuilder.progressNavGraph(
 }
 
 fun NavGraphBuilder.addRoutineNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    setSelectedThemeId: (Int) -> Unit,
+    selectedThemeId: SharedFlow<Int>
 ) {
     navigation(
         startDestination = NavRoutes.AddRoutineScreen.route,
         route = NavRoutes.AddRoutineGraph.route
     ) {
         composable(NavRoutes.AddRoutineScreen.route) {
-            AddRoutineScreen()
+            AddRoutineScreen(
+                goToDetailPage = {
+                    setSelectedThemeId(it)
+                    navController.navigate(NavRoutes.AddRoutineDetailScreen.route)
+                }
+            )
+        }
+
+        composable(NavRoutes.AddRoutineDetailScreen.route) {
+            AddRoutineDetailScreen(
+                selectedThemeId = selectedThemeId
+            )
         }
     }
 }
