@@ -1,11 +1,13 @@
 package com.sopetit.navigation
 
+import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sopetit.achieve.AchieveScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.home.HomeScreen
 import com.sopetit.login.LogInScreen
@@ -37,7 +39,7 @@ fun NavGraphBuilder.splashNavGraph(
 
 fun NavGraphBuilder.logInNavGraph(
     navController: NavHostController,
-    setTutorialValid: (Boolean) -> Unit
+    setTutorialValid: (Boolean) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.LogInScreen.route,
@@ -64,7 +66,7 @@ fun NavGraphBuilder.logInNavGraph(
 
 fun NavGraphBuilder.onBoardingNavGraph(
     navController: NavHostController,
-    showSnackBar: (String) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
     setMemberModel: (CreateMemberModel) -> Unit,
     memberModel: SharedFlow<CreateMemberModel>,
 ) {
@@ -169,13 +171,26 @@ fun NavGraphBuilder.achieveNavGraph(
 
 fun NavGraphBuilder.progressNavGraph(
     navController: NavHostController,
+    showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    deleteRoutineId: SharedFlow<RoutineDetailModel>,
+    showChallengeAchieveSom: (Boolean) -> Unit,
+    showChallengeDailySom: (Boolean) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
+    showToolTip: (IntOffset, String, String) -> Unit
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
         route = NavRoutes.ProgressGraph.route
     ) {
         composable(NavRoutes.ProgressScreen.route) {
-            ProgressScreen()
+            ProgressScreen(
+                showRoutineBottomSheet = showRoutineBottomSheet,
+                deleteRoutineId = deleteRoutineId,
+                showChallengeAchieveSom = showChallengeAchieveSom,
+                showChallengeDailySom = showChallengeDailySom,
+                showSnackBar = showSnackBar,
+                showTooltip = showToolTip
+            )
         }
     }
 }

@@ -2,6 +2,8 @@ package com.sopetit.progress
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,12 +23,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,6 +46,10 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.MemberChallengeAchieve
+import com.sopetit.design_system.MemberDailyAchieve
+import com.sopetit.design_system.MemberDailyAchieveCancel
+import com.sopetit.design_system.MemberDailyAchieveHasSomFalse
 import com.sopetit.design_system.ProgressChallengeEmptyTitle
 import com.sopetit.design_system.ProgressChallengeTitle
 import com.sopetit.design_system.ProgressDailyEmptyTitle
@@ -47,29 +60,86 @@ import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.design_system.TooltipChallenge
+import com.sopetit.design_system.TooltipChallengeContent
+import com.sopetit.design_system.TooltipDaily
+import com.sopetit.design_system.TooltipDailyContent
+import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineListModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.ui.common.button.RoundCornerShapeBtn
 import com.sopetit.ui.common.content.ChallengeRoutineBox
 import com.sopetit.ui.common.content.EmptyRoutineScreen
 import com.sopetit.ui.common.item.MemberDailyRoutineListItem
 import com.sopetit.ui.common.type.ThemeIconType
+import kotlinx.coroutines.flow.SharedFlow
 import org.threeten.bp.LocalDate
 
 @Composable
-fun ProgressScreen() {
+fun ProgressScreen(
+    showRoutineBottomSheet: (RoutineDetailModel) -> Unit = {},
+    deleteRoutineId: SharedFlow<RoutineDetailModel>,
+    showChallengeAchieveSom: (Boolean) -> Unit = {},
+    showChallengeDailySom: (Boolean) -> Unit = {},
+    showSnackBar: (String, Int, Int) -> Unit,
+    showTooltip: (IntOffset, String, String) -> Unit
+) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
     val uiState: ProgressPageState by viewModel.uiState.collectAsStateWithLifecycle()
+    val interactionSource = remember { MutableInteractionSource() }
 
     val today = LocalDate.now()
+
+    LaunchedEffect(deleteRoutineId) {
+        deleteRoutineId.collect {
+            viewModel.deleteRoutine(it.routineType, it.routineId)
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is ProgressEvent.OnShowChallengeAchieveSom -> {
+                    showChallengeAchieveSom(true)
+                    showSnackBar(MemberChallengeAchieve, 24, R.drawable.ic_som_rainbow)
+                }
+
+                is ProgressEvent.OnShowDailyAchieveSom -> {
+                    showChallengeDailySom(true)
+                    showSnackBar(MemberDailyAchieve, 24, R.drawable.ic_som)
+                }
+
+                is ProgressEvent.OnShowDailyAchieveHasSomFalse -> {
+                    showSnackBar(MemberDailyAchieveHasSomFalse, 24, R.drawable.ic_snackbar_caution)
+                }
+
+                is ProgressEvent.OnShowDailyAchieveCancel -> {
+                    showSnackBar(MemberDailyAchieveCancel, 24, R.drawable.ic_toast_check)
+                }
+            }
+        }
+    }
 
     ProgressContent(
         todayYear = today.year,
         todayMonth = today.monthValue,
         todayDay = today.dayOfMonth,
         memberChallenge = uiState.memberChallenge,
-        memberDailyRoutineList = uiState.memberDailyRoutineList
+        memberDailyRoutineList = uiState.memberDailyRoutineList,
+        onClickRoutineDetail = { routine ->
+            showRoutineBottomSheet(routine)
+        },
+        interactionSource = interactionSource,
+        onClickChallengeAchieveBtn = {
+            viewModel.achieveChallengeRoutine()
+        },
+        onClickDailyAchieve = { routineId ->
+            viewModel.achieveDailyRoutine(routineId)
+        },
+        onClickTooltipBtn = { offset, title, content ->
+            showTooltip(offset, title, content)
+        }
     )
 }
 
@@ -80,6 +150,11 @@ fun ProgressContent(
     todayDay: Int = 0,
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
+    onClickRoutineDetail: (RoutineDetailModel) -> Unit = {},
+    onClickChallengeAchieveBtn: () -> Unit = {},
+    onClickDailyAchieve: (Int) -> Unit = {},
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    onClickTooltipBtn: (IntOffset, String, String) -> Unit = { offset: IntOffset, title: String, content: String -> }
 ) {
     Column(
         modifier = Modifier
@@ -101,7 +176,12 @@ fun ProgressContent(
         ) {
             ProgressRoutineContent(
                 memberChallenge = memberChallenge,
-                memberDailyRoutineList = memberDailyRoutineList
+                memberDailyRoutineList = memberDailyRoutineList,
+                onClickRoutineDetail = onClickRoutineDetail,
+                onClickChallengeAchieveBtn = onClickChallengeAchieveBtn,
+                onClickDailyAchieve = onClickDailyAchieve,
+                onClickTooltipBtn = onClickTooltipBtn,
+                interactionSource = interactionSource
             )
         }
     }
@@ -111,11 +191,18 @@ fun ProgressContent(
 fun ProgressRoutineContent(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
+    onClickRoutineDetail: (RoutineDetailModel) -> Unit,
+    onClickChallengeAchieveBtn: () -> Unit = {},
+    onClickDailyAchieve: (Int) -> Unit,
+    onClickTooltipBtn: (IntOffset, String, String) -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
-        Box(modifier = Modifier
-            .wrapContentSize()
-            .padding(top = 150.dp)) {
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(top = 150.dp)
+        ) {
             EmptyRoutineScreen(
                 titleContent = ProgressEmptyTitle,
                 titleColor = Gray500,
@@ -133,7 +220,11 @@ fun ProgressRoutineContent(
     } else {
         if (memberChallenge.memberChallengeId != -1) {
             ProgressChallenge(
-                memberChallenge = memberChallenge
+                memberChallenge = memberChallenge,
+                onClickRoutineDetail = onClickRoutineDetail,
+                onClickAchievement = onClickChallengeAchieveBtn,
+                onClickTooltipBtn = onClickTooltipBtn,
+                interactionSource = interactionSource
             )
         } else {
             ProgressChallengeEmptyRoutine()
@@ -141,7 +232,11 @@ fun ProgressRoutineContent(
 
         if (memberDailyRoutineList.isNotEmpty()) {
             ProgressDailyRoutine(
-                memberDailyRoutineList = memberDailyRoutineList
+                memberDailyRoutineList = memberDailyRoutineList,
+                onClickRoutineDetail = onClickRoutineDetail,
+                onClickDailyAchieve = onClickDailyAchieve,
+                onClickTooltipBtn = onClickTooltipBtn,
+                interactionSource = interactionSource
             )
         } else {
             Box(
@@ -170,15 +265,40 @@ fun ProgressRoutineContent(
 @Composable
 fun ProgressChallenge(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
+    onClickRoutineDetail: (RoutineDetailModel) -> Unit,
+    onClickAchievement: () -> Unit = {},
+    onClickTooltipBtn: (IntOffset, String, String) -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
     Column {
-        RoutineTitleContent(title = ProgressChallengeTitle)
+        RoutineTitleContent(
+            title = ProgressChallengeTitle,
+            onClickTooltipBtn = { offset ->
+                onClickTooltipBtn(offset, TooltipChallenge, TooltipChallengeContent)
+            },
+            interactionSource = interactionSource
+        )
 
         Box(
             modifier = Modifier
                 .padding(vertical = 16.dp, horizontal = 20.dp)
         ) {
-            ChallengeRoutineBox(challengeModel = memberChallenge)
+            ChallengeRoutineBox(
+                challengeModel = memberChallenge,
+                onClickDetailAction = {
+                    onClickRoutineDetail(
+                        RoutineDetailModel(
+                            routineId = memberChallenge.memberChallengeId,
+                            routineType = RoutineType.Challenge,
+                            content = memberChallenge.content,
+                            explainDetail = memberChallenge.description,
+                            time = memberChallenge.timeTaken,
+                            place = memberChallenge.place
+                        )
+                    )
+                },
+                onClickAchievement = onClickAchievement
+            )
         }
 
         Divider(color = Gray200, thickness = 2.dp)
@@ -188,12 +308,22 @@ fun ProgressChallenge(
 @Composable
 fun ProgressDailyRoutine(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
+    onClickRoutineDetail: (RoutineDetailModel) -> Unit,
+    onClickDailyAchieve: (Int) -> Unit,
+    onClickTooltipBtn: (IntOffset, String, String) -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        RoutineTitleContent(title = ProgressDailyTitle)
+        RoutineTitleContent(
+            title = ProgressDailyTitle,
+            onClickTooltipBtn = { offset ->
+                onClickTooltipBtn(offset, TooltipDaily, TooltipDailyContent)
+            },
+            interactionSource = interactionSource
+        )
 
         LazyColumn(
             modifier = Modifier
@@ -225,7 +355,20 @@ fun ProgressDailyRoutine(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     themeItem.routines.forEach { routineItem ->
-                        MemberDailyRoutineListItem(routineContent = routineItem.content)
+                        MemberDailyRoutineListItem(
+                            isRoutineAchieve = routineItem.isAchieve,
+                            routineContent = routineItem.content,
+                            onClickDetailAction = {
+                                onClickRoutineDetail(
+                                    RoutineDetailModel(
+                                        routineId = routineItem.routineId,
+                                        routineType = RoutineType.Daily,
+                                        content = routineItem.content
+                                    )
+                                )
+                            },
+                            onClickDailyAchieve = { onClickDailyAchieve(routineItem.routineId) }
+                        )
                     }
                 }
             }
@@ -276,7 +419,13 @@ fun ProgressChallengeEmptyRoutine() {
 @Composable
 fun RoutineTitleContent(
     title: String,
+    onClickTooltipBtn: (IntOffset) -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
+    val density = LocalDensity.current
+    val tooltipOffset = remember { mutableStateOf(IntOffset.Zero) }
+
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -296,16 +445,37 @@ fun RoutineTitleContent(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(9.dp)
-                .size(20.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(Gray200)
         ) {
-            Text(
-                text = Question,
-                color = Gray500,
-                style = SoftieTypo.caption2,
-                modifier = Modifier.align(Alignment.Center)
-            )
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .size(20.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(Gray200)
+                    .clickable(
+                        onClick = { onClickTooltipBtn(tooltipOffset.value) },
+                        interactionSource = interactionSource,
+                        indication = null
+                    )
+                    .onGloballyPositioned { coordinates ->
+                        val windowPosition = coordinates.localToWindow(Offset.Zero)
+                        val yWithOffset = with(density) { 15.dp.toPx() } + coordinates.size.height
+
+                        tooltipOffset.value = IntOffset(
+                            x = windowPosition.x.toInt(),
+                            y = (windowPosition.y + yWithOffset).toInt()
+                        )
+                    }
+            ) {
+
+                Text(
+                    text = Question,
+                    color = Gray500,
+                    style = SoftieTypo.caption2,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
         }
     }
 }

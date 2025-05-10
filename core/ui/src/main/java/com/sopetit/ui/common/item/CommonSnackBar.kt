@@ -22,21 +22,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 
 @Composable
 fun CommonSnackBar(
     hostState: SnackbarHostState,
+    paddingBottom: Int,
+    iconResource: Int,
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 104.dp),
+//            .padding(bottom = 104.dp),
+            .padding(bottom = paddingBottom.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
         CommonSnackBarContent(
-            hostState = hostState
+            hostState = hostState,
+            iconResource = iconResource
         )
     }
 }
@@ -44,6 +47,7 @@ fun CommonSnackBar(
 @Composable
 fun CommonSnackBarContent(
     hostState: SnackbarHostState = SnackbarHostState(),
+    iconResource: Int,
 ) {
     SnackbarHost(
         hostState = hostState,
@@ -59,7 +63,8 @@ fun CommonSnackBarContent(
                         .padding(horizontal = 16.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_snackbar_caution),
+//                        painter = painterResource(id = R.drawable.ic_snackbar_caution),
+                        painter = painterResource(id = iconResource),
                         contentDescription = "snackbar icon",
                         modifier = Modifier
                             .size(18.dp)

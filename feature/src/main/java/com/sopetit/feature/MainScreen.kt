@@ -8,13 +8,20 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ModalBottomSheetLayout
@@ -23,21 +30,37 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sopetit.design_system.Gray0
+import com.sopetit.design_system.Gray1000
+import com.sopetit.design_system.Gray200
+import com.sopetit.design_system.Gray650
+import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.R
+import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.feature.component.BottomNavBar
 import com.sopetit.navigation.NavRoutes
@@ -47,6 +70,7 @@ import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.progressNavGraph
 import com.sopetit.navigation.splashNavGraph
+import com.sopetit.ui.common.bottomsheet.RoutineDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
 import com.sopetit.ui.common.item.CommonSnackBar
 import com.sopetit.ui.common.type.BottomSheetType
@@ -69,9 +93,13 @@ fun MainScreen() {
         skipHalfExpanded = true
     )
 
-    val showSnackBar: (String) -> Unit = { message ->
+    val snackBarPadding = remember { mutableStateOf(0) }
+    val snackBarIcon = remember { mutableStateOf(R.drawable.ic_snackbar_caution) }
+    val showSnackBar: (String, Int, Int) -> Unit = { message, paddingBottom, icon ->
         scope.launch {
             val job = scope.launch {
+                snackBarPadding.value = paddingBottom
+                snackBarIcon.value = icon
                 snackBarHost.showSnackbar(
                     message = message,
                     duration = SnackbarDuration.Indefinite
@@ -83,6 +111,10 @@ fun MainScreen() {
     }
     val showTutorialBottomSheet: (List<TutorialModel>) -> Unit = { tutorials ->
         viewModel.setTutorials(tutorials)
+        scope.launch { sheetState.show() }
+    }
+    val showRoutineBottomSheet: (RoutineDetailModel) -> Unit = { routine ->
+        viewModel.setRoutineDetail(routine)
         scope.launch { sheetState.show() }
     }
 
@@ -137,6 +169,18 @@ fun MainScreen() {
                             )
                         }
 
+                        BottomSheetType.ROUTINE -> {
+                            RoutineDetailBottomSheet(
+                                routine = uiState.routineDetail,
+                                onClickRoutineDeleteBtn = {
+                                    scope.launch {
+                                        viewModel.deleteRoutineId.emit(it)
+                                        sheetState.hide()
+                                    }
+                                }
+                            )
+                        }
+
                         BottomSheetType.DEFAULT -> {}
                     }
                 }
@@ -169,7 +213,13 @@ fun MainScreen() {
                         )
                     }
                 },
-                snackbarHost = { CommonSnackBar(hostState = snackBarHost) }
+                snackbarHost = {
+                    CommonSnackBar(
+                        hostState = snackBarHost,
+                        paddingBottom = snackBarPadding.value,
+                        iconResource = snackBarIcon.value
+                    )
+                }
             ) { innerPadding ->
                 Box(
                     modifier = Modifier
@@ -199,10 +249,121 @@ fun MainScreen() {
                             isTutorialValid = viewModel.isTutorialValid
                         )
                         progressNavGraph(
-                            navController = navController
+                            navController = navController,
+                            showRoutineBottomSheet = showRoutineBottomSheet,
+                            deleteRoutineId = viewModel.deleteRoutineId,
+                            showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) },
+                            showChallengeDailySom = { viewModel.updateDailyAchieve(it) },
+                            showSnackBar = showSnackBar,
+                            showToolTip = { offset, title, content ->
+//                                viewModel.updateTooltipState(true, it)
+                                viewModel.initSetTooltip(true, offset, title, content)
+                            }
                         )
                         achieveNavGraph(
                             navController = navController
+                        )
+                    }
+                }
+            }
+        }
+
+        if (uiState.isChallengeAchieveShowValid) {
+            val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.happy_complete_som))
+            val progress by animateLottieCompositionAsState(composition = composition)
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Gray1000)
+            ) {
+                LottieAnimation(
+                    composition = composition,
+                    progress = {
+                        if (progress >= 1.0f) viewModel.updateChallengeAchieve(false)
+
+                        progress
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+
+        if (uiState.isDailyAchieveShowValid) {
+            val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.daily_complete_som))
+            val progress by animateLottieCompositionAsState(composition = composition)
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Gray1000)
+            ) {
+                LottieAnimation(
+                    composition = composition,
+                    progress = {
+                        if (progress >= 1.0f) viewModel.updateDailyAchieve(false)
+
+                        progress
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+
+        if (uiState.isTooltipShowValid) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Gray1000)
+                    .clickable(
+                        onClick = { viewModel.updateTooltipState(false) }
+                    )
+            ) {
+                Popup(
+                    alignment = Alignment.TopEnd,
+                    offset = uiState.tooltipOffSet
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(end = 20.dp)
+                            .background(Gray0, RoundedCornerShape(10.dp))
+                            .width(272.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .padding(start = 16.dp, end = 12.dp, top = 12.dp)
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = uiState.tooltipTitle,
+                                color = Gray700,
+                                style = SoftieTypo.head4,
+                                modifier = Modifier
+                                    .weight(1f)
+                            )
+                            
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_close),
+                                contentDescription = "close tooltip",
+                                modifier = Modifier
+                                    .size(18.dp)
+                                    .clickable(
+                                        onClick = { viewModel.updateTooltipState(false) },
+                                        interactionSource = interactionSource,
+                                        indication = null
+                                    )
+                            )
+                        }
+
+                        Text(
+                            text = uiState.tooltipContent,
+                            color = Gray650,
+                            style = SoftieTypo.caption1,
+                            modifier = Modifier
+                                .padding(top = 6.dp, bottom = 16.dp)
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth()
                         )
                     }
                 }

@@ -3,6 +3,8 @@ package com.sopetit.ui.common.item
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,17 +29,29 @@ import com.sopetit.design_system.SoftieTypo
 
 @Composable
 fun MemberDailyRoutineListItem(
-    routineContent: String
+    isRoutineAchieve: Boolean,
+    routineContent: String,
+    onClickDetailAction: () -> Unit,
+    onClickDailyAchieve:() -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     MemberDailyRoutineListItemContent(
-        routineContent = routineContent
+        isRoutineAchieve = isRoutineAchieve,
+        routineContent = routineContent,
+        onClickRoutineDetail = { onClickDetailAction() },
+        interactionSource = interactionSource,
+        onClickDailyAchieve = { onClickDailyAchieve() }
     )
 }
 
 @Composable
 fun MemberDailyRoutineListItemContent(
     isRoutineAchieve: Boolean = false,
-    routineContent: String = ""
+    routineContent: String = "",
+    onClickRoutineDetail: () -> Unit = {},
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    onClickDailyAchieve:() -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -60,6 +75,11 @@ fun MemberDailyRoutineListItemContent(
                 modifier = Modifier
                     .padding(9.dp)
                     .size(20.dp)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = { onClickDailyAchieve() }
+                    )
             )
 
             Text(
@@ -80,6 +100,11 @@ fun MemberDailyRoutineListItemContent(
                 .padding(end = 8.dp)
                 .size(24.dp)
                 .padding(vertical = 10.dp, horizontal = 5.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource,
+                    onClick = { onClickRoutineDetail() }
+                )
         )
     }
 }
