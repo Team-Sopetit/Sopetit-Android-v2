@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,6 +44,8 @@ import com.sopetit.design_system.RoutineAddBtn
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
+import com.sopetit.ui.common.item.ChallengeRoutineListItem
+import com.sopetit.ui.common.item.DailyRoutineListItem
 import com.sopetit.ui.common.type.ThemeIconType
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -109,39 +112,26 @@ fun AddRoutineDetailContent(
                 .padding(vertical = 16.dp, horizontal = 20.dp)
         )
 
-        RoutineDetailList(
+        RoutineDetailTab(
             selectedRoutine = selectedRoutine,
             onSelectRoutine = onSelectRoutine,
             interactionSource = interactionSource
         )
 
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
         ) {
-            item {
-                SelectedRoutineContent()
-            }
+            SelectedRoutineContent(
+                selectedRoutine = selectedRoutine
+            )
         }
 
         BottomRectangleBtn(
             btnTextContent = String.format(RoutineAddBtn, 0)
         )
     }
-}
-
-@Composable
-fun RoutineDetailList(
-    selectedRoutine: String = DailyRoutine,
-    onSelectRoutine: (String) -> Unit,
-    interactionSource: MutableInteractionSource
-) {
-    RoutineDetailTab(
-        selectedRoutine = selectedRoutine,
-        onSelectRoutine = onSelectRoutine,
-        interactionSource = interactionSource
-    )
 }
 
 @Composable
@@ -222,8 +212,43 @@ fun RoutineDetailTabItem(
 }
 
 @Composable
-fun SelectedRoutineContent() {
-    //
+fun SelectedRoutineContent(
+    selectedRoutine: String = DailyRoutine
+) {
+    when (selectedRoutine) {
+        DailyRoutine -> DailyRoutineContent()
+        ChallengeRoutine -> ChallengeRoutineContent()
+    }
+}
+
+@Composable
+fun DailyRoutineContent() {
+    LazyColumn(
+        modifier = Modifier
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        items(10) {
+            DailyRoutineListItem(
+                routineContent = "데일리 루틴"
+            )
+        }
+    }
+}
+
+@Composable
+fun ChallengeRoutineContent() {
+    LazyColumn(
+        modifier = Modifier
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        items(10) {
+            ChallengeRoutineListItem(
+                routineContent = "챌린지 루틴"
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
