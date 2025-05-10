@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.ChallengeRoutine
+import com.sopetit.design_system.ChallengeSelectedSnackBar
 import com.sopetit.design_system.DailyRoutine
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray400
@@ -56,7 +57,8 @@ import kotlinx.coroutines.flow.SharedFlow
 @Composable
 fun AddRoutineDetailScreen(
     selectedThemeId: SharedFlow<ThemeListItemModel>,
-    showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit
+    showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
 ) {
     val viewModel: AddRoutineDetailViewModel = hiltViewModel()
     val uiState: AddRoutineDetailPageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -69,6 +71,16 @@ fun AddRoutineDetailScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is AddRoutineDetailEvent.IsOverChallengeSelected -> {
+                    showSnackBar(ChallengeSelectedSnackBar, 114, R.drawable.ic_snackbar_caution)
+                }
+            }
+        }
+    }
+
     AddRoutineDetailContent(
         interactionSource = interactionSource,
         theme = uiState.selectedTheme,
@@ -78,7 +90,9 @@ fun AddRoutineDetailScreen(
         challengeList = uiState.challengeList,
         onClickChallengeDetail = { challenge ->
             showChallengeDetailBottomSheet(viewModel.setRoutineBottomSheetModel(challenge))
-        }
+        },
+        onSelectChallenge = { viewModel.updateSelectedChallenge(it) },
+        selectedChallengeId = uiState.selectedChallengeIdList[0]
     )
 }
 
@@ -90,7 +104,9 @@ fun AddRoutineDetailContent(
     onSelectRoutine: (String) -> Unit = {},
     dailyRoutineList: List<DailyRoutineListItemModel> = emptyList(),
     challengeList: List<ChallengeItemModel> = emptyList(),
-    onClickChallengeDetail: (ChallengeItemModel) -> Unit = {}
+    onClickChallengeDetail: (ChallengeItemModel) -> Unit = {},
+    onSelectChallenge: (Int) -> Unit = {},
+    selectedChallengeId: Int = -1,
 ) {
     Column(
         modifier = Modifier
@@ -140,7 +156,9 @@ fun AddRoutineDetailContent(
                 selectedRoutine = selectedRoutine,
                 dailyRoutineList = dailyRoutineList,
                 challengeList = challengeList,
-                onClickChallengeDetail = onClickChallengeDetail
+                onClickChallengeDetail = onClickChallengeDetail,
+                onSelectChallenge = onSelectChallenge,
+                selectedChallengeId = selectedChallengeId
             )
         }
 
@@ -232,14 +250,18 @@ fun SelectedRoutineContent(
     selectedRoutine: String = DailyRoutine,
     dailyRoutineList: List<DailyRoutineListItemModel>,
     challengeList: List<ChallengeItemModel>,
-    onClickChallengeDetail: (ChallengeItemModel) -> Unit
+    onClickChallengeDetail: (ChallengeItemModel) -> Unit,
+    onSelectChallenge: (Int) -> Unit,
+    selectedChallengeId: Int,
 ) {
     when (selectedRoutine) {
         DailyRoutine -> DailyRoutineContent(dailyRoutineList = dailyRoutineList)
         ChallengeRoutine -> {
             ChallengeRoutineContent(
                 challengeList = challengeList,
-                onClickChallengeDetail = onClickChallengeDetail
+                onClickChallengeDetail = onClickChallengeDetail,
+                onSelectChallenge = onSelectChallenge,
+                selectedChallengeId = selectedChallengeId
             )
         }
     }
@@ -265,7 +287,9 @@ fun DailyRoutineContent(
 @Composable
 fun ChallengeRoutineContent(
     challengeList: List<ChallengeItemModel>,
-    onClickChallengeDetail: (ChallengeItemModel) -> Unit
+    onClickChallengeDetail: (ChallengeItemModel) -> Unit,
+    onSelectChallenge: (Int) -> Unit,
+    selectedChallengeId: Int,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -275,7 +299,9 @@ fun ChallengeRoutineContent(
         items(challengeList) { challenge ->
             ChallengeRoutineListItem(
                 routineContent = challenge.content,
-                onClickDetail = { onClickChallengeDetail(challenge) }
+                onClickDetail = { onClickChallengeDetail(challenge) },
+                isRoutineSelected = (challenge.challengeId == selectedChallengeId),
+                onClickAction = { onSelectChallenge(challenge.challengeId) }
             )
         }
     }

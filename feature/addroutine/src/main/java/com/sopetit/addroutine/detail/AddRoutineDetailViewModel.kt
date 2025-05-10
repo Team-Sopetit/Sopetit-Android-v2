@@ -83,4 +83,28 @@ class AddRoutineDetailViewModel @Inject constructor(
             place = data.place,
             isJustDetailView = true
         )
+
+
+    fun updateSelectedChallenge(challengeId: Int) {
+        when (uiState.value.selectedChallengeIdList.contains(challengeId)) {
+            true -> {
+                updateChallengeList(listOf(-1))
+            }
+            false -> {
+                if (uiState.value.selectedChallengeIdList[0] == -1) {
+                    updateChallengeList(listOf(challengeId))
+                } else {
+                    emitEventFlow(AddRoutineDetailEvent.IsOverChallengeSelected)
+                }
+            }
+        }
+    }
+
+    private fun updateChallengeList(list: List<Int>) {
+        updateState(
+            uiState.value.copy(
+                selectedChallengeIdList = list
+            )
+        )
+    }
 }

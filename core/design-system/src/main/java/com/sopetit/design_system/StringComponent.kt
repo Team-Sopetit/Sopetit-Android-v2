@@ -80,3 +80,4 @@ const val TooltipDailyContent = "매일 꾸준히 실천할 수 있는 루틴이
 const val AddRoutineTitle = "루틴 추가"
 const val RoutineAllTitle = "전체 루틴 테마"
 const val RoutineAddBtn = "루틴 %d개 추가하기"
+const val ChallengeSelectedSnackBar = "챌린지는 1개만 선택 가능해요"

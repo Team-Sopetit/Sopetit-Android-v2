@@ -277,7 +277,8 @@ fun MainScreen() {
                             navController = navController,
                             setSelectedThemeId = setSelectedTheme,
                             selectedThemeId = viewModel.selectedTheme,
-                            showChallengeDetailBottomSheet = showRoutineBottomSheet
+                            showChallengeDetailBottomSheet = showRoutineBottomSheet,
+                            showSnackBar = showSnackBar
                         )
                     }
                 }

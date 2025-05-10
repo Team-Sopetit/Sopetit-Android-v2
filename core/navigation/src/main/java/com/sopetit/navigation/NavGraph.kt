@@ -207,6 +207,7 @@ fun NavGraphBuilder.addRoutineNavGraph(
     setSelectedThemeId: (ThemeListItemModel) -> Unit,
     selectedThemeId: SharedFlow<ThemeListItemModel>,
     showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.AddRoutineScreen.route,
@@ -224,7 +225,8 @@ fun NavGraphBuilder.addRoutineNavGraph(
         composable(NavRoutes.AddRoutineDetailScreen.route) {
             AddRoutineDetailScreen(
                 selectedThemeId = selectedThemeId,
-                showChallengeDetailBottomSheet = showChallengeDetailBottomSheet
+                showChallengeDetailBottomSheet = showChallengeDetailBottomSheet,
+                showSnackBar = showSnackBar
             )
         }
     }
