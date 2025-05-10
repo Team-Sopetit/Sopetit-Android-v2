@@ -248,7 +248,7 @@ fun MainScreen() {
                             showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) },
                             showChallengeDailySom = { viewModel.updateDailyAchieve(it) },
                             showSnackBar = showSnackBar,
-                            showToolTip = { viewModel.updateTooltipState(true) }
+                            showToolTip = { viewModel.updateTooltipState(true, it) }
                         )
                         achieveNavGraph(
                             navController = navController
@@ -306,17 +306,17 @@ fun MainScreen() {
                     .fillMaxSize()
                     .background(Gray1000)
                     .clickable(
-                        onClick = { viewModel.updateTooltipState(false) }
+                        onClick = { viewModel.updateTooltipState(false, uiState.tooltipOffSet) }
                     )
             ) {
                 Popup(
                     alignment = Alignment.TopEnd,
-                    offset = IntOffset(0, 30),
+                    offset = uiState.tooltipOffSet
                 ) {
                     Box(
                         modifier = Modifier
+                            .padding(end = 20.dp)
                             .background(Gray200, RoundedCornerShape(6.dp))
-                            .padding(8.dp)
                     ) {
                         Text(
                             text = "이것은 tooltip",

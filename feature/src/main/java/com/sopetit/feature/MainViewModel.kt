@@ -1,5 +1,6 @@
 package com.sopetit.feature
 
+import androidx.compose.ui.unit.IntOffset
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -85,10 +86,11 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    fun updateTooltipState(isValid: Boolean) {
+    fun updateTooltipState(isValid: Boolean, intOffset: IntOffset) {
         updateState(
             uiState.value.copy(
-                isTooltipShowValid = isValid
+                isTooltipShowValid = isValid,
+                tooltipOffSet = intOffset
             )
         )
     }

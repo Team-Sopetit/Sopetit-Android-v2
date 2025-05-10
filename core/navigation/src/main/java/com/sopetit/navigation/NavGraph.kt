@@ -1,5 +1,6 @@
 package com.sopetit.navigation
 
+import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -175,7 +176,7 @@ fun NavGraphBuilder.progressNavGraph(
     showChallengeAchieveSom: (Boolean) -> Unit,
     showChallengeDailySom: (Boolean) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
-    showToolTip: () -> Unit
+    showToolTip: (IntOffset) -> Unit
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
