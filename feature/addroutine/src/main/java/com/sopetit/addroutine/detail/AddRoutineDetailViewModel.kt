@@ -66,9 +66,12 @@ class AddRoutineDetailViewModel @Inject constructor(
     }
 
     private fun onSuccessGetChallenge(data: List<ChallengeItemModel>) {
+        val hasRoutine: ChallengeItemModel = data.firstOrNull { it.hasRoutine } ?: ChallengeItemModel()
+
         updateState(
             uiState.value.copy(
-                challengeList = data
+                challengeList = data,
+                hasRoutine = hasRoutine
             )
         )
     }
@@ -85,14 +88,14 @@ class AddRoutineDetailViewModel @Inject constructor(
         )
 
 
-    fun updateSelectedChallenge(challengeId: Int) {
-        when (uiState.value.selectedChallengeIdList.contains(challengeId)) {
+    fun updateSelectedChallenge(challenge: ChallengeItemModel) {
+        when (uiState.value.selectedChallengeIdList.contains(challenge.challengeId)) {
             true -> {
-                updateChallengeList(listOf(-1))
+                updateChallengeList(listOf(-1), ChallengeItemModel())
             }
             false -> {
                 if (uiState.value.selectedChallengeIdList[0] == -1) {
-                    updateChallengeList(listOf(challengeId))
+                    updateChallengeList(listOf(challenge.challengeId), challenge)
                 } else {
                     emitEventFlow(AddRoutineDetailEvent.IsOverChallengeSelected)
                 }
@@ -100,10 +103,11 @@ class AddRoutineDetailViewModel @Inject constructor(
         }
     }
 
-    private fun updateChallengeList(list: List<Int>) {
+    private fun updateChallengeList(list: List<Int>, challenge: ChallengeItemModel) {
         updateState(
             uiState.value.copy(
-                selectedChallengeIdList = list
+                selectedChallengeIdList = list,
+                selectedChallenge = challenge
             )
         )
     }
@@ -131,5 +135,17 @@ class AddRoutineDetailViewModel @Inject constructor(
                 selectedDailyIdList = newList
             )
         )
+    }
+
+    fun clickAddRoutineBtn() {
+        setAddChallenge()
+    }
+
+    private fun setAddChallenge() {
+        if (uiState.value.hasRoutine == uiState.value.selectedChallenge) {
+            // TODO 바텀시트
+        } else {
+            // TODO 서버통신
+        }
     }
 }

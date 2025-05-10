@@ -98,7 +98,8 @@ fun AddRoutineDetailScreen(
         onSelectChallenge = { viewModel.updateSelectedChallenge(it) },
         selectedChallengeId = uiState.selectedChallengeIdList[0],
         onSelectDaily = { viewModel.updateSelectedDaily(it) },
-        selectedDailyIdList = uiState.selectedDailyIdList
+        selectedDailyIdList = uiState.selectedDailyIdList,
+        onClickRoutineAddBtn = { viewModel.clickAddRoutineBtn() }
     )
 }
 
@@ -111,11 +112,14 @@ fun AddRoutineDetailContent(
     dailyRoutineList: List<DailyThemeRoutineItemModel> = emptyList(),
     challengeList: List<ChallengeItemModel> = emptyList(),
     onClickChallengeDetail: (ChallengeItemModel) -> Unit = {},
-    onSelectChallenge: (Int) -> Unit = {},
+    onSelectChallenge: (ChallengeItemModel) -> Unit = {},
     selectedChallengeId: Int = -1,
     onSelectDaily: (DailyThemeRoutineItemModel) -> Unit = {},
     selectedDailyIdList: List<Int> = emptyList(),
+    onClickRoutineAddBtn: () -> Unit = {}
 ) {
+    val selectedChallengeNum = if (selectedChallengeId == -1) 0 else 1
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -173,7 +177,9 @@ fun AddRoutineDetailContent(
         }
 
         BottomRectangleBtn(
-            btnTextContent = String.format(RoutineAddBtn, 0)
+            btnTextContent = String.format(RoutineAddBtn, selectedDailyIdList.size + selectedChallengeNum),
+            isBtnActivated = (selectedDailyIdList.size + selectedChallengeNum) > 0,
+            onClickAction = onClickRoutineAddBtn
         )
     }
 }
@@ -261,7 +267,7 @@ fun SelectedRoutineContent(
     dailyRoutineList: List<DailyThemeRoutineItemModel>,
     challengeList: List<ChallengeItemModel>,
     onClickChallengeDetail: (ChallengeItemModel) -> Unit,
-    onSelectChallenge: (Int) -> Unit,
+    onSelectChallenge: (ChallengeItemModel) -> Unit,
     selectedChallengeId: Int,
     onSelectDaily: (DailyThemeRoutineItemModel) -> Unit,
     selectedDailyIdList: List<Int>,
@@ -311,7 +317,7 @@ fun DailyRoutineContent(
 fun ChallengeRoutineContent(
     challengeList: List<ChallengeItemModel>,
     onClickChallengeDetail: (ChallengeItemModel) -> Unit,
-    onSelectChallenge: (Int) -> Unit,
+    onSelectChallenge: (ChallengeItemModel) -> Unit,
     selectedChallengeId: Int,
 ) {
     LazyColumn(
@@ -324,7 +330,7 @@ fun ChallengeRoutineContent(
                 routineContent = challenge.content,
                 onClickDetail = { onClickChallengeDetail(challenge) },
                 isRoutineSelected = (challenge.challengeId == selectedChallengeId),
-                onClickAction = { onSelectChallenge(challenge.challengeId) }
+                onClickAction = { onSelectChallenge(challenge) }
             )
         }
     }
