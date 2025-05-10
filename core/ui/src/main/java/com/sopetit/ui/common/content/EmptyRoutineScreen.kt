@@ -36,6 +36,7 @@ fun EmptyRoutineScreen(
     btnTextStyle: TextStyle,
     btnVerticalPadding: Int,
     btnHorizontalPadding: Int,
+    onClickAddRoutine: () -> Unit
 ) {
     EmptyRoutineContent(
         titleContent = titleContent,
@@ -48,7 +49,8 @@ fun EmptyRoutineScreen(
         btnTextColor = btnTextColor,
         btnTextStyle = btnTextStyle,
         btnVerticalPadding = btnVerticalPadding,
-        btnHorizontalPadding = btnHorizontalPadding
+        btnHorizontalPadding = btnHorizontalPadding,
+        onClickAddRoutine = onClickAddRoutine
     )
 }
 
@@ -65,6 +67,7 @@ fun EmptyRoutineContent(
     btnTextStyle: TextStyle = SoftieTypo.caption1,
     btnVerticalPadding: Int = 0,
     btnHorizontalPadding: Int = 0,
+    onClickAddRoutine: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -97,7 +100,8 @@ fun EmptyRoutineContent(
             textColor = btnTextColor,
             textStyle = btnTextStyle,
             verticalPadding = btnVerticalPadding,
-            horizontalPadding = btnHorizontalPadding
+            horizontalPadding = btnHorizontalPadding,
+            onClickAction = onClickAddRoutine
         )
     }
 }
