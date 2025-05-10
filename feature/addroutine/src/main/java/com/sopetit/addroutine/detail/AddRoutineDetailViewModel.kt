@@ -2,14 +2,17 @@ package com.sopetit.addroutine.detail
 
 import androidx.lifecycle.viewModelScope
 import com.sopetit.domain.entity.enums.RoutineType
+import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.routine.DailyThemeRoutineItemModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
+import com.sopetit.domain.entity.response.theme.ChallengeThemeItemModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.domain.usecase.routine.GetChallengeUseCase
 import com.sopetit.domain.usecase.routine.GetDailyThemeRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
+import com.sopetit.ui.common.type.ThemeIconType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -153,8 +156,34 @@ class AddRoutineDetailViewModel @Inject constructor(
         }
     }
 
-    fun setChangeChallenge() = ChallengeChangeModel(
-        hasChallenge = uiState.value.hasRoutine,
-        changeChallenge = uiState.value.selectedChallenge
-    )
+    fun setChangeChallenge() {
+        val hasChallenge = uiState.value.hasRoutine
+        val changeChallenge = uiState.value.selectedChallenge
+        val theme = uiState.value.selectedTheme
+
+        ChallengeChangeModel(
+            hasChallenge = MemberChallengeModel(
+                memberChallengeId = hasChallenge.challengeId,
+                theme = ChallengeThemeItemModel(
+                    themeId = theme.themeId,
+                    themeName = ThemeIconType.getThemeName(theme.themeId),
+                ),
+                content = hasChallenge.content,
+                description = hasChallenge.description,
+                place = hasChallenge.place,
+                timeTaken = hasChallenge.requiredTime
+            ),
+            changeChallenge = MemberChallengeModel(
+                memberChallengeId = changeChallenge.challengeId,
+                theme = ChallengeThemeItemModel(
+                    themeId = theme.themeId,
+                    themeName = ThemeIconType.getThemeName(theme.themeId),
+                ),
+                content = changeChallenge.content,
+                description = changeChallenge.description,
+                place = changeChallenge.place,
+                timeTaken = changeChallenge.requiredTime
+            )
+        )
+    }
 }

@@ -13,17 +13,18 @@ import com.sopetit.design_system.Yellow50
 enum class ThemeIconType(
     val themeId: Int,
     val themeIcon: Int,
+    val themeName: String,
     val themeBackgroundImg: Int,
     val themeDetailBackground: Int,
     val themeColor: Color,
 ) {
-    ONE(1, R.drawable.ic_theme1, R.drawable.ic_challenge_background1, R.drawable.ic_theme_background1, Pink50),
-    TWO(2, R.drawable.ic_theme2, R.drawable.ic_challenge_background2, R.drawable.ic_theme_background2, Red50),
-    THREE(3, R.drawable.ic_theme3, R.drawable.ic_challenge_background3, R.drawable.ic_theme_background3, Orange50),
-    FOUR(4, R.drawable.ic_theme4, R.drawable.ic_challenge_background4, R.drawable.ic_theme_background4, Yellow50),
-    FIVE(5, R.drawable.ic_theme5, R.drawable.ic_challenge_background5, R.drawable.ic_theme_background5, Green50),
-    SIX(6, R.drawable.ic_theme6, R.drawable.ic_challenge_background6, R.drawable.ic_theme_background6, Sky50),
-    SEVEN(7, R.drawable.ic_theme7, R.drawable.ic_challenge_background7, R.drawable.ic_theme_background7, Blue50);
+    ONE(1, R.drawable.ic_theme1, "관계 쌓기", R.drawable.ic_challenge_background1, R.drawable.ic_theme_background1, Pink50),
+    TWO(2, R.drawable.ic_theme2, "마음 챙김", R.drawable.ic_challenge_background2, R.drawable.ic_theme_background2, Red50),
+    THREE(3, R.drawable.ic_theme3, "통통한 통장", R.drawable.ic_challenge_background3, R.drawable.ic_theme_background3, Orange50),
+    FOUR(4, R.drawable.ic_theme4, "산뜻한 일상", R.drawable.ic_challenge_background4, R.drawable.ic_theme_background4, Yellow50),
+    FIVE(5, R.drawable.ic_theme5, "한 걸음 성장", R.drawable.ic_challenge_background5, R.drawable.ic_theme_background5, Green50),
+    SIX(6, R.drawable.ic_theme6, "건강한 몸", R.drawable.ic_challenge_background6, R.drawable.ic_theme_background6, Sky50),
+    SEVEN(7, R.drawable.ic_theme7, "나와 친해지기", R.drawable.ic_challenge_background7, R.drawable.ic_theme_background7, Blue50);
 
     companion object {
         fun getThemeIcon(themeId: Int): Int =
@@ -43,5 +44,8 @@ enum class ThemeIconType(
 
         fun getThemeDetailBackground(themeId: Int): Int =
             entries.firstOrNull { it.themeId == themeId }?.themeDetailBackground ?: R.drawable.ic_theme_background1
+
+        fun getThemeName(themeId: Int): String =
+            entries.firstOrNull { it.themeId == themeId }?.themeName ?: ""
     }
 }
