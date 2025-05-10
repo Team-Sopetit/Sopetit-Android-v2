@@ -72,6 +72,7 @@ import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.progressNavGraph
 import com.sopetit.navigation.splashNavGraph
+import com.sopetit.ui.common.bottomsheet.ChallengeChangeBottomSheet
 import com.sopetit.ui.common.bottomsheet.RoutineDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
 import com.sopetit.ui.common.item.CommonSnackBar
@@ -198,7 +199,9 @@ fun MainScreen() {
                         }
 
                         BottomSheetType.CHALLENGECHANGE -> {
-                            //
+                            ChallengeChangeBottomSheet(
+                                challengeChangeModel = uiState.challengeChangeModel
+                            )
                         }
 
                         BottomSheetType.DEFAULT -> {}

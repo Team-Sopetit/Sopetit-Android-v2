@@ -149,19 +149,19 @@ class AddRoutineDetailViewModel @Inject constructor(
     }
 
     private fun setAddChallenge() {
-        if (uiState.value.hasRoutine == uiState.value.selectedChallenge) {
+        if (uiState.value.hasRoutine != ChallengeItemModel()) {
             emitEventFlow(AddRoutineDetailEvent.HasChallengeRoutine)
         } else {
             // TODO 서버통신
         }
     }
 
-    fun setChangeChallenge() {
+    fun setChangeChallenge(): ChallengeChangeModel {
         val hasChallenge = uiState.value.hasRoutine
         val changeChallenge = uiState.value.selectedChallenge
         val theme = uiState.value.selectedTheme
 
-        ChallengeChangeModel(
+        val challenge = ChallengeChangeModel(
             hasChallenge = MemberChallengeModel(
                 memberChallengeId = hasChallenge.challengeId,
                 theme = ChallengeThemeItemModel(
@@ -185,5 +185,7 @@ class AddRoutineDetailViewModel @Inject constructor(
                 timeTaken = changeChallenge.requiredTime
             )
         )
+
+        return challenge
     }
 }

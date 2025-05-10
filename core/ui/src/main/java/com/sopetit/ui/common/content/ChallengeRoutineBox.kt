@@ -36,8 +36,9 @@ import com.sopetit.ui.common.type.ThemeIconType
 @Composable
 fun ChallengeRoutineBox(
     challengeModel: MemberChallengeModel,
-    onClickDetailAction: () -> Unit,
-    onClickAchievement: () -> Unit,
+    onClickDetailAction: () -> Unit = {},
+    onClickAchievement: () -> Unit = {},
+    isUsedForChange: Boolean = false
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -45,7 +46,8 @@ fun ChallengeRoutineBox(
         challengeModel = challengeModel,
         onClickRoutineDetail = { onClickDetailAction() },
         interactionSource = interactionSource,
-        onClickAchievement = onClickAchievement
+        onClickAchievement = onClickAchievement,
+        isUsedForChange = isUsedForChange
     )
 }
 
@@ -55,6 +57,7 @@ fun ChallengeRoutineContent(
     onClickRoutineDetail: () -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     onClickAchievement: () -> Unit = {},
+    isUsedForChange: Boolean = false
 ) {
     val themeType: ThemeIconType = ThemeIconType.mapThemeIconType(challengeModel.theme.themeId)
 
@@ -91,20 +94,22 @@ fun ChallengeRoutineContent(
                         .align(Alignment.CenterStart)
                 )
 
-                Image(
-                    painter = painterResource(id = R.drawable.ic_more_info),
-                    contentDescription = "more info",
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(end = 20.dp)
-                        .size(24.dp)
-                        .padding(vertical = 10.dp, horizontal = 5.dp)
-                        .clickable(
-                            indication = null,
-                            interactionSource = interactionSource,
-                            onClick = { onClickRoutineDetail() }
-                        )
-                )
+                if (!isUsedForChange) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_more_info),
+                        contentDescription = "more info",
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(end = 20.dp)
+                            .size(24.dp)
+                            .padding(vertical = 10.dp, horizontal = 5.dp)
+                            .clickable(
+                                indication = null,
+                                interactionSource = interactionSource,
+                                onClick = { onClickRoutineDetail() }
+                            )
+                    )
+                }
             }
 
             Text(
@@ -112,27 +117,31 @@ fun ChallengeRoutineContent(
                 color = Gray700,
                 style = SoftieTypo.body2,
                 modifier = Modifier
-                    .padding(top = 6.dp, start = 20.dp)
+                    .padding(top = 6.dp, start = 20.dp, end = 35.dp)
+                    .fillMaxWidth()
+                    .padding(bottom = if (isUsedForChange) 12.dp else 0.dp)
             )
 
-            Box(
-                modifier = Modifier
-                    .padding(start = 20.dp, top = 10.dp, bottom = 12.dp)
-                    .wrapContentSize()
-                    .clip(RoundedCornerShape(100.dp))
-                    .background(Gray650)
-                    .clickable(
-                        interactionSource = interactionSource,
-                        indication = null,
-                        onClick = { onClickAchievement() }
+            if (!isUsedForChange) {
+                Box(
+                    modifier = Modifier
+                        .padding(start = 20.dp, top = 10.dp, bottom = 12.dp)
+                        .wrapContentSize()
+                        .clip(RoundedCornerShape(100.dp))
+                        .background(Gray650)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { onClickAchievement() }
+                        )
+                ) {
+                    Text(
+                        text = Complete,
+                        color = Gray0,
+                        style = SoftieTypo.caption1,
+                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
                     )
-            ) {
-                Text(
-                    text = Complete,
-                    color = Gray0,
-                    style = SoftieTypo.caption1,
-                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
-                )
+                }
             }
         }
 
