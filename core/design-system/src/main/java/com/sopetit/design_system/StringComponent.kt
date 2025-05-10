@@ -74,3 +74,4 @@ const val TooltipDailyContent = "매일 꾸준히 실천할 수 있는 루틴이
 
 // Add Routine
 const val AddRoutineTitle = "루틴 추가"
+const val RoutineAllTitle = "전체 루틴 테마"

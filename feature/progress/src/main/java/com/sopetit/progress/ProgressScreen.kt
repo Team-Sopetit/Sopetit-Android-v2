@@ -200,17 +200,17 @@ fun ProgressContent(
                     .padding(end = 20.dp, bottom = 20.dp)
                     .size(50.dp)
                     .background(color = Red200, shape = CircleShape)
+                    .clickable(
+                        onClick = onClickAddRoutine,
+                        interactionSource = interactionSource,
+                        indication = null
+                    )
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_add),
                     contentDescription = "add",
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .clickable(
-                            onClick = onClickAddRoutine,
-                            interactionSource = interactionSource,
-                            indication = null
-                        )
                 )
             }
         }
