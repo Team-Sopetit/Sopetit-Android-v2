@@ -2,6 +2,7 @@ package com.sopetit.addroutine.detail
 
 import androidx.lifecycle.viewModelScope
 import com.sopetit.domain.entity.enums.RoutineType
+import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.routine.DailyThemeRoutineItemModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
@@ -66,7 +67,8 @@ class AddRoutineDetailViewModel @Inject constructor(
     }
 
     private fun onSuccessGetChallenge(data: List<ChallengeItemModel>) {
-        val hasRoutine: ChallengeItemModel = data.firstOrNull { it.hasRoutine } ?: ChallengeItemModel()
+        val hasRoutine: ChallengeItemModel =
+            data.firstOrNull { it.hasRoutine } ?: ChallengeItemModel()
 
         updateState(
             uiState.value.copy(
@@ -93,6 +95,7 @@ class AddRoutineDetailViewModel @Inject constructor(
             true -> {
                 updateChallengeList(listOf(-1), ChallengeItemModel())
             }
+
             false -> {
                 if (uiState.value.selectedChallengeIdList[0] == -1) {
                     updateChallengeList(listOf(challenge.challengeId), challenge)
@@ -121,6 +124,7 @@ class AddRoutineDetailViewModel @Inject constructor(
             true -> {
                 newList.remove(daily.id)
             }
+
             false -> {
                 if (daily.existedInMember) {
                     emitEventFlow(AddRoutineDetailEvent.IsRoutineExistedInMember)
@@ -143,9 +147,14 @@ class AddRoutineDetailViewModel @Inject constructor(
 
     private fun setAddChallenge() {
         if (uiState.value.hasRoutine == uiState.value.selectedChallenge) {
-            // TODO 바텀시트
+            emitEventFlow(AddRoutineDetailEvent.HasChallengeRoutine)
         } else {
             // TODO 서버통신
         }
     }
+
+    fun setChangeChallenge() = ChallengeChangeModel(
+        hasChallenge = uiState.value.hasRoutine,
+        changeChallenge = uiState.value.selectedChallenge
+    )
 }

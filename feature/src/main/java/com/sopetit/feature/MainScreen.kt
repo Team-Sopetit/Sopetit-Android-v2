@@ -59,6 +59,7 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
@@ -116,6 +117,10 @@ fun MainScreen() {
     }
     val showRoutineBottomSheet: (RoutineDetailModel) -> Unit = { routine ->
         viewModel.setRoutineDetail(routine)
+        scope.launch { sheetState.show() }
+    }
+    val showChallengeChangeBottomSheet: (ChallengeChangeModel) -> Unit = { challenge ->
+        viewModel.setChallengeChange(challenge)
         scope.launch { sheetState.show() }
     }
 
@@ -190,6 +195,10 @@ fun MainScreen() {
                                     }
                                 }
                             )
+                        }
+
+                        BottomSheetType.CHALLENGECHANGE -> {
+                            //
                         }
 
                         BottomSheetType.DEFAULT -> {}
@@ -278,7 +287,8 @@ fun MainScreen() {
                             setSelectedThemeId = setSelectedTheme,
                             selectedThemeId = viewModel.selectedTheme,
                             showChallengeDetailBottomSheet = showRoutineBottomSheet,
-                            showSnackBar = showSnackBar
+                            showSnackBar = showSnackBar,
+                            showChallengeChangeBottomSheet = showChallengeChangeBottomSheet
                         )
                     }
                 }

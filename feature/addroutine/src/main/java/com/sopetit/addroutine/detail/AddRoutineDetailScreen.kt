@@ -45,6 +45,7 @@ import com.sopetit.design_system.IsExistedMemberSnackBar
 import com.sopetit.design_system.R
 import com.sopetit.design_system.RoutineAddBtn
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.routine.DailyThemeRoutineItemModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
@@ -60,6 +61,7 @@ fun AddRoutineDetailScreen(
     selectedThemeId: SharedFlow<ThemeListItemModel>,
     showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
+    showChallengeChangeBottomSheet: (ChallengeChangeModel) -> Unit,
 ) {
     val viewModel: AddRoutineDetailViewModel = hiltViewModel()
     val uiState: AddRoutineDetailPageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -78,8 +80,13 @@ fun AddRoutineDetailScreen(
                 is AddRoutineDetailEvent.IsOverChallengeSelected -> {
                     showSnackBar(ChallengeSelectedSnackBar, 114, R.drawable.ic_snackbar_caution)
                 }
+
                 is AddRoutineDetailEvent.IsRoutineExistedInMember -> {
                     showSnackBar(IsExistedMemberSnackBar, 114, R.drawable.ic_snackbar_caution)
+                }
+
+                is AddRoutineDetailEvent.HasChallengeRoutine -> {
+                    showChallengeChangeBottomSheet(viewModel.setChangeChallenge())
                 }
             }
         }
@@ -116,7 +123,7 @@ fun AddRoutineDetailContent(
     selectedChallengeId: Int = -1,
     onSelectDaily: (DailyThemeRoutineItemModel) -> Unit = {},
     selectedDailyIdList: List<Int> = emptyList(),
-    onClickRoutineAddBtn: () -> Unit = {}
+    onClickRoutineAddBtn: () -> Unit = {},
 ) {
     val selectedChallengeNum = if (selectedChallengeId == -1) 0 else 1
 
@@ -177,7 +184,10 @@ fun AddRoutineDetailContent(
         }
 
         BottomRectangleBtn(
-            btnTextContent = String.format(RoutineAddBtn, selectedDailyIdList.size + selectedChallengeNum),
+            btnTextContent = String.format(
+                RoutineAddBtn,
+                selectedDailyIdList.size + selectedChallengeNum
+            ),
             isBtnActivated = (selectedDailyIdList.size + selectedChallengeNum) > 0,
             onClickAction = onClickRoutineAddBtn
         )

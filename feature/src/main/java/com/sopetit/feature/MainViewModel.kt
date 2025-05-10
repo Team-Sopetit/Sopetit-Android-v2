@@ -2,6 +2,7 @@ package com.sopetit.feature
 
 import androidx.compose.ui.unit.IntOffset
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
@@ -103,6 +104,15 @@ class MainViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 isTooltipShowValid = isValid,
+            )
+        )
+    }
+
+    fun setChallengeChange(challenge: ChallengeChangeModel) {
+        updateState(
+            uiState.value.copy(
+                challengeChangeModel = challenge,
+                bottomSheetType = BottomSheetType.CHALLENGECHANGE
             )
         )
     }

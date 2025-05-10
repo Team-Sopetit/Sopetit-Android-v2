@@ -9,6 +9,7 @@ import com.sopetit.achieve.AchieveScreen
 import com.sopetit.addroutine.AddRoutineScreen
 import com.sopetit.addroutine.detail.AddRoutineDetailScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -208,6 +209,7 @@ fun NavGraphBuilder.addRoutineNavGraph(
     selectedThemeId: SharedFlow<ThemeListItemModel>,
     showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
+    showChallengeChangeBottomSheet: (ChallengeChangeModel) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.AddRoutineScreen.route,
@@ -226,7 +228,8 @@ fun NavGraphBuilder.addRoutineNavGraph(
             AddRoutineDetailScreen(
                 selectedThemeId = selectedThemeId,
                 showChallengeDetailBottomSheet = showChallengeDetailBottomSheet,
-                showSnackBar = showSnackBar
+                showSnackBar = showSnackBar,
+                showChallengeChangeBottomSheet = showChallengeChangeBottomSheet
             )
         }
     }
