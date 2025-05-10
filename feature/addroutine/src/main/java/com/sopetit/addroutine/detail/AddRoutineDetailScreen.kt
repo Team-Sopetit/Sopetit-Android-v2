@@ -43,6 +43,7 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.RoutineAddBtn
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
@@ -71,7 +72,8 @@ fun AddRoutineDetailScreen(
         theme = uiState.selectedTheme,
         selectedRoutine = uiState.selectedRoutineTab,
         onSelectRoutine = { viewModel.setSelectedRoutineTab(it) },
-        dailyRoutineList = uiState.dailyRoutineList
+        dailyRoutineList = uiState.dailyRoutineList,
+        challengeList = uiState.challengeList
     )
 }
 
@@ -81,7 +83,8 @@ fun AddRoutineDetailContent(
     theme: ThemeListItemModel = ThemeListItemModel(),
     selectedRoutine: String = DailyRoutine,
     onSelectRoutine: (String) -> Unit = {},
-    dailyRoutineList: List<DailyRoutineListItemModel> = emptyList()
+    dailyRoutineList: List<DailyRoutineListItemModel> = emptyList(),
+    challengeList: List<ChallengeItemModel> = emptyList(),
 ) {
     Column(
         modifier = Modifier
@@ -129,7 +132,8 @@ fun AddRoutineDetailContent(
         ) {
             SelectedRoutineContent(
                 selectedRoutine = selectedRoutine,
-                dailyRoutineList = dailyRoutineList
+                dailyRoutineList = dailyRoutineList,
+                challengeList = challengeList
             )
         }
 
@@ -143,7 +147,7 @@ fun AddRoutineDetailContent(
 fun RoutineDetailTab(
     selectedRoutine: String = DailyRoutine,
     onSelectRoutine: (String) -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
 ) {
     Box(
         modifier = Modifier
@@ -187,7 +191,7 @@ fun RoutineDetailTabItem(
     tabTitle: String,
     isSelected: Boolean = false,
     onSelect: () -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
 ) {
     Column(
         modifier = modifier
@@ -219,17 +223,18 @@ fun RoutineDetailTabItem(
 @Composable
 fun SelectedRoutineContent(
     selectedRoutine: String = DailyRoutine,
-    dailyRoutineList: List<DailyRoutineListItemModel>
+    dailyRoutineList: List<DailyRoutineListItemModel>,
+    challengeList: List<ChallengeItemModel>,
 ) {
     when (selectedRoutine) {
         DailyRoutine -> DailyRoutineContent(dailyRoutineList = dailyRoutineList)
-        ChallengeRoutine -> ChallengeRoutineContent()
+        ChallengeRoutine -> ChallengeRoutineContent(challengeList = challengeList)
     }
 }
 
 @Composable
 fun DailyRoutineContent(
-    dailyRoutineList: List<DailyRoutineListItemModel>
+    dailyRoutineList: List<DailyRoutineListItemModel>,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -245,15 +250,17 @@ fun DailyRoutineContent(
 }
 
 @Composable
-fun ChallengeRoutineContent() {
+fun ChallengeRoutineContent(
+    challengeList: List<ChallengeItemModel>,
+) {
     LazyColumn(
         modifier = Modifier
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        items(10) {
+        items(challengeList) { challenge ->
             ChallengeRoutineListItem(
-                routineContent = "챌린지 루틴"
+                routineContent = challenge.content
             )
         }
     }

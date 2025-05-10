@@ -1,8 +1,10 @@
 package com.sopetit.addroutine.detail
 
 import androidx.lifecycle.viewModelScope
+import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
+import com.sopetit.domain.usecase.routine.GetChallengeUseCase
 import com.sopetit.domain.usecase.routine.GetDailyThemeRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddRoutineDetailViewModel @Inject constructor(
     private val getDailyThemeRoutineUseCase: GetDailyThemeRoutineUseCase,
+    private val getChallengeUseCase: GetChallengeUseCase
 ) : BaseViewModel<AddRoutineDetailPageState>(
     AddRoutineDetailPageState()
 ) {
@@ -25,6 +28,7 @@ class AddRoutineDetailViewModel @Inject constructor(
         )
 
         initSetDailyRoutineList(theme.themeId)
+        initSetChallenge(theme.themeId)
     }
 
     fun setSelectedRoutineTab(tab: String) {
@@ -47,6 +51,22 @@ class AddRoutineDetailViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 dailyRoutineList = data
+            )
+        )
+    }
+
+    private fun initSetChallenge(themeId: Int) {
+        viewModelScope.launch {
+            getChallengeUseCase(request = themeId).collect {
+                resultResponse(it, ::onSuccessGetChallenge)
+            }
+        }
+    }
+
+    private fun onSuccessGetChallenge(data: List<ChallengeItemModel>) {
+        updateState(
+            uiState.value.copy(
+                challengeList = data
             )
         )
     }
