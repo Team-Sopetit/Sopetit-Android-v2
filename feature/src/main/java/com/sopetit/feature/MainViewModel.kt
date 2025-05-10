@@ -84,4 +84,12 @@ class MainViewModel @Inject constructor(
             )
         )
     }
+
+    fun updateTooltipState(isValid: Boolean) {
+        updateState(
+            uiState.value.copy(
+                isTooltipShowValid = isValid
+            )
+        )
+    }
 }

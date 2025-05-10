@@ -175,6 +175,7 @@ fun NavGraphBuilder.progressNavGraph(
     showChallengeAchieveSom: (Boolean) -> Unit,
     showChallengeDailySom: (Boolean) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
+    showToolTip: () -> Unit
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
@@ -186,7 +187,8 @@ fun NavGraphBuilder.progressNavGraph(
                 deleteRoutineId = deleteRoutineId,
                 showChallengeAchieveSom = showChallengeAchieveSom,
                 showChallengeDailySom = showChallengeDailySom,
-                showSnackBar = showSnackBar
+                showSnackBar = showSnackBar,
+                showTooltip = showToolTip
             )
         }
     }

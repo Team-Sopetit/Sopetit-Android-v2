@@ -11,5 +11,6 @@ data class MainPageState(
     val tutorials: List<TutorialModel> = emptyList(),
     val routineDetail: RoutineDetailModel = RoutineDetailModel(),
     val isChallengeAchieveShowValid: Boolean = false,
-    val isDailyAchieveShowValid: Boolean = false
+    val isDailyAchieveShowValid: Boolean = false,
+    val isTooltipShowValid: Boolean = false
 ) : PageState

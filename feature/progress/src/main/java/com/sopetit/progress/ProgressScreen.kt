@@ -2,6 +2,7 @@ package com.sopetit.progress
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,13 +25,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Gray0
@@ -73,6 +78,7 @@ fun ProgressScreen(
     showChallengeAchieveSom: (Boolean) -> Unit = {},
     showChallengeDailySom: (Boolean) -> Unit = {},
     showSnackBar: (String, Int, Int) -> Unit,
+    showTooltip: () -> Unit
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -125,7 +131,8 @@ fun ProgressScreen(
         },
         onClickDailyAchieve = { routineId ->
             viewModel.achieveDailyRoutine(routineId)
-        }
+        },
+        onClickTooltipBtn = { showTooltip() }
     )
 }
 
@@ -140,6 +147,7 @@ fun ProgressContent(
     onClickChallengeAchieveBtn: () -> Unit = {},
     onClickDailyAchieve: (Int) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    onClickTooltipBtn: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -164,7 +172,8 @@ fun ProgressContent(
                 memberDailyRoutineList = memberDailyRoutineList,
                 onClickRoutineDetail = onClickRoutineDetail,
                 onClickChallengeAchieveBtn = onClickChallengeAchieveBtn,
-                onClickDailyAchieve = onClickDailyAchieve
+                onClickDailyAchieve = onClickDailyAchieve,
+                onClickTooltipBtn = onClickTooltipBtn
             )
         }
     }
@@ -177,6 +186,7 @@ fun ProgressRoutineContent(
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickChallengeAchieveBtn: () -> Unit = {},
     onClickDailyAchieve: (Int) -> Unit,
+    onClickTooltipBtn: () -> Unit
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
         Box(
@@ -203,7 +213,8 @@ fun ProgressRoutineContent(
             ProgressChallenge(
                 memberChallenge = memberChallenge,
                 onClickRoutineDetail = onClickRoutineDetail,
-                onClickAchievement = onClickChallengeAchieveBtn
+                onClickAchievement = onClickChallengeAchieveBtn,
+                onClickTooltipBtn = onClickTooltipBtn
             )
         } else {
             ProgressChallengeEmptyRoutine()
@@ -213,7 +224,8 @@ fun ProgressRoutineContent(
             ProgressDailyRoutine(
                 memberDailyRoutineList = memberDailyRoutineList,
                 onClickRoutineDetail = onClickRoutineDetail,
-                onClickDailyAchieve = onClickDailyAchieve
+                onClickDailyAchieve = onClickDailyAchieve,
+                onClickTooltipBtn = onClickTooltipBtn
             )
         } else {
             Box(
@@ -244,10 +256,12 @@ fun ProgressChallenge(
     memberChallenge: MemberChallengeModel = MemberChallengeModel(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickAchievement: () -> Unit = {},
+    onClickTooltipBtn: () -> Unit
 ) {
     Column {
         RoutineTitleContent(
             title = ProgressChallengeTitle,
+            onClickTooltipBtn = onClickTooltipBtn
         )
 
         Box(
@@ -281,6 +295,7 @@ fun ProgressDailyRoutine(
     memberDailyRoutineList: List<MemberDailyRoutineListModel> = emptyList(),
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickDailyAchieve: (Int) -> Unit,
+    onClickTooltipBtn: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -288,6 +303,7 @@ fun ProgressDailyRoutine(
     ) {
         RoutineTitleContent(
             title = ProgressDailyTitle,
+            onClickTooltipBtn = onClickTooltipBtn
         )
 
         LazyColumn(
@@ -384,6 +400,7 @@ fun ProgressChallengeEmptyRoutine() {
 @Composable
 fun RoutineTitleContent(
     title: String,
+    onClickTooltipBtn: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -404,16 +421,27 @@ fun RoutineTitleContent(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(9.dp)
-                .size(20.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(Gray200)
         ) {
-            Text(
-                text = Question,
-                color = Gray500,
-                style = SoftieTypo.caption2,
-                modifier = Modifier.align(Alignment.Center)
-            )
+
+            Box(
+                modifier = Modifier
+                .align(Alignment.CenterEnd)
+//                .padding(9.dp)
+                    .size(20.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(Gray200)
+                    .clickable(
+                        onClick = onClickTooltipBtn
+                    )
+            ) {
+
+                Text(
+                    text = Question,
+                    color = Gray500,
+                    style = SoftieTypo.caption2,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
         }
     }
 }

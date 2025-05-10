@@ -9,6 +9,7 @@ import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,16 +25,19 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -44,7 +48,10 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray1000
+import com.sopetit.design_system.Gray200
+import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
+import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -240,7 +247,8 @@ fun MainScreen() {
                             deleteRoutineId = viewModel.deleteRoutineId,
                             showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) },
                             showChallengeDailySom = { viewModel.updateDailyAchieve(it) },
-                            showSnackBar = showSnackBar
+                            showSnackBar = showSnackBar,
+                            showToolTip = { viewModel.updateTooltipState(true) }
                         )
                         achieveNavGraph(
                             navController = navController
@@ -289,6 +297,34 @@ fun MainScreen() {
                     },
                     modifier = Modifier.fillMaxSize()
                 )
+            }
+        }
+
+        if (uiState.isTooltipShowValid) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Gray1000)
+                    .clickable(
+                        onClick = { viewModel.updateTooltipState(false) }
+                    )
+            ) {
+                Popup(
+                    alignment = Alignment.TopEnd,
+                    offset = IntOffset(0, 30),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .background(Gray200, RoundedCornerShape(6.dp))
+                            .padding(8.dp)
+                    ) {
+                        Text(
+                            text = "이것은 tooltip",
+                            color = Gray700,
+                            style = SoftieTypo.caption1
+                        )
+                    }
+                }
             }
         }
     }
