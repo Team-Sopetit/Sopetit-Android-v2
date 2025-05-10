@@ -1,14 +1,18 @@
 package com.sopetit.addroutine.detail
 
+import androidx.lifecycle.viewModelScope
+import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
+import com.sopetit.domain.usecase.routine.GetDailyThemeRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddRoutineDetailViewModel @Inject constructor(
-
-): BaseViewModel<AddRoutineDetailPageState>(
+    private val getDailyThemeRoutineUseCase: GetDailyThemeRoutineUseCase,
+) : BaseViewModel<AddRoutineDetailPageState>(
     AddRoutineDetailPageState()
 ) {
 
@@ -19,12 +23,30 @@ class AddRoutineDetailViewModel @Inject constructor(
                 selectedTheme = theme
             )
         )
+
+        initSetDailyRoutineList(theme.themeId)
     }
 
     fun setSelectedRoutineTab(tab: String) {
         updateState(
             uiState.value.copy(
                 selectedRoutineTab = tab
+            )
+        )
+    }
+
+    private fun initSetDailyRoutineList(themeId: Int) {
+        viewModelScope.launch {
+            getDailyThemeRoutineUseCase(request = themeId).collect {
+                resultResponse(it, ::onSuccessGetDailyRoutine)
+            }
+        }
+    }
+
+    private fun onSuccessGetDailyRoutine(data: List<DailyRoutineListItemModel>) {
+        updateState(
+            uiState.value.copy(
+                dailyRoutineList = data
             )
         )
     }

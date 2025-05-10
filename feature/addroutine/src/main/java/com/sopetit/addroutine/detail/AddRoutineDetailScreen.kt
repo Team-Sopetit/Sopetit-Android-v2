@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
@@ -42,6 +43,7 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.RoutineAddBtn
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.item.ChallengeRoutineListItem
@@ -68,7 +70,8 @@ fun AddRoutineDetailScreen(
         interactionSource = interactionSource,
         theme = uiState.selectedTheme,
         selectedRoutine = uiState.selectedRoutineTab,
-        onSelectRoutine = { viewModel.setSelectedRoutineTab(it) }
+        onSelectRoutine = { viewModel.setSelectedRoutineTab(it) },
+        dailyRoutineList = uiState.dailyRoutineList
     )
 }
 
@@ -78,6 +81,7 @@ fun AddRoutineDetailContent(
     theme: ThemeListItemModel = ThemeListItemModel(),
     selectedRoutine: String = DailyRoutine,
     onSelectRoutine: (String) -> Unit = {},
+    dailyRoutineList: List<DailyRoutineListItemModel> = emptyList()
 ) {
     Column(
         modifier = Modifier
@@ -124,7 +128,8 @@ fun AddRoutineDetailContent(
                 .fillMaxWidth(),
         ) {
             SelectedRoutineContent(
-                selectedRoutine = selectedRoutine
+                selectedRoutine = selectedRoutine,
+                dailyRoutineList = dailyRoutineList
             )
         }
 
@@ -213,24 +218,27 @@ fun RoutineDetailTabItem(
 
 @Composable
 fun SelectedRoutineContent(
-    selectedRoutine: String = DailyRoutine
+    selectedRoutine: String = DailyRoutine,
+    dailyRoutineList: List<DailyRoutineListItemModel>
 ) {
     when (selectedRoutine) {
-        DailyRoutine -> DailyRoutineContent()
+        DailyRoutine -> DailyRoutineContent(dailyRoutineList = dailyRoutineList)
         ChallengeRoutine -> ChallengeRoutineContent()
     }
 }
 
 @Composable
-fun DailyRoutineContent() {
+fun DailyRoutineContent(
+    dailyRoutineList: List<DailyRoutineListItemModel>
+) {
     LazyColumn(
         modifier = Modifier
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        items(10) {
+        items(dailyRoutineList) { routine ->
             DailyRoutineListItem(
-                routineContent = "데일리 루틴"
+                routineContent = routine.content
             )
         }
     }
