@@ -45,6 +45,7 @@ import com.sopetit.design_system.RoutineAddBtn
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.item.ChallengeRoutineListItem
@@ -55,6 +56,7 @@ import kotlinx.coroutines.flow.SharedFlow
 @Composable
 fun AddRoutineDetailScreen(
     selectedThemeId: SharedFlow<ThemeListItemModel>,
+    showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit
 ) {
     val viewModel: AddRoutineDetailViewModel = hiltViewModel()
     val uiState: AddRoutineDetailPageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -73,7 +75,10 @@ fun AddRoutineDetailScreen(
         selectedRoutine = uiState.selectedRoutineTab,
         onSelectRoutine = { viewModel.setSelectedRoutineTab(it) },
         dailyRoutineList = uiState.dailyRoutineList,
-        challengeList = uiState.challengeList
+        challengeList = uiState.challengeList,
+        onClickChallengeDetail = { challenge ->
+            showChallengeDetailBottomSheet(viewModel.setRoutineBottomSheetModel(challenge))
+        }
     )
 }
 
@@ -85,6 +90,7 @@ fun AddRoutineDetailContent(
     onSelectRoutine: (String) -> Unit = {},
     dailyRoutineList: List<DailyRoutineListItemModel> = emptyList(),
     challengeList: List<ChallengeItemModel> = emptyList(),
+    onClickChallengeDetail: (ChallengeItemModel) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -133,7 +139,8 @@ fun AddRoutineDetailContent(
             SelectedRoutineContent(
                 selectedRoutine = selectedRoutine,
                 dailyRoutineList = dailyRoutineList,
-                challengeList = challengeList
+                challengeList = challengeList,
+                onClickChallengeDetail = onClickChallengeDetail
             )
         }
 
@@ -225,10 +232,16 @@ fun SelectedRoutineContent(
     selectedRoutine: String = DailyRoutine,
     dailyRoutineList: List<DailyRoutineListItemModel>,
     challengeList: List<ChallengeItemModel>,
+    onClickChallengeDetail: (ChallengeItemModel) -> Unit
 ) {
     when (selectedRoutine) {
         DailyRoutine -> DailyRoutineContent(dailyRoutineList = dailyRoutineList)
-        ChallengeRoutine -> ChallengeRoutineContent(challengeList = challengeList)
+        ChallengeRoutine -> {
+            ChallengeRoutineContent(
+                challengeList = challengeList,
+                onClickChallengeDetail = onClickChallengeDetail
+            )
+        }
     }
 }
 
@@ -252,6 +265,7 @@ fun DailyRoutineContent(
 @Composable
 fun ChallengeRoutineContent(
     challengeList: List<ChallengeItemModel>,
+    onClickChallengeDetail: (ChallengeItemModel) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -260,7 +274,8 @@ fun ChallengeRoutineContent(
     ) {
         items(challengeList) { challenge ->
             ChallengeRoutineListItem(
-                routineContent = challenge.content
+                routineContent = challenge.content,
+                onClickDetail = { onClickChallengeDetail(challenge) }
             )
         }
     }

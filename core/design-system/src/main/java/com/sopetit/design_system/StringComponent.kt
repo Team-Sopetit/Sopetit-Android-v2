@@ -12,6 +12,7 @@ const val Delete = "삭제하기"
 const val DailyRoutine = "데일리 루틴"
 const val ChallengeRoutine = "챌린지"
 const val Detail = "자세히"
+const val Confirm = "확인"
 
 // DollType
 const val Brown = "BROWN"

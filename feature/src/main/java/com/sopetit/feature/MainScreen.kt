@@ -183,6 +183,11 @@ fun MainScreen() {
                                         viewModel.deleteRoutineId.emit(it)
                                         sheetState.hide()
                                     }
+                                },
+                                onClickConfirmBtn = {
+                                    scope.launch {
+                                        sheetState.hide()
+                                    }
                                 }
                             )
                         }
@@ -271,7 +276,8 @@ fun MainScreen() {
                         addRoutineNavGraph(
                             navController = navController,
                             setSelectedThemeId = setSelectedTheme,
-                            selectedThemeId = viewModel.selectedTheme
+                            selectedThemeId = viewModel.selectedTheme,
+                            showChallengeDetailBottomSheet = showRoutineBottomSheet
                         )
                     }
                 }

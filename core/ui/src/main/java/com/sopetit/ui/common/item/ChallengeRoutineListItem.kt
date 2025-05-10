@@ -33,12 +33,14 @@ import com.sopetit.design_system.SoftieTypo
 fun ChallengeRoutineListItem(
     onClickAction: () -> Unit = {},
     routineContent: String,
-    isRoutineSelected: Boolean = false
+    isRoutineSelected: Boolean = false,
+    onClickDetail: () -> Unit
 ) {
     ChallengeRoutineListItemContent(
         onClickAction = onClickAction,
         routineContent = routineContent,
-        isRoutineSelected = isRoutineSelected
+        isRoutineSelected = isRoutineSelected,
+        onClickDetail = onClickDetail
     )
 }
 
@@ -46,7 +48,8 @@ fun ChallengeRoutineListItem(
 fun ChallengeRoutineListItemContent(
     onClickAction: () -> Unit = {},
     routineContent: String = "",
-    isRoutineSelected: Boolean = false
+    isRoutineSelected: Boolean = false,
+    onClickDetail: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -80,6 +83,9 @@ fun ChallengeRoutineListItemContent(
                     .align(Alignment.CenterStart)
                     .clip(RoundedCornerShape(100.dp))
                     .background(Gray200)
+                    .clickable(
+                        onClick = onClickDetail
+                    )
             ) {
                 Text(
                     text = Detail,

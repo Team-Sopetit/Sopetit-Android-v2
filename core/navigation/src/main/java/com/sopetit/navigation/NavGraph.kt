@@ -9,6 +9,7 @@ import com.sopetit.achieve.AchieveScreen
 import com.sopetit.addroutine.AddRoutineScreen
 import com.sopetit.addroutine.detail.AddRoutineDetailScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
@@ -179,7 +180,7 @@ fun NavGraphBuilder.progressNavGraph(
     showChallengeAchieveSom: (Boolean) -> Unit,
     showChallengeDailySom: (Boolean) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
-    showToolTip: (IntOffset, String, String) -> Unit
+    showToolTip: (IntOffset, String, String) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
@@ -204,7 +205,8 @@ fun NavGraphBuilder.progressNavGraph(
 fun NavGraphBuilder.addRoutineNavGraph(
     navController: NavHostController,
     setSelectedThemeId: (ThemeListItemModel) -> Unit,
-    selectedThemeId: SharedFlow<ThemeListItemModel>
+    selectedThemeId: SharedFlow<ThemeListItemModel>,
+    showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.AddRoutineScreen.route,
@@ -221,7 +223,8 @@ fun NavGraphBuilder.addRoutineNavGraph(
 
         composable(NavRoutes.AddRoutineDetailScreen.route) {
             AddRoutineDetailScreen(
-                selectedThemeId = selectedThemeId
+                selectedThemeId = selectedThemeId,
+                showChallengeDetailBottomSheet = showChallengeDetailBottomSheet
             )
         }
     }

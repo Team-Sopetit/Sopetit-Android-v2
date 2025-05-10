@@ -9,4 +9,5 @@ data class RoutineDetailModel(
     val explainDetail: String = "",
     val time: String = "",
     val place: String = "",
+    val isJustDetailView: Boolean = false
 )

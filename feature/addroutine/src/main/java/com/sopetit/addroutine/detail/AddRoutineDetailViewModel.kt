@@ -1,8 +1,10 @@
 package com.sopetit.addroutine.detail
 
 import androidx.lifecycle.viewModelScope
+import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.domain.usecase.routine.GetChallengeUseCase
 import com.sopetit.domain.usecase.routine.GetDailyThemeRoutineUseCase
@@ -14,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddRoutineDetailViewModel @Inject constructor(
     private val getDailyThemeRoutineUseCase: GetDailyThemeRoutineUseCase,
-    private val getChallengeUseCase: GetChallengeUseCase
+    private val getChallengeUseCase: GetChallengeUseCase,
 ) : BaseViewModel<AddRoutineDetailPageState>(
     AddRoutineDetailPageState()
 ) {
@@ -70,4 +72,15 @@ class AddRoutineDetailViewModel @Inject constructor(
             )
         )
     }
+
+    fun setRoutineBottomSheetModel(data: ChallengeItemModel): RoutineDetailModel =
+        RoutineDetailModel(
+            routineId = data.challengeId,
+            routineType = RoutineType.Challenge,
+            content = data.content,
+            explainDetail = data.description,
+            time = data.requiredTime,
+            place = data.place,
+            isJustDetailView = true
+        )
 }
