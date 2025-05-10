@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
@@ -46,7 +45,7 @@ import com.sopetit.design_system.R
 import com.sopetit.design_system.RoutineAddBtn
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.routine.ChallengeItemModel
-import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
+import com.sopetit.domain.entity.response.routine.DailyThemeRoutineItemModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
@@ -105,7 +104,7 @@ fun AddRoutineDetailContent(
     theme: ThemeListItemModel = ThemeListItemModel(),
     selectedRoutine: String = DailyRoutine,
     onSelectRoutine: (String) -> Unit = {},
-    dailyRoutineList: List<DailyRoutineListItemModel> = emptyList(),
+    dailyRoutineList: List<DailyThemeRoutineItemModel> = emptyList(),
     challengeList: List<ChallengeItemModel> = emptyList(),
     onClickChallengeDetail: (ChallengeItemModel) -> Unit = {},
     onSelectChallenge: (Int) -> Unit = {},
@@ -255,7 +254,7 @@ fun RoutineDetailTabItem(
 @Composable
 fun SelectedRoutineContent(
     selectedRoutine: String = DailyRoutine,
-    dailyRoutineList: List<DailyRoutineListItemModel>,
+    dailyRoutineList: List<DailyThemeRoutineItemModel>,
     challengeList: List<ChallengeItemModel>,
     onClickChallengeDetail: (ChallengeItemModel) -> Unit,
     onSelectChallenge: (Int) -> Unit,
@@ -285,7 +284,7 @@ fun SelectedRoutineContent(
 
 @Composable
 fun DailyRoutineContent(
-    dailyRoutineList: List<DailyRoutineListItemModel>,
+    dailyRoutineList: List<DailyThemeRoutineItemModel>,
     onSelectDaily: (Int) -> Unit,
     selectedDailyIdList: List<Int>,
 ) {
@@ -297,8 +296,8 @@ fun DailyRoutineContent(
         items(dailyRoutineList) { routine ->
             DailyRoutineListItem(
                 routineContent = routine.content,
-                onClickAction = { onSelectDaily(routine.routineId) },
-                isRoutineSelected = selectedDailyIdList.contains(routine.routineId)
+                onClickAction = { onSelectDaily(routine.id) },
+                isRoutineSelected = selectedDailyIdList.contains(routine.id)
             )
         }
     }

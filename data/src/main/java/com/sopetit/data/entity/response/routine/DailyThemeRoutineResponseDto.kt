@@ -10,9 +10,11 @@ data class DailyThemeRoutineResponseDto(
 ) {
     @Serializable
     data class RoutineListItem(
-        @SerialName("routineId")
-        val routineId: Int = 0,
+        @SerialName("id")
+        val id: Int = 0,
         @SerialName("content")
         val content: String = "",
+        @SerialName("existedInMember")
+        val existedInMember: Boolean = false
     )
 }

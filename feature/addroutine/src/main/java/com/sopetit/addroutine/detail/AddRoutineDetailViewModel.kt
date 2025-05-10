@@ -3,7 +3,7 @@ package com.sopetit.addroutine.detail
 import androidx.lifecycle.viewModelScope
 import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.routine.ChallengeItemModel
-import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
+import com.sopetit.domain.entity.response.routine.DailyThemeRoutineItemModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.domain.usecase.routine.GetChallengeUseCase
@@ -49,7 +49,7 @@ class AddRoutineDetailViewModel @Inject constructor(
         }
     }
 
-    private fun onSuccessGetDailyRoutine(data: List<DailyRoutineListItemModel>) {
+    private fun onSuccessGetDailyRoutine(data: List<DailyThemeRoutineItemModel>) {
         updateState(
             uiState.value.copy(
                 dailyRoutineList = data
