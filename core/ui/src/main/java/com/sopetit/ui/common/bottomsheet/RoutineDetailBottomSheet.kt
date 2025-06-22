@@ -22,11 +22,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sopetit.design_system.Confirm
 import com.sopetit.design_system.Delete
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray300
 import com.sopetit.design_system.Gray500
+import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.Red200
@@ -38,13 +40,16 @@ import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 fun RoutineDetailBottomSheet(
     routine: RoutineDetailModel,
     onClickRoutineDeleteBtn: (RoutineDetailModel) -> Unit = {},
+    onClickConfirmBtn: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     RoutineDetailContent(
         routine = routine,
         onClickDeleteBtnAction = onClickRoutineDeleteBtn,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
+        isJustDetailView = routine.isJustDetailView,
+        onClickConfirmBtn = onClickConfirmBtn
     )
 }
 
@@ -53,6 +58,8 @@ fun RoutineDetailContent(
     routine: RoutineDetailModel = RoutineDetailModel(),
     onClickDeleteBtnAction: (RoutineDetailModel) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    isJustDetailView: Boolean = false,
+    onClickConfirmBtn: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -83,7 +90,9 @@ fun RoutineDetailContent(
 
         RoutineDeleteBtn(
             interactionSource = interactionSource,
-            onClickBtnAction = { onClickDeleteBtnAction(routine) }
+            onClickBtnAction = { onClickDeleteBtnAction(routine) },
+            isJustDetailView = isJustDetailView,
+            onClickConfirmBtn = onClickConfirmBtn
         )
     }
 }
@@ -171,17 +180,21 @@ fun ChallengeRoutineDetail(
 fun RoutineDeleteBtn(
     onClickBtnAction: () -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    isJustDetailView: Boolean = false,
+    onClickConfirmBtn: () -> Unit,
 ) {
     Box(
         modifier = Modifier
             .padding(vertical = 32.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
-            .background(Red200)
+            .background(if (isJustDetailView) Gray650 else Red200)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = { onClickBtnAction() }
+                onClick = {
+                    if (isJustDetailView) onClickConfirmBtn() else onClickBtnAction()
+                }
             ),
     ) {
         Row(
@@ -191,15 +204,17 @@ fun RoutineDeleteBtn(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_trash),
-                contentDescription = "routine delete",
-                modifier = Modifier
-                    .size(18.dp)
-            )
+            if (!isJustDetailView) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_trash),
+                    contentDescription = "routine delete",
+                    modifier = Modifier
+                        .size(18.dp)
+                )
+            }
 
             Text(
-                text = Delete,
+                text = if (isJustDetailView) Confirm else Delete,
                 color = Gray0,
                 style = SoftieTypo.body1,
                 modifier = Modifier.padding(start = 4.dp)

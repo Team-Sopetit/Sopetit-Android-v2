@@ -6,9 +6,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sopetit.achieve.AchieveScreen
+import com.sopetit.addroutine.AddRoutineScreen
+import com.sopetit.addroutine.detail.AddRoutineDetailScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.home.HomeScreen
 import com.sopetit.login.LogInScreen
 import com.sopetit.onboarding.dollnaming.DollNamingScreen
@@ -176,7 +180,7 @@ fun NavGraphBuilder.progressNavGraph(
     showChallengeAchieveSom: (Boolean) -> Unit,
     showChallengeDailySom: (Boolean) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
-    showToolTip: (IntOffset, String, String) -> Unit
+    showToolTip: (IntOffset, String, String) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
@@ -189,7 +193,43 @@ fun NavGraphBuilder.progressNavGraph(
                 showChallengeAchieveSom = showChallengeAchieveSom,
                 showChallengeDailySom = showChallengeDailySom,
                 showSnackBar = showSnackBar,
-                showTooltip = showToolTip
+                showTooltip = showToolTip,
+                goToAddRoutinePage = {
+                    navController.navigate(NavRoutes.AddRoutineScreen.route)
+                }
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.addRoutineNavGraph(
+    navController: NavHostController,
+    setSelectedThemeId: (ThemeListItemModel) -> Unit,
+    selectedThemeId: SharedFlow<ThemeListItemModel>,
+    showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
+    showChallengeChangeBottomSheet: (ChallengeChangeModel) -> Unit,
+) {
+    navigation(
+        startDestination = NavRoutes.AddRoutineScreen.route,
+        route = NavRoutes.AddRoutineGraph.route
+    ) {
+        composable(NavRoutes.AddRoutineScreen.route) {
+            AddRoutineScreen(
+                goToDetailPage = {
+                    setSelectedThemeId(it)
+                    navController.navigate(NavRoutes.AddRoutineDetailScreen.route)
+                }
+            )
+        }
+
+        composable(NavRoutes.AddRoutineDetailScreen.route) {
+            AddRoutineDetailScreen(
+                selectedThemeId = selectedThemeId,
+                showChallengeDetailBottomSheet = showChallengeDetailBottomSheet,
+                showSnackBar = showSnackBar,
+                showChallengeChangeBottomSheet = showChallengeChangeBottomSheet,
+                goBackToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) }
             )
         }
     }

@@ -1,6 +1,7 @@
 package com.sopetit.feature
 
 import androidx.compose.ui.unit.IntOffset
+import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.ui.base.PageState
@@ -16,5 +17,6 @@ data class MainPageState(
     val isTooltipShowValid: Boolean = false,
     val tooltipOffSet: IntOffset = IntOffset.Zero,
     val tooltipTitle: String = "",
-    val tooltipContent: String = ""
+    val tooltipContent: String = "",
+    val challengeChangeModel: ChallengeChangeModel = ChallengeChangeModel()
 ) : PageState

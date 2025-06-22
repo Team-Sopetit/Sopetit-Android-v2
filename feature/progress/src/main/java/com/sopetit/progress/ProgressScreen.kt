@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
@@ -59,6 +60,7 @@ import com.sopetit.design_system.ProgressEmptyTitle
 import com.sopetit.design_system.ProgressTitleDate
 import com.sopetit.design_system.Question
 import com.sopetit.design_system.R
+import com.sopetit.design_system.Red200
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.TooltipChallenge
 import com.sopetit.design_system.TooltipChallengeContent
@@ -83,7 +85,8 @@ fun ProgressScreen(
     showChallengeAchieveSom: (Boolean) -> Unit = {},
     showChallengeDailySom: (Boolean) -> Unit = {},
     showSnackBar: (String, Int, Int) -> Unit,
-    showTooltip: (IntOffset, String, String) -> Unit
+    showTooltip: (IntOffset, String, String) -> Unit,
+    goToAddRoutinePage: () -> Unit
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -139,7 +142,8 @@ fun ProgressScreen(
         },
         onClickTooltipBtn = { offset, title, content ->
             showTooltip(offset, title, content)
-        }
+        },
+        onClickAddRoutine = { goToAddRoutinePage() }
     )
 }
 
@@ -154,35 +158,61 @@ fun ProgressContent(
     onClickChallengeAchieveBtn: () -> Unit = {},
     onClickDailyAchieve: (Int) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
-    onClickTooltipBtn: (IntOffset, String, String) -> Unit = { offset: IntOffset, title: String, content: String -> }
+    onClickTooltipBtn: (IntOffset, String, String) -> Unit = { offset: IntOffset, title: String, content: String -> },
+    onClickAddRoutine: () -> Unit = {}
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Gray50)
     ) {
-        Text(
-            text = String.format(ProgressTitleDate, todayYear, todayMonth, todayDay),
-            color = Gray700,
-            style = SoftieTypo.head3,
-            modifier = Modifier
-                .padding(start = 20.dp)
-                .padding(vertical = 16.dp)
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            ProgressRoutineContent(
-                memberChallenge = memberChallenge,
-                memberDailyRoutineList = memberDailyRoutineList,
-                onClickRoutineDetail = onClickRoutineDetail,
-                onClickChallengeAchieveBtn = onClickChallengeAchieveBtn,
-                onClickDailyAchieve = onClickDailyAchieve,
-                onClickTooltipBtn = onClickTooltipBtn,
-                interactionSource = interactionSource
+        Column {
+            Text(
+                text = String.format(ProgressTitleDate, todayYear, todayMonth, todayDay),
+                color = Gray700,
+                style = SoftieTypo.head3,
+                modifier = Modifier
+                    .padding(start = 20.dp)
+                    .padding(vertical = 16.dp)
             )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                ProgressRoutineContent(
+                    memberChallenge = memberChallenge,
+                    memberDailyRoutineList = memberDailyRoutineList,
+                    onClickRoutineDetail = onClickRoutineDetail,
+                    onClickChallengeAchieveBtn = onClickChallengeAchieveBtn,
+                    onClickDailyAchieve = onClickDailyAchieve,
+                    onClickTooltipBtn = onClickTooltipBtn,
+                    interactionSource = interactionSource,
+                    onClickAddRoutine = onClickAddRoutine
+                )
+            }
+        }
+
+        if (memberChallenge.memberChallengeId != -1 || memberDailyRoutineList.isNotEmpty()) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 20.dp, bottom = 20.dp)
+                    .size(50.dp)
+                    .background(color = Red200, shape = CircleShape)
+                    .clickable(
+                        onClick = onClickAddRoutine,
+                        interactionSource = interactionSource,
+                        indication = null
+                    )
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_add),
+                    contentDescription = "add",
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                )
+            }
         }
     }
 }
@@ -195,7 +225,8 @@ fun ProgressRoutineContent(
     onClickChallengeAchieveBtn: () -> Unit = {},
     onClickDailyAchieve: (Int) -> Unit,
     onClickTooltipBtn: (IntOffset, String, String) -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
+    onClickAddRoutine: () -> Unit
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
         Box(
@@ -214,7 +245,8 @@ fun ProgressRoutineContent(
                 btnTextColor = Gray0,
                 btnTextStyle = SoftieTypo.caption1,
                 btnVerticalPadding = 12,
-                btnHorizontalPadding = 16
+                btnHorizontalPadding = 16,
+                onClickAddRoutine = onClickAddRoutine
             )
         }
     } else {
@@ -227,7 +259,9 @@ fun ProgressRoutineContent(
                 interactionSource = interactionSource
             )
         } else {
-            ProgressChallengeEmptyRoutine()
+            ProgressChallengeEmptyRoutine(
+                onClickAddRoutine = onClickAddRoutine
+            )
         }
 
         if (memberDailyRoutineList.isNotEmpty()) {
@@ -255,7 +289,8 @@ fun ProgressRoutineContent(
                     btnTextColor = Gray500,
                     btnTextStyle = SoftieTypo.caption1,
                     btnVerticalPadding = 8,
-                    btnHorizontalPadding = 12
+                    btnHorizontalPadding = 12,
+                    onClickAddRoutine = onClickAddRoutine
                 )
             }
         }
@@ -268,7 +303,7 @@ fun ProgressChallenge(
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickAchievement: () -> Unit = {},
     onClickTooltipBtn: (IntOffset, String, String) -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
 ) {
     Column {
         RoutineTitleContent(
@@ -311,7 +346,7 @@ fun ProgressDailyRoutine(
     onClickRoutineDetail: (RoutineDetailModel) -> Unit,
     onClickDailyAchieve: (Int) -> Unit,
     onClickTooltipBtn: (IntOffset, String, String) -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
 ) {
     Column(
         modifier = Modifier
@@ -377,7 +412,9 @@ fun ProgressDailyRoutine(
 }
 
 @Composable
-fun ProgressChallengeEmptyRoutine() {
+fun ProgressChallengeEmptyRoutine(
+    onClickAddRoutine: () -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(top = 4.dp)
@@ -401,7 +438,8 @@ fun ProgressChallengeEmptyRoutine() {
             textColor = Gray500,
             textStyle = SoftieTypo.caption1,
             verticalPadding = 8,
-            horizontalPadding = 12
+            horizontalPadding = 12,
+            onClickAction = onClickAddRoutine
         )
 
         Image(
@@ -420,7 +458,7 @@ fun ProgressChallengeEmptyRoutine() {
 fun RoutineTitleContent(
     title: String,
     onClickTooltipBtn: (IntOffset) -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
 ) {
     val density = LocalDensity.current
     val tooltipOffset = remember { mutableStateOf(IntOffset.Zero) }

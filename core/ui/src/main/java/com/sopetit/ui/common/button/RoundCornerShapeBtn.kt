@@ -2,6 +2,7 @@ package com.sopetit.ui.common.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -29,6 +30,7 @@ fun RoundCornerShapeBtn(
     textStyle: TextStyle,
     verticalPadding: Int,
     horizontalPadding: Int,
+    onClickAction: () -> Unit
 ) {
     RoundCornerShapeBtnContent(
         backgroundColor = backgroundColor,
@@ -38,7 +40,8 @@ fun RoundCornerShapeBtn(
         textColor = textColor,
         textStyle = textStyle,
         verticalPadding = verticalPadding,
-        horizontalPadding = horizontalPadding
+        horizontalPadding = horizontalPadding,
+        onClickAction = onClickAction
     )
 }
 
@@ -52,6 +55,7 @@ fun RoundCornerShapeBtnContent(
     textStyle: TextStyle = SoftieTypo.caption1,
     verticalPadding: Int = 0,
     horizontalPadding: Int = 0,
+    onClickAction: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -59,6 +63,9 @@ fun RoundCornerShapeBtnContent(
             .clip(RoundedCornerShape(cornerShape.dp))
             .background(backgroundColor)
             .border(1.dp, color = borderColor, RoundedCornerShape(cornerShape.dp))
+            .clickable(
+                onClick = onClickAction
+            )
     ) {
         Text(
             text = textContent,

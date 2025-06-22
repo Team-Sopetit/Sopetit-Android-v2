@@ -13,6 +13,8 @@ object EndPoints {
 
     object Routine {
         const val ROUTINE = "api/v2/routines/daily"
+        const val DAILYTYHEMEROUTINE = "$ROUTINE/theme/{themeId}"
+        const val CHALLENGE = "/api/v2/challenges"
     }
 
     object Member {

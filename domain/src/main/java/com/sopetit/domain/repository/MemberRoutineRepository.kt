@@ -10,4 +10,6 @@ interface MemberRoutineRepository {
     suspend fun deleteMemberDailyRoutine(request: List<Int>): Flow<Result<Unit>>
 
     suspend fun achieveDailyRoutine(routineId: Int): Flow<Result<AchieveDailyRoutineModel>>
+
+    suspend fun addDailyMemberRoutine(request: List<Int>): Flow<Result<List<Int>>>
 }

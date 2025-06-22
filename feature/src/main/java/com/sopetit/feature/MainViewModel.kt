@@ -2,8 +2,10 @@ package com.sopetit.feature
 
 import androidx.compose.ui.unit.IntOffset
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.ui.base.BaseViewModel
 import com.sopetit.ui.common.type.BottomSheetType
@@ -21,6 +23,7 @@ class MainViewModel @Inject constructor(
     val memberModel = MutableSharedFlow<CreateMemberModel>(replay = 1)
     val isTutorialValid = MutableSharedFlow<Boolean>(replay = 1)
     val deleteRoutineId = MutableSharedFlow<RoutineDetailModel>()
+    val selectedTheme = MutableSharedFlow<ThemeListItemModel>(replay = 1)
 
     fun setBottomNavType(route: String?) {
         val type = when (route) {
@@ -101,6 +104,15 @@ class MainViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 isTooltipShowValid = isValid,
+            )
+        )
+    }
+
+    fun setChallengeChange(challenge: ChallengeChangeModel) {
+        updateState(
+            uiState.value.copy(
+                challengeChangeModel = challenge,
+                bottomSheetType = BottomSheetType.CHALLENGECHANGE
             )
         )
     }

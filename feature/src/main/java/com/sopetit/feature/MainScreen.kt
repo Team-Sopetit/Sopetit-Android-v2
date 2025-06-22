@@ -54,22 +54,25 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray1000
-import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.feature.component.BottomNavBar
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.navigation.achieveNavGraph
+import com.sopetit.navigation.addRoutineNavGraph
 import com.sopetit.navigation.homeNavGraph
 import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.progressNavGraph
 import com.sopetit.navigation.splashNavGraph
+import com.sopetit.ui.common.bottomsheet.ChallengeChangeBottomSheet
 import com.sopetit.ui.common.bottomsheet.RoutineDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
 import com.sopetit.ui.common.item.CommonSnackBar
@@ -117,6 +120,10 @@ fun MainScreen() {
         viewModel.setRoutineDetail(routine)
         scope.launch { sheetState.show() }
     }
+    val showChallengeChangeBottomSheet: (ChallengeChangeModel) -> Unit = { challenge ->
+        viewModel.setChallengeChange(challenge)
+        scope.launch { sheetState.show() }
+    }
 
     val settingMemberModel: (CreateMemberModel) -> Unit = {
         scope.launch {
@@ -126,6 +133,11 @@ fun MainScreen() {
     val setTutorialValid: (Boolean) -> Unit = {
         scope.launch {
             viewModel.isTutorialValid.emit(it)
+        }
+    }
+    val setSelectedTheme: (ThemeListItemModel) -> Unit = {
+        scope.launch {
+            viewModel.selectedTheme.emit(it)
         }
     }
 
@@ -177,7 +189,18 @@ fun MainScreen() {
                                         viewModel.deleteRoutineId.emit(it)
                                         sheetState.hide()
                                     }
+                                },
+                                onClickConfirmBtn = {
+                                    scope.launch {
+                                        sheetState.hide()
+                                    }
                                 }
+                            )
+                        }
+
+                        BottomSheetType.CHALLENGECHANGE -> {
+                            ChallengeChangeBottomSheet(
+                                challengeChangeModel = uiState.challengeChangeModel
                             )
                         }
 
@@ -256,12 +279,19 @@ fun MainScreen() {
                             showChallengeDailySom = { viewModel.updateDailyAchieve(it) },
                             showSnackBar = showSnackBar,
                             showToolTip = { offset, title, content ->
-//                                viewModel.updateTooltipState(true, it)
                                 viewModel.initSetTooltip(true, offset, title, content)
                             }
                         )
                         achieveNavGraph(
                             navController = navController
+                        )
+                        addRoutineNavGraph(
+                            navController = navController,
+                            setSelectedThemeId = setSelectedTheme,
+                            selectedThemeId = viewModel.selectedTheme,
+                            showChallengeDetailBottomSheet = showRoutineBottomSheet,
+                            showSnackBar = showSnackBar,
+                            showChallengeChangeBottomSheet = showChallengeChangeBottomSheet
                         )
                     }
                 }
@@ -342,7 +372,7 @@ fun MainScreen() {
                                 modifier = Modifier
                                     .weight(1f)
                             )
-                            
+
                             Image(
                                 painter = painterResource(id = R.drawable.ic_close),
                                 contentDescription = "close tooltip",

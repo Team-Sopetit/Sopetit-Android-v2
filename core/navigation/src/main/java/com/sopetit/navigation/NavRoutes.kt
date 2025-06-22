@@ -32,4 +32,9 @@ sealed class NavRoutes(val route: String) {
     // Progress Graph
     data object ProgressGraph: NavRoutes("progress_graph")
     data object ProgressScreen: NavRoutes("progress")
+
+    // Add Routine Graph
+    data object AddRoutineGraph: NavRoutes("add_routine_graph")
+    data object AddRoutineScreen: NavRoutes("add_routine")
+    data object AddRoutineDetailScreen: NavRoutes("add_routine_detail")
 }
