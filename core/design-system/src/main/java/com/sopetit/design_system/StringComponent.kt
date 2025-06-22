@@ -86,3 +86,7 @@ const val ChallengeChangeBottomSheetTitle = "챌린지를 변경할까요?"
 const val ChallengeChangeBottomSheetSemiTitle = "이미 진행 중인 챌린지가 있어요"
 const val ChangeRoutine = "루틴 변경하기"
 const val SelectedRoutineBottomSheetTitle = "선택한 루틴"
+
+// Achieve
+const val AchieveTabStat = "통계"
+const val AchieveTabCalendar = "캘린더"
