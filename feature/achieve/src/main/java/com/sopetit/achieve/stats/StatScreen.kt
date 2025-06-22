@@ -1,4 +1,4 @@
-package com.sopetit.achieve.calendar
+package com.sopetit.achieve.stats
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -10,23 +10,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sopetit.design_system.Gray50
 
 @Composable
-fun CalendarScreen() {
-    CalendarContent()
+fun StatScreen() {
+    StatContent()
 }
 
 @Composable
-fun CalendarContent() {
+fun StatContent() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Gray50)
     ) {
-        Text(text = "캘린더")
+        Text(text = "통계")
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PreviewCalendar() {
-    CalendarContent()
+fun PreviewStat() {
+    StatContent()
 }

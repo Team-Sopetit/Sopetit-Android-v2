@@ -23,6 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sopetit.achieve.calendar.CalendarScreen
+import com.sopetit.achieve.stats.StatScreen
 import com.sopetit.design_system.Achieve
 import com.sopetit.design_system.AchieveTabCalendar
 import com.sopetit.design_system.AchieveTabStat
@@ -67,6 +69,12 @@ fun AchieveContent(
             onSelectTab = onSelectTab,
             selectedTab = selectedTab
         )
+
+        if (selectedTab == AchieveTabType.TabStat) {
+            StatScreen()
+        } else {
+            CalendarScreen()
+        }
     }
 }
 
