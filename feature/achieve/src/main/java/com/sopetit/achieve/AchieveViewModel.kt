@@ -7,11 +7,11 @@ import javax.inject.Inject
 @HiltViewModel
 class AchieveViewModel @Inject constructor(
 
-): BaseViewModel<AchievePageState>(
+) : BaseViewModel<AchievePageState>(
     AchievePageState()
 ) {
 
-    fun setSelectedTab(tab: String) {
+    fun setSelectedTab(tab: AchieveTabType) {
         updateState(
             uiState.value.copy(
                 selectedTab = tab

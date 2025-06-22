@@ -47,8 +47,8 @@ fun AchieveScreen() {
 
 @Composable
 fun AchieveContent(
-    onSelectTab: (String) -> Unit = {},
-    selectedTab: String = "",
+    onSelectTab: (AchieveTabType) -> Unit = {},
+    selectedTab: AchieveTabType = AchieveTabType.TabStat,
 ) {
     Column(
         modifier = Modifier
@@ -72,8 +72,8 @@ fun AchieveContent(
 
 @Composable
 fun AchieveTab(
-    onSelectTab: (String) -> Unit = {},
-    selectedTab: String = "",
+    onSelectTab: (AchieveTabType) -> Unit = {},
+    selectedTab: AchieveTabType,
 ) {
     Row(
         modifier = Modifier
@@ -82,15 +82,15 @@ fun AchieveTab(
         AchieveTabItem(
             modifier = Modifier.weight(1f),
             content = AchieveTabStat,
-            isSelectedTab = (selectedTab == AchieveTabStat),
-            onSelect = { onSelectTab(AchieveTabStat) }
+            isSelectedTab = (selectedTab == AchieveTabType.TabStat),
+            onSelect = { onSelectTab(AchieveTabType.TabStat) }
         )
 
         AchieveTabItem(
             modifier = Modifier.weight(1f),
             content = AchieveTabCalendar,
-            isSelectedTab = (selectedTab == AchieveTabCalendar),
-            onSelect = { onSelectTab(AchieveTabCalendar) }
+            isSelectedTab = (selectedTab == AchieveTabType.TabCalendar),
+            onSelect = { onSelectTab(AchieveTabType.TabCalendar) }
         )
     }
 
