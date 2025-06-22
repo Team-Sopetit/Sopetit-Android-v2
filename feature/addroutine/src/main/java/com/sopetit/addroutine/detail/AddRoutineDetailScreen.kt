@@ -62,6 +62,7 @@ fun AddRoutineDetailScreen(
     showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
     showChallengeChangeBottomSheet: (ChallengeChangeModel) -> Unit,
+    goBackToProgressPage: () -> Unit
 ) {
     val viewModel: AddRoutineDetailViewModel = hiltViewModel()
     val uiState: AddRoutineDetailPageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -87,6 +88,10 @@ fun AddRoutineDetailScreen(
 
                 is AddRoutineDetailEvent.HasChallengeRoutine -> {
                     showChallengeChangeBottomSheet(viewModel.setChangeChallenge())
+                }
+
+                is AddRoutineDetailEvent.GoBackToProgressRoutine -> {
+                    goBackToProgressPage()
                 }
             }
         }

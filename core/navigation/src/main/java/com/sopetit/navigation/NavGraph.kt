@@ -10,7 +10,6 @@ import com.sopetit.addroutine.AddRoutineScreen
 import com.sopetit.addroutine.detail.AddRoutineDetailScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
-import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
@@ -229,7 +228,8 @@ fun NavGraphBuilder.addRoutineNavGraph(
                 selectedThemeId = selectedThemeId,
                 showChallengeDetailBottomSheet = showChallengeDetailBottomSheet,
                 showSnackBar = showSnackBar,
-                showChallengeChangeBottomSheet = showChallengeChangeBottomSheet
+                showChallengeChangeBottomSheet = showChallengeChangeBottomSheet,
+                goBackToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) }
             )
         }
     }

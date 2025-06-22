@@ -9,18 +9,23 @@ import com.sopetit.domain.entity.response.routine.DailyThemeRoutineItemModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.theme.ChallengeThemeItemModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
+import com.sopetit.domain.usecase.memberchallenge.AddMemberChallengeUseCase
+import com.sopetit.domain.usecase.memberroutine.AddDailyMemberRoutineUseCase
 import com.sopetit.domain.usecase.routine.GetChallengeUseCase
 import com.sopetit.domain.usecase.routine.GetDailyThemeRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import com.sopetit.ui.common.type.ThemeIconType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class AddRoutineDetailViewModel @Inject constructor(
     private val getDailyThemeRoutineUseCase: GetDailyThemeRoutineUseCase,
     private val getChallengeUseCase: GetChallengeUseCase,
+    private val addDailyMemberRoutineUseCase: AddDailyMemberRoutineUseCase,
+    private val addMemberChallengeUseCase: AddMemberChallengeUseCase
 ) : BaseViewModel<AddRoutineDetailPageState>(
     AddRoutineDetailPageState()
 ) {
@@ -145,15 +150,46 @@ class AddRoutineDetailViewModel @Inject constructor(
     }
 
     fun clickAddRoutineBtn() {
-        setAddChallenge()
+        if (uiState.value.selectedDailyIdList.isNotEmpty()) {
+            addDailyRoutine()
+        }
+        if (uiState.value.selectedChallengeIdList[0] != -1) {
+            setAddChallenge()
+        }
+    }
+
+    private fun addDailyRoutine() {
+        viewModelScope.launch {
+            addDailyMemberRoutineUseCase(uiState.value.selectedDailyIdList).collect{
+                resultResponse(it, ::onSuccessDailyRoutine)
+            }
+        }
+    }
+
+    private fun onSuccessDailyRoutine(data: List<Int>) {
+        Timber.d("[루틴] -> 데일리 루틴 추가 $data")
+        emitEventFlow(AddRoutineDetailEvent.GoBackToProgressRoutine)
     }
 
     private fun setAddChallenge() {
         if (uiState.value.hasRoutine != ChallengeItemModel()) {
             emitEventFlow(AddRoutineDetailEvent.HasChallengeRoutine)
         } else {
-            // TODO 서버통신
+            addChallenge()
         }
+    }
+
+    private fun addChallenge() {
+        viewModelScope.launch {
+            addMemberChallengeUseCase(uiState.value.selectedChallenge.challengeId).collect{
+                resultResponse(it, ::onSuccessAddChallenge)
+            }
+        }
+    }
+
+    private fun onSuccessAddChallenge(data: Int) {
+        Timber.d("[루틴] -> 챌린지 루틴 추가 $data")
+        emitEventFlow(AddRoutineDetailEvent.GoBackToProgressRoutine)
     }
 
     fun setChangeChallenge(): ChallengeChangeModel {

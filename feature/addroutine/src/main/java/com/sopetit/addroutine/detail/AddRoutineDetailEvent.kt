@@ -6,4 +6,5 @@ sealed class AddRoutineDetailEvent: Event {
     data object IsOverChallengeSelected: AddRoutineDetailEvent()
     data object IsRoutineExistedInMember: AddRoutineDetailEvent()
     data object HasChallengeRoutine: AddRoutineDetailEvent()
+    data object GoBackToProgressRoutine: AddRoutineDetailEvent()
 }
