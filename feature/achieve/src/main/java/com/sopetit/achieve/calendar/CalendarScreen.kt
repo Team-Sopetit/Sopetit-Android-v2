@@ -1,6 +1,8 @@
 package com.sopetit.achieve.calendar
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +29,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,11 +38,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.CalendarYearMonthText
 import com.sopetit.design_system.Fri
+import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
+import com.sopetit.design_system.Gray300
 import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray50
+import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.Mon
+import com.sopetit.design_system.R
 import com.sopetit.design_system.Sat
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.Sun
@@ -45,6 +54,7 @@ import com.sopetit.design_system.Thu
 import com.sopetit.design_system.Tue
 import com.sopetit.design_system.Wed
 import com.sopetit.ui.util.generateCalendarDays
+import com.sopetit.ui.util.setAfterYearMonth
 import com.sopetit.ui.util.setBeforeYearMonth
 import org.threeten.bp.LocalDate
 
@@ -63,12 +73,19 @@ fun CalendarScreen() {
     CalendarContent(
         todayYear = year,
         todayMonth = month,
+        todayDate = today,
         days = days,
         onClickMonthBefore = {
             year = setBeforeYearMonth(year, month)[0]
             month = setBeforeYearMonth(year, month)[1]
             days = generateCalendarDays(year, month)
         },
+        onClickMonthAfter = {
+            year = setAfterYearMonth(year, month)[0]
+            month = setAfterYearMonth(year, month)[1]
+            days = generateCalendarDays(year, month)
+        },
+        isClickAfterMonthEnabled = (!days.contains(today)),
         interactionSource = interactionSource,
         selectedDate = uiState.selectedDate,
         onSelectDate = { viewModel.selectDate(it) },
@@ -79,8 +96,11 @@ fun CalendarScreen() {
 fun CalendarContent(
     todayYear: Int = 0,
     todayMonth: Int = 0,
+    todayDate: LocalDate = LocalDate.now(),
     days: List<LocalDate> = emptyList(),
     onClickMonthBefore: () -> Unit = {},
+    onClickMonthAfter: () -> Unit = {},
+    isClickAfterMonthEnabled: Boolean = false,
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     selectedDate: LocalDate = LocalDate.now(),
     onSelectDate: (LocalDate) -> Unit = {},
@@ -92,22 +112,33 @@ fun CalendarContent(
     ) {
         CalendarYearMonth(
             todayYear = todayYear,
-            todayMonth = todayMonth
+            todayMonth = todayMonth,
+            onClickMonthBefore = onClickMonthBefore,
+            onClickMonthAfter = onClickMonthAfter,
+            isClickAfterMonthEnabled = isClickAfterMonthEnabled,
+            interactionSource = interactionSource
         )
 
         CalendarWeekTitle()
 
         CalendarDayOfMonth(
             days = days,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
+            todayDate = todayDate,
+            onSelectDate = onSelectDate,
+            selectedDate = selectedDate
         )
     }
 }
 
 @Composable
 fun CalendarYearMonth(
+    interactionSource: MutableInteractionSource,
     todayYear: Int,
     todayMonth: Int,
+    onClickMonthBefore: () -> Unit,
+    onClickMonthAfter: () -> Unit,
+    isClickAfterMonthEnabled: Boolean,
 ) {
     Row(
         modifier = Modifier
@@ -115,12 +146,36 @@ fun CalendarYearMonth(
             .padding(top = 28.dp, bottom = 16.dp),
         horizontalArrangement = Arrangement.Center
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_arrow_left),
+            contentDescription = "arrow before",
+            modifier = Modifier
+                .clickable(
+                    onClick = { onClickMonthBefore() },
+                    indication = null,
+                    interactionSource = interactionSource
+                )
+        )
+
         Text(
             text = String.format(CalendarYearMonthText, todayYear, todayMonth),
             color = Gray700,
             style = SoftieTypo.head3,
             modifier = Modifier
                 .padding(horizontal = 8.dp)
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_arrow_right),
+            contentDescription = "arrow before",
+            colorFilter = ColorFilter.tint(if (isClickAfterMonthEnabled) Gray650 else Gray300),
+            modifier = Modifier
+                .clickable(
+                    enabled = isClickAfterMonthEnabled,
+                    onClick = { onClickMonthAfter() },
+                    indication = null,
+                    interactionSource = interactionSource
+                )
         )
     }
 }
@@ -152,6 +207,9 @@ fun CalendarWeekTitle() {
 fun CalendarDayOfMonth(
     days: List<LocalDate>,
     interactionSource: MutableInteractionSource,
+    todayDate: LocalDate,
+    onSelectDate: (LocalDate) -> Unit,
+    selectedDate: LocalDate
 ) {
     BoxWithConstraints(
         modifier = Modifier
@@ -172,6 +230,10 @@ fun CalendarDayOfMonth(
                     modifier = Modifier
                         .width(cellWidth),
                     interactionSource = interactionSource,
+                    isToday = (todayDate == day),
+                    isDayAfter = (day > todayDate),
+                    onSelect = { onSelectDate(day) },
+                    isSelectedDate = (selectedDate == day)
                 )
             }
         }
@@ -183,26 +245,57 @@ fun CalendarDateItem(
     day: LocalDate,
     modifier: Modifier,
     interactionSource: MutableInteractionSource,
+    isDayAfter: Boolean,
+    isToday: Boolean,
+    onSelect: () -> Unit,
+    isSelectedDate: Boolean
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .clickable(
+                enabled = !isDayAfter,
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onSelect
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             modifier = Modifier
+                .padding(bottom = 4.dp)
                 .size(40.dp)
                 .clip(CircleShape)
                 .background(Gray200)
         )
 
-        Text(
-            text = "${day.dayOfMonth}",
-            color = Gray700,
-            style = SoftieTypo.caption1,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 4.dp)
-        )
+        if (isToday || isSelectedDate) {
+            Box(
+                modifier = Modifier
+                    .width(30.dp)
+                    .clip(RoundedCornerShape(99.dp))
+                    .background(if (isToday) Gray400 else Gray650)
+                    .align(Alignment.CenterHorizontally),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "${day.dayOfMonth}",
+                    color = Gray0,
+                    style = SoftieTypo.caption1,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 1.dp)
+                )
+            }
+        } else {
+            Text(
+                text = "${day.dayOfMonth}",
+                color = if (isDayAfter) Gray300 else Gray700,
+                style = SoftieTypo.caption1,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 1.dp)
+            )
+        }
     }
 }
 

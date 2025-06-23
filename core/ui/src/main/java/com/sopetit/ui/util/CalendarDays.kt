@@ -29,3 +29,17 @@ fun setBeforeYearMonth(currentYear: Int, currentMonth: Int): List<Int> {
 
     return listOf(essentialYear, essentialMonth)
 }
+
+fun setAfterYearMonth(currentYear: Int, currentMonth: Int): List<Int> {
+    val essentialYear: Int
+    val essentialMonth: Int
+    if (currentMonth == 12) {
+        essentialYear = currentYear + 1
+        essentialMonth = 1
+    } else {
+        essentialYear = currentYear
+        essentialMonth = currentMonth + 1
+    }
+
+    return listOf(essentialYear, essentialMonth)
+}
