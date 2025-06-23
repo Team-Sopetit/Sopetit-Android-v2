@@ -20,6 +20,15 @@ const val Gray = "GRAY"
 const val White = "WHITE"
 const val Red = "RED"
 
+// Day
+const val Mon = "월"
+const val Tue = "화"
+const val Wed = "수"
+const val Thu = "목"
+const val Fri = "금"
+const val Sat = "토"
+const val Sun = "일"
+
 // Splash
 const val SplashSemiTitle = "하루를 바꾸는 가장 사소한 루틴"
 
@@ -90,3 +99,4 @@ const val SelectedRoutineBottomSheetTitle = "선택한 루틴"
 // Achieve
 const val AchieveTabStat = "통계"
 const val AchieveTabCalendar = "캘린더"
+const val CalendarYearMonthText = "%04d년 %01d월"
