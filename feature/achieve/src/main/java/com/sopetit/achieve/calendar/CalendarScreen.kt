@@ -1,7 +1,9 @@
 package com.sopetit.achieve.calendar
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -9,16 +11,22 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,22 +39,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.CalendarYearMonthText
+import com.sopetit.design_system.DateContent
+import com.sopetit.design_system.EmptyAchieveRoutine
 import com.sopetit.design_system.Fri
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray300
 import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray50
+import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.Mon
+import com.sopetit.design_system.Num
 import com.sopetit.design_system.R
+import com.sopetit.design_system.Red200
 import com.sopetit.design_system.Sat
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.Sun
@@ -90,7 +106,8 @@ fun CalendarScreen() {
         interactionSource = interactionSource,
         selectedDate = uiState.selectedDate,
         onSelectDate = { viewModel.selectDate(it) },
-        calendarList = uiState.calendarList
+        calendarList = uiState.calendarList,
+        dateItem = uiState.calendarList[uiState.selectedDate.toString()]
     )
 }
 
@@ -107,11 +124,13 @@ fun CalendarContent(
     selectedDate: LocalDate = LocalDate.now(),
     onSelectDate: (LocalDate) -> Unit = {},
     calendarList: Map<String, CalendarModel> = emptyMap(),
+    dateItem: CalendarModel? = null,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Gray50)
+            .verticalScroll(rememberScrollState())
     ) {
         CalendarYearMonth(
             todayYear = todayYear,
@@ -131,6 +150,11 @@ fun CalendarContent(
             onSelectDate = onSelectDate,
             selectedDate = selectedDate,
             calendarList = calendarList
+        )
+
+        CalendarDateDetailInfo(
+            todayDate = todayDate,
+            dateItem = dateItem
         )
     }
 }
@@ -216,31 +240,39 @@ fun CalendarDayOfMonth(
     selectedDate: LocalDate,
     calendarList: Map<String, CalendarModel>,
 ) {
-    BoxWithConstraints(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(top = 12.dp, bottom = 20.dp, start = 24.dp, end = 24.dp)
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        val cellWidth = maxWidth / 7
+        days.chunked(7).forEach { week ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(0.dp)
+            ) {
+                week.forEach { day ->
+                    BoxWithConstraints(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        CalendarDateItem(
+                            day = day,
+                            modifier = Modifier.width(maxWidth),
+                            interactionSource = interactionSource,
+                            isToday = (todayDate == day),
+                            isDayAfter = (day > todayDate),
+                            onSelect = { onSelectDate(day) },
+                            isSelectedDate = (selectedDate == day),
+                            dateIcon = setCalendarDateItemIcon(calendarList[day.toString()])
+                        )
+                    }
+                }
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(7),
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(0.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(days) { day ->
-                CalendarDateItem(
-                    day = day,
-                    modifier = Modifier
-                        .width(cellWidth),
-                    interactionSource = interactionSource,
-                    isToday = (todayDate == day),
-                    isDayAfter = (day > todayDate),
-                    onSelect = { onSelectDate(day) },
-                    isSelectedDate = (selectedDate == day),
-                    dateIcon = setCalendarDateItemIcon(calendarList[day.toString()])
-                )
+                if (week.size < 7) {
+                    repeat(7 - week.size) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
             }
         }
     }
@@ -325,6 +357,71 @@ fun CalendarDateItem(
                     .padding(vertical = 1.dp)
             )
         }
+    }
+}
+
+@SuppressLint("DefaultLocale")
+@Composable
+fun CalendarDateDetailInfo(
+    todayDate: LocalDate,
+    dateItem: CalendarModel?,
+) {
+    Divider(
+        modifier = Modifier
+            .padding(bottom = 16.dp)
+            .border(2.dp, Gray200)
+    )
+
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = String.format(DateContent, todayDate.dayOfMonth),
+            style = SoftieTypo.head3,
+            color = Gray700
+        )
+
+        Text(
+            text = buildAnnotatedString {
+                withStyle(style = SpanStyle(color = Red200)) {
+                    append(
+                        (dateItem?.histories?.size ?: 0).toString()
+                    )
+                }
+                append(Num)
+            },
+            style = SoftieTypo.body2,
+            color = Gray500,
+            modifier = Modifier
+                .padding(start = 4.dp)
+        )
+    }
+
+    if (dateItem == null) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp, bottom = 96.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_empty_routine),
+                contentDescription = "empty routine",
+                modifier = Modifier
+                    .padding(bottom = 12.dp)
+                    .size(width = 100.dp, height = 120.dp)
+            )
+
+            Text(
+                text = EmptyAchieveRoutine,
+                style = SoftieTypo.head3,
+                color = Gray500
+            )
+        }
+    } else {
+        //
     }
 }
 

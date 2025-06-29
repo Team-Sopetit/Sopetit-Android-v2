@@ -13,6 +13,7 @@ const val DailyRoutine = "데일리 루틴"
 const val ChallengeRoutine = "챌린지"
 const val Detail = "자세히"
 const val Confirm = "확인"
+const val Num = "개"
 
 // DollType
 const val Brown = "BROWN"
@@ -28,6 +29,7 @@ const val Thu = "목"
 const val Fri = "금"
 const val Sat = "토"
 const val Sun = "일"
+const val DateContent = "%d일"
 
 // Splash
 const val SplashSemiTitle = "하루를 바꾸는 가장 사소한 루틴"
@@ -100,3 +102,4 @@ const val SelectedRoutineBottomSheetTitle = "선택한 루틴"
 const val AchieveTabStat = "통계"
 const val AchieveTabCalendar = "캘린더"
 const val CalendarYearMonthText = "%04d년 %01d월"
+const val EmptyAchieveRoutine = "달성한 루틴이 없어요"
