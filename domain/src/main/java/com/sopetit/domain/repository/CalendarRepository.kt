@@ -5,5 +5,5 @@ import com.sopetit.domain.entity.response.calendar.CalendarModel
 import kotlinx.coroutines.flow.Flow
 
 interface CalendarRepository {
-    suspend fun getCalendar(request: CalendarRequestModel): Flow<Result<List<Map<String, CalendarModel>>>>
+    suspend fun getCalendar(request: CalendarRequestModel): Flow<Result<Map<String, CalendarModel>>>
 }

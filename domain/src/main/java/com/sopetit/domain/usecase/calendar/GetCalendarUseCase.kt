@@ -9,8 +9,8 @@ import javax.inject.Inject
 
 class GetCalendarUseCase @Inject constructor(
     private val calendarRepository: CalendarRepository,
-) : UseCase<CalendarRequestModel, Result<List<Map<String, CalendarModel>>>>() {
+) : UseCase<CalendarRequestModel, Result<Map<String, CalendarModel>>>() {
 
-    override suspend fun invoke(request: CalendarRequestModel): Flow<Result<List<Map<String, CalendarModel>>>> =
+    override suspend fun invoke(request: CalendarRequestModel): Flow<Result<Map<String, CalendarModel>>> =
         calendarRepository.getCalendar(request)
 }

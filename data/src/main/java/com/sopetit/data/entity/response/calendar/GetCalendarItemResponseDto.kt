@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetCalendarResponseDto(
+data class GetCalendarItemResponseDto(
     @SerialName("memoId")
     val memoId: Int = 0,
     @SerialName("memoContent")

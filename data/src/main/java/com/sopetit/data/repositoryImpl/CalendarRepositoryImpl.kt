@@ -9,9 +9,14 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CalendarRepositoryImpl @Inject constructor(
-    private val calendarDataSource: CalendarDataSource
-): CalendarRepository {
+    private val calendarDataSource: CalendarDataSource,
+) : CalendarRepository {
 
-    override suspend fun getCalendar(request: CalendarRequestModel): Flow<Result<List<Map<String, CalendarModel>>>> =
-        GetCalendarMapper.responseToModel(apiCall = { calendarDataSource.calendarList(request.year, request.month) })
+    override suspend fun getCalendar(request: CalendarRequestModel): Flow<Result<Map<String, CalendarModel>>> =
+        GetCalendarMapper.responseToModel(apiCall = {
+            calendarDataSource.calendarList(
+                request.year,
+                request.month
+            )
+        })
 }
