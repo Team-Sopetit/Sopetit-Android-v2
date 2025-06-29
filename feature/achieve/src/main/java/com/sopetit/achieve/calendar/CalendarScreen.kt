@@ -53,6 +53,7 @@ import com.sopetit.design_system.Sun
 import com.sopetit.design_system.Thu
 import com.sopetit.design_system.Tue
 import com.sopetit.design_system.Wed
+import com.sopetit.domain.entity.response.calendar.CalendarModel
 import com.sopetit.ui.util.generateCalendarDays
 import com.sopetit.ui.util.setAfterYearMonth
 import com.sopetit.ui.util.setBeforeYearMonth
@@ -89,6 +90,7 @@ fun CalendarScreen() {
         interactionSource = interactionSource,
         selectedDate = uiState.selectedDate,
         onSelectDate = { viewModel.selectDate(it) },
+        calendarList = uiState.calendarList
     )
 }
 
@@ -104,6 +106,7 @@ fun CalendarContent(
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     selectedDate: LocalDate = LocalDate.now(),
     onSelectDate: (LocalDate) -> Unit = {},
+    calendarList: Map<String, CalendarModel> = emptyMap(),
 ) {
     Column(
         modifier = Modifier
@@ -126,7 +129,8 @@ fun CalendarContent(
             interactionSource = interactionSource,
             todayDate = todayDate,
             onSelectDate = onSelectDate,
-            selectedDate = selectedDate
+            selectedDate = selectedDate,
+            calendarList = calendarList
         )
     }
 }
@@ -209,7 +213,8 @@ fun CalendarDayOfMonth(
     interactionSource: MutableInteractionSource,
     todayDate: LocalDate,
     onSelectDate: (LocalDate) -> Unit,
-    selectedDate: LocalDate
+    selectedDate: LocalDate,
+    calendarList: Map<String, CalendarModel>,
 ) {
     BoxWithConstraints(
         modifier = Modifier
@@ -233,11 +238,24 @@ fun CalendarDayOfMonth(
                     isToday = (todayDate == day),
                     isDayAfter = (day > todayDate),
                     onSelect = { onSelectDate(day) },
-                    isSelectedDate = (selectedDate == day)
+                    isSelectedDate = (selectedDate == day),
+                    dateIcon = setCalendarDateItemIcon(calendarList[day.toString()])
                 )
             }
         }
     }
+}
+
+fun setCalendarDateItemIcon(
+    dateItem: CalendarModel?,
+): Int {
+
+    val dateIcon: Int =
+        if (dateItem == null) 0
+        else if (dateItem.memoContent.isNotEmpty()) R.drawable.ic_som_rainbow
+        else R.drawable.ic_som
+
+    return dateIcon
 }
 
 @Composable
@@ -248,7 +266,8 @@ fun CalendarDateItem(
     isDayAfter: Boolean,
     isToday: Boolean,
     onSelect: () -> Unit,
-    isSelectedDate: Boolean
+    isSelectedDate: Boolean,
+    dateIcon: Int = 0,
 ) {
     Column(
         modifier = modifier
@@ -260,13 +279,23 @@ fun CalendarDateItem(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
-            modifier = Modifier
-                .padding(bottom = 4.dp)
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(Gray200)
-        )
+        if (dateIcon != 0) {
+            Image(
+                painter = painterResource(id = dateIcon),
+                contentDescription = "som",
+                modifier = Modifier
+                    .padding(bottom = 4.dp)
+                    .size(40.dp)
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .padding(bottom = 4.dp)
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(Gray200)
+            )
+        }
 
         if (isToday || isSelectedDate) {
             Box(
