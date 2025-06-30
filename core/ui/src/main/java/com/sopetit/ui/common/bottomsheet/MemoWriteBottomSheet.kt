@@ -42,20 +42,33 @@ import com.sopetit.design_system.MemoHintContent
 import com.sopetit.design_system.MemoTitle
 import com.sopetit.design_system.MemoWriteNumber
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.enums.BottomSheetActionType
+import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 
 @Composable
 fun MemoWriteBottomSheet(
+    memoActionModel: MemoActionModel = MemoActionModel(),
     onClickConfirmBtn: (String) -> Unit,
+    onClickModifyBtn: (MemoActionModel) -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    var memoInput by remember { mutableStateOf("") }
+    var memoInput by remember {
+        if (memoActionModel.content.isNotEmpty()) mutableStateOf(memoActionModel.content) else mutableStateOf("")
+    }
 
     MemoWriteContent(
         interactionSource = interactionSource,
         memoInput = memoInput,
         onValueChange = { memoInput = it },
-        onClickCompleteBtn = { onClickConfirmBtn(memoInput) }
+        onClickCompleteBtn = {
+            if (memoActionModel.content.isNotEmpty()) onClickModifyBtn(
+                memoActionModel.copy(
+                    type = BottomSheetActionType.Modify,
+                    content = memoInput
+                )
+            ) else onClickConfirmBtn(memoInput)
+        },
     )
 }
 

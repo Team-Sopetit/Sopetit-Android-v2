@@ -18,6 +18,7 @@ import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -116,7 +117,7 @@ class CalendarViewModel @Inject constructor(
             }
 
             BottomSheetActionType.Modify -> {
-                //
+                modifyMemo(memoActionModel)
             }
 
             BottomSheetActionType.Default -> {}
@@ -131,5 +132,17 @@ class CalendarViewModel @Inject constructor(
                     { initGetCalendarList(uiState.value.selectedDate) })
             }
         }
+    }
+
+    private fun setInitMemoModel() {
+        updateState(
+            uiState.value.copy(
+
+            )
+        )
+    }
+
+    private fun modifyMemo(memoActionModel: MemoActionModel) {
+        Timber.d("[테스트] -> $memoActionModel")
     }
 }

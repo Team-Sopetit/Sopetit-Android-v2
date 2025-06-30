@@ -122,9 +122,10 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    fun setRoutineMemoBottomSheet() {
+    fun setRoutineMemoBottomSheet(memoModel: MemoActionModel) {
         updateState(
             uiState.value.copy(
+                memoActionModel = memoModel,
                 bottomSheetType = BottomSheetType.MEMO
             )
         )

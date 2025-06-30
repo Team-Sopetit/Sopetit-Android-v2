@@ -127,8 +127,8 @@ fun MainScreen() {
         viewModel.setChallengeChange(challenge)
         scope.launch { sheetState.show() }
     }
-    val showRoutineMemoWriteBottomSheet: () -> Unit = {
-        viewModel.setRoutineMemoBottomSheet()
+    val showRoutineMemoWriteBottomSheet: (MemoActionModel) -> Unit = {
+        viewModel.setRoutineMemoBottomSheet(it)
         scope.launch { sheetState.show() }
     }
     val showMemoDetailBottomSheet: (MemoActionModel) -> Unit = {
@@ -222,6 +222,13 @@ fun MainScreen() {
                                         viewModel.writtenMemo.emit(it)
                                         sheetState.hide()
                                     }
+                                },
+                                memoActionModel = uiState.memoActionModel,
+                                onClickModifyBtn = {
+                                    scope.launch {
+                                        viewModel.setMemoDetail(it)
+                                        sheetState.hide()
+                                    }
                                 }
                             )
                         }
@@ -237,9 +244,8 @@ fun MainScreen() {
                                 },
                                 onClickModBtn = {
                                     scope.launch {
-                                        viewModel.setMemoDetail(it)
                                         sheetState.hide()
-                                        showRoutineMemoWriteBottomSheet()
+                                        showRoutineMemoWriteBottomSheet(uiState.memoActionModel)
                                     }
                                 }
                             )
@@ -327,7 +333,7 @@ fun MainScreen() {
                             navController = navController,
                             showRoutineBottomSheet = showRoutineBottomSheet,
                             deleteRoutineId = viewModel.deleteRoutineId,
-                            showMemoWriteBottomSheet = showRoutineMemoWriteBottomSheet,
+                            showMemoWriteBottomSheet = { showRoutineMemoWriteBottomSheet(MemoActionModel()) },
                             writtenMemo = viewModel.writtenMemo,
                             showMemoDetailBottomSheet = showMemoDetailBottomSheet,
                             memoActionModel = viewModel.memoActionModel

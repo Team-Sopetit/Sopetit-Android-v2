@@ -41,13 +41,13 @@ import com.sopetit.domain.entity.response.memo.MemoActionModel
 @Composable
 fun TwoBtnDetailBottomSheet(
     onClickDeleteBtn: (MemoActionModel) -> Unit,
-    onClickModBtn: (MemoActionModel) -> Unit,
+    onClickModBtn: () -> Unit,
     memoActionModel: MemoActionModel
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     TwoBtnDetailContent(
-        onClickModBtn = { onClickModBtn(memoActionModel.copy(type = BottomSheetActionType.Modify)) },
+        onClickModBtn = { onClickModBtn() },
         onClickDeleteBtn = { onClickDeleteBtn(memoActionModel.copy(type = BottomSheetActionType.Delete)) },
         interactionSource = interactionSource,
         memoActionModel = memoActionModel
