@@ -1,5 +1,6 @@
 package com.sopetit.achieve.stats
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -32,9 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.CountContent
+import com.sopetit.design_system.Gray0
+import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.Percentage
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.StatAchieveRoutineTitle
 import com.sopetit.design_system.StatGraphSemiTitle
@@ -94,6 +98,7 @@ fun StatDetailBox(
 
         Column(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(top = 26.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -131,7 +136,7 @@ fun StatGraphBox(
 ) {
     Column(
         modifier = Modifier
-            .padding(top = 4.dp)
+            .padding(top = 4.dp, start = 20.dp, end = 20.dp)
             .fillMaxWidth()
             .background(Color.White)
             .clip(RoundedCornerShape(10.dp))
@@ -151,6 +156,57 @@ fun StatGraphBox(
             modifier = Modifier
                 .padding(top = 4.dp, start = 11.dp)
         )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(top = 24.dp, bottom = 27.dp, start = 28.dp)
+                    .size(143.dp)
+                    .clip(CircleShape)
+                    .background(Gray200)
+            )
+
+            Column(
+                modifier = Modifier
+                    .padding(start = 24.dp, end = 29.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                achieveModel.themes.forEach { theme ->
+                    val percentage =
+                        (theme.achievedCount.toFloat() / achieveModel.achievedCount) * 100
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(12.dp)
+                                .clip(RoundedCornerShape(2.dp))
+                                .background(ThemeIconType.getThemeColor(theme.id))
+                        )
+
+                        Text(
+                            text = ThemeIconType.getThemeName(theme.id),
+                            style = SoftieTypo.caption1,
+                            color = Gray500,
+                            modifier = Modifier
+                                .padding(start = 4.dp)
+                                .weight(1f)
+                        )
+
+                        Text(
+                            text = String.format(Percentage, percentage.toInt()),
+                            style = SoftieTypo.body2,
+                            color = Gray700
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -189,10 +245,8 @@ fun StatRoutinesBox(
                     }
                 }
 
-                if (ThemeIconType.entries.size < 2) {
-                    repeat(7 - ThemeIconType.entries.size) {
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
+                if (routines.size < 2) {
+                    Spacer(modifier = Modifier.weight(1f))
                 }
             }
         }
@@ -208,12 +262,13 @@ fun StatRoutineBoxItem(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(Gray50)
+            .background(Gray0)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 8.dp)
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
@@ -230,6 +285,8 @@ fun StatRoutineBoxItem(
                 )
             }
 
+            Spacer(modifier = Modifier.weight(1f))
+
             Text(
                 text = String.format(CountContent, routineNum),
                 style = SoftieTypo.head2,
@@ -242,7 +299,7 @@ fun StatRoutineBoxItem(
             style = SoftieTypo.body2,
             color = Gray500,
             modifier = Modifier
-                .padding(start = 12.dp, bottom = 11.dp)
+                .padding(start = 12.dp, bottom = 11.dp, top = 8.dp)
         )
     }
 }

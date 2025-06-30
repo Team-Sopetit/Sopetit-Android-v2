@@ -47,5 +47,8 @@ enum class ThemeIconType(
 
         fun getThemeName(themeId: Int): String =
             entries.firstOrNull { it.themeId == themeId }?.themeName ?: ""
+
+        fun getThemeColor(themeId: Int): Color =
+            entries.firstOrNull { it.themeId == themeId}?.themeColor ?: Color.Transparent
     }
 }

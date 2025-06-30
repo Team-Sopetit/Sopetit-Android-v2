@@ -17,6 +17,7 @@ const val Detail = "자세히"
 const val Confirm = "확인"
 const val Num = "개"
 const val CountContent = "%d번"
+const val Percentage = "%d%%"
 
 // DollType
 const val Brown = "BROWN"
