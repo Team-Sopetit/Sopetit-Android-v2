@@ -14,4 +14,6 @@ interface MemberChallengeDataSource {
     suspend fun achieveMemberChallenge(): Response<BaseResponse<Unit>>
 
     suspend fun addMemberChallenge(request: AddMemberChallengeRequestDto): Response<BaseResponse<AddMemberChallengeResponseDto>>
+
+    suspend fun deleteChallengeHistory(request: Int): Response<BaseResponse<Unit>>
 }

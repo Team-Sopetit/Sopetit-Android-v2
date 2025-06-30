@@ -7,7 +7,7 @@ import com.sopetit.domain.entity.response.calendar.CalendarHistoryItemModel
 import com.sopetit.domain.entity.response.calendar.CalendarModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.usecase.calendar.GetCalendarUseCase
-import com.sopetit.domain.usecase.memberchallenge.DeleteMemberChallengeUseCase
+import com.sopetit.domain.usecase.memberchallenge.DeleteChallengeHistoryUseCase
 import com.sopetit.domain.usecase.memberroutine.DeleteDailyRoutineHistoryUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
     private val getCalendarUseCase: GetCalendarUseCase,
-    private val deleteMemberChallengeUseCase: DeleteMemberChallengeUseCase,
+    private val deleteChallengeHistoryUseCase: DeleteChallengeHistoryUseCase,
     private val deleteDailyRoutineHistoryUseCase: DeleteDailyRoutineHistoryUseCase,
 ) : BaseViewModel<CalendarPageState>(
     CalendarPageState()
@@ -66,7 +66,7 @@ class CalendarViewModel @Inject constructor(
             }
 
             RoutineType.Challenge -> {
-                deleteChallengeRoutine()
+                deleteChallengeRoutine(routine.routineId)
             }
         }
     }
@@ -81,9 +81,9 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    private fun deleteChallengeRoutine() {
+    private fun deleteChallengeRoutine(routineId: Int) {
         viewModelScope.launch {
-            deleteMemberChallengeUseCase(Unit).collect {
+            deleteChallengeHistoryUseCase(routineId).collect {
                 resultResponse(
                     it,
                     { initGetCalendarList(uiState.value.selectedDate) })

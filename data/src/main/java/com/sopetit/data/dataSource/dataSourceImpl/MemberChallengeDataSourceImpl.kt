@@ -24,4 +24,7 @@ class MemberChallengeDataSourceImpl @Inject constructor(
 
     override suspend fun addMemberChallenge(request: AddMemberChallengeRequestDto): Response<BaseResponse<AddMemberChallengeResponseDto>> =
         memberChallengeService.addMemberChallenge(request)
+
+    override suspend fun deleteChallengeHistory(request: Int): Response<BaseResponse<Unit>> =
+        memberChallengeService.deleteRoutineHistory(request)
 }

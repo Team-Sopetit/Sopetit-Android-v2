@@ -11,4 +11,6 @@ interface MemberChallengeRepository {
     suspend fun achieveMemberChallenge(): Flow<Result<Unit>>
 
     suspend fun addMemberChallenge(request: Int): Flow<Result<Int>>
+
+    suspend fun deleteChallengeHistory(request: Int): Flow<Result<Unit>>
 }
