@@ -41,6 +41,6 @@ object EndPoints {
 
     object Memo {
         const val MEMOWRITE = "/api/v3/memos"
-        const val DELETE = "$MEMOWRITE/{memoId}"
+        const val ACTION = "$MEMOWRITE/{memoId}"
     }
 }

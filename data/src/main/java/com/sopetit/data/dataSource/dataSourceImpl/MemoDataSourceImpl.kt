@@ -2,6 +2,7 @@ package com.sopetit.data.dataSource.dataSourceImpl
 
 import com.sopetit.data.base.BaseResponse
 import com.sopetit.data.dataSource.MemoDataSource
+import com.sopetit.data.entity.request.memo.MemoModifyRequestDto
 import com.sopetit.data.entity.request.memo.MemoWriteRequestDto
 import com.sopetit.data.entity.response.memo.MemoWriteResponseDto
 import com.sopetit.data.service.MemoService
@@ -17,4 +18,10 @@ class MemoDataSourceImpl @Inject constructor(
 
     override suspend fun deleteMemo(request: Int): Response<BaseResponse<Unit>> =
         memoService.deleteMemo(request)
+
+    override suspend fun modifyMemo(
+        request: Int,
+        body: MemoModifyRequestDto,
+    ): Response<BaseResponse<Unit>> =
+        memoService.modifyMemo(request, body)
 }

@@ -13,6 +13,7 @@ import com.sopetit.domain.usecase.calendar.GetCalendarUseCase
 import com.sopetit.domain.usecase.memberchallenge.DeleteChallengeHistoryUseCase
 import com.sopetit.domain.usecase.memberroutine.DeleteDailyRoutineHistoryUseCase
 import com.sopetit.domain.usecase.memo.DeleteMemoUseCase
+import com.sopetit.domain.usecase.memo.PatchModifyMemoUseCase
 import com.sopetit.domain.usecase.memo.PostWriteMemoUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +29,7 @@ class CalendarViewModel @Inject constructor(
     private val deleteDailyRoutineHistoryUseCase: DeleteDailyRoutineHistoryUseCase,
     private val postWriteMemoUseCase: PostWriteMemoUseCase,
     private val deleteMemoUseCase: DeleteMemoUseCase,
+    private val patchModifyMemoUseCase: PatchModifyMemoUseCase,
 ) : BaseViewModel<CalendarPageState>(
     CalendarPageState()
 ) {
@@ -134,15 +136,13 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    private fun setInitMemoModel() {
-        updateState(
-            uiState.value.copy(
-
-            )
-        )
-    }
-
     private fun modifyMemo(memoActionModel: MemoActionModel) {
-        Timber.d("[테스트] -> $memoActionModel")
+        viewModelScope.launch {
+            patchModifyMemoUseCase(memoActionModel).collect {
+                resultResponse(
+                    it,
+                    { initGetCalendarList(uiState.value.selectedDate) })
+            }
+        }
     }
 }
