@@ -14,14 +14,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -69,7 +65,9 @@ import com.sopetit.design_system.Sun
 import com.sopetit.design_system.Thu
 import com.sopetit.design_system.Tue
 import com.sopetit.design_system.Wed
+import com.sopetit.domain.entity.response.calendar.CalendarHistoryModel
 import com.sopetit.domain.entity.response.calendar.CalendarModel
+import com.sopetit.ui.common.type.ThemeIconType
 import com.sopetit.ui.util.generateCalendarDays
 import com.sopetit.ui.util.setAfterYearMonth
 import com.sopetit.ui.util.setBeforeYearMonth
@@ -374,7 +372,8 @@ fun CalendarDateDetailInfo(
 
     Row(
         modifier = Modifier
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .height(32.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -396,7 +395,12 @@ fun CalendarDateDetailInfo(
             color = Gray500,
             modifier = Modifier
                 .padding(start = 4.dp)
+                .weight(1f)
         )
+
+        if (dateItem != null) {
+            CalendarDateMemoBtn()
+        }
     }
 
     if (dateItem == null) {
@@ -421,7 +425,95 @@ fun CalendarDateDetailInfo(
             )
         }
     } else {
-        //
+        CalendarDateRoutineAchieve(
+            dateItem = dateItem
+        )
+    }
+}
+
+@Composable
+fun CalendarDateRoutineAchieve(
+    dateItem: CalendarModel,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, bottom = 8.dp, start = 20.dp, end = 20.dp)
+    ) {
+        dateItem.histories.forEach { history ->
+            CalendarDateRoutineHistory(history)
+        }
+    }
+}
+
+@Composable
+fun CalendarDateRoutineHistory(
+    history: CalendarHistoryModel,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(id = ThemeIconType.getThemeIcon(history.themeId)),
+            contentDescription = "theme icon",
+            modifier = Modifier
+                .size(16.dp)
+        )
+
+        Text(
+            text = history.themeName,
+            color = Gray500,
+            style = SoftieTypo.body2,
+            modifier = Modifier
+                .padding(start = 2.dp)
+        )
+    }
+
+    history.histories.forEach { historyItem ->
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(Gray0)
+                .border(1.dp, Gray200, RoundedCornerShape(10.dp)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = historyItem.content,
+                color = Gray700,
+                style = SoftieTypo.body2,
+                modifier = Modifier
+                    .padding(top = 18.dp, bottom = 18.dp, start = 16.dp)
+                    .weight(1f)
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_more_info),
+                contentDescription = "more",
+                modifier = Modifier
+                    .padding(start = 23.dp, end = 16.dp, top = 24.dp, bottom = 24.dp)
+                    .size(24.dp)
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.padding(bottom = 12.dp))
+}
+
+@Composable
+fun CalendarDateMemoBtn() {
+    Box(
+        modifier = Modifier
+            .size(32.dp)
+            .clip(CircleShape)
+            .background(Gray650)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_pen),
+            contentDescription = "pen",
+            modifier = Modifier
+                .padding(7.dp)
+        )
     }
 }
 
