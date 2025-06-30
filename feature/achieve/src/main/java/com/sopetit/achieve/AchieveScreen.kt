@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,12 +37,13 @@ import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun AchieveScreen(
     showRoutineDeleteBottomSheet: (RoutineDetailModel) -> Unit,
-    deleteRoutine: SharedFlow<RoutineDetailModel>
+    deleteRoutine: SharedFlow<RoutineDetailModel>,
+    showMemoWriteBottomSheet: () -> Unit,
+    writtenMemo: SharedFlow<String>
 ) {
 
     val viewModel: AchieveViewModel = hiltViewModel()
@@ -53,7 +53,9 @@ fun AchieveScreen(
         onSelectTab = { tab -> viewModel.setSelectedTab(tab) },
         selectedTab = uiState.selectedTab,
         showRoutineDeleteBottomSheet = showRoutineDeleteBottomSheet,
-        deleteRoutine = deleteRoutine
+        deleteRoutine = deleteRoutine,
+        showMemoWriteBottomSheet = showMemoWriteBottomSheet,
+        writtenMemo = writtenMemo
     )
 }
 
@@ -62,7 +64,9 @@ fun AchieveContent(
     onSelectTab: (AchieveTabType) -> Unit = {},
     selectedTab: AchieveTabType = AchieveTabType.TabStat,
     showRoutineDeleteBottomSheet: (RoutineDetailModel) -> Unit = {},
-    deleteRoutine: SharedFlow<RoutineDetailModel> = MutableSharedFlow()
+    deleteRoutine: SharedFlow<RoutineDetailModel> = MutableSharedFlow(),
+    showMemoWriteBottomSheet: () -> Unit = {},
+    writtenMemo: SharedFlow<String> = MutableSharedFlow()
 ) {
     Column(
         modifier = Modifier
@@ -91,7 +95,9 @@ fun AchieveContent(
             } else {
                 CalendarScreen(
                     showRoutineDeleteBottomSheet = showRoutineDeleteBottomSheet,
-                    deleteRoutine = deleteRoutine
+                    deleteRoutine = deleteRoutine,
+                    showMemoWriteBottomSheet = showMemoWriteBottomSheet,
+                    writtenMemo = writtenMemo
                 )
             }
         }

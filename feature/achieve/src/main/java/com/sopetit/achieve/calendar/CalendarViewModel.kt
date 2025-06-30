@@ -13,6 +13,7 @@ import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -89,5 +90,9 @@ class CalendarViewModel @Inject constructor(
                     { initGetCalendarList(uiState.value.selectedDate) })
             }
         }
+    }
+
+    fun writeMemo(memo: String) {
+        Timber.d("[테스트] -> $memo")
     }
 }

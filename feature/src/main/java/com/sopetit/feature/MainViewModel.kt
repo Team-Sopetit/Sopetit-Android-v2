@@ -24,6 +24,7 @@ class MainViewModel @Inject constructor(
     val isTutorialValid = MutableSharedFlow<Boolean>(replay = 1)
     val deleteRoutineId = MutableSharedFlow<RoutineDetailModel>()
     val selectedTheme = MutableSharedFlow<ThemeListItemModel>(replay = 1)
+    val writtenMemo = MutableSharedFlow<String>(replay = 1)
 
     fun setBottomNavType(route: String?) {
         val type = when (route) {
@@ -113,6 +114,14 @@ class MainViewModel @Inject constructor(
             uiState.value.copy(
                 challengeChangeModel = challenge,
                 bottomSheetType = BottomSheetType.CHALLENGECHANGE
+            )
+        )
+    }
+
+    fun setRoutineMemoBottomSheet() {
+        updateState(
+            uiState.value.copy(
+                bottomSheetType = BottomSheetType.MEMO
             )
         )
     }

@@ -83,7 +83,9 @@ import org.threeten.bp.LocalDate
 @Composable
 fun CalendarScreen(
     showRoutineDeleteBottomSheet: (RoutineDetailModel) -> Unit,
-    deleteRoutine: SharedFlow<RoutineDetailModel>
+    deleteRoutine: SharedFlow<RoutineDetailModel>,
+    showMemoWriteBottomSheet: () -> Unit,
+    writtenMemo: SharedFlow<String>
 ) {
 
     val viewModel: CalendarViewModel = hiltViewModel()
@@ -98,6 +100,12 @@ fun CalendarScreen(
     LaunchedEffect(deleteRoutine) {
         deleteRoutine.collect {
             viewModel.deleteRoutine(it)
+        }
+    }
+
+    LaunchedEffect(writtenMemo) {
+        writtenMemo.collect {
+            viewModel.writeMemo(it)
         }
     }
 
@@ -129,7 +137,8 @@ fun CalendarScreen(
                     item
                 )
             )
-        }
+        },
+        onClickMemoBtn = { showMemoWriteBottomSheet() }
     )
 }
 
@@ -148,6 +157,7 @@ fun CalendarContent(
     calendarList: Map<String, CalendarModel> = emptyMap(),
     dateItem: CalendarModel? = null,
     onClickRoutineDelete: (RoutineType, CalendarHistoryItemModel) -> Unit = { type, item -> },
+    onClickMemoBtn: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -179,7 +189,8 @@ fun CalendarContent(
             todayDate = todayDate,
             dateItem = dateItem,
             onClickRoutineDelete = onClickRoutineDelete,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
+            onClickMemoBtn = onClickMemoBtn
         )
     }
 }
@@ -392,6 +403,7 @@ fun CalendarDateDetailInfo(
     dateItem: CalendarModel?,
     onClickRoutineDelete: (RoutineType, CalendarHistoryItemModel) -> Unit,
     interactionSource: MutableInteractionSource,
+    onClickMemoBtn: () -> Unit,
 ) {
     Divider(
         modifier = Modifier
@@ -428,7 +440,10 @@ fun CalendarDateDetailInfo(
         )
 
         if (dateItem != null) {
-            CalendarDateMemoBtn()
+            CalendarDateMemoBtn(
+                onClickAction = onClickMemoBtn,
+                interactionSource = interactionSource
+            )
         }
     }
 
@@ -550,12 +565,20 @@ fun CalendarDateRoutineHistory(
 }
 
 @Composable
-fun CalendarDateMemoBtn() {
+fun CalendarDateMemoBtn(
+    onClickAction: () -> Unit,
+    interactionSource: MutableInteractionSource,
+) {
     Box(
         modifier = Modifier
             .size(32.dp)
             .clip(CircleShape)
             .background(Gray650)
+            .clickable(
+                onClick = onClickAction,
+                indication = null,
+                interactionSource = interactionSource
+            )
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_pen),

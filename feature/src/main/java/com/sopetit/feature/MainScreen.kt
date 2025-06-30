@@ -73,6 +73,7 @@ import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.progressNavGraph
 import com.sopetit.navigation.splashNavGraph
 import com.sopetit.ui.common.bottomsheet.ChallengeChangeBottomSheet
+import com.sopetit.ui.common.bottomsheet.MemoWriteBottomSheet
 import com.sopetit.ui.common.bottomsheet.RoutineDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
 import com.sopetit.ui.common.item.CommonSnackBar
@@ -122,6 +123,10 @@ fun MainScreen() {
     }
     val showChallengeChangeBottomSheet: (ChallengeChangeModel) -> Unit = { challenge ->
         viewModel.setChallengeChange(challenge)
+        scope.launch { sheetState.show() }
+    }
+    val showRoutineMemoWriteBottomSheet: () -> Unit = {
+        viewModel.setRoutineMemoBottomSheet()
         scope.launch { sheetState.show() }
     }
 
@@ -201,6 +206,17 @@ fun MainScreen() {
                         BottomSheetType.CHALLENGECHANGE -> {
                             ChallengeChangeBottomSheet(
                                 challengeChangeModel = uiState.challengeChangeModel
+                            )
+                        }
+
+                        BottomSheetType.MEMO -> {
+                            MemoWriteBottomSheet(
+                                onClickConfirmBtn = {
+                                    scope.launch {
+                                        viewModel.writtenMemo.emit(it)
+                                        sheetState.hide()
+                                    }
+                                }
                             )
                         }
 
@@ -285,7 +301,9 @@ fun MainScreen() {
                         achieveNavGraph(
                             navController = navController,
                             showRoutineBottomSheet = showRoutineBottomSheet,
-                            deleteRoutineId = viewModel.deleteRoutineId
+                            deleteRoutineId = viewModel.deleteRoutineId,
+                            showMemoWriteBottomSheet = showRoutineMemoWriteBottomSheet,
+                            writtenMemo = viewModel.writtenMemo
                         )
                         addRoutineNavGraph(
                             navController = navController,
