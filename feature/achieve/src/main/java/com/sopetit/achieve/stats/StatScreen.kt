@@ -186,7 +186,7 @@ fun StatGraphBox(
                             modifier = Modifier
                                 .size(12.dp)
                                 .clip(RoundedCornerShape(2.dp))
-                                .background(ThemeIconType.getThemeColor(theme.id))
+                                .background(ThemeIconType.getThemeGraphColor(theme.id))
                         )
 
                         Text(
