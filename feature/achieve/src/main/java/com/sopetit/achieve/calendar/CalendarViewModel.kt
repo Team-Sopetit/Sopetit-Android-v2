@@ -118,6 +118,8 @@ class CalendarViewModel @Inject constructor(
             BottomSheetActionType.Modify -> {
                 //
             }
+
+            BottomSheetActionType.Default -> {}
         }
     }
 
