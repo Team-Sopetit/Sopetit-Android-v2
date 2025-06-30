@@ -27,8 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.CompleteShort
 import com.sopetit.design_system.Gray0
@@ -38,6 +41,8 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.MemoHintContent
 import com.sopetit.design_system.MemoTitle
 import com.sopetit.design_system.MemoWriteNumber
+import com.sopetit.design_system.Num
+import com.sopetit.design_system.Red200
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.ui.common.button.BottomRectangleBtn
 
@@ -84,7 +89,10 @@ fun MemoWriteContent(
             )
 
             Text(
-                text = String.format(MemoWriteNumber, memoInput.length),
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = Gray700)) { append(memoInput.length.toString()) }
+                    append(MemoWriteNumber)
+                },
                 color = Gray400,
                 style = SoftieTypo.body2,
                 modifier = Modifier
