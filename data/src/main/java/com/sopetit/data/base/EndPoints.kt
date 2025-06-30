@@ -43,4 +43,8 @@ object EndPoints {
         const val MEMOWRITE = "/api/v3/memos"
         const val ACTION = "$MEMOWRITE/{memoId}"
     }
+
+    object Achievement {
+        const val ACHIEVE = "/api/v3/achievement/themes"
+    }
 }
