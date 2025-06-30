@@ -25,6 +25,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +58,7 @@ import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.Mon
 import com.sopetit.design_system.Num
+import com.sopetit.design_system.Pink50
 import com.sopetit.design_system.R
 import com.sopetit.design_system.Red200
 import com.sopetit.design_system.Sat
@@ -65,16 +67,24 @@ import com.sopetit.design_system.Sun
 import com.sopetit.design_system.Thu
 import com.sopetit.design_system.Tue
 import com.sopetit.design_system.Wed
+import com.sopetit.domain.entity.enums.RoutineType
+import com.sopetit.domain.entity.response.calendar.CalendarHistoryItemModel
 import com.sopetit.domain.entity.response.calendar.CalendarHistoryModel
 import com.sopetit.domain.entity.response.calendar.CalendarModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.ui.common.type.ThemeIconType
 import com.sopetit.ui.util.generateCalendarDays
 import com.sopetit.ui.util.setAfterYearMonth
 import com.sopetit.ui.util.setBeforeYearMonth
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
 import org.threeten.bp.LocalDate
 
 @Composable
-fun CalendarScreen() {
+fun CalendarScreen(
+    showRoutineDeleteBottomSheet: (RoutineDetailModel) -> Unit,
+    deleteRoutine: SharedFlow<RoutineDetailModel>
+) {
 
     val viewModel: CalendarViewModel = hiltViewModel()
     val uiState: CalendarPageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -84,6 +94,12 @@ fun CalendarScreen() {
     var month by remember { mutableIntStateOf(today.monthValue) }
     var days by remember { mutableStateOf(generateCalendarDays(year, month)) }
     val interactionSource = remember { MutableInteractionSource() }
+
+    LaunchedEffect(deleteRoutine) {
+        deleteRoutine.collect {
+            viewModel.deleteRoutine(it)
+        }
+    }
 
     CalendarContent(
         todayYear = year,
@@ -105,7 +121,15 @@ fun CalendarScreen() {
         selectedDate = uiState.selectedDate,
         onSelectDate = { viewModel.selectDate(it) },
         calendarList = uiState.calendarList,
-        dateItem = uiState.calendarList[uiState.selectedDate.toString()]
+        dateItem = uiState.calendarList[uiState.selectedDate.toString()],
+        onClickRoutineDelete = { type, item ->
+            showRoutineDeleteBottomSheet(
+                viewModel.setRoutineDetail(
+                    type,
+                    item
+                )
+            )
+        }
     )
 }
 
@@ -123,6 +147,7 @@ fun CalendarContent(
     onSelectDate: (LocalDate) -> Unit = {},
     calendarList: Map<String, CalendarModel> = emptyMap(),
     dateItem: CalendarModel? = null,
+    onClickRoutineDelete: (RoutineType, CalendarHistoryItemModel) -> Unit = { type, item -> },
 ) {
     Column(
         modifier = Modifier
@@ -152,7 +177,9 @@ fun CalendarContent(
 
         CalendarDateDetailInfo(
             todayDate = todayDate,
-            dateItem = dateItem
+            dateItem = dateItem,
+            onClickRoutineDelete = onClickRoutineDelete,
+            interactionSource = interactionSource
         )
     }
 }
@@ -363,6 +390,8 @@ fun CalendarDateItem(
 fun CalendarDateDetailInfo(
     todayDate: LocalDate,
     dateItem: CalendarModel?,
+    onClickRoutineDelete: (RoutineType, CalendarHistoryItemModel) -> Unit,
+    interactionSource: MutableInteractionSource,
 ) {
     Divider(
         modifier = Modifier
@@ -426,7 +455,9 @@ fun CalendarDateDetailInfo(
         }
     } else {
         CalendarDateRoutineAchieve(
-            dateItem = dateItem
+            dateItem = dateItem,
+            onClickRoutineDelete = onClickRoutineDelete,
+            interactionSource = interactionSource
         )
     }
 }
@@ -434,6 +465,8 @@ fun CalendarDateDetailInfo(
 @Composable
 fun CalendarDateRoutineAchieve(
     dateItem: CalendarModel,
+    onClickRoutineDelete: (RoutineType, CalendarHistoryItemModel) -> Unit,
+    interactionSource: MutableInteractionSource,
 ) {
     Column(
         modifier = Modifier
@@ -441,7 +474,11 @@ fun CalendarDateRoutineAchieve(
             .padding(top = 16.dp, bottom = 8.dp, start = 20.dp, end = 20.dp)
     ) {
         dateItem.histories.forEach { history ->
-            CalendarDateRoutineHistory(history)
+            CalendarDateRoutineHistory(
+                history = history,
+                onClickAction = onClickRoutineDelete,
+                interactionSource = interactionSource
+            )
         }
     }
 }
@@ -449,6 +486,8 @@ fun CalendarDateRoutineAchieve(
 @Composable
 fun CalendarDateRoutineHistory(
     history: CalendarHistoryModel,
+    onClickAction: (RoutineType, CalendarHistoryItemModel) -> Unit,
+    interactionSource: MutableInteractionSource,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -474,7 +513,7 @@ fun CalendarDateRoutineHistory(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
-                .background(Gray0)
+                .background(if (historyItem.isChallenge) Pink50 else Gray0)
                 .border(1.dp, Gray200, RoundedCornerShape(10.dp)),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -493,6 +532,16 @@ fun CalendarDateRoutineHistory(
                 modifier = Modifier
                     .padding(start = 23.dp, end = 16.dp, top = 24.dp, bottom = 24.dp)
                     .size(24.dp)
+                    .clickable(
+                        onClick = {
+                            onClickAction(
+                                RoutineType.getType(historyItem.isChallenge),
+                                historyItem
+                            )
+                        },
+                        interactionSource = interactionSource,
+                        indication = null
+                    )
             )
         }
     }

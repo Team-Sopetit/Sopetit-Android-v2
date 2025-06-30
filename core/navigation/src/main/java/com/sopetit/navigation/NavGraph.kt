@@ -162,13 +162,18 @@ fun NavGraphBuilder.homeNavGraph(
 
 fun NavGraphBuilder.achieveNavGraph(
     navController: NavHostController,
+    showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    deleteRoutineId: SharedFlow<RoutineDetailModel>
 ) {
     navigation(
         startDestination = NavRoutes.AchieveScreen.route,
         route = NavRoutes.AchieveGraph.route
     ) {
         composable(NavRoutes.AchieveScreen.route) {
-            AchieveScreen()
+            AchieveScreen(
+                showRoutineDeleteBottomSheet = showRoutineBottomSheet,
+                deleteRoutine = deleteRoutineId
+            )
         }
     }
 }

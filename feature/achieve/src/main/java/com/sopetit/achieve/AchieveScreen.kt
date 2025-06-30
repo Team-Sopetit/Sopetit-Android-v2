@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,16 +35,25 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
 
 @Composable
-fun AchieveScreen() {
+fun AchieveScreen(
+    showRoutineDeleteBottomSheet: (RoutineDetailModel) -> Unit,
+    deleteRoutine: SharedFlow<RoutineDetailModel>
+) {
 
     val viewModel: AchieveViewModel = hiltViewModel()
     val uiState: AchievePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     AchieveContent(
         onSelectTab = { tab -> viewModel.setSelectedTab(tab) },
-        selectedTab = uiState.selectedTab
+        selectedTab = uiState.selectedTab,
+        showRoutineDeleteBottomSheet = showRoutineDeleteBottomSheet,
+        deleteRoutine = deleteRoutine
     )
 }
 
@@ -52,6 +61,8 @@ fun AchieveScreen() {
 fun AchieveContent(
     onSelectTab: (AchieveTabType) -> Unit = {},
     selectedTab: AchieveTabType = AchieveTabType.TabStat,
+    showRoutineDeleteBottomSheet: (RoutineDetailModel) -> Unit = {},
+    deleteRoutine: SharedFlow<RoutineDetailModel> = MutableSharedFlow()
 ) {
     Column(
         modifier = Modifier
@@ -78,7 +89,10 @@ fun AchieveContent(
             if (selectedTab == AchieveTabType.TabStat) {
                 StatScreen()
             } else {
-                CalendarScreen()
+                CalendarScreen(
+                    showRoutineDeleteBottomSheet = showRoutineDeleteBottomSheet,
+                    deleteRoutine = deleteRoutine
+                )
             }
         }
     }

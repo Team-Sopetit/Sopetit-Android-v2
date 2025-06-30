@@ -283,7 +283,9 @@ fun MainScreen() {
                             }
                         )
                         achieveNavGraph(
-                            navController = navController
+                            navController = navController,
+                            showRoutineBottomSheet = showRoutineBottomSheet,
+                            deleteRoutineId = viewModel.deleteRoutineId
                         )
                         addRoutineNavGraph(
                             navController = navController,
