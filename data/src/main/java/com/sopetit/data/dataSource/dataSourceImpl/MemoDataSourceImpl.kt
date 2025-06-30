@@ -15,4 +15,6 @@ class MemoDataSourceImpl @Inject constructor(
     override suspend fun postWriteMemo(request: MemoWriteRequestDto): Response<BaseResponse<MemoWriteResponseDto>> =
         memoService.writeMemo(request)
 
+    override suspend fun deleteMemo(request: Int): Response<BaseResponse<Unit>> =
+        memoService.deleteMemo(request)
 }

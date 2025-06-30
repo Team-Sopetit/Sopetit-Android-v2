@@ -1,6 +1,7 @@
 package com.sopetit.data.repositoryImpl
 
 import com.sopetit.data.dataSource.MemoDataSource
+import com.sopetit.data.mapper.DefaultUnitMapper
 import com.sopetit.data.mapper.memo.MemoWriteMapper
 import com.sopetit.data.mapper.memo.MemoWriteMapper.toDto
 import com.sopetit.domain.entity.request.memo.MemoWriteRequestModel
@@ -14,4 +15,7 @@ class MemoRepositoryImpl @Inject constructor(
 
     override suspend fun postWriteMemo(request: MemoWriteRequestModel): Flow<Result<Int>> =
         MemoWriteMapper.responseToModel(apiCall = { memoDataSource.postWriteMemo(request.toDto()) })
+
+    override suspend fun deleteMemo(request: Int): Flow<Result<Unit>> =
+        DefaultUnitMapper.responseToModel(apiCall = { memoDataSource.deleteMemo(request) })
 }
