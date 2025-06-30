@@ -72,6 +72,7 @@ import com.sopetit.domain.entity.response.calendar.CalendarHistoryItemModel
 import com.sopetit.domain.entity.response.calendar.CalendarHistoryModel
 import com.sopetit.domain.entity.response.calendar.CalendarModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
+import com.sopetit.ui.common.content.DashedDivider
 import com.sopetit.ui.common.type.ThemeIconType
 import com.sopetit.ui.util.generateCalendarDays
 import com.sopetit.ui.util.setAfterYearMonth
@@ -488,6 +489,12 @@ fun CalendarDateRoutineAchieve(
             .fillMaxWidth()
             .padding(top = 16.dp, bottom = 8.dp, start = 20.dp, end = 20.dp)
     ) {
+        if (dateItem.memoContent.isNotEmpty()) {
+            CalendarDateMemoBox(
+                memo = dateItem.memoContent
+            )
+        }
+
         dateItem.histories.forEach { history ->
             CalendarDateRoutineHistory(
                 history = history,
@@ -495,6 +502,46 @@ fun CalendarDateRoutineAchieve(
                 interactionSource = interactionSource
             )
         }
+    }
+}
+
+@Composable
+fun CalendarDateMemoBox(
+    memo: String
+) {
+    Column(
+        modifier = Modifier
+            .padding(bottom = 16.dp, start = 20.dp, end = 20.dp)
+    ) {
+        DashedDivider()
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 5.dp)
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(Gray200)
+            ) {
+                // TODO 아이콘
+            }
+            
+            Text(
+                text = memo,
+                style = SoftieTypo.body2,
+                color = Gray500,
+                modifier = Modifier
+                    .padding(start = 6.dp)
+                    .weight(1f)
+            )
+        }
+
+        DashedDivider()
     }
 }
 
