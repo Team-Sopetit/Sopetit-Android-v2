@@ -8,7 +8,7 @@ import com.sopetit.domain.entity.response.calendar.CalendarModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.usecase.calendar.GetCalendarUseCase
 import com.sopetit.domain.usecase.memberchallenge.DeleteMemberChallengeUseCase
-import com.sopetit.domain.usecase.memberroutine.DeleteMemberDailyRoutineUseCase
+import com.sopetit.domain.usecase.memberroutine.DeleteDailyRoutineHistoryUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class CalendarViewModel @Inject constructor(
     private val getCalendarUseCase: GetCalendarUseCase,
     private val deleteMemberChallengeUseCase: DeleteMemberChallengeUseCase,
-    private val deleteMemberDailyRoutineUseCase: DeleteMemberDailyRoutineUseCase,
+    private val deleteDailyRoutineHistoryUseCase: DeleteDailyRoutineHistoryUseCase,
 ) : BaseViewModel<CalendarPageState>(
     CalendarPageState()
 ) {
@@ -73,7 +73,7 @@ class CalendarViewModel @Inject constructor(
 
     private fun deleteDailyRoutine(routineId: Int) {
         viewModelScope.launch {
-            deleteMemberDailyRoutineUseCase(listOf(routineId)).collect {
+            deleteDailyRoutineHistoryUseCase(routineId).collect {
                 resultResponse(
                     it,
                     { initGetCalendarList(uiState.value.selectedDate) })
