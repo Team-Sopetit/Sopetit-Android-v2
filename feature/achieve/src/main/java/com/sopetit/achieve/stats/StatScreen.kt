@@ -1,6 +1,5 @@
 package com.sopetit.achieve.stats
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -34,7 +33,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.CountContent
 import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
@@ -44,6 +42,7 @@ import com.sopetit.design_system.StatAchieveRoutineTitle
 import com.sopetit.design_system.StatGraphSemiTitle
 import com.sopetit.design_system.StatGraphTitle
 import com.sopetit.domain.entity.response.achieve.AchieveModel
+import com.sopetit.ui.common.content.PieChart
 import com.sopetit.ui.common.type.ThemeIconType
 import com.sopetit.ui.common.type.ThemeStatType
 
@@ -160,12 +159,12 @@ fun StatGraphBox(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
+            PieChart(
+                proportions = setPieChartPortions(achieveModel),
+                colors = setPieChartColor(achieveModel),
                 modifier = Modifier
                     .padding(top = 24.dp, bottom = 27.dp, start = 28.dp)
                     .size(143.dp)
-                    .clip(CircleShape)
-                    .background(Gray200)
             )
 
             Column(
@@ -207,6 +206,22 @@ fun StatGraphBox(
                 }
             }
         }
+    }
+}
+
+fun setPieChartColor(
+    achieveModel: AchieveModel,
+): List<Color> {
+    return achieveModel.themes.map { theme ->
+        ThemeIconType.getThemeGraphColor(theme.id)
+    }
+}
+
+fun setPieChartPortions(
+    achieveModel: AchieveModel,
+): List<Float> {
+    return achieveModel.themes.map { theme ->
+        theme.achievedCount.toFloat() / achieveModel.achievedCount
     }
 }
 
