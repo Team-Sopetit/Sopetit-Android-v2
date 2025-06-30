@@ -71,6 +71,7 @@ import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.calendar.CalendarHistoryItemModel
 import com.sopetit.domain.entity.response.calendar.CalendarHistoryModel
 import com.sopetit.domain.entity.response.calendar.CalendarModel
+import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.ui.common.content.DashedDivider
 import com.sopetit.ui.common.type.ThemeIconType
@@ -78,7 +79,6 @@ import com.sopetit.ui.util.generateCalendarDays
 import com.sopetit.ui.util.setAfterYearMonth
 import com.sopetit.ui.util.setBeforeYearMonth
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collect
 import org.threeten.bp.LocalDate
 
 @Composable
@@ -86,8 +86,11 @@ fun CalendarScreen(
     showRoutineDeleteBottomSheet: (RoutineDetailModel) -> Unit,
     deleteRoutine: SharedFlow<RoutineDetailModel>,
     showMemoWriteBottomSheet: () -> Unit,
-    writtenMemo: SharedFlow<String>
-) {
+    writtenMemo: SharedFlow<String>,
+    showMemoDetailBottomSheet: (MemoActionModel) -> Unit,
+    memoActionModel: SharedFlow<MemoActionModel>,
+
+    ) {
 
     val viewModel: CalendarViewModel = hiltViewModel()
     val uiState: CalendarPageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -107,6 +110,12 @@ fun CalendarScreen(
     LaunchedEffect(writtenMemo) {
         writtenMemo.collect {
             viewModel.writeMemo(it)
+        }
+    }
+
+    LaunchedEffect(memoActionModel) {
+        memoActionModel.collect {
+            viewModel.setMemoAction(it)
         }
     }
 
@@ -139,7 +148,8 @@ fun CalendarScreen(
                 )
             )
         },
-        onClickMemoBtn = { showMemoWriteBottomSheet() }
+        onClickMemoBtn = { showMemoWriteBottomSheet() },
+        onClickMemo = { showMemoDetailBottomSheet(it) }
     )
 }
 
@@ -159,6 +169,7 @@ fun CalendarContent(
     dateItem: CalendarModel? = null,
     onClickRoutineDelete: (RoutineType, CalendarHistoryItemModel) -> Unit = { type, item -> },
     onClickMemoBtn: () -> Unit = {},
+    onClickMemo: (MemoActionModel) -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -191,7 +202,8 @@ fun CalendarContent(
             dateItem = dateItem,
             onClickRoutineDelete = onClickRoutineDelete,
             interactionSource = interactionSource,
-            onClickMemoBtn = onClickMemoBtn
+            onClickMemoBtn = onClickMemoBtn,
+            onClickMemo = onClickMemo
         )
     }
 }
@@ -405,6 +417,7 @@ fun CalendarDateDetailInfo(
     onClickRoutineDelete: (RoutineType, CalendarHistoryItemModel) -> Unit,
     interactionSource: MutableInteractionSource,
     onClickMemoBtn: () -> Unit,
+    onClickMemo: (MemoActionModel) -> Unit,
 ) {
     Divider(
         modifier = Modifier
@@ -473,7 +486,8 @@ fun CalendarDateDetailInfo(
         CalendarDateRoutineAchieve(
             dateItem = dateItem,
             onClickRoutineDelete = onClickRoutineDelete,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
+            onClickMemo = onClickMemo
         )
     }
 }
@@ -483,6 +497,7 @@ fun CalendarDateRoutineAchieve(
     dateItem: CalendarModel,
     onClickRoutineDelete: (RoutineType, CalendarHistoryItemModel) -> Unit,
     interactionSource: MutableInteractionSource,
+    onClickMemo: (MemoActionModel) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -491,7 +506,16 @@ fun CalendarDateRoutineAchieve(
     ) {
         if (dateItem.memoContent.isNotEmpty()) {
             CalendarDateMemoBox(
-                memo = dateItem.memoContent
+                memo = dateItem.memoContent,
+                interactionSource = interactionSource,
+                onClickAction = {
+                    onClickMemo(
+                        MemoActionModel(
+                            memoId = dateItem.memoId,
+                            content = dateItem.memoContent
+                        )
+                    )
+                }
             )
         }
 
@@ -507,11 +531,18 @@ fun CalendarDateRoutineAchieve(
 
 @Composable
 fun CalendarDateMemoBox(
-    memo: String
+    memo: String,
+    onClickAction: () -> Unit,
+    interactionSource: MutableInteractionSource,
 ) {
     Column(
         modifier = Modifier
             .padding(bottom = 16.dp, start = 20.dp, end = 20.dp)
+            .clickable(
+                onClick = onClickAction,
+                interactionSource = interactionSource,
+                indication = null
+            )
     ) {
         DashedDivider()
 
@@ -530,7 +561,7 @@ fun CalendarDateMemoBox(
             ) {
                 // TODO 아이콘
             }
-            
+
             Text(
                 text = memo,
                 style = SoftieTypo.body2,
@@ -573,6 +604,7 @@ fun CalendarDateRoutineHistory(
     history.histories.forEach { historyItem ->
         Row(
             modifier = Modifier
+                .padding(top = 4.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
                 .background(if (historyItem.isChallenge) Pink50 else Gray0)

@@ -1,7 +1,9 @@
 package com.sopetit.feature
 
 import androidx.compose.ui.unit.IntOffset
+import androidx.lifecycle.viewModelScope
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -11,6 +13,7 @@ import com.sopetit.ui.base.BaseViewModel
 import com.sopetit.ui.common.type.BottomSheetType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +28,7 @@ class MainViewModel @Inject constructor(
     val deleteRoutineId = MutableSharedFlow<RoutineDetailModel>()
     val selectedTheme = MutableSharedFlow<ThemeListItemModel>(replay = 1)
     val writtenMemo = MutableSharedFlow<String>(replay = 1)
+    val memoActionModel = MutableSharedFlow<MemoActionModel>(replay = 1)
 
     fun setBottomNavType(route: String?) {
         val type = when (route) {
@@ -122,6 +126,19 @@ class MainViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 bottomSheetType = BottomSheetType.MEMO
+            )
+        )
+    }
+
+    fun setMemoDetail(memoModel: MemoActionModel) {
+        viewModelScope.launch {
+            memoActionModel.emit(memoModel)
+        }
+
+        updateState(
+            uiState.value.copy(
+                memoActionModel = memoModel,
+                bottomSheetType = BottomSheetType.MEMODETAIL
             )
         )
     }

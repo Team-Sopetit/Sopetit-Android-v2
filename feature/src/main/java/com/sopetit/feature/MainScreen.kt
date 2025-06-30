@@ -59,6 +59,7 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -76,6 +77,7 @@ import com.sopetit.ui.common.bottomsheet.ChallengeChangeBottomSheet
 import com.sopetit.ui.common.bottomsheet.MemoWriteBottomSheet
 import com.sopetit.ui.common.bottomsheet.RoutineDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
+import com.sopetit.ui.common.bottomsheet.TwoBtnDetailBottomSheet
 import com.sopetit.ui.common.item.CommonSnackBar
 import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.util.DismissKeyboardOnClick
@@ -127,6 +129,10 @@ fun MainScreen() {
     }
     val showRoutineMemoWriteBottomSheet: () -> Unit = {
         viewModel.setRoutineMemoBottomSheet()
+        scope.launch { sheetState.show() }
+    }
+    val showMemoDetailBottomSheet: (MemoActionModel) -> Unit = {
+        viewModel.setMemoDetail(it)
         scope.launch { sheetState.show() }
     }
 
@@ -220,6 +226,25 @@ fun MainScreen() {
                             )
                         }
 
+                        BottomSheetType.MEMODETAIL -> {
+                            TwoBtnDetailBottomSheet(
+                                memoActionModel = uiState.memoActionModel,
+                                onClickDeleteBtn = {
+                                    scope.launch {
+                                        viewModel.setMemoDetail(it)
+                                        sheetState.hide()
+                                    }
+                                },
+                                onClickModBtn = {
+                                    scope.launch {
+                                        viewModel.setMemoDetail(it)
+                                        sheetState.hide()
+                                        showRoutineMemoWriteBottomSheet()
+                                    }
+                                }
+                            )
+                        }
+
                         BottomSheetType.DEFAULT -> {}
                     }
                 }
@@ -303,7 +328,9 @@ fun MainScreen() {
                             showRoutineBottomSheet = showRoutineBottomSheet,
                             deleteRoutineId = viewModel.deleteRoutineId,
                             showMemoWriteBottomSheet = showRoutineMemoWriteBottomSheet,
-                            writtenMemo = viewModel.writtenMemo
+                            writtenMemo = viewModel.writtenMemo,
+                            showMemoDetailBottomSheet = showMemoDetailBottomSheet,
+                            memoActionModel = viewModel.memoActionModel
                         )
                         addRoutineNavGraph(
                             navController = navController,

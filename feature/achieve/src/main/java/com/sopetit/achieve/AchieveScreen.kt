@@ -34,6 +34,7 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -43,7 +44,9 @@ fun AchieveScreen(
     showRoutineDeleteBottomSheet: (RoutineDetailModel) -> Unit,
     deleteRoutine: SharedFlow<RoutineDetailModel>,
     showMemoWriteBottomSheet: () -> Unit,
-    writtenMemo: SharedFlow<String>
+    writtenMemo: SharedFlow<String>,
+    showMemoDetailBottomSheet: (MemoActionModel) -> Unit,
+    memoActionModel: SharedFlow<MemoActionModel>
 ) {
 
     val viewModel: AchieveViewModel = hiltViewModel()
@@ -55,7 +58,9 @@ fun AchieveScreen(
         showRoutineDeleteBottomSheet = showRoutineDeleteBottomSheet,
         deleteRoutine = deleteRoutine,
         showMemoWriteBottomSheet = showMemoWriteBottomSheet,
-        writtenMemo = writtenMemo
+        writtenMemo = writtenMemo,
+        showMemoDetailBottomSheet = showMemoDetailBottomSheet,
+        memoActionModel = memoActionModel
     )
 }
 
@@ -66,7 +71,9 @@ fun AchieveContent(
     showRoutineDeleteBottomSheet: (RoutineDetailModel) -> Unit = {},
     deleteRoutine: SharedFlow<RoutineDetailModel> = MutableSharedFlow(),
     showMemoWriteBottomSheet: () -> Unit = {},
-    writtenMemo: SharedFlow<String> = MutableSharedFlow()
+    writtenMemo: SharedFlow<String> = MutableSharedFlow(),
+    showMemoDetailBottomSheet: (MemoActionModel) -> Unit = {},
+    memoActionModel: SharedFlow<MemoActionModel> = MutableSharedFlow()
 ) {
     Column(
         modifier = Modifier
@@ -97,7 +104,9 @@ fun AchieveContent(
                     showRoutineDeleteBottomSheet = showRoutineDeleteBottomSheet,
                     deleteRoutine = deleteRoutine,
                     showMemoWriteBottomSheet = showMemoWriteBottomSheet,
-                    writtenMemo = writtenMemo
+                    writtenMemo = writtenMemo,
+                    showMemoDetailBottomSheet = showMemoDetailBottomSheet,
+                    memoActionModel = memoActionModel
                 )
             }
         }

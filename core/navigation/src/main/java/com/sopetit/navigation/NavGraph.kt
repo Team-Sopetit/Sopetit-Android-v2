@@ -9,6 +9,7 @@ import com.sopetit.achieve.AchieveScreen
 import com.sopetit.addroutine.AddRoutineScreen
 import com.sopetit.addroutine.detail.AddRoutineDetailScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -165,7 +166,9 @@ fun NavGraphBuilder.achieveNavGraph(
     showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
     deleteRoutineId: SharedFlow<RoutineDetailModel>,
     showMemoWriteBottomSheet: () -> Unit,
-    writtenMemo: SharedFlow<String>
+    writtenMemo: SharedFlow<String>,
+    showMemoDetailBottomSheet: (MemoActionModel) -> Unit,
+    memoActionModel: SharedFlow<MemoActionModel>
 ) {
     navigation(
         startDestination = NavRoutes.AchieveScreen.route,
@@ -176,7 +179,9 @@ fun NavGraphBuilder.achieveNavGraph(
                 showRoutineDeleteBottomSheet = showRoutineBottomSheet,
                 deleteRoutine = deleteRoutineId,
                 showMemoWriteBottomSheet = showMemoWriteBottomSheet,
-                writtenMemo = writtenMemo
+                writtenMemo = writtenMemo,
+                showMemoDetailBottomSheet = showMemoDetailBottomSheet,
+                memoActionModel = memoActionModel
             )
         }
     }

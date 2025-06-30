@@ -41,8 +41,6 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.MemoHintContent
 import com.sopetit.design_system.MemoTitle
 import com.sopetit.design_system.MemoWriteNumber
-import com.sopetit.design_system.Num
-import com.sopetit.design_system.Red200
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.ui.common.button.BottomRectangleBtn
 

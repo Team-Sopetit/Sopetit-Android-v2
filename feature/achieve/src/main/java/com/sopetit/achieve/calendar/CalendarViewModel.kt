@@ -6,6 +6,7 @@ import com.sopetit.domain.entity.request.calendar.CalendarRequestModel
 import com.sopetit.domain.entity.request.memo.MemoWriteRequestModel
 import com.sopetit.domain.entity.response.calendar.CalendarHistoryItemModel
 import com.sopetit.domain.entity.response.calendar.CalendarModel
+import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.usecase.calendar.GetCalendarUseCase
 import com.sopetit.domain.usecase.memberchallenge.DeleteChallengeHistoryUseCase
@@ -15,6 +16,7 @@ import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -103,5 +105,9 @@ class CalendarViewModel @Inject constructor(
                 resultResponse(it, { initGetCalendarList(uiState.value.selectedDate) })
             }
         }
+    }
+
+    fun setMemoAction(memoActionModel: MemoActionModel) {
+        Timber.d("테스트 -> $memoActionModel")
     }
 }
