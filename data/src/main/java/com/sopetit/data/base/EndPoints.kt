@@ -38,4 +38,8 @@ object EndPoints {
     object Calendar {
         const val CALENDAR = "/api/v3/calendar"
     }
+
+    object Memo {
+        const val MEMOWRITE = "/api/v3/memos"
+    }
 }

@@ -5,6 +5,7 @@ import com.sopetit.data.service.CalendarService
 import com.sopetit.data.service.MemberChallengeService
 import com.sopetit.data.service.MemberRoutineService
 import com.sopetit.data.service.MemberService
+import com.sopetit.data.service.MemoService
 import com.sopetit.data.service.RoutineService
 import com.sopetit.data.service.ThemeService
 import dagger.Module
@@ -50,5 +51,10 @@ object ServiceModule {
     @Provides
     fun provideCalendarService(@SoftieRetrofit retrofit: Retrofit): CalendarService {
         return retrofit.create(CalendarService::class.java)
+    }
+
+    @Provides
+    fun provideMemoService(@SoftieRetrofit retrofit: Retrofit): MemoService {
+        return retrofit.create(MemoService::class.java)
     }
 }

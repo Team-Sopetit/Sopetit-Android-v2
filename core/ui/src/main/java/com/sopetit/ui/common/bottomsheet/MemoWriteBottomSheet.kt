@@ -163,10 +163,7 @@ fun MemoWriteBox(
                         Text(
                             text = MemoHintContent,
                             style = SoftieTypo.body2,
-                            color = Gray400,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(16.dp)
+                            color = Gray400
                         )
                     }
                     innerTextField()
