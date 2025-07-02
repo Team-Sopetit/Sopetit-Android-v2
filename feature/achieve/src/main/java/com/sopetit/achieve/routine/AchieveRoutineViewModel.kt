@@ -18,6 +18,8 @@ class AchieveRoutineViewModel @Inject constructor(
 
     fun getAchieveThemeRoutine(themeId: Int) {
         viewModelScope.launch {
+            setAchieveThemeId(themeId)
+
             getAchieveRoutineUseCase(themeId).collect {
                 resultResponse(
                     it,
@@ -25,6 +27,14 @@ class AchieveRoutineViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun setAchieveThemeId(themeId: Int) {
+        updateState(
+            uiState.value.copy(
+                achieveThemeId = themeId
+            )
+        )
     }
 
     private fun onSuccessAchieveThemeRoutine(data: AchieveRoutineModel) {

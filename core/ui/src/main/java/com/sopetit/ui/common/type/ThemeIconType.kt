@@ -36,7 +36,7 @@ enum class ThemeIconType(
 
     companion object {
         fun getThemeIcon(themeId: Int): Int =
-            entries.firstOrNull { it.themeId == themeId }?.themeIcon ?: -1
+            entries.firstOrNull { it.themeId == themeId }?.themeIcon ?: R.drawable.ic_snackbar_caution
 
         fun mapThemeIconType(themeId: Int): ThemeIconType =
             when (themeId) {
@@ -55,6 +55,9 @@ enum class ThemeIconType(
 
         fun getThemeName(themeId: Int): String =
             entries.firstOrNull { it.themeId == themeId }?.themeName ?: ""
+
+        fun getThemeColor(themeId: Int): Color =
+            entries.firstOrNull { it.themeId == themeId }?.themeColor ?: Color.Transparent
 
         fun getThemeGraphColor(themeId: Int): Color =
             entries.firstOrNull { it.themeId == themeId}?.themeGraphColor?: Color.Transparent
