@@ -151,6 +151,11 @@ fun MainScreen() {
             viewModel.selectedTheme.emit(it)
         }
     }
+    val setAchieveThemeId: (Int) -> Unit = {
+        scope.launch {
+            viewModel.achieveThemeId.emit(it)
+        }
+    }
 
     LaunchedEffect(navController) {
         navController.currentBackStackEntryFlow
@@ -336,7 +341,9 @@ fun MainScreen() {
                             showMemoWriteBottomSheet = { showRoutineMemoWriteBottomSheet(MemoActionModel()) },
                             writtenMemo = viewModel.writtenMemo,
                             showMemoDetailBottomSheet = showMemoDetailBottomSheet,
-                            memoActionModel = viewModel.memoActionModel
+                            memoActionModel = viewModel.memoActionModel,
+                            setAchieveThemeId = setAchieveThemeId,
+                            achieveThemeId = viewModel.achieveThemeId
                         )
                         addRoutineNavGraph(
                             navController = navController,

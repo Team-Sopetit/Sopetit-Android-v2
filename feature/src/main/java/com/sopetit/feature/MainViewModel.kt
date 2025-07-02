@@ -29,6 +29,7 @@ class MainViewModel @Inject constructor(
     val selectedTheme = MutableSharedFlow<ThemeListItemModel>(replay = 1)
     val writtenMemo = MutableSharedFlow<String>(replay = 1)
     val memoActionModel = MutableSharedFlow<MemoActionModel>(replay = 1)
+    val achieveThemeId = MutableSharedFlow<Int>(replay = 1)
 
     fun setBottomNavType(route: String?) {
         val type = when (route) {

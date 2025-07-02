@@ -1,7 +1,9 @@
 package com.sopetit.achieve.stats
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,7 +49,9 @@ import com.sopetit.ui.common.type.ThemeIconType
 import com.sopetit.ui.common.type.ThemeStatType
 
 @Composable
-fun StatScreen() {
+fun StatScreen(
+    goToAchieveRoutinePage: (Int) -> Unit
+) {
 
     val viewModel: StatViewModel = hiltViewModel()
     val uiState: StatPageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -55,13 +59,17 @@ fun StatScreen() {
     val interactionSource = remember { MutableInteractionSource() }
 
     StatContent(
-        achieveModel = uiState.achieveModel
+        achieveModel = uiState.achieveModel,
+        onClickAchieveRoutine = { goToAchieveRoutinePage(it) },
+        interactionSource = interactionSource
     )
 }
 
 @Composable
 fun StatContent(
     achieveModel: AchieveModel = AchieveModel(),
+    onClickAchieveRoutine: (Int) -> Unit = {},
+    interactionSource: MutableInteractionSource = MutableInteractionSource()
 ) {
     Column(
         modifier = Modifier
@@ -71,7 +79,9 @@ fun StatContent(
     ) {
         if (achieveModel.achievedCount != 0) {
             StatDetailBox(
-                achieveModel = achieveModel
+                achieveModel = achieveModel,
+                onClickAchieveRoutine = onClickAchieveRoutine,
+                interactionSource = interactionSource
             )
         } else {
             StatEmptyDetailBox()
@@ -82,6 +92,8 @@ fun StatContent(
 @Composable
 fun StatDetailBox(
     achieveModel: AchieveModel,
+    onClickAchieveRoutine: (Int) -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
     Box(
         modifier = Modifier
@@ -120,7 +132,9 @@ fun StatDetailBox(
     )
 
     StatRoutinesBox(
-        achieveModel = achieveModel
+        achieveModel = achieveModel,
+        onClickAchieveRoutine = onClickAchieveRoutine,
+        interactionSource = interactionSource
     )
 }
 
@@ -225,9 +239,12 @@ fun setPieChartPortions(
     }
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun StatRoutinesBox(
     achieveModel: AchieveModel,
+    onClickAchieveRoutine: (Int) -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
     Text(
         text = StatAchieveRoutineTitle,
@@ -254,8 +271,9 @@ fun StatRoutinesBox(
                     ) {
                         StatRoutineBoxItem(
                             theme = theme,
-                            routineNum = achieveModel.themes.firstOrNull { it.id == theme.themeId }?.achievedCount
-                                ?: 0
+                            routineNum = achieveModel.themes.firstOrNull { it.id == theme.themeId }?.achievedCount ?: 0,
+                            onClickAction = { onClickAchieveRoutine(theme.themeId) },
+                            interactionSource = interactionSource
                         )
                     }
                 }
@@ -272,12 +290,19 @@ fun StatRoutinesBox(
 fun StatRoutineBoxItem(
     theme: ThemeIconType,
     routineNum: Int,
+    onClickAction: () -> Unit,
+    interactionSource: MutableInteractionSource
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(Gray0)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClickAction
+            )
     ) {
         Row(
             modifier = Modifier

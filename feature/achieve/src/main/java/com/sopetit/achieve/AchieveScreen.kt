@@ -46,7 +46,8 @@ fun AchieveScreen(
     showMemoWriteBottomSheet: () -> Unit,
     writtenMemo: SharedFlow<String>,
     showMemoDetailBottomSheet: (MemoActionModel) -> Unit,
-    memoActionModel: SharedFlow<MemoActionModel>
+    memoActionModel: SharedFlow<MemoActionModel>,
+    goToAchieveRoutinePage: (Int) -> Unit
 ) {
 
     val viewModel: AchieveViewModel = hiltViewModel()
@@ -60,7 +61,8 @@ fun AchieveScreen(
         showMemoWriteBottomSheet = showMemoWriteBottomSheet,
         writtenMemo = writtenMemo,
         showMemoDetailBottomSheet = showMemoDetailBottomSheet,
-        memoActionModel = memoActionModel
+        memoActionModel = memoActionModel,
+        goToAchieveRoutinePage = goToAchieveRoutinePage
     )
 }
 
@@ -73,7 +75,8 @@ fun AchieveContent(
     showMemoWriteBottomSheet: () -> Unit = {},
     writtenMemo: SharedFlow<String> = MutableSharedFlow(),
     showMemoDetailBottomSheet: (MemoActionModel) -> Unit = {},
-    memoActionModel: SharedFlow<MemoActionModel> = MutableSharedFlow()
+    memoActionModel: SharedFlow<MemoActionModel> = MutableSharedFlow(),
+    goToAchieveRoutinePage: (Int) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -98,7 +101,9 @@ fun AchieveContent(
                 .weight(1f)
         ) {
             if (selectedTab == AchieveTabType.TabStat) {
-                StatScreen()
+                StatScreen(
+                    goToAchieveRoutinePage = goToAchieveRoutinePage
+                )
             } else {
                 CalendarScreen(
                     showRoutineDeleteBottomSheet = showRoutineDeleteBottomSheet,

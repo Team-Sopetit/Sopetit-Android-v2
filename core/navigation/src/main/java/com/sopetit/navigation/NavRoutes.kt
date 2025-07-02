@@ -28,6 +28,7 @@ sealed class NavRoutes(val route: String) {
     // Achieve Graph
     data object AchieveGraph: NavRoutes("achieve_graph")
     data object AchieveScreen: NavRoutes("achieve")
+    data object AchieveRoutineScreen: NavRoutes("achieve_routine")
 
     // Progress Graph
     data object ProgressGraph: NavRoutes("progress_graph")
