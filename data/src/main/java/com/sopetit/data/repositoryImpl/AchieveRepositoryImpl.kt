@@ -2,7 +2,9 @@ package com.sopetit.data.repositoryImpl
 
 import com.sopetit.data.dataSource.AchieveDataSource
 import com.sopetit.data.mapper.achieve.GetAchieveMapper
+import com.sopetit.data.mapper.achieve.GetAchieveRoutineMapper
 import com.sopetit.domain.entity.response.achieve.AchieveModel
+import com.sopetit.domain.entity.response.achieve.AchieveRoutineModel
 import com.sopetit.domain.repository.AchieveRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -13,4 +15,7 @@ class AchieveRepositoryImpl @Inject constructor(
 
     override suspend fun getAchieve(): Flow<Result<AchieveModel>> =
         GetAchieveMapper.responseToModel(apiCall = { achieveDataSource.getAchievement() })
+
+    override suspend fun getAchieveRoutine(themeId: Int): Flow<Result<AchieveRoutineModel>> =
+        GetAchieveRoutineMapper.responseToModel(apiCall = { achieveDataSource.getAchieveRoutine(themeId) })
 }

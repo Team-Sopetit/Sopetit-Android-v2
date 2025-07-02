@@ -1,18 +1,38 @@
 package com.sopetit.achieve.routine
 
+import androidx.lifecycle.viewModelScope
+import com.sopetit.domain.entity.response.achieve.AchieveRoutineModel
+import com.sopetit.domain.usecase.achieve.GetAchieveRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class AchieveRoutineViewModel @Inject constructor(
-
-): BaseViewModel<AchieveRoutinePageState>(
+    private val getAchieveRoutineUseCase: GetAchieveRoutineUseCase,
+) : BaseViewModel<AchieveRoutinePageState>(
     AchieveRoutinePageState()
 ) {
 
     fun getAchieveThemeRoutine(themeId: Int) {
-        Timber.d("[테스트] -> $themeId")
+        viewModelScope.launch {
+            getAchieveRoutineUseCase(themeId).collect {
+                resultResponse(
+                    it,
+                    ::onSuccessAchieveThemeRoutine
+                )
+            }
+        }
+    }
+
+    private fun onSuccessAchieveThemeRoutine(data: AchieveRoutineModel) {
+        Timber.d("[테스트] -> $data")
+        updateState(
+            uiState.value.copy(
+                achieveRoutine = data
+            )
+        )
     }
 }
