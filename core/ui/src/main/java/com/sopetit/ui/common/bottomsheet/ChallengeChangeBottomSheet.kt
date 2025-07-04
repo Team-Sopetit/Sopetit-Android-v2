@@ -26,19 +26,18 @@ import com.sopetit.design_system.ChangeRoutine
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.R
 import com.sopetit.design_system.Red200
 import com.sopetit.design_system.SelectedRoutineBottomSheetTitle
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
-import com.sopetit.domain.entity.response.routine.ChallengeItemModel
-import com.sopetit.design_system.R
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.content.ChallengeRoutineBox
 
 @Composable
 fun ChallengeChangeBottomSheet(
-    challengeChangeModel: ChallengeChangeModel
+    challengeChangeModel: ChallengeChangeModel,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -51,7 +50,7 @@ fun ChallengeChangeBottomSheet(
 @Composable
 fun ChallengeChangeContent(
     hasChallenge: MemberChallengeModel = MemberChallengeModel(),
-    changeChallenge: MemberChallengeModel = MemberChallengeModel()
+    changeChallenge: MemberChallengeModel = MemberChallengeModel(),
 ) {
     Column(
         modifier = Modifier
@@ -96,7 +95,7 @@ fun ChallengeChangeContent(
 @Composable
 fun ChallengeContent(
     hasChallenge: MemberChallengeModel = MemberChallengeModel(),
-    changeChallenge: MemberChallengeModel = MemberChallengeModel()
+    changeChallenge: MemberChallengeModel = MemberChallengeModel(),
 ) {
     ChallengeRoutineBox(
         challengeModel = hasChallenge,

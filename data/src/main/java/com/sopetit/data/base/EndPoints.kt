@@ -26,10 +26,26 @@ object EndPoints {
         const val MEMBERROUTINE2 = "/api/v2/routines/daily/member"
 
         const val ROUTINEACHIEVE = "$MEMBERROUTINE/routine/{routineId}"
+        const val ROUTINEHISTORY = "$MEMBERROUTINE/history/{historyId}"
     }
 
     object MemberChallenge {
         const val MEMBERCHALLENGE = "/api/v2/members/challenges"
         const val CHALLENGEACHIEVE = "$MEMBERCHALLENGE/achievement"
+        const val ROUTINEHISTORY = "$MEMBERCHALLENGE/history/{historyId}"
+    }
+
+    object Calendar {
+        const val CALENDAR = "/api/v3/calendar"
+    }
+
+    object Memo {
+        const val MEMOWRITE = "/api/v3/memos"
+        const val ACTION = "$MEMOWRITE/{memoId}"
+    }
+
+    object Achievement {
+        const val ACHIEVE = "/api/v3/achievement/themes"
+        const val ACHIEVEROUTINE = "$ACHIEVE/{themeId}/routines"
     }
 }

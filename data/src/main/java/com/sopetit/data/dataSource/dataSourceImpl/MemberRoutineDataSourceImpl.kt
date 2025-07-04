@@ -25,4 +25,7 @@ class MemberRoutineDataSourceImpl @Inject constructor(
 
     override suspend fun addMemberDailyRoutine(request: AddMemberDailyRoutineRequestDto): Response<BaseResponse<AddMemberDailyRoutineResponseDto>> =
         memberRoutineService.addMemberDailyRoutine(request)
+
+    override suspend fun deleteRoutineHistory(request: Int): Response<BaseResponse<Unit>> =
+        memberRoutineService.deleteDailyRoutineHistory(request)
 }

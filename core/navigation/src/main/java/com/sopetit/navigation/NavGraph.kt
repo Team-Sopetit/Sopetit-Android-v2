@@ -6,9 +6,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sopetit.achieve.AchieveScreen
+import com.sopetit.achieve.routine.AchieveRoutineScreen
 import com.sopetit.addroutine.AddRoutineScreen
 import com.sopetit.addroutine.detail.AddRoutineDetailScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -24,6 +26,7 @@ import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
 import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 fun NavGraphBuilder.splashNavGraph(
@@ -162,13 +165,39 @@ fun NavGraphBuilder.homeNavGraph(
 
 fun NavGraphBuilder.achieveNavGraph(
     navController: NavHostController,
+    showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    deleteRoutineId: SharedFlow<RoutineDetailModel>,
+    showMemoWriteBottomSheet: () -> Unit,
+    writtenMemo: SharedFlow<String>,
+    showMemoDetailBottomSheet: (MemoActionModel) -> Unit,
+    memoActionModel: SharedFlow<MemoActionModel>,
+    setAchieveThemeId: (Int) -> Unit,
+    achieveThemeId: SharedFlow<Int>
 ) {
     navigation(
         startDestination = NavRoutes.AchieveScreen.route,
         route = NavRoutes.AchieveGraph.route
     ) {
         composable(NavRoutes.AchieveScreen.route) {
-            AchieveScreen()
+            AchieveScreen(
+                showRoutineDeleteBottomSheet = showRoutineBottomSheet,
+                deleteRoutine = deleteRoutineId,
+                showMemoWriteBottomSheet = showMemoWriteBottomSheet,
+                writtenMemo = writtenMemo,
+                showMemoDetailBottomSheet = showMemoDetailBottomSheet,
+                memoActionModel = memoActionModel,
+                goToAchieveRoutinePage = {
+                    setAchieveThemeId(it)
+                    navController.navigate(NavRoutes.AchieveRoutineScreen.route)
+                }
+            )
+        }
+
+        composable(NavRoutes.AchieveRoutineScreen.route) {
+            AchieveRoutineScreen(
+                achieveThemeId = achieveThemeId,
+                goToAddRoutinePage = { navController.navigate(NavRoutes.AddRoutineScreen.route) }
+            )
         }
     }
 }

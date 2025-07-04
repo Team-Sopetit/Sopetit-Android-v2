@@ -1,15 +1,21 @@
 package com.sopetit.softie.di
 
+import com.sopetit.data.dataSource.AchieveDataSource
 import com.sopetit.data.dataSource.AuthDataSource
+import com.sopetit.data.dataSource.CalendarDataSource
 import com.sopetit.data.dataSource.MemberChallengeDataSource
 import com.sopetit.data.dataSource.MemberDataSource
 import com.sopetit.data.dataSource.MemberRoutineDataSource
+import com.sopetit.data.dataSource.MemoDataSource
 import com.sopetit.data.dataSource.RoutineDataSource
 import com.sopetit.data.dataSource.ThemeDataSource
+import com.sopetit.data.dataSource.dataSourceImpl.AchieveDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.AuthDataSourceImpl
+import com.sopetit.data.dataSource.dataSourceImpl.CalendarDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.MemberChallengeDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.MemberDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.MemberRoutineDataSourceImpl
+import com.sopetit.data.dataSource.dataSourceImpl.MemoDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.RoutineDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.ThemeDataSourceImpl
 import dagger.Binds
@@ -45,4 +51,16 @@ abstract class DataSourceModule {
     @Binds
     @Singleton
     abstract fun bindsMemberChallengeDataSource(memberChallengeDataSourceImpl: MemberChallengeDataSourceImpl): MemberChallengeDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindsCalendarDataSource(calendarDataSourceImpl: CalendarDataSourceImpl): CalendarDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindsMemoDataSource(memoDataSourceImpl: MemoDataSourceImpl): MemoDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindsAchieveDataSource(achieveDataSourceImpl: AchieveDataSourceImpl): AchieveDataSource
 }

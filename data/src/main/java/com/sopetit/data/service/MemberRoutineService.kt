@@ -34,4 +34,9 @@ interface MemberRoutineService {
     suspend fun addMemberDailyRoutine(
         @Body body: AddMemberDailyRoutineRequestDto
     ): Response<BaseResponse<AddMemberDailyRoutineResponseDto>>
+
+    @DELETE(EndPoints.MemberRoutine.ROUTINEHISTORY)
+    suspend fun deleteDailyRoutineHistory(
+        @Path("historyId") historyId: Int
+    ): Response<BaseResponse<Unit>>
 }

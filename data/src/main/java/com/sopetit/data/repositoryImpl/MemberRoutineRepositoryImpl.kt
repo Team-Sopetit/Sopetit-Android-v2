@@ -1,6 +1,7 @@
 package com.sopetit.data.repositoryImpl
 
 import com.sopetit.data.dataSource.MemberRoutineDataSource
+import com.sopetit.data.mapper.DefaultUnitMapper
 import com.sopetit.data.mapper.memberroutine.AchieveDailyRoutineMapper
 import com.sopetit.data.mapper.memberroutine.AddMemberDailyRoutineMapper
 import com.sopetit.data.mapper.memberroutine.DeleteMemberDailyRoutineMapper
@@ -33,6 +34,17 @@ class MemberRoutineRepositoryImpl @Inject constructor(
 
     override suspend fun addDailyMemberRoutine(request: List<Int>): Flow<Result<List<Int>>> =
         AddMemberDailyRoutineMapper.responseToModel(apiCall = {
-            memberRoutineDataSource.addMemberDailyRoutine(AddMemberDailyRoutineMapper.listToDto(request))
+            memberRoutineDataSource.addMemberDailyRoutine(
+                AddMemberDailyRoutineMapper.listToDto(
+                    request
+                )
+            )
+        })
+
+    override suspend fun deleteRoutineHistory(request: Int): Flow<Result<Unit>> =
+        DefaultUnitMapper.responseToModel(apiCall = {
+            memberRoutineDataSource.deleteRoutineHistory(
+                request
+            )
         })
 }

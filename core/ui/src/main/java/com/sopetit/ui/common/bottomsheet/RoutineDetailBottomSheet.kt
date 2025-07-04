@@ -80,7 +80,7 @@ fun RoutineDetailContent(
             content = routine.content
         )
 
-        if (routine.routineType == RoutineType.Challenge) {
+        if (routine.routineType == RoutineType.Challenge && routine.explainDetail.isNotEmpty()) {
             ChallengeRoutineDetail(
                 explainDetail = routine.explainDetail,
                 time = routine.time,

@@ -59,6 +59,7 @@ import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -73,8 +74,10 @@ import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.progressNavGraph
 import com.sopetit.navigation.splashNavGraph
 import com.sopetit.ui.common.bottomsheet.ChallengeChangeBottomSheet
+import com.sopetit.ui.common.bottomsheet.MemoWriteBottomSheet
 import com.sopetit.ui.common.bottomsheet.RoutineDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
+import com.sopetit.ui.common.bottomsheet.TwoBtnDetailBottomSheet
 import com.sopetit.ui.common.item.CommonSnackBar
 import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.util.DismissKeyboardOnClick
@@ -124,6 +127,14 @@ fun MainScreen() {
         viewModel.setChallengeChange(challenge)
         scope.launch { sheetState.show() }
     }
+    val showRoutineMemoWriteBottomSheet: (MemoActionModel) -> Unit = {
+        viewModel.setRoutineMemoBottomSheet(it)
+        scope.launch { sheetState.show() }
+    }
+    val showMemoDetailBottomSheet: (MemoActionModel) -> Unit = {
+        viewModel.setMemoDetail(it)
+        scope.launch { sheetState.show() }
+    }
 
     val settingMemberModel: (CreateMemberModel) -> Unit = {
         scope.launch {
@@ -138,6 +149,11 @@ fun MainScreen() {
     val setSelectedTheme: (ThemeListItemModel) -> Unit = {
         scope.launch {
             viewModel.selectedTheme.emit(it)
+        }
+    }
+    val setAchieveThemeId: (Int) -> Unit = {
+        scope.launch {
+            viewModel.achieveThemeId.emit(it)
         }
     }
 
@@ -201,6 +217,42 @@ fun MainScreen() {
                         BottomSheetType.CHALLENGECHANGE -> {
                             ChallengeChangeBottomSheet(
                                 challengeChangeModel = uiState.challengeChangeModel
+                            )
+                        }
+
+                        BottomSheetType.MEMO -> {
+                            MemoWriteBottomSheet(
+                                onClickConfirmBtn = {
+                                    scope.launch {
+                                        viewModel.writtenMemo.emit(it)
+                                        sheetState.hide()
+                                    }
+                                },
+                                memoActionModel = uiState.memoActionModel,
+                                onClickModifyBtn = {
+                                    scope.launch {
+                                        viewModel.setMemoDetail(it)
+                                        sheetState.hide()
+                                    }
+                                }
+                            )
+                        }
+
+                        BottomSheetType.MEMODETAIL -> {
+                            TwoBtnDetailBottomSheet(
+                                memoActionModel = uiState.memoActionModel,
+                                onClickDeleteBtn = {
+                                    scope.launch {
+                                        viewModel.setMemoDetail(it)
+                                        sheetState.hide()
+                                    }
+                                },
+                                onClickModBtn = {
+                                    scope.launch {
+                                        sheetState.hide()
+                                        showRoutineMemoWriteBottomSheet(uiState.memoActionModel)
+                                    }
+                                }
                             )
                         }
 
@@ -283,7 +335,15 @@ fun MainScreen() {
                             }
                         )
                         achieveNavGraph(
-                            navController = navController
+                            navController = navController,
+                            showRoutineBottomSheet = showRoutineBottomSheet,
+                            deleteRoutineId = viewModel.deleteRoutineId,
+                            showMemoWriteBottomSheet = { showRoutineMemoWriteBottomSheet(MemoActionModel()) },
+                            writtenMemo = viewModel.writtenMemo,
+                            showMemoDetailBottomSheet = showMemoDetailBottomSheet,
+                            memoActionModel = viewModel.memoActionModel,
+                            setAchieveThemeId = setAchieveThemeId,
+                            achieveThemeId = viewModel.achieveThemeId
                         )
                         addRoutineNavGraph(
                             navController = navController,

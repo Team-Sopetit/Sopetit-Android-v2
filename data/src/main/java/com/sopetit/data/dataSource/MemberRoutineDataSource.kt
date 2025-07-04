@@ -15,4 +15,6 @@ interface MemberRoutineDataSource {
     suspend fun achieveDailyRoutine(routineId: Int): Response<BaseResponse<AchieveDailyRoutineResponseDto>>
 
     suspend fun addMemberDailyRoutine(request: AddMemberDailyRoutineRequestDto): Response<BaseResponse<AddMemberDailyRoutineResponseDto>>
+
+    suspend fun deleteRoutineHistory(request: Int): Response<BaseResponse<Unit>>
 }

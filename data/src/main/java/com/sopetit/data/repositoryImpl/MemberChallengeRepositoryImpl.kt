@@ -1,6 +1,7 @@
 package com.sopetit.data.repositoryImpl
 
 import com.sopetit.data.dataSource.MemberChallengeDataSource
+import com.sopetit.data.mapper.DefaultUnitMapper
 import com.sopetit.data.mapper.memberchallenge.AchieveMemberChallengeMapper
 import com.sopetit.data.mapper.memberchallenge.AddMemberChallengeMapper
 import com.sopetit.data.mapper.memberchallenge.DeleteMemberChallengeMapper
@@ -30,4 +31,6 @@ class MemberChallengeRepositoryImpl @Inject constructor(
             )
         })
 
+    override suspend fun deleteChallengeHistory(request: Int): Flow<Result<Unit>> =
+        DefaultUnitMapper.responseToModel(apiCall = { memberChallengeDataSource.deleteChallengeHistory(request) })
 }
