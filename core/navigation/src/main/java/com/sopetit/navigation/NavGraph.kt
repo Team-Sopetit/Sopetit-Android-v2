@@ -26,6 +26,7 @@ import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
 import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
+import com.tdd.customroutine.CustomRoutineScreen
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -248,6 +249,9 @@ fun NavGraphBuilder.addRoutineNavGraph(
                 goToDetailPage = {
                     setSelectedThemeId(it)
                     navController.navigate(NavRoutes.AddRoutineDetailScreen.route)
+                },
+                goToCustomRoutinePage = {
+                    navController.navigate(NavRoutes.CustomRoutineScreen.route)
                 }
             )
         }
@@ -260,6 +264,19 @@ fun NavGraphBuilder.addRoutineNavGraph(
                 showChallengeChangeBottomSheet = showChallengeChangeBottomSheet,
                 goBackToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) }
             )
+        }
+    }
+}
+
+fun NavGraphBuilder.customRoutineNavGraph(
+    navController: NavHostController,
+) {
+    navigation(
+        startDestination = NavRoutes.CustomRoutineScreen.route,
+        route = NavRoutes.CustomRoutineGraph.route
+    ) {
+        composable(NavRoutes.CustomRoutineScreen.route) {
+            CustomRoutineScreen()
         }
     }
 }

@@ -68,6 +68,7 @@ import com.sopetit.feature.component.BottomNavBar
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.navigation.achieveNavGraph
 import com.sopetit.navigation.addRoutineNavGraph
+import com.sopetit.navigation.customRoutineNavGraph
 import com.sopetit.navigation.homeNavGraph
 import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
@@ -352,6 +353,9 @@ fun MainScreen() {
                             showChallengeDetailBottomSheet = showRoutineBottomSheet,
                             showSnackBar = showSnackBar,
                             showChallengeChangeBottomSheet = showChallengeChangeBottomSheet
+                        )
+                        customRoutineNavGraph(
+                            navController = navController
                         )
                     }
                 }

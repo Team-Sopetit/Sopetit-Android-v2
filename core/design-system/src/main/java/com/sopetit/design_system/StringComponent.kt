@@ -121,3 +121,7 @@ const val AchieveRoutineStartedAt = "%s 마지막 달성"
 const val AchieveCountContent = "%d번 달성"
 const val AchieveEmptyAchieve = "달성한 %s 루틴이 없어요"
 const val AchieveStatEmptyTitle = "애착이의 성격이 만들어지기 전이에요\n목표를 달성하면 성격이 정해져요"
+
+// Custom Routine
+const val AddRoutineCustomTitle = "원하는 루틴이 없다면?"
+const val AddRoutineCustomSemiTitle = "나만의 루틴 만들기"

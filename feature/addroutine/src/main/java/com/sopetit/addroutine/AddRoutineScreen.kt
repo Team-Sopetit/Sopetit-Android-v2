@@ -4,12 +4,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,19 +20,26 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sopetit.design_system.AddRoutineCustomSemiTitle
+import com.sopetit.design_system.AddRoutineCustomTitle
 import com.sopetit.design_system.AddRoutineTitle
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
+import com.sopetit.design_system.Gray300
+import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
+import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.RoutineAllTitle
@@ -40,22 +49,29 @@ import com.sopetit.ui.common.type.ThemeIconType
 
 @Composable
 fun AddRoutineScreen(
-    goToDetailPage: (ThemeListItemModel) -> Unit
+    goToDetailPage: (ThemeListItemModel) -> Unit,
+    goToCustomRoutinePage: () -> Unit,
 ) {
 
     val viewModel: AddRoutineViewModel = hiltViewModel()
     val uiState: AddRoutinePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val interactionSource = remember { MutableInteractionSource() }
+
     AddRoutineContent(
         routineThemeList = uiState.routineThemeList,
-        onClickTheme = { goToDetailPage(it) }
+        onClickTheme = { goToDetailPage(it) },
+        interactionSource = interactionSource,
+        onClickCustomRoutine = { goToCustomRoutinePage() }
     )
 }
 
 @Composable
 fun AddRoutineContent(
     routineThemeList: List<ThemeListItemModel> = emptyList(),
-    onClickTheme: (ThemeListItemModel) -> Unit = {}
+    onClickTheme: (ThemeListItemModel) -> Unit = {},
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    onClickCustomRoutine: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -85,6 +101,11 @@ fun AddRoutineContent(
             )
         }
 
+        RoutineCustomBox(
+            interactionSource = interactionSource,
+            onClickAction = onClickCustomRoutine
+        )
+
         Text(
             text = RoutineAllTitle,
             color = Gray700,
@@ -101,9 +122,66 @@ fun AddRoutineContent(
 }
 
 @Composable
+fun RoutineCustomBox(
+    onClickAction: () -> Unit,
+    interactionSource: MutableInteractionSource,
+) {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 20.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .background(Gray650)
+            .clickable(
+                onClick = onClickAction,
+                interactionSource = interactionSource,
+                indication = null
+            )
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
+                .padding(start = 20.dp)
+        ) {
+            Text(
+                text = AddRoutineCustomTitle,
+                color = Gray300,
+                style = SoftieTypo.caption1,
+                modifier = Modifier
+                    .padding(bottom = 2.dp)
+            )
+
+            Text(
+                text = AddRoutineCustomSemiTitle,
+                color = Gray0,
+                style = SoftieTypo.head3
+            )
+        }
+        Image(
+            painter = painterResource(id = R.drawable.ic_routine_custom),
+            contentDescription = "write custom",
+            modifier = Modifier
+                .align(Alignment.Bottom)
+                .height(76.dp)
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_arrow_next),
+            contentDescription = "next",
+            colorFilter = ColorFilter.tint(Gray400),
+            modifier = Modifier
+                .align(Alignment.Top)
+                .padding(start = 4.dp, top = 16.dp, end = 12.dp)
+                .size(24.dp)
+        )
+    }
+}
+
+@Composable
 fun RoutineThemeList(
     routineThemeList: List<ThemeListItemModel>,
-    onClickTheme: (ThemeListItemModel) -> Unit
+    onClickTheme: (ThemeListItemModel) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -127,7 +205,7 @@ fun RoutineThemeListItem(
     themeId: Int,
     themeTitle: String,
     themeSubTitle: String,
-    onClickAction: () -> Unit
+    onClickAction: () -> Unit,
 ) {
     Row(
         modifier = Modifier
