@@ -195,7 +195,8 @@ fun NavGraphBuilder.achieveNavGraph(
 
         composable(NavRoutes.AchieveRoutineScreen.route) {
             AchieveRoutineScreen(
-                achieveThemeId = achieveThemeId
+                achieveThemeId = achieveThemeId,
+                goToAddRoutinePage = { navController.navigate(NavRoutes.AddRoutineScreen.route) }
             )
         }
     }

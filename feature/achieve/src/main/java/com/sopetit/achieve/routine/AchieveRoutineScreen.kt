@@ -31,10 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.AchieveCountContent
+import com.sopetit.design_system.AchieveEmptyAchieve
 import com.sopetit.design_system.AchieveRoutineStartedAt
 import com.sopetit.design_system.ChallengeRoutine
 import com.sopetit.design_system.CountContent
 import com.sopetit.design_system.DailyRoutine
+import com.sopetit.design_system.DailyTitle
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray300
@@ -42,17 +44,21 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
+import com.sopetit.design_system.ProgressEmptyAddTitle
+import com.sopetit.design_system.ProgressEmptyTitle
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.StatAchieveRoutineTitle
 import com.sopetit.domain.entity.response.achieve.AchieveRoutineItem
 import com.sopetit.domain.entity.response.achieve.AchieveRoutineModel
+import com.sopetit.ui.common.content.EmptyRoutineScreen
 import com.sopetit.ui.common.type.ThemeIconType
 import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 fun AchieveRoutineScreen(
     achieveThemeId: SharedFlow<Int>,
+    goToAddRoutinePage: () -> Unit,
 ) {
     val viewModel: AchieveRoutineViewModel = hiltViewModel()
     val uiState: AchieveRoutinePageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -65,7 +71,8 @@ fun AchieveRoutineScreen(
 
     AchieveRoutineContent(
         achieveRoutine = uiState.achieveRoutine,
-        achieveThemeId = uiState.achieveThemeId
+        achieveThemeId = uiState.achieveThemeId,
+        onClickAddRoutine = { goToAddRoutinePage() }
     )
 }
 
@@ -73,6 +80,7 @@ fun AchieveRoutineScreen(
 fun AchieveRoutineContent(
     achieveRoutine: AchieveRoutineModel = AchieveRoutineModel(),
     achieveThemeId: Int = 0,
+    onClickAddRoutine: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -105,27 +113,98 @@ fun AchieveRoutineContent(
 
         Divider(modifier = Modifier.border(2.dp, Gray200))
 
-        AchieveThemeBox(
-            achieveThemeId = achieveThemeId,
-            achieveRoutine = achieveRoutine,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+        if ((achieveRoutine.routineTotalCount + achieveRoutine.challengeTotalCount) == 0) {
+            AddRoutineEmptyBox(
+                onClickAddRoutine = onClickAddRoutine
+            )
+        } else {
+            AddRoutineBox(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                achieveRoutine = achieveRoutine,
+                achieveThemeId = achieveThemeId
+            )
+        }
+    }
+}
+
+@Composable
+fun AddRoutineBox(
+    achieveRoutine: AchieveRoutineModel = AchieveRoutineModel(),
+    achieveThemeId: Int = 0,
+    modifier: Modifier,
+) {
+    AchieveThemeBox(
+        achieveThemeId = achieveThemeId,
+        achieveRoutine = achieveRoutine,
+        modifier = modifier
+    )
+
+    AchieveChallengeRoutine(
+        achieveThemeId = achieveThemeId,
+        achieveRoutine = achieveRoutine,
+        challengeRoutine = achieveRoutine.challenges,
+        modifier = Modifier
+            .padding(horizontal = 20.dp)
+            .fillMaxWidth()
+    )
+
+    AchieveDailyRoutine(
+        achieveRoutine = achieveRoutine,
+        dailyRoutine = achieveRoutine.routines,
+        modifier = Modifier
+            .padding(horizontal = 20.dp)
+            .fillMaxWidth()
+    )
+}
+
+@Composable
+fun AddRoutineEmptyBox(
+    onClickAddRoutine: () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 148.dp)
+    ) {
+        EmptyRoutineScreen(
+            titleContent = ProgressEmptyTitle,
+            titleColor = Gray500,
+            titleStyle = SoftieTypo.head3,
+            btnBackgroundColor = Gray650,
+            btnCornerShape = 100,
+            btnBorderColor = Gray650,
+            btnTextContent = ProgressEmptyAddTitle,
+            btnTextColor = Gray0,
+            btnTextStyle = SoftieTypo.caption1,
+            btnVerticalPadding = 12,
+            btnHorizontalPadding = 16,
+            onClickAddRoutine = onClickAddRoutine
+        )
+    }
+}
+
+@Composable
+fun AddRoutineEachEmptyBox(
+    emptyTitle: String,
+    modifier: Modifier,
+) {
+    Column(
+        modifier = modifier
+            .padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_snackbar_caution),
+            contentDescription = "notice empty",
+            colorFilter = ColorFilter.tint(Gray300)
         )
 
-        AchieveChallengeRoutine(
-            achieveThemeId = achieveThemeId,
-            achieveRoutine = achieveRoutine,
-            challengeRoutine = achieveRoutine.challenges,
+        Text(
+            text = String.format(AchieveEmptyAchieve, emptyTitle),
+            style = SoftieTypo.body2,
+            color = Gray500,
             modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .fillMaxWidth()
-        )
-
-        AchieveDailyRoutine(
-            achieveRoutine = achieveRoutine,
-            dailyRoutine = achieveRoutine.routines,
-            modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .fillMaxWidth()
+                .padding(top = 8.dp)
         )
     }
 }
@@ -189,11 +268,18 @@ fun AchieveChallengeRoutine(
         )
     }
 
-    challengeRoutine.forEach { challenge ->
-        AchieveRoutineItemBox(
-            routine = challenge,
-            color = ThemeIconType.getThemeColor(achieveThemeId)
+    if (achieveRoutine.challengeTotalCount == 0) {
+        AddRoutineEachEmptyBox(
+            emptyTitle = ChallengeRoutine,
+            modifier = modifier
         )
+    } else {
+        challengeRoutine.forEach { challenge ->
+            AchieveRoutineItemBox(
+                routine = challenge,
+                color = ThemeIconType.getThemeColor(achieveThemeId)
+            )
+        }
     }
 }
 
@@ -224,11 +310,18 @@ fun AchieveDailyRoutine(
         )
     }
 
-    dailyRoutine.forEach { daily ->
-        AchieveRoutineItemBox(
-            routine = daily,
-            color = Gray0
+    if (achieveRoutine.routineTotalCount == 0) {
+        AddRoutineEachEmptyBox(
+            emptyTitle = DailyTitle,
+            modifier = modifier
         )
+    } else {
+        dailyRoutine.forEach { daily ->
+            AchieveRoutineItemBox(
+                routine = daily,
+                color = Gray0
+            )
+        }
     }
 
     Spacer(modifier = Modifier.padding(top = 40.dp))
