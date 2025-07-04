@@ -33,24 +33,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sopetit.design_system.AchieveStatEmptyTitle
 import com.sopetit.design_system.CountContent
+import com.sopetit.design_system.Dash
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.Percentage
+import com.sopetit.design_system.PercentageString
+import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.StatAchieveRoutineTitle
+import com.sopetit.design_system.StatGraphEmptyTitle
 import com.sopetit.design_system.StatGraphSemiTitle
 import com.sopetit.design_system.StatGraphTitle
 import com.sopetit.domain.entity.response.achieve.AchieveModel
 import com.sopetit.ui.common.content.PieChart
+import com.sopetit.ui.common.type.EmptyColorType
 import com.sopetit.ui.common.type.ThemeIconType
 import com.sopetit.ui.common.type.ThemeStatType
 
 @Composable
 fun StatScreen(
-    goToAchieveRoutinePage: (Int) -> Unit
+    goToAchieveRoutinePage: (Int) -> Unit,
 ) {
 
     val viewModel: StatViewModel = hiltViewModel()
@@ -69,7 +75,7 @@ fun StatScreen(
 fun StatContent(
     achieveModel: AchieveModel = AchieveModel(),
     onClickAchieveRoutine: (Int) -> Unit = {},
-    interactionSource: MutableInteractionSource = MutableInteractionSource()
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
         modifier = Modifier
@@ -77,15 +83,12 @@ fun StatContent(
             .background(Gray50)
             .verticalScroll(rememberScrollState())
     ) {
-        if (achieveModel.achievedCount != 0) {
-            StatDetailBox(
-                achieveModel = achieveModel,
-                onClickAchieveRoutine = onClickAchieveRoutine,
-                interactionSource = interactionSource
-            )
-        } else {
-            StatEmptyDetailBox()
-        }
+        StatDetailBox(
+            achieveModel = achieveModel,
+            onClickAchieveRoutine = onClickAchieveRoutine,
+            interactionSource = interactionSource,
+            isStatEmpty = (achieveModel.achievedCount == 0)
+        )
     }
 }
 
@@ -93,7 +96,8 @@ fun StatContent(
 fun StatDetailBox(
     achieveModel: AchieveModel,
     onClickAchieveRoutine: (Int) -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
+    isStatEmpty: Boolean = true,
 ) {
     Box(
         modifier = Modifier
@@ -101,7 +105,11 @@ fun StatDetailBox(
             .height(260.dp)
     ) {
         Image(
-            painter = painterResource(id = ThemeStatType.getStatBackground(achieveModel.themes[0].id)),
+            painter = painterResource(
+                id =
+                if (isStatEmpty) R.drawable.ic_stat_background_empty
+                else ThemeStatType.getStatBackground(achieveModel.themes[0].id)
+            ),
             contentDescription = "stat",
             modifier = Modifier
                 .fillMaxSize()
@@ -113,23 +121,31 @@ fun StatDetailBox(
                 .padding(top = 26.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = ThemeStatType.getStatTitle(achieveModel.themes[0].id),
-                style = SoftieTypo.head2,
-                color = Gray700
-            )
+            if (!isStatEmpty) {
+                Text(
+                    text = ThemeStatType.getStatTitle(achieveModel.themes[0].id),
+                    style = SoftieTypo.head2,
+                    color = Gray700
+                )
+            }
 
             Text(
-                text = ThemeStatType.getStatContent(achieveModel.themes[0].id),
+                text = if (isStatEmpty) AchieveStatEmptyTitle else ThemeStatType.getStatContent(
+                    achieveModel.themes[0].id
+                ),
                 style = SoftieTypo.body2,
                 color = Gray500
             )
         }
     }
 
-    StatGraphBox(
-        achieveModel = achieveModel
-    )
+    if (isStatEmpty) {
+        StatEmptyGraphBox()
+    } else {
+        StatGraphBox(
+            achieveModel = achieveModel
+        )
+    }
 
     StatRoutinesBox(
         achieveModel = achieveModel,
@@ -139,8 +155,78 @@ fun StatDetailBox(
 }
 
 @Composable
-fun StatEmptyDetailBox() {
-    //
+fun StatEmptyGraphBox() {
+    Column(
+        modifier = Modifier
+            .padding(top = 4.dp, start = 20.dp, end = 20.dp)
+            .fillMaxWidth()
+            .background(Color.White)
+            .clip(RoundedCornerShape(10.dp))
+    ) {
+        Text(
+            text = StatGraphTitle,
+            style = SoftieTypo.head3,
+            color = Color.Black,
+            modifier = Modifier
+                .padding(top = 12.dp, start = 11.dp)
+        )
+
+        Text(
+            text = StatGraphEmptyTitle,
+            style = SoftieTypo.body2,
+            color = Gray500,
+            modifier = Modifier
+                .padding(top = 4.dp, start = 11.dp)
+        )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_graph_empty),
+                contentDescription = "empty graph",
+                modifier = Modifier
+                    .padding(top = 24.dp, bottom = 27.dp, start = 28.dp)
+                    .size(143.dp)
+            )
+
+            Column(
+                modifier = Modifier
+                    .padding(start = 24.dp, end = 29.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                EmptyColorType.entries.forEach { color ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(12.dp)
+                                .clip(RoundedCornerShape(2.dp))
+                                .background(color.color)
+                        )
+
+                        Text(
+                            text = Dash,
+                            style = SoftieTypo.caption1,
+                            color = Gray500,
+                            modifier = Modifier
+                                .padding(start = 4.dp)
+                                .weight(1f)
+                        )
+
+                        Text(
+                            text = String.format(PercentageString, Dash),
+                            style = SoftieTypo.body2,
+                            color = Gray700
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -244,7 +330,7 @@ fun setPieChartPortions(
 fun StatRoutinesBox(
     achieveModel: AchieveModel,
     onClickAchieveRoutine: (Int) -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
 ) {
     Text(
         text = StatAchieveRoutineTitle,
@@ -271,7 +357,8 @@ fun StatRoutinesBox(
                     ) {
                         StatRoutineBoxItem(
                             theme = theme,
-                            routineNum = achieveModel.themes.firstOrNull { it.id == theme.themeId }?.achievedCount ?: 0,
+                            routineNum = achieveModel.themes.firstOrNull { it.id == theme.themeId }?.achievedCount
+                                ?: 0,
                             onClickAction = { onClickAchieveRoutine(theme.themeId) },
                             interactionSource = interactionSource
                         )
@@ -291,7 +378,7 @@ fun StatRoutineBoxItem(
     theme: ThemeIconType,
     routineNum: Int,
     onClickAction: () -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
 ) {
     Column(
         modifier = Modifier
