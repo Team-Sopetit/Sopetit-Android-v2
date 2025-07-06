@@ -21,6 +21,10 @@ const val CountContent = "%d번"
 const val Percentage = "%d%%"
 const val PercentageString = "%s%%"
 const val Dash = "-"
+const val FinishContent = "완료"
+const val RoutineTitle = "루틴"
+const val ThemeTitle = "테마"
+const val AlarmTitle = "알림"
 
 // DollType
 const val Brown = "BROWN"

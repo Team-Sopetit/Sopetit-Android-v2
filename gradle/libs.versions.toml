@@ -11,6 +11,7 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2025.01.01"
 composeCompiler = "1.5.14"
+foundation-layout = "1.5.4"
 hilt = "2.51.1"
 androidxHilt = "1.2.0"
 navigationCompose = "2.7.7"
@@ -115,6 +116,7 @@ threeten = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "
 # Compose
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout", version.ref = "foundation-layout" }
 compose-animation = { module = "androidx.compose.animation:animation" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-material = { module = "androidx.compose.material:material" }
@@ -143,6 +145,7 @@ kakao-auth = { module = "com.kakao.sdk:v2-user", version.ref = "kakao-auth" }
 compose = [
     "compose-ui",
     "compose-foundation",
+    "compose-foundation-layout",
     "compose-ui-tooling",
     "androidx-activity-compose",
     "compose-animation",
