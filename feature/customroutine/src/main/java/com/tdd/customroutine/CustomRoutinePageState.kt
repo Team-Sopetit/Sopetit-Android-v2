@@ -4,5 +4,6 @@ import com.sopetit.ui.base.PageState
 
 data class CustomRoutinePageState (
     val selectedThemeId: Int = 0,
-    val routineWriteInput: String = ""
+    val routineWriteInput: String = "",
+    val isAlarmActivated: Boolean = false
 ): PageState

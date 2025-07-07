@@ -26,4 +26,12 @@ class CustomRoutineViewModel @Inject constructor(
             )
         )
     }
+
+    fun updateAlarmActivated() {
+        updateState(
+            uiState.value.copy(
+                isAlarmActivated = !uiState.value.isAlarmActivated
+            )
+        )
+    }
 }

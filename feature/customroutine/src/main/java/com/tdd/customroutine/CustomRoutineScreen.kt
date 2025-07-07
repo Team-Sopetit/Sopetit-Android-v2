@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -40,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sopetit.design_system.AlarmTitle
 import com.sopetit.design_system.FinishContent
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
@@ -54,6 +57,7 @@ import com.sopetit.design_system.RoutineTitle
 import com.sopetit.design_system.RoutineWriteHint
 import com.sopetit.design_system.RoutineWriteLengthOver
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.design_system.Switch
 import com.sopetit.design_system.ThemeTitle
 import com.sopetit.ui.common.item.ThemeListItem
 import com.sopetit.ui.common.type.ThemeIconType
@@ -72,7 +76,9 @@ fun CustomRoutineScreen() {
         selectedThemeId = uiState.selectedThemeId,
         routineWriteInput = uiState.routineWriteInput,
         onRoutineValueChange = { viewModel.onRoutineValueChange(it) },
-        onClickFinishBtn = {}
+        onClickFinishBtn = {},
+        onActivateAlarm = { viewModel.updateAlarmActivated() },
+        isAlarmActivated = uiState.isAlarmActivated
     )
 }
 
@@ -83,7 +89,9 @@ fun CustomRoutineContent(
     selectedThemeId: Int = 0,
     routineWriteInput: String = "",
     onRoutineValueChange: (String) -> Unit = {},
-    onClickFinishBtn: () -> Unit = {}
+    onClickFinishBtn: () -> Unit = {},
+    isAlarmActivated: Boolean = false,
+    onActivateAlarm: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -122,7 +130,11 @@ fun CustomRoutineContent(
             selectedThemeId = selectedThemeId
         )
 
-        CustomRoutineAlarm()
+        CustomRoutineAlarm(
+            isAlarmActivated = isAlarmActivated,
+            onActivateAlarm = onActivateAlarm,
+            interactionSource = interactionSource
+        )
     }
 }
 
@@ -131,7 +143,7 @@ fun FinishBtn(
     modifier: Modifier,
     isFinish: Boolean = false,
     interactionSource: MutableInteractionSource,
-    onClickAction: () -> Unit
+    onClickAction: () -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -200,7 +212,11 @@ fun CustomRoutineWrite(
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(Gray0)
-            .border(1.dp, if (isLengthOver) Red200 else if (isFocused) Gray650 else Gray0, RoundedCornerShape(8.dp))
+            .border(
+                1.dp,
+                if (isLengthOver) Red200 else if (isFocused) Gray650 else Gray0,
+                RoundedCornerShape(8.dp)
+            )
     ) {
         BasicTextField(
             value = textInput,
@@ -293,8 +309,75 @@ fun CustomRoutineTheme(
 }
 
 @Composable
-fun CustomRoutineAlarm() {
-    //
+fun CustomRoutineAlarm(
+    isAlarmActivated: Boolean,
+    onActivateAlarm: () -> Unit,
+    interactionSource: MutableInteractionSource,
+) {
+    Column(
+        modifier = Modifier
+            .padding(top = 19.dp, start = 20.dp, end = 20.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(Gray0)
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = AlarmTitle,
+                color = Gray700,
+                style = SoftieTypo.body2,
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(vertical = 17.dp)
+            )
+
+            CustomRoutineSwitch(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(vertical = 12.dp),
+                isAlarmActivated = isAlarmActivated,
+                onActivateAlarm = onActivateAlarm,
+                interactionSource = interactionSource
+            )
+        }
+
+        //
+    }
+}
+
+@Composable
+fun CustomRoutineSwitch(
+    modifier: Modifier,
+    isAlarmActivated: Boolean = false,
+    onActivateAlarm: () -> Unit,
+    interactionSource: MutableInteractionSource,
+) {
+    Box(
+        modifier = modifier
+            .width(51.dp)
+            .clip(RoundedCornerShape(100.dp))
+            .background(if (isAlarmActivated) Gray650 else Switch)
+            .clickable(
+                onClick = onActivateAlarm,
+                indication = null,
+                interactionSource = interactionSource
+            )
+    ) {
+        Box(
+            modifier = Modifier
+                .align(if (isAlarmActivated) Alignment.CenterEnd else Alignment.CenterStart)
+                .padding(vertical = 2.dp)
+                .padding(start = if (isAlarmActivated) 0.dp else 2.dp)
+                .padding(end = if (isAlarmActivated) 2.dp else 0.dp)
+                .size(27.dp)
+                .clip(CircleShape)
+                .background(Gray0)
+        )
+    }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
