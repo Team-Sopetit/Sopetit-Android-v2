@@ -3,6 +3,8 @@ package com.tdd.customroutine
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,8 +49,10 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
+import com.sopetit.design_system.Red200
 import com.sopetit.design_system.RoutineTitle
 import com.sopetit.design_system.RoutineWriteHint
+import com.sopetit.design_system.RoutineWriteLengthOver
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.ThemeTitle
 import com.sopetit.ui.common.item.ThemeListItem
@@ -60,20 +64,26 @@ fun CustomRoutineScreen() {
     val viewModel: CustomRoutineViewModel = hiltViewModel()
     val uiState: CustomRoutinePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val interactionSource = remember { MutableInteractionSource() }
+
     CustomRoutineContent(
+        interactionSource = interactionSource,
         onSelectThemeId = { viewModel.setSelectedTheme(it) },
         selectedThemeId = uiState.selectedThemeId,
         routineWriteInput = uiState.routineWriteInput,
-        onRoutineValueChange = { viewModel.onRoutineValueChange(it) }
+        onRoutineValueChange = { viewModel.onRoutineValueChange(it) },
+        onClickFinishBtn = {}
     )
 }
 
 @Composable
 fun CustomRoutineContent(
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
     onSelectThemeId: (Int) -> Unit = {},
     selectedThemeId: Int = 0,
     routineWriteInput: String = "",
     onRoutineValueChange: (String) -> Unit = {},
+    onClickFinishBtn: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -95,7 +105,10 @@ fun CustomRoutineContent(
             FinishBtn(
                 modifier = Modifier
                     .padding(end = 20.dp)
-                    .align(Alignment.CenterEnd)
+                    .align(Alignment.CenterEnd),
+                interactionSource = interactionSource,
+                onClickAction = onClickFinishBtn,
+                isFinish = routineWriteInput.isNotEmpty() && selectedThemeId != 0
             )
         }
 
@@ -116,18 +129,26 @@ fun CustomRoutineContent(
 @Composable
 fun FinishBtn(
     modifier: Modifier,
+    isFinish: Boolean = false,
+    interactionSource: MutableInteractionSource,
+    onClickAction: () -> Unit
 ) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(99.dp))
-            .background(Gray200)
+            .background(if (isFinish) Gray650 else Gray200)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClickAction
+            )
     ) {
         Text(
             text = FinishContent,
             style = SoftieTypo.body2,
-            color = Gray400,
+            color = if (isFinish) Gray0 else Gray400,
             modifier = Modifier
-                .padding(vertical = 4.dp, horizontal = 12.dp)
+                .padding(vertical = 6.dp, horizontal = 12.dp)
         )
     }
 }
@@ -141,6 +162,7 @@ fun CustomRoutineWrite(
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val imeVisible = WindowInsets.isImeVisible
+    val isLengthOver by remember { mutableStateOf(textInput.length > 50) }
 
     LaunchedEffect(imeVisible) {
         if (!imeVisible) {
@@ -148,13 +170,29 @@ fun CustomRoutineWrite(
         }
     }
 
-    Text(
-        text = RoutineTitle,
-        style = SoftieTypo.body2,
-        color = Gray700,
+    Box(
         modifier = Modifier
-            .padding(top = 4.dp, start = 20.dp, bottom = 6.dp)
-    )
+            .fillMaxWidth()
+            .padding(top = 4.dp, bottom = 6.dp, start = 20.dp, end = 20.dp)
+    ) {
+        Text(
+            text = RoutineTitle,
+            style = SoftieTypo.body2,
+            color = Gray700,
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+        )
+
+        if (isLengthOver) {
+            Text(
+                text = RoutineWriteLengthOver,
+                style = SoftieTypo.caption1,
+                color = Red200,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+            )
+        }
+    }
 
     Row(
         modifier = Modifier
@@ -162,7 +200,7 @@ fun CustomRoutineWrite(
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(Gray0)
-            .border(1.dp, if (isFocused) Gray650 else Gray0, RoundedCornerShape(8.dp))
+            .border(1.dp, if (isLengthOver) Red200 else if (isFocused) Gray650 else Gray0, RoundedCornerShape(8.dp))
     ) {
         BasicTextField(
             value = textInput,
