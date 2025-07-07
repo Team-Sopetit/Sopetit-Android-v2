@@ -129,3 +129,4 @@ const val AchieveStatEmptyTitle = "애착이의 성격이 만들어지기 전이
 // Custom Routine
 const val AddRoutineCustomTitle = "원하는 루틴이 없다면?"
 const val AddRoutineCustomSemiTitle = "나만의 루틴 만들기"
+const val RoutineWriteHint = "루틴을 입력해주세요"

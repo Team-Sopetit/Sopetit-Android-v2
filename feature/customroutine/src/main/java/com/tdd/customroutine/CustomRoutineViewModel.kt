@@ -18,4 +18,12 @@ class CustomRoutineViewModel @Inject constructor(
             )
         )
     }
+
+    fun onRoutineValueChange(newValue: String) {
+        updateState(
+            uiState.value.copy(
+                routineWriteInput = newValue
+            )
+        )
+    }
 }

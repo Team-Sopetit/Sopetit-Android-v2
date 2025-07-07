@@ -175,8 +175,7 @@ fun MemoWriteBox(
             decorationBox = { innerTextField ->
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                        .fillMaxWidth()
                 ) {
                     if (textInput.isEmpty() && !isFocused) {
                         Text(
