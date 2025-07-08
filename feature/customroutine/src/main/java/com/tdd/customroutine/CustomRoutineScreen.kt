@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,10 +15,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -26,6 +31,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +40,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -61,6 +69,7 @@ import com.sopetit.design_system.Switch
 import com.sopetit.design_system.ThemeTitle
 import com.sopetit.ui.common.item.ThemeListItem
 import com.sopetit.ui.common.type.ThemeIconType
+import com.sopetit.ui.util.fadingEdge
 
 @Composable
 fun CustomRoutineScreen() {
@@ -345,7 +354,14 @@ fun CustomRoutineAlarm(
             )
         }
 
-        //
+        if (isAlarmActivated) {
+            CustomRoutineAlarmTime(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 10.dp, bottom = 13.dp, start = 69.dp, end = 68.dp)
+                    .fillMaxSize()
+            )
+        }
     }
 }
 
@@ -377,6 +393,96 @@ fun CustomRoutineSwitch(
                 .clip(CircleShape)
                 .background(Gray0)
         )
+    }
+}
+
+@Composable
+fun CustomRoutineAlarmTime(
+    modifier: Modifier,
+) {
+    val hourState = rememberLazyListState(initialFirstVisibleItemIndex = 7)
+    val minuteState = rememberLazyListState(initialFirstVisibleItemIndex = 3)
+    val timeState = rememberLazyListState(initialFirstVisibleItemIndex = 2)
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        AlarmTimeItem(
+            modifier = Modifier.weight(1f),
+            timeList = (1..12).map { it.toString() },
+            listState = hourState
+        )
+
+        AlarmTimeItem(
+            modifier = Modifier.weight(1f),
+            timeList = listOf("00", "30"),
+            listState = minuteState
+        )
+
+        AlarmTimeItem(
+            modifier = Modifier.weight(1f),
+            timeList = listOf("오전", "오후"),
+            listState = timeState
+        )
+    }
+}
+
+@Composable
+fun AlarmTimeItem(
+    modifier: Modifier,
+    timeList: List<String>,
+    listState: LazyListState,
+) {
+    val extendedItems = listOf("0", "0") + timeList + listOf("0", "0")
+    val visibleItemsCount = 5
+    val itemHeight = 30.dp
+    val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+    val fadingEdgeGradient = remember {
+        Brush.verticalGradient(
+            0f to Color.Transparent,
+            0.5f to Color.Black,
+            1f to Color.Transparent
+        )
+    }
+
+    LazyColumn(
+        state = listState,
+        modifier = modifier
+            .height(itemHeight * visibleItemsCount)
+            .fadingEdge(fadingEdgeGradient),
+        flingBehavior = flingBehavior
+    ) {
+        items(extendedItems.size) { index ->
+            val item = extendedItems[index]
+            val firstVisibleItemIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
+            val fontStyle = when (index) {
+                firstVisibleItemIndex + 2 -> SoftieTypo.head1
+                firstVisibleItemIndex + 1, firstVisibleItemIndex + 3 -> SoftieTypo.head3
+                firstVisibleItemIndex, firstVisibleItemIndex + 4 -> SoftieTypo.body1
+                else -> SoftieTypo.body2
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(itemHeight),
+                contentAlignment = Alignment.Center
+            ) {
+                if (item != "0") {
+                    Text(
+                        text = item,
+                        style = fontStyle,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 5.dp)
+                            .height(itemHeight),
+                        textAlign = TextAlign.Center,
+                        color = Color.Black,
+                    )
+                }
+            }
+        }
     }
 }
 
