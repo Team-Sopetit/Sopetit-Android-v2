@@ -67,9 +67,15 @@ import com.sopetit.design_system.RoutineWriteLengthOver
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.Switch
 import com.sopetit.design_system.ThemeTitle
+import com.sopetit.design_system.ZeroString
 import com.sopetit.ui.common.item.ThemeListItem
 import com.sopetit.ui.common.type.ThemeIconType
+import com.sopetit.ui.common.type.TimeDayType
+import com.sopetit.ui.common.type.TimeMinuteType
+import com.sopetit.ui.util.convertTo24HourFormat
 import com.sopetit.ui.util.fadingEdge
+import timber.log.Timber
+import java.sql.Time
 
 @Composable
 fun CustomRoutineScreen() {
@@ -78,6 +84,9 @@ fun CustomRoutineScreen() {
     val uiState: CustomRoutinePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val interactionSource = remember { MutableInteractionSource() }
+    val hourState = rememberLazyListState(initialFirstVisibleItemIndex = 7)
+    val minuteState = rememberLazyListState(initialFirstVisibleItemIndex = 3)
+    val timeState = rememberLazyListState(initialFirstVisibleItemIndex = 2)
 
     CustomRoutineContent(
         interactionSource = interactionSource,
@@ -85,9 +94,16 @@ fun CustomRoutineScreen() {
         selectedThemeId = uiState.selectedThemeId,
         routineWriteInput = uiState.routineWriteInput,
         onRoutineValueChange = { viewModel.onRoutineValueChange(it) },
-        onClickFinishBtn = {},
+        onClickFinishBtn = {
+            Timber.d(
+                convertTo24HourFormat(hourState.firstVisibleItemIndex + 1, TimeMinuteType.getMinuteData(minuteState.firstVisibleItemIndex), TimeDayType.getDayData(timeState.firstVisibleItemIndex))
+            )
+        },
         onActivateAlarm = { viewModel.updateAlarmActivated() },
-        isAlarmActivated = uiState.isAlarmActivated
+        isAlarmActivated = uiState.isAlarmActivated,
+        hourState = hourState,
+        minuteState = minuteState,
+        timeState = timeState
     )
 }
 
@@ -101,6 +117,9 @@ fun CustomRoutineContent(
     onClickFinishBtn: () -> Unit = {},
     isAlarmActivated: Boolean = false,
     onActivateAlarm: () -> Unit = {},
+    hourState: LazyListState = LazyListState(),
+    minuteState: LazyListState = LazyListState(),
+    timeState: LazyListState = LazyListState(),
 ) {
     Column(
         modifier = Modifier
@@ -142,7 +161,10 @@ fun CustomRoutineContent(
         CustomRoutineAlarm(
             isAlarmActivated = isAlarmActivated,
             onActivateAlarm = onActivateAlarm,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
+            hourState = hourState,
+            minuteState = minuteState,
+            timeState = timeState
         )
     }
 }
@@ -322,6 +344,9 @@ fun CustomRoutineAlarm(
     isAlarmActivated: Boolean,
     onActivateAlarm: () -> Unit,
     interactionSource: MutableInteractionSource,
+    hourState: LazyListState,
+    minuteState: LazyListState,
+    timeState: LazyListState,
 ) {
     Column(
         modifier = Modifier
@@ -359,7 +384,10 @@ fun CustomRoutineAlarm(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 10.dp, bottom = 13.dp, start = 69.dp, end = 68.dp)
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                hourState = hourState,
+                minuteState = minuteState,
+                timeState = timeState
             )
         }
     }
@@ -399,11 +427,10 @@ fun CustomRoutineSwitch(
 @Composable
 fun CustomRoutineAlarmTime(
     modifier: Modifier,
+    hourState: LazyListState,
+    minuteState: LazyListState,
+    timeState: LazyListState,
 ) {
-    val hourState = rememberLazyListState(initialFirstVisibleItemIndex = 7)
-    val minuteState = rememberLazyListState(initialFirstVisibleItemIndex = 3)
-    val timeState = rememberLazyListState(initialFirstVisibleItemIndex = 2)
-
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -416,13 +443,13 @@ fun CustomRoutineAlarmTime(
 
         AlarmTimeItem(
             modifier = Modifier.weight(1f),
-            timeList = listOf("00", "30"),
+            timeList = TimeMinuteType.entries.map { it.data },
             listState = minuteState
         )
 
         AlarmTimeItem(
             modifier = Modifier.weight(1f),
-            timeList = listOf("오전", "오후"),
+            timeList = TimeDayType.entries.map { it.data },
             listState = timeState
         )
     }
@@ -434,7 +461,7 @@ fun AlarmTimeItem(
     timeList: List<String>,
     listState: LazyListState,
 ) {
-    val extendedItems = listOf("0", "0") + timeList + listOf("0", "0")
+    val extendedItems = listOf(ZeroString, ZeroString) + timeList + listOf(ZeroString, ZeroString)
     val visibleItemsCount = 5
     val itemHeight = 30.dp
     val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
@@ -469,7 +496,7 @@ fun AlarmTimeItem(
                     .height(itemHeight),
                 contentAlignment = Alignment.Center
             ) {
-                if (item != "0") {
+                if (item != ZeroString) {
                     Text(
                         text = item,
                         style = fontStyle,

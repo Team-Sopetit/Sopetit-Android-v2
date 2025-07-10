@@ -25,6 +25,7 @@ const val FinishContent = "완료"
 const val RoutineTitle = "루틴"
 const val ThemeTitle = "테마"
 const val AlarmTitle = "알림"
+const val ZeroString = "0"
 
 // DollType
 const val Brown = "BROWN"
@@ -41,6 +42,12 @@ const val Fri = "금"
 const val Sat = "토"
 const val Sun = "일"
 const val DateContent = "%d일"
+
+// Time
+const val TimeMinuteZero = "00"
+const val TimeMinuteHalf = "30"
+const val TimeAM = "오전"
+const val TimePM = "오후"
 
 // Splash
 const val SplashSemiTitle = "하루를 바꾸는 가장 사소한 루틴"
