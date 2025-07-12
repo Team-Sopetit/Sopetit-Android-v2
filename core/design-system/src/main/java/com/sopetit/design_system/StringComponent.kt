@@ -50,6 +50,7 @@ const val TimeAM = "오전"
 const val TimePM = "오후"
 const val Time24Format = "%02d:%02d:00"
 const val TimeAmPmFormat = "%s %d:%02d"
+const val TimeDefault = "00:00:00"
 
 // Splash
 const val SplashSemiTitle = "하루를 바꾸는 가장 사소한 루틴"

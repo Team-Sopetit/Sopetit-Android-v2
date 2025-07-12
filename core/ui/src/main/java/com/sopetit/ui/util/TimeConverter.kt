@@ -5,19 +5,23 @@ import com.sopetit.design_system.Empty
 import com.sopetit.design_system.Time24Format
 import com.sopetit.design_system.TimeAM
 import com.sopetit.design_system.TimeAmPmFormat
+import com.sopetit.design_system.TimeDefault
 import com.sopetit.design_system.TimePM
 
 @SuppressLint("DefaultLocale")
 fun convertTo24HourFormat(hour: Int, minuteStr: String, amPm: String): String {
-    val minute = minuteStr.toInt()
+    if (minuteStr.isEmpty()) return TimeDefault
+    else {
+        val minute = minuteStr.toInt()
 
-    val hour24 = when (amPm) {
-        TimeAM -> if (hour == 12) 0 else hour
-        TimePM -> if (hour == 12) 12 else hour + 12
-        else -> Empty
+        val hour24 = when (amPm) {
+            TimeAM -> if (hour == 12) 0 else hour
+            TimePM -> if (hour == 12) 12 else hour + 12
+            else -> Empty
+        }
+
+        return String.format(Time24Format, hour24, minute)
     }
-
-    return String.format(Time24Format, hour24, minute)
 }
 
 @SuppressLint("DefaultLocale")
