@@ -14,6 +14,7 @@ import com.sopetit.domain.usecase.memberroutine.GetMemberDailyRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -66,9 +67,11 @@ class ProgressViewModel @Inject constructor(
     }
 
     fun deleteRoutine(routineType: RoutineType, routineId: Int) {
-        if (routineType == RoutineType.Daily)
-            deleteDailyRoutine(routineId)
-        else deleteChallengeRoutine()
+        when (routineType) {
+            RoutineType.Daily -> deleteDailyRoutine(routineId)
+            RoutineType.Challenge -> deleteChallengeRoutine()
+            RoutineType.Custom -> deleteCustomRoutine()
+        }
     }
 
     private fun deleteDailyRoutine(routineId: Int) {
@@ -87,6 +90,16 @@ class ProgressViewModel @Inject constructor(
                 resultResponse(it, { initGetMemberChallenge() })
             }
         }
+    }
+
+    private fun deleteCustomRoutine() {
+        // TODO 커스텀 루틴 삭제
+        Timber.d("[테스트] -> 커스텀 루틴 삭제")
+    }
+
+    fun modifyCustomRoutine() {
+        // TODO 커스텀 루틴 수정
+        Timber.d("[테스트] -> 커스텀 루틴 수정")
     }
 
     fun achieveChallengeRoutine() {

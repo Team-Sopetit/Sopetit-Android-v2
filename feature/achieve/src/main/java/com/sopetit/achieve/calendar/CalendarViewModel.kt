@@ -78,6 +78,8 @@ class CalendarViewModel @Inject constructor(
             RoutineType.Challenge -> {
                 deleteChallengeRoutine(routine.routineId)
             }
+
+            RoutineType.Custom -> {}
         }
     }
 

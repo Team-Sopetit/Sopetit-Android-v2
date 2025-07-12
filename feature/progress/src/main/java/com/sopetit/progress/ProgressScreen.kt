@@ -414,7 +414,7 @@ fun ProgressDailyRoutine(
                                 onClickRoutineDetail(
                                     RoutineDetailModel(
                                         routineId = routineItem.routineId,
-                                        routineType = RoutineType.Daily,
+                                        routineType = if (routineItem.originRoutineId == -1) RoutineType.Custom else RoutineType.Daily,
                                         content = routineItem.content,
                                         alarmTime = routineItem.alarmTime
                                     )
