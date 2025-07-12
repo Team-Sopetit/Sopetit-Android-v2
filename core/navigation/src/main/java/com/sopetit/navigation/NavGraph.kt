@@ -205,8 +205,10 @@ fun NavGraphBuilder.achieveNavGraph(
 
 fun NavGraphBuilder.progressNavGraph(
     navController: NavHostController,
-    showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    showChallengeRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    showDailyRoutineBottomSheet: (RoutineDetailModel) -> Unit,
     deleteRoutineId: SharedFlow<RoutineDetailModel>,
+    modRoutine: SharedFlow<RoutineDetailModel>,
     showChallengeAchieveSom: (Boolean) -> Unit,
     showChallengeDailySom: (Boolean) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
@@ -218,8 +220,10 @@ fun NavGraphBuilder.progressNavGraph(
     ) {
         composable(NavRoutes.ProgressScreen.route) {
             ProgressScreen(
-                showRoutineBottomSheet = showRoutineBottomSheet,
+                showChallengeRoutineBottomSheet = showChallengeRoutineBottomSheet,
+                showDailyRoutineBottomSheet = showDailyRoutineBottomSheet,
                 deleteRoutineId = deleteRoutineId,
+                modRoutine = modRoutine,
                 showChallengeAchieveSom = showChallengeAchieveSom,
                 showChallengeDailySom = showChallengeDailySom,
                 showSnackBar = showSnackBar,

@@ -11,6 +11,7 @@ import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.ui.base.BaseViewModel
 import com.sopetit.ui.common.type.BottomSheetType
+import com.sopetit.ui.common.type.TwoBtnBottomSheetType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ class MainViewModel @Inject constructor(
     val memberModel = MutableSharedFlow<CreateMemberModel>(replay = 1)
     val isTutorialValid = MutableSharedFlow<Boolean>(replay = 1)
     val deleteRoutineId = MutableSharedFlow<RoutineDetailModel>()
+    val modRoutine = MutableSharedFlow<RoutineDetailModel>()
     val selectedTheme = MutableSharedFlow<ThemeListItemModel>(replay = 1)
     val writtenMemo = MutableSharedFlow<String>(replay = 1)
     val memoActionModel = MutableSharedFlow<MemoActionModel>(replay = 1)
@@ -70,11 +72,12 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    fun setRoutineDetail(routine: RoutineDetailModel) {
+    fun setRoutineDetail(routine: RoutineDetailModel, type: BottomSheetType) {
         updateState(
             uiState.value.copy(
                 routineDetail = routine,
-                bottomSheetType = BottomSheetType.ROUTINE
+                bottomSheetType = type,
+                twoBtnType = TwoBtnBottomSheetType.DailyRoutine
             )
         )
     }
@@ -140,7 +143,8 @@ class MainViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 memoActionModel = memoModel,
-                bottomSheetType = BottomSheetType.MEMODETAIL
+                bottomSheetType = BottomSheetType.BOTTOMTWOBTN,
+                twoBtnType = TwoBtnBottomSheetType.MemoWrite
             )
         )
     }
