@@ -3,6 +3,7 @@ package com.sopetit.softie.di
 import com.sopetit.data.service.AchievementService
 import com.sopetit.data.service.AuthService
 import com.sopetit.data.service.CalendarService
+import com.sopetit.data.service.CustomRoutineService
 import com.sopetit.data.service.MemberChallengeService
 import com.sopetit.data.service.MemberRoutineService
 import com.sopetit.data.service.MemberService
@@ -62,5 +63,10 @@ object ServiceModule {
     @Provides
     fun provideAchieveService(@SoftieRetrofit retrofit: Retrofit): AchievementService {
         return retrofit.create(AchievementService::class.java)
+    }
+
+    @Provides
+    fun provideCustomRoutineService(@SoftieRetrofit retrofit: Retrofit): CustomRoutineService {
+        return retrofit.create(CustomRoutineService::class.java)
     }
 }

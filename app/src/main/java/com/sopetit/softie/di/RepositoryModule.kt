@@ -3,6 +3,7 @@ package com.sopetit.softie.di
 import com.sopetit.data.repositoryImpl.AchieveRepositoryImpl
 import com.sopetit.data.repositoryImpl.AuthRepositoryImpl
 import com.sopetit.data.repositoryImpl.CalendarRepositoryImpl
+import com.sopetit.data.repositoryImpl.CustomRoutineRepositoryImpl
 import com.sopetit.data.repositoryImpl.MemberChallengeRepositoryImpl
 import com.sopetit.data.repositoryImpl.MemberRepositoryImpl
 import com.sopetit.data.repositoryImpl.MemberRoutineRepositoryImpl
@@ -12,6 +13,7 @@ import com.sopetit.data.repositoryImpl.ThemeRepositoryImpl
 import com.sopetit.domain.repository.AchieveRepository
 import com.sopetit.domain.repository.AuthRepository
 import com.sopetit.domain.repository.CalendarRepository
+import com.sopetit.domain.repository.CustomRoutineRepository
 import com.sopetit.domain.repository.MemberChallengeRepository
 import com.sopetit.domain.repository.MemberRepository
 import com.sopetit.domain.repository.MemberRoutineRepository
@@ -63,4 +65,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsAchieveRepository(repositoryImpl: AchieveRepositoryImpl): AchieveRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsCustomRoutineRepository(repositoryImpl: CustomRoutineRepositoryImpl): CustomRoutineRepository
 }

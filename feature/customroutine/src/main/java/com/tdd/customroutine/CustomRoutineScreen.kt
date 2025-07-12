@@ -74,8 +74,6 @@ import com.sopetit.ui.common.type.TimeDayType
 import com.sopetit.ui.common.type.TimeMinuteType
 import com.sopetit.ui.util.convertTo24HourFormat
 import com.sopetit.ui.util.fadingEdge
-import timber.log.Timber
-import java.sql.Time
 
 @Composable
 fun CustomRoutineScreen() {
@@ -95,8 +93,12 @@ fun CustomRoutineScreen() {
         routineWriteInput = uiState.routineWriteInput,
         onRoutineValueChange = { viewModel.onRoutineValueChange(it) },
         onClickFinishBtn = {
-            Timber.d(
-                convertTo24HourFormat(hourState.firstVisibleItemIndex + 1, TimeMinuteType.getMinuteData(minuteState.firstVisibleItemIndex), TimeDayType.getDayData(timeState.firstVisibleItemIndex))
+            viewModel.createCustomRoutine(
+                convertTo24HourFormat(
+                    hourState.firstVisibleItemIndex + 1,
+                    TimeMinuteType.getMinuteData(minuteState.firstVisibleItemIndex),
+                    TimeDayType.getDayData(timeState.firstVisibleItemIndex)
+                )
             )
         },
         onActivateAlarm = { viewModel.updateAlarmActivated() },

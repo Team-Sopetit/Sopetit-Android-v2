@@ -48,4 +48,8 @@ object EndPoints {
         const val ACHIEVE = "/api/v3/achievement/themes"
         const val ACHIEVEROUTINE = "$ACHIEVE/{themeId}/routines"
     }
+
+    object CustomRoutine {
+        const val CREATE = "/api/v1/routines/custom"
+    }
 }
