@@ -54,6 +54,6 @@ class CustomRoutineViewModel @Inject constructor(
     }
 
     private fun onSuccessCreateCustomRoutine(data: CreateCustomRoutineModel) {
-        Timber.d("[테스트] -> $data")
+        emitEventFlow(CustomRoutineEvent.GoToProgressPage)
     }
 }

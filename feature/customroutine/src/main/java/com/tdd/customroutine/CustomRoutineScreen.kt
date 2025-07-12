@@ -76,7 +76,9 @@ import com.sopetit.ui.util.convertTo24HourFormat
 import com.sopetit.ui.util.fadingEdge
 
 @Composable
-fun CustomRoutineScreen() {
+fun CustomRoutineScreen(
+    goToProgressPage: () -> Unit,
+) {
 
     val viewModel: CustomRoutineViewModel = hiltViewModel()
     val uiState: CustomRoutinePageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -85,6 +87,16 @@ fun CustomRoutineScreen() {
     val hourState = rememberLazyListState(initialFirstVisibleItemIndex = 7)
     val minuteState = rememberLazyListState(initialFirstVisibleItemIndex = 3)
     val timeState = rememberLazyListState(initialFirstVisibleItemIndex = 2)
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is CustomRoutineEvent.GoToProgressPage -> {
+                    goToProgressPage()
+                }
+            }
+        }
+    }
 
     CustomRoutineContent(
         interactionSource = interactionSource,

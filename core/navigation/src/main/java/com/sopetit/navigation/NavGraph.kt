@@ -276,7 +276,9 @@ fun NavGraphBuilder.customRoutineNavGraph(
         route = NavRoutes.CustomRoutineGraph.route
     ) {
         composable(NavRoutes.CustomRoutineScreen.route) {
-            CustomRoutineScreen()
+            CustomRoutineScreen(
+                goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) }
+            )
         }
     }
 }
