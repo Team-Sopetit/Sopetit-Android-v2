@@ -86,7 +86,7 @@ fun ProgressScreen(
     showChallengeDailySom: (Boolean) -> Unit = {},
     showSnackBar: (String, Int, Int) -> Unit,
     showTooltip: (IntOffset, String, String) -> Unit,
-    goToAddRoutinePage: () -> Unit
+    goToAddRoutinePage: () -> Unit,
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -159,7 +159,7 @@ fun ProgressContent(
     onClickDailyAchieve: (Int) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     onClickTooltipBtn: (IntOffset, String, String) -> Unit = { offset: IntOffset, title: String, content: String -> },
-    onClickAddRoutine: () -> Unit = {}
+    onClickAddRoutine: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -226,7 +226,7 @@ fun ProgressRoutineContent(
     onClickDailyAchieve: (Int) -> Unit,
     onClickTooltipBtn: (IntOffset, String, String) -> Unit,
     interactionSource: MutableInteractionSource,
-    onClickAddRoutine: () -> Unit
+    onClickAddRoutine: () -> Unit,
 ) {
     if (memberChallenge.memberChallengeId == -1 && memberDailyRoutineList.isEmpty()) {
         Box(
@@ -362,7 +362,7 @@ fun ProgressDailyRoutine(
 
         LazyColumn(
             modifier = Modifier
-                .padding(top = 12.dp)
+                .padding(top = 12.dp, bottom = 50.dp)
                 .padding(horizontal = 20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -402,7 +402,8 @@ fun ProgressDailyRoutine(
                                     )
                                 )
                             },
-                            onClickDailyAchieve = { onClickDailyAchieve(routineItem.routineId) }
+                            onClickDailyAchieve = { onClickDailyAchieve(routineItem.routineId) },
+                            alarmTime = routineItem.alarmTime
                         )
                     }
                 }
@@ -413,7 +414,7 @@ fun ProgressDailyRoutine(
 
 @Composable
 fun ProgressChallengeEmptyRoutine(
-    onClickAddRoutine: () -> Unit
+    onClickAddRoutine: () -> Unit,
 ) {
     Column(
         modifier = Modifier

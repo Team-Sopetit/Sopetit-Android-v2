@@ -24,9 +24,11 @@ object GetMemberDailyRoutineMapper: BaseMapper() {
                                 routines = routineList.routines.map { listItem ->
                                     MemberDailyRoutineListItemModel(
                                         routineId = listItem.routineId,
+                                        originRoutineId = listItem.originRoutineId,
                                         content = listItem.content,
                                         achieveCount = listItem.achieveCount,
-                                        isAchieve = listItem.isAchieve
+                                        isAchieve = listItem.isAchieve,
+                                        alarmTime = listItem.alarmTime
                                     )
                                 }
                             )

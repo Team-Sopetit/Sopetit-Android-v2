@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,16 +25,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
+import com.sopetit.design_system.Gray500
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.ui.util.convertToAmPmFormat
 
 @Composable
 fun MemberDailyRoutineListItem(
     isRoutineAchieve: Boolean,
     routineContent: String,
     onClickDetailAction: () -> Unit,
-    onClickDailyAchieve:() -> Unit
+    onClickDailyAchieve:() -> Unit,
+    alarmTime: String = ""
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -41,7 +46,8 @@ fun MemberDailyRoutineListItem(
         routineContent = routineContent,
         onClickRoutineDetail = { onClickDetailAction() },
         interactionSource = interactionSource,
-        onClickDailyAchieve = { onClickDailyAchieve() }
+        onClickDailyAchieve = { onClickDailyAchieve() },
+        alarmTime = alarmTime
     )
 }
 
@@ -51,7 +57,8 @@ fun MemberDailyRoutineListItemContent(
     routineContent: String = "",
     onClickRoutineDetail: () -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
-    onClickDailyAchieve:() -> Unit = {}
+    onClickDailyAchieve:() -> Unit = {},
+    alarmTime: String = ""
 ) {
     Box(
         modifier = Modifier
@@ -82,14 +89,42 @@ fun MemberDailyRoutineListItemContent(
                     )
             )
 
-            Text(
-                text = routineContent,
-                color = Gray700,
-                style = SoftieTypo.body2,
+            Column(
                 modifier = Modifier
-                    .padding(start = 2.dp)
-                    .weight(1f)
-            )
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = routineContent,
+                    color = Gray700,
+                    style = SoftieTypo.body2,
+                    modifier = Modifier
+                        .padding(start = 2.dp)
+                )
+
+                if (alarmTime.isNotEmpty()) {
+                    Row(
+                        modifier = Modifier
+                            .padding(start = 2.dp, top = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_routine_time),
+                            contentDescription = "alarm",
+                            modifier = Modifier
+                                .padding(end = 2.dp)
+                                .size(14.dp)
+                        )
+
+                        Text(
+                            text = convertToAmPmFormat(alarmTime),
+                            color = Gray500,
+                            style = SoftieTypo.caption1,
+                            modifier = Modifier
+                        )
+                    }
+                }
+            }
         }
 
         Image(
