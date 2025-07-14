@@ -1,10 +1,13 @@
 package com.sopetit.progress
 
 import androidx.lifecycle.viewModelScope
+import com.sopetit.domain.entity.enums.CustomScreenType
 import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.AchieveDailyRoutineModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineTotalModel
+import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.usecase.memberchallenge.AchieveMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.DeleteMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.GetMemberChallengeUseCase
@@ -97,9 +100,21 @@ class ProgressViewModel @Inject constructor(
         Timber.d("[테스트] -> 커스텀 루틴 삭제")
     }
 
-    fun modifyCustomRoutine() {
-        // TODO 커스텀 루틴 수정
-        Timber.d("[테스트] -> 커스텀 루틴 수정")
+    fun convertForModifyScreen(modRoutine: RoutineDetailModel): ModifyRoutineModel {
+        val themeId = uiState.value.memberDailyRoutineList.firstOrNull { member ->
+            member.routines.any { it.routineId == modRoutine.routineId }
+        }?.themeId ?: 0
+
+        val modifyModel = ModifyRoutineModel(
+            routineId = modRoutine.routineId,
+            routineType = modRoutine.routineType,
+            customScreenType = CustomScreenType.Modify,
+            content = modRoutine.content,
+            alarmTime = modRoutine.alarmTime,
+            themeId = themeId
+        )
+
+        return modifyModel
     }
 
     fun achieveChallengeRoutine() {

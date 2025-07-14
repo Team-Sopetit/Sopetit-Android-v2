@@ -3,6 +3,7 @@ package com.sopetit.feature
 import androidx.compose.ui.unit.IntOffset
 import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
+import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.ui.base.PageState
@@ -22,5 +23,6 @@ data class MainPageState(
     val tooltipContent: String = "",
     val challengeChangeModel: ChallengeChangeModel = ChallengeChangeModel(),
     val memoActionModel: MemoActionModel = MemoActionModel(),
-    val twoBtnType: TwoBtnBottomSheetType = TwoBtnBottomSheetType.MemoWrite
+    val twoBtnType: TwoBtnBottomSheetType = TwoBtnBottomSheetType.MemoWrite,
+    val modifyRoutine: ModifyRoutineModel = ModifyRoutineModel()
 ) : PageState

@@ -69,6 +69,7 @@ import com.sopetit.design_system.TooltipDailyContent
 import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineListModel
+import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.ui.common.button.RoundCornerShapeBtn
 import com.sopetit.ui.common.content.ChallengeRoutineBox
@@ -76,9 +77,7 @@ import com.sopetit.ui.common.content.EmptyRoutineScreen
 import com.sopetit.ui.common.item.MemberDailyRoutineListItem
 import com.sopetit.ui.common.type.ThemeIconType
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collect
 import org.threeten.bp.LocalDate
-import timber.log.Timber
 
 @Composable
 fun ProgressScreen(
@@ -91,6 +90,7 @@ fun ProgressScreen(
     showSnackBar: (String, Int, Int) -> Unit,
     showTooltip: (IntOffset, String, String) -> Unit,
     goToAddRoutinePage: () -> Unit,
+    goToModifyRoutinePage: (ModifyRoutineModel) -> Unit,
 ) {
 
     val viewModel: ProgressViewModel = hiltViewModel()
@@ -106,7 +106,7 @@ fun ProgressScreen(
     }
     LaunchedEffect(modRoutine) {
         modRoutine.collect {
-            Timber.d("[테스트] -> 루틴 수정 $it")
+            goToModifyRoutinePage(viewModel.convertForModifyScreen(it))
         }
     }
 
@@ -158,7 +158,7 @@ fun ProgressScreen(
         },
         onClickAddRoutine = { goToAddRoutinePage() },
 
-    )
+        )
 }
 
 @Composable

@@ -3,8 +3,11 @@ package com.sopetit.navigation
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.google.gson.Gson
 import com.sopetit.achieve.AchieveScreen
 import com.sopetit.achieve.routine.AchieveRoutineScreen
 import com.sopetit.addroutine.AddRoutineScreen
@@ -12,6 +15,7 @@ import com.sopetit.addroutine.detail.AddRoutineDetailScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
+import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
@@ -212,7 +216,7 @@ fun NavGraphBuilder.progressNavGraph(
     showChallengeAchieveSom: (Boolean) -> Unit,
     showChallengeDailySom: (Boolean) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
-    showToolTip: (IntOffset, String, String) -> Unit,
+    showToolTip: (IntOffset, String, String) -> Unit
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
@@ -230,6 +234,9 @@ fun NavGraphBuilder.progressNavGraph(
                 showTooltip = showToolTip,
                 goToAddRoutinePage = {
                     navController.navigate(NavRoutes.AddRoutineScreen.route)
+                },
+                goToModifyRoutinePage = {
+                    navController.navigate(NavRoutes.CustomRoutineScreen.setRouteModel(it))
                 }
             )
         }
@@ -255,7 +262,7 @@ fun NavGraphBuilder.addRoutineNavGraph(
                     navController.navigate(NavRoutes.AddRoutineDetailScreen.route)
                 },
                 goToCustomRoutinePage = {
-                    navController.navigate(NavRoutes.CustomRoutineScreen.route)
+                    navController.navigate(NavRoutes.CustomRoutineScreen.setRouteModel(null))
                 }
             )
         }
@@ -273,15 +280,29 @@ fun NavGraphBuilder.addRoutineNavGraph(
 }
 
 fun NavGraphBuilder.customRoutineNavGraph(
-    navController: NavHostController,
+    navController: NavHostController
 ) {
     navigation(
         startDestination = NavRoutes.CustomRoutineScreen.route,
         route = NavRoutes.CustomRoutineGraph.route
     ) {
-        composable(NavRoutes.CustomRoutineScreen.route) {
+        composable(
+            route = NavRoutes.CustomRoutineScreen.routeWithParam,
+            arguments = listOf(navArgument("data") { type = NavType.StringType })
+            ) {
+            val json = it.arguments?.getString("data")
+            val data = Gson().fromJson(json, ModifyRoutineModel::class.java)
+
             CustomRoutineScreen(
-                goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) }
+                goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
+                modifyRoutineModel = data
+            )
+        }
+
+        composable(route = NavRoutes.CustomRoutineScreen.route) {
+            CustomRoutineScreen(
+                goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
+                modifyRoutineModel = null
             )
         }
     }

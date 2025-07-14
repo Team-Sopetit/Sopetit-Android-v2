@@ -1,5 +1,9 @@
 package com.sopetit.navigation
 
+import android.net.Uri
+import com.google.gson.Gson
+import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
+
 sealed class NavRoutes(val route: String) {
 
     // Splash Graph
@@ -41,5 +45,16 @@ sealed class NavRoutes(val route: String) {
 
     // Custom Routine Graph
     data object CustomRoutineGraph: NavRoutes("custom_routine_graph")
-    data object CustomRoutineScreen: NavRoutes("custom_routine")
+    data object CustomRoutineScreen: NavRoutes("custom_routine") {
+        fun setRouteModel(data: ModifyRoutineModel?): String {
+            return if (data != null) {
+                val json = Uri.encode(Gson().toJson(data))
+                "$route/$json"
+            } else {
+                route
+            }
+        }
+
+        const val routeWithParam = "custom_routine/{data}"
+    }
 }

@@ -86,7 +86,6 @@ import com.sopetit.ui.util.DismissKeyboardOnClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import kotlin.reflect.typeOf
 
 @Composable
 fun MainScreen() {

@@ -68,16 +68,19 @@ import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.Switch
 import com.sopetit.design_system.ThemeTitle
 import com.sopetit.design_system.ZeroString
+import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
 import com.sopetit.ui.common.item.ThemeListItem
 import com.sopetit.ui.common.type.ThemeIconType
 import com.sopetit.ui.common.type.TimeDayType
 import com.sopetit.ui.common.type.TimeMinuteType
 import com.sopetit.ui.util.convertTo24HourFormat
 import com.sopetit.ui.util.fadingEdge
+import timber.log.Timber
 
 @Composable
 fun CustomRoutineScreen(
     goToProgressPage: () -> Unit,
+    modifyRoutineModel: ModifyRoutineModel?
 ) {
 
     val viewModel: CustomRoutineViewModel = hiltViewModel()
@@ -87,6 +90,8 @@ fun CustomRoutineScreen(
     val hourState = rememberLazyListState(initialFirstVisibleItemIndex = 7)
     val minuteState = rememberLazyListState(initialFirstVisibleItemIndex = 3)
     val timeState = rememberLazyListState(initialFirstVisibleItemIndex = 2)
+
+    Timber.d("[테스트] it -> $modifyRoutineModel")
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
