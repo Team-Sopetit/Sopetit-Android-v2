@@ -1,13 +1,15 @@
 package com.tdd.customroutine
 
 import androidx.lifecycle.viewModelScope
+import com.sopetit.design_system.TimeAM
+import com.sopetit.design_system.TimeMinuteZero
 import com.sopetit.domain.entity.request.customroutine.CreateCustomRoutineRequestModel
 import com.sopetit.domain.entity.response.customroutine.CreateCustomRoutineModel
+import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
 import com.sopetit.domain.usecase.customroutine.PostCreateCustomRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,6 +18,17 @@ class CustomRoutineViewModel @Inject constructor(
 ) : BaseViewModel<CustomRoutinePageState>(
     CustomRoutinePageState()
 ) {
+
+    fun setModifyRoutine(modifyRoutineModel: ModifyRoutineModel) {
+        updateState(
+            uiState.value.copy(
+                selectedThemeId = modifyRoutineModel.themeId,
+                routineWriteInput = modifyRoutineModel.content,
+                modifyType = modifyRoutineModel.routineType,
+                customScreenType = modifyRoutineModel.customScreenType
+            )
+        )
+    }
 
     fun setSelectedTheme(themeId: Int) {
         updateState(
@@ -33,10 +46,10 @@ class CustomRoutineViewModel @Inject constructor(
         )
     }
 
-    fun updateAlarmActivated() {
+    fun updateAlarmActivated(isActivated: Boolean) {
         updateState(
             uiState.value.copy(
-                isAlarmActivated = !uiState.value.isAlarmActivated
+                isAlarmActivated = isActivated
             )
         )
     }
@@ -55,5 +68,19 @@ class CustomRoutineViewModel @Inject constructor(
 
     private fun onSuccessCreateCustomRoutine(data: CreateCustomRoutineModel) {
         emitEventFlow(CustomRoutineEvent.GoToProgressPage)
+    }
+
+    fun convertTimeState(time: String): Int {
+        return when (time == TimeAM) {
+            true -> 0
+            false -> 1
+        }
+    }
+
+    fun convertMinuteState(time: String): Int {
+        return when (time == TimeMinuteZero) {
+            true -> 0
+            false -> 1
+        }
     }
 }

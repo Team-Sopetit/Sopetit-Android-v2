@@ -74,13 +74,13 @@ import com.sopetit.ui.common.type.ThemeIconType
 import com.sopetit.ui.common.type.TimeDayType
 import com.sopetit.ui.common.type.TimeMinuteType
 import com.sopetit.ui.util.convertTo24HourFormat
+import com.sopetit.ui.util.convertToAmPmFormat
 import com.sopetit.ui.util.fadingEdge
-import timber.log.Timber
 
 @Composable
 fun CustomRoutineScreen(
     goToProgressPage: () -> Unit,
-    modifyRoutineModel: ModifyRoutineModel?
+    modifyRoutineModel: ModifyRoutineModel?,
 ) {
 
     val viewModel: CustomRoutineViewModel = hiltViewModel()
@@ -91,7 +91,25 @@ fun CustomRoutineScreen(
     val minuteState = rememberLazyListState(initialFirstVisibleItemIndex = 3)
     val timeState = rememberLazyListState(initialFirstVisibleItemIndex = 2)
 
-    Timber.d("[테스트] it -> $modifyRoutineModel")
+    if (modifyRoutineModel != null) {
+        viewModel.setModifyRoutine(modifyRoutineModel)
+
+        if (!modifyRoutineModel.alarmTime.isNullOrEmpty()) {
+            viewModel.updateAlarmActivated(true)
+
+            val time = convertToAmPmFormat(modifyRoutineModel.alarmTime ?: return)
+            val timePart = time.split(" ", ":")
+            val amPm = timePart.getOrNull(0) ?: return
+            val hour = timePart.getOrNull(1)?.toIntOrNull() ?: return
+            val minute = timePart.getOrNull(2) ?: return
+
+            LaunchedEffect(Unit) {
+                timeState.scrollToItem(viewModel.convertTimeState(amPm))
+                hourState.scrollToItem(hour - 1)
+                minuteState.scrollToItem(viewModel.convertMinuteState(minute))
+            }
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
@@ -118,11 +136,12 @@ fun CustomRoutineScreen(
                 )
             )
         },
-        onActivateAlarm = { viewModel.updateAlarmActivated() },
+        onActivateAlarm = { viewModel.updateAlarmActivated(!uiState.isAlarmActivated) },
         isAlarmActivated = uiState.isAlarmActivated,
         hourState = hourState,
         minuteState = minuteState,
-        timeState = timeState
+        timeState = timeState,
+        modifyRoutineModel = modifyRoutineModel
     )
 }
 
@@ -139,6 +158,7 @@ fun CustomRoutineContent(
     hourState: LazyListState = LazyListState(),
     minuteState: LazyListState = LazyListState(),
     timeState: LazyListState = LazyListState(),
+    modifyRoutineModel: ModifyRoutineModel? = null,
 ) {
     Column(
         modifier = Modifier

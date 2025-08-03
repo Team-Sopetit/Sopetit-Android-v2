@@ -31,7 +31,6 @@ import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
 import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
 import com.tdd.customroutine.CustomRoutineScreen
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 fun NavGraphBuilder.splashNavGraph(
@@ -177,7 +176,7 @@ fun NavGraphBuilder.achieveNavGraph(
     showMemoDetailBottomSheet: (MemoActionModel) -> Unit,
     memoActionModel: SharedFlow<MemoActionModel>,
     setAchieveThemeId: (Int) -> Unit,
-    achieveThemeId: SharedFlow<Int>
+    achieveThemeId: SharedFlow<Int>,
 ) {
     navigation(
         startDestination = NavRoutes.AchieveScreen.route,
@@ -216,7 +215,7 @@ fun NavGraphBuilder.progressNavGraph(
     showChallengeAchieveSom: (Boolean) -> Unit,
     showChallengeDailySom: (Boolean) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
-    showToolTip: (IntOffset, String, String) -> Unit
+    showToolTip: (IntOffset, String, String) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
@@ -280,7 +279,7 @@ fun NavGraphBuilder.addRoutineNavGraph(
 }
 
 fun NavGraphBuilder.customRoutineNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = NavRoutes.CustomRoutineScreen.route,
@@ -289,7 +288,7 @@ fun NavGraphBuilder.customRoutineNavGraph(
         composable(
             route = NavRoutes.CustomRoutineScreen.routeWithParam,
             arguments = listOf(navArgument("data") { type = NavType.StringType })
-            ) {
+        ) {
             val json = it.arguments?.getString("data")
             val data = Gson().fromJson(json, ModifyRoutineModel::class.java)
 
