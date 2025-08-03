@@ -51,5 +51,6 @@ object EndPoints {
 
     object CustomRoutine {
         const val CREATE = "/api/v1/routines/custom"
+        const val MODIFY = "$CREATE/{customRoutineId}"
     }
 }

@@ -128,13 +128,20 @@ fun CustomRoutineScreen(
         routineWriteInput = uiState.routineWriteInput,
         onRoutineValueChange = { viewModel.onRoutineValueChange(it) },
         onClickFinishBtn = {
-            viewModel.createCustomRoutine(
+            viewModel.setCustomCreateOrModify(
                 convertTo24HourFormat(
                     hourState.firstVisibleItemIndex + 1,
                     TimeMinuteType.getMinuteData(minuteState.firstVisibleItemIndex),
                     TimeDayType.getDayData(timeState.firstVisibleItemIndex)
                 )
             )
+//            viewModel.createCustomRoutine(
+//                convertTo24HourFormat(
+//                    hourState.firstVisibleItemIndex + 1,
+//                    TimeMinuteType.getMinuteData(minuteState.firstVisibleItemIndex),
+//                    TimeDayType.getDayData(timeState.firstVisibleItemIndex)
+//                )
+//            )
         },
         onActivateAlarm = { viewModel.updateAlarmActivated(!uiState.isAlarmActivated) },
         isAlarmActivated = uiState.isAlarmActivated,

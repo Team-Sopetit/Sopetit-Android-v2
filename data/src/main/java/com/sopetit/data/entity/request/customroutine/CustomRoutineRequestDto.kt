@@ -1,12 +1,10 @@
-package com.sopetit.data.entity.response.createroutine
+package com.sopetit.data.entity.request.customroutine
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreateCustomRoutineResponseDto (
-    @SerialName("id")
-    val id: Int,
+data class CustomRoutineRequestDto (
     @SerialName("content")
     val content: String,
     @SerialName("themeId")

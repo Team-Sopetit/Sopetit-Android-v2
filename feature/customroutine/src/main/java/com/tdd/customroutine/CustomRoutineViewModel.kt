@@ -3,9 +3,12 @@ package com.tdd.customroutine
 import androidx.lifecycle.viewModelScope
 import com.sopetit.design_system.TimeAM
 import com.sopetit.design_system.TimeMinuteZero
-import com.sopetit.domain.entity.request.customroutine.CreateCustomRoutineRequestModel
-import com.sopetit.domain.entity.response.customroutine.CreateCustomRoutineModel
+import com.sopetit.domain.entity.enums.CustomScreenType
+import com.sopetit.domain.entity.request.customroutine.CustomRoutineRequestModel
+import com.sopetit.domain.entity.request.customroutine.ModifyCustomRoutineRequestModel
+import com.sopetit.domain.entity.response.customroutine.CustomRoutineModel
 import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
+import com.sopetit.domain.usecase.customroutine.ModifyCustomRoutineUseCase
 import com.sopetit.domain.usecase.customroutine.PostCreateCustomRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CustomRoutineViewModel @Inject constructor(
     private val postCreateCustomRoutineUseCase: PostCreateCustomRoutineUseCase,
+    private val modifyCustomRoutineUseCase: ModifyCustomRoutineUseCase
 ) : BaseViewModel<CustomRoutinePageState>(
     CustomRoutinePageState()
 ) {
@@ -22,7 +26,7 @@ class CustomRoutineViewModel @Inject constructor(
     fun setModifyRoutine(modifyRoutineModel: ModifyRoutineModel) {
         updateState(
             uiState.value.copy(
-                selectedThemeId = modifyRoutineModel.themeId,
+                selectedThemeId = modifyRoutineModel.routineId,
                 routineWriteInput = modifyRoutineModel.content,
                 modifyType = modifyRoutineModel.routineType,
                 customScreenType = modifyRoutineModel.customScreenType
@@ -54,19 +58,41 @@ class CustomRoutineViewModel @Inject constructor(
         )
     }
 
-    fun createCustomRoutine(alarmTime: String) {
+    fun setCustomCreateOrModify(alarmTime: String) {
+        when (uiState.value.customScreenType) {
+            CustomScreenType.Create -> createCustomRoutine(alarmTime)
+            CustomScreenType.Modify -> modifyCustomRoutine(alarmTime)
+        }
+    }
+
+    private fun createCustomRoutine(alarmTime: String) {
         viewModelScope.launch {
             postCreateCustomRoutineUseCase(
-                CreateCustomRoutineRequestModel(
+                CustomRoutineRequestModel(
                     uiState.value.routineWriteInput,
                     uiState.value.selectedThemeId,
                     alarmTime
                 )
-            ).collect { resultResponse(it, ::onSuccessCreateCustomRoutine) }
+            ).collect { resultResponse(it, ::onSuccessCustomRoutine) }
         }
     }
 
-    private fun onSuccessCreateCustomRoutine(data: CreateCustomRoutineModel) {
+    private fun modifyCustomRoutine(alarmTime: String) {
+        viewModelScope.launch {
+            modifyCustomRoutineUseCase(
+                ModifyCustomRoutineRequestModel(
+                    uiState.value.selectedThemeId,
+                    CustomRoutineRequestModel(
+                        uiState.value.routineWriteInput,
+                        uiState.value.selectedThemeId,
+                        alarmTime
+                    )
+                )
+            ).collect { resultResponse(it, ::onSuccessCustomRoutine) }
+        }
+    }
+
+    private fun onSuccessCustomRoutine(data: CustomRoutineModel) {
         emitEventFlow(CustomRoutineEvent.GoToProgressPage)
     }
 
