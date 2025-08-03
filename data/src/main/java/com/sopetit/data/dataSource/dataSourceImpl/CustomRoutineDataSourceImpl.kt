@@ -20,4 +20,7 @@ class CustomRoutineDataSourceImpl @Inject constructor(
         body: CustomRoutineRequestDto
     ): Response<BaseResponse<CustomRoutineResponseDto>> =
         customRoutineService.modifyRoutine(request, body)
+
+    override suspend fun deleteCustomRoutine(request: Int): Response<BaseResponse<Unit>> =
+        customRoutineService.deleteRoutine(request)
 }

@@ -8,6 +8,7 @@ import com.sopetit.domain.entity.response.memberroutine.AchieveDailyRoutineModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineTotalModel
 import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
+import com.sopetit.domain.usecase.customroutine.DeleteCustomRoutineUseCase
 import com.sopetit.domain.usecase.memberchallenge.AchieveMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.DeleteMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.GetMemberChallengeUseCase
@@ -17,7 +18,6 @@ import com.sopetit.domain.usecase.memberroutine.GetMemberDailyRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +27,8 @@ class ProgressViewModel @Inject constructor(
     private val deleteMemberDailyRoutineUseCase: DeleteMemberDailyRoutineUseCase,
     private val deleteMemberChallengeUseCase: DeleteMemberChallengeUseCase,
     private val achieveMemberChallengeUseCase: AchieveMemberChallengeUseCase,
-    private val achieveDailyRoutineUseCase: AchieveDailyRoutineUseCase
+    private val achieveDailyRoutineUseCase: AchieveDailyRoutineUseCase,
+    private val deleteCustomRoutineUseCase: DeleteCustomRoutineUseCase,
 ) : BaseViewModel<ProgressPageState>(
     ProgressPageState()
 ) {
@@ -73,7 +74,7 @@ class ProgressViewModel @Inject constructor(
         when (routineType) {
             RoutineType.Daily -> deleteDailyRoutine(routineId)
             RoutineType.Challenge -> deleteChallengeRoutine()
-            RoutineType.Custom -> deleteCustomRoutine()
+            RoutineType.Custom -> deleteCustomRoutine(routineId)
         }
     }
 
@@ -95,9 +96,14 @@ class ProgressViewModel @Inject constructor(
         }
     }
 
-    private fun deleteCustomRoutine() {
-        // TODO 커스텀 루틴 삭제
-        Timber.d("[테스트] -> 커스텀 루틴 삭제")
+    private fun deleteCustomRoutine(routineId: Int) {
+        viewModelScope.launch {
+            deleteCustomRoutineUseCase(routineId).collect {
+                resultResponse(
+                    it,
+                    { initGetMemberDailyRoutine() })
+            }
+        }
     }
 
     fun convertForModifyScreen(modRoutine: RoutineDetailModel): ModifyRoutineModel {

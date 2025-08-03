@@ -1,6 +1,7 @@
 package com.sopetit.data.repositoryImpl
 
 import com.sopetit.data.dataSource.CustomRoutineDataSource
+import com.sopetit.data.mapper.DefaultUnitMapper
 import com.sopetit.data.mapper.customroutine.CustomRoutineMapper
 import com.sopetit.data.mapper.customroutine.CustomRoutineMapper.toDto
 import com.sopetit.domain.entity.request.customroutine.CustomRoutineRequestModel
@@ -24,5 +25,10 @@ class CustomRoutineRepositoryImpl @Inject constructor(
     override suspend fun modifyCreateCustomRoutine(request: ModifyCustomRoutineRequestModel): Flow<Result<CustomRoutineModel>> =
        CustomRoutineMapper.responseToModel(apiCall = {
             customRoutineDataSource.putModifyCustomRoutine(request.themeId, request.body.toDto())
+        })
+
+    override suspend fun deleteCustomRoutine(request: Int): Flow<Result<Unit>> =
+        DefaultUnitMapper.responseToModel(apiCall = {
+            customRoutineDataSource.deleteCustomRoutine(request)
         })
 }
