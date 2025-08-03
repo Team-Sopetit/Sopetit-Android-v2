@@ -5,6 +5,7 @@ plugins {
     id("sopetit.android.hilt")
     id("sopetit.android.kotlin")
     id("sopetit.retrofit")
+    id("com.google.gms.google-services")
 }
 
 val properties = Properties().apply {
@@ -30,6 +31,7 @@ dependencies {
     implementation(projects.feature)
     implementation(projects.domain)
     implementation(projects.core)
+    implementation(projects.core.firebase)
     implementation(projects.data)
 
     implementation(libs.gson)
@@ -42,4 +44,9 @@ dependencies {
 
     // ThreeTen
     implementation(libs.threeten)
+
+    // FCM
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.messaging)
 }

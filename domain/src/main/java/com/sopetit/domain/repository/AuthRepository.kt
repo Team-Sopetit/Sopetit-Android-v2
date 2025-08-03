@@ -8,6 +8,4 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRepository {
     suspend fun postLogIn(request: LogInRequestModel): Flow<Result<LogInResponseModel>>
     suspend fun saveToken(request: TokenStoreModel): Flow<Result<Unit>>
-
-    suspend fun postFcmToken(): Flow<Result<Unit>>
 }

@@ -3,6 +3,7 @@ package com.sopetit.data.service
 import com.sopetit.data.base.BaseResponse
 import com.sopetit.data.base.EndPoints
 import com.sopetit.data.entity.request.member.CreateMemberRequestDto
+import com.sopetit.data.entity.request.member.PostFcmRequestDto
 import com.sopetit.data.entity.response.member.GetMemberResponseDto
 import retrofit2.Response
 import retrofit2.http.Body
@@ -18,4 +19,9 @@ interface MemberService {
 
     @GET(EndPoints.Member.MEMBER)
     suspend fun getMember(): Response<BaseResponse<GetMemberResponseDto>>
+
+    @POST(EndPoints.Member.FCM)
+    suspend fun postFcm(
+        @Body body: PostFcmRequestDto
+    ): Response<BaseResponse<Unit>>
 }
