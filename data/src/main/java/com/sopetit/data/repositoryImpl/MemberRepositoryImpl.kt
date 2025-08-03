@@ -6,6 +6,7 @@ import com.sopetit.data.entity.request.member.PostFcmRequestDto
 import com.sopetit.data.mapper.member.CreateMemberMapper
 import com.sopetit.data.mapper.member.CreateMemberMapper.toDto
 import com.sopetit.data.mapper.member.GetMemberMapper
+import com.sopetit.data.mapper.member.PatchCottonMapper
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.repository.MemberRepository
@@ -31,4 +32,7 @@ class MemberRepositoryImpl @Inject constructor(
             PostFcmRequestDto(fcmTokenProvider.getFcmToken())
         )
     }
+
+    override suspend fun patchCotton(request: String): Flow<Result<Int>> =
+        PatchCottonMapper.responseToModel(apiCall = { memberDataSource.patchCotton(request) })
 }

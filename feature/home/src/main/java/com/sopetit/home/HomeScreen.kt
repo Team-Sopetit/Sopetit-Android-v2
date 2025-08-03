@@ -53,6 +53,7 @@ import com.sopetit.design_system.HomeSomTitle
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.ui.common.type.CottonType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -79,11 +80,12 @@ fun HomeScreen(
         conversation = uiState.randomSelectedConversation,
         dollName = uiState.homeMemberModel.name,
         dollHelloResource = uiState.dollHelloResource,
-        dailyCottonCount = uiState.homeMemberModel.dailyCottonCount,
-        happinessCottonCount = uiState.homeMemberModel.happinessCottonCount,
+        dailyCottonCount = uiState.dailyCottonCount,
+        happinessCottonCount = uiState.happinessCottonCount,
         onClickDoll = {
             viewModel.updateRandomConversation()
-        }
+        },
+        onClickCotton = { viewModel.patchCotton(it) }
     )
 }
 
@@ -97,6 +99,7 @@ fun HomeScreenContent(
     dailyCottonCount: Int = -1,
     happinessCottonCount: Int = -1,
     onClickDoll: () -> Unit = {},
+    onClickCotton: (CottonType) -> Unit = {}
 ) {
 
     Box(
@@ -179,7 +182,8 @@ fun HomeScreenContent(
 
             HomeCottonCount(
                 dailyCottonCount = dailyCottonCount,
-                happinessCottonCount = happinessCottonCount
+                happinessCottonCount = happinessCottonCount,
+                onClickCotton = onClickCotton
             )
         }
     }
@@ -264,6 +268,7 @@ fun HomeDollBoxContent(
 fun HomeCottonCount(
     dailyCottonCount: Int = -1,
     happinessCottonCount: Int = -1,
+    onClickCotton: (CottonType) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -274,7 +279,8 @@ fun HomeCottonCount(
         HomeCottonCountItem(
             cottonCountTitle = HomeSomTitle,
             cottonCountImg = R.drawable.ic_som,
-            cottonCount = dailyCottonCount
+            cottonCount = dailyCottonCount,
+            onClickCotton = { onClickCotton(CottonType.DAILY) }
         )
 
         Spacer(modifier = Modifier.width(12.dp))
@@ -282,7 +288,8 @@ fun HomeCottonCount(
         HomeCottonCountItem(
             cottonCountTitle = HomeRainbowSomTitle,
             cottonCountImg = R.drawable.ic_som_rainbow,
-            cottonCount = happinessCottonCount
+            cottonCount = happinessCottonCount,
+            onClickCotton = { onClickCotton(CottonType.HAPPINESS) }
         )
     }
 }
@@ -293,12 +300,16 @@ fun HomeCottonCountItem(
     cottonCountTitle: String = "",
     cottonCountImg: Int = -1,
     cottonCount: Int = -1,
+    onClickCotton: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .width(160.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(Gray0),
+            .background(Gray0)
+            .clickable(
+                onClick = onClickCotton
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(

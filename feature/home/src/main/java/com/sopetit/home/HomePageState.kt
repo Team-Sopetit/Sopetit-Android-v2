@@ -12,4 +12,6 @@ data class HomePageState(
     val homeMemberModel: GetMemberModel = GetMemberModel(),
     val dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
     val randomSelectedConversation: String = "",
+    val dailyCottonCount: Int = 0,
+    val happinessCottonCount: Int = 0
 ) : PageState

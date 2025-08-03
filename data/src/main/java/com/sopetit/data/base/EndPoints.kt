@@ -20,6 +20,7 @@ object EndPoints {
     object Member {
         const val MEMBER = "/api/v1/members"
         const val FCM = "$MEMBER/fcm"
+        const val COTTON = "$MEMBER/cotton/{cottonType}"
     }
 
     object MemberRoutine {

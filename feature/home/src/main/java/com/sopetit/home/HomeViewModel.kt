@@ -5,8 +5,10 @@ import com.sopetit.design_system.R
 import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.usecase.member.GetMemberUseCase
+import com.sopetit.domain.usecase.member.PatchCottonUseCase
 import com.sopetit.ui.base.BaseViewModel
 import com.sopetit.ui.common.type.BearType
+import com.sopetit.ui.common.type.CottonType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,6 +17,7 @@ import kotlin.random.Random
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMemberUseCase: GetMemberUseCase,
+    private val patchCottonUseCase: PatchCottonUseCase
 ) : BaseViewModel<HomePageState>(
     HomePageState()
 ) {
@@ -69,7 +72,9 @@ class HomeViewModel @Inject constructor(
             uiState.value.copy(
                 homeMemberModel = data,
                 dollHelloResource = BearType.getDollHelloResource(data.dollType),
-                randomSelectedConversation = data.conversations[0]
+                randomSelectedConversation = data.conversations[0],
+                dailyCottonCount = data.dailyCottonCount,
+                happinessCottonCount = data.happinessCottonCount
             )
         )
     }
@@ -90,6 +95,37 @@ class HomeViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 isTutorialValid = isValid
+            )
+        )
+    }
+
+    fun patchCotton(cottonType: CottonType) {
+        viewModelScope.launch {
+            patchCottonUseCase(cottonType.toString()).collect {
+                resultResponse(it, { data -> onSuccessPatchCotton(data, cottonType)})
+            }
+        }
+    }
+
+    private fun onSuccessPatchCotton(data: Int, type: CottonType) {
+        when (type) {
+            CottonType.DAILY -> updateDailyCottonCount(data)
+            CottonType.HAPPINESS -> updateHappinessCottonCount(data)
+        }
+    }
+
+    private fun updateDailyCottonCount(data: Int) {
+        updateState(
+            uiState.value.copy(
+                dailyCottonCount = data
+            )
+        )
+    }
+
+    private fun updateHappinessCottonCount(data: Int) {
+        updateState(
+            uiState.value.copy(
+                happinessCottonCount = data
             )
         )
     }
