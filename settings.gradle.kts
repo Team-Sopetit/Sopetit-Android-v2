@@ -33,6 +33,7 @@ include(":feature")
 include(":core:ui")
 include(":core:navigation")
 include(":core:design-system")
+include(":core:firebase")
 
 include(":feature:onboarding")
 include(":feature:login")
