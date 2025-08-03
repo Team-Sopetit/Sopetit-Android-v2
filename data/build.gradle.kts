@@ -16,6 +16,7 @@ java {
 dependencies {
     implementation(projects.domain)
     implementation(projects.core)
+    implementation(projects.core.firebase)
 
     implementation(libs.androidx.datastore)
     implementation(libs.gson)
