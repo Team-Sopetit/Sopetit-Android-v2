@@ -1,6 +1,7 @@
 package com.sopetit.home
 
 import androidx.lifecycle.viewModelScope
+import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.sopetit.design_system.R
 import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -72,6 +73,9 @@ class HomeViewModel @Inject constructor(
             uiState.value.copy(
                 homeMemberModel = data,
                 dollHelloResource = BearType.getDollHelloResource(data.dollType),
+                dollType = data.dollType,
+                dollEatingDailyResource = BearType.getDollEatingDailyResource(data.dollType),
+                dollEatingHappyResource = BearType.getDollEatingHappyResource(data.dollType),
                 randomSelectedConversation = data.conversations[0],
                 dailyCottonCount = data.dailyCottonCount,
                 happinessCottonCount = data.happinessCottonCount
@@ -97,6 +101,13 @@ class HomeViewModel @Inject constructor(
                 isTutorialValid = isValid
             )
         )
+    }
+
+    fun setEatingDollType(cottonType: CottonType): LottieCompositionSpec {
+        return when (cottonType) {
+            CottonType.DAILY -> uiState.value.dollEatingDailyResource
+            CottonType.HAPPINESS -> uiState.value.dollEatingHappyResource
+        }
     }
 
     fun patchCotton(cottonType: CottonType) {

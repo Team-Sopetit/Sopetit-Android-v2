@@ -60,11 +60,13 @@ import kotlinx.coroutines.flow.SharedFlow
 @Composable
 fun HomeScreen(
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit = {},
-    isTutorialValid: SharedFlow<Boolean> = MutableSharedFlow()
+    isTutorialValid: SharedFlow<Boolean> = MutableSharedFlow(),
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState: HomePageState by viewModel.uiState.collectAsStateWithLifecycle()
     val interactionSource = remember { MutableInteractionSource() }
+
+    val eatingLottieSpec = remember { mutableStateOf<LottieCompositionSpec?>(null) }
 
     LaunchedEffect(isTutorialValid) {
         isTutorialValid.collect {
@@ -85,7 +87,12 @@ fun HomeScreen(
         onClickDoll = {
             viewModel.updateRandomConversation()
         },
-        onClickCotton = { viewModel.patchCotton(it) }
+        onClickCotton = {
+            viewModel.patchCotton(it)
+            eatingLottieSpec.value = viewModel.setEatingDollType(it)
+        },
+        eatingLottieSpec = eatingLottieSpec.value,
+        onSetEatingLottieDefault = { eatingLottieSpec.value = null }
     )
 }
 
@@ -98,8 +105,10 @@ fun HomeScreenContent(
     dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
     dailyCottonCount: Int = -1,
     happinessCottonCount: Int = -1,
+    eatingLottieSpec: LottieCompositionSpec? = null,
     onClickDoll: () -> Unit = {},
-    onClickCotton: (CottonType) -> Unit = {}
+    onClickCotton: (CottonType) -> Unit = {},
+    onSetEatingLottieDefault: () -> Unit = {},
 ) {
 
     Box(
@@ -151,7 +160,9 @@ fun HomeScreenContent(
                 interactionSource = interactionSource,
                 conversation = conversation,
                 dollHelloResource = dollHelloResource,
-                onClickDoll = onClickDoll
+                onClickDoll = onClickDoll,
+                eatingLottieSpec = eatingLottieSpec,
+                onSetEatingLottieDefault = onSetEatingLottieDefault
             )
         }
 
@@ -195,10 +206,16 @@ fun HomeDollBoxContent(
     conversation: String = "",
     dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
     onClickDoll: () -> Unit = {},
+    eatingLottieSpec: LottieCompositionSpec?,
+    onSetEatingLottieDefault: () -> Unit,
 ) {
-    val composition by rememberLottieComposition(spec = dollHelloResource)
+
     var isPlaying by remember { mutableStateOf(true) }
     var isClickedReplay by remember { mutableStateOf(false) }
+
+    var currentLottieSpec by remember { mutableStateOf(dollHelloResource) }
+    var pendingRestore by remember { mutableStateOf(false) }
+    val composition by rememberLottieComposition(spec = currentLottieSpec)
 
     val progress by animateLottieCompositionAsState(
         composition = composition,
@@ -206,6 +223,29 @@ fun HomeDollBoxContent(
         iterations = 1,
         restartOnPlay = true,
     )
+
+    LaunchedEffect(dollHelloResource) {
+        if (!pendingRestore && eatingLottieSpec == null) {
+            currentLottieSpec = dollHelloResource
+        }
+    }
+
+    LaunchedEffect(progress) {
+        if (progress >= 1.0f && pendingRestore) {
+            currentLottieSpec = dollHelloResource
+            isPlaying = true
+            pendingRestore = false
+            onSetEatingLottieDefault()
+        }
+    }
+
+    LaunchedEffect(eatingLottieSpec) {
+        eatingLottieSpec?.let {
+            currentLottieSpec = it
+            isPlaying = true
+            pendingRestore = true
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -268,7 +308,7 @@ fun HomeDollBoxContent(
 fun HomeCottonCount(
     dailyCottonCount: Int = -1,
     happinessCottonCount: Int = -1,
-    onClickCotton: (CottonType) -> Unit
+    onClickCotton: (CottonType) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -300,7 +340,7 @@ fun HomeCottonCountItem(
     cottonCountTitle: String = "",
     cottonCountImg: Int = -1,
     cottonCount: Int = -1,
-    onClickCotton: () -> Unit
+    onClickCotton: () -> Unit,
 ) {
     Column(
         modifier = Modifier
