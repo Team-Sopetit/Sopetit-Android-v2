@@ -45,7 +45,11 @@ const val DateContent = "%d일"
 
 // Time
 const val TimeMinuteZero = "00"
+const val TimeMinuteTen = "10"
+const val TimeMinuteTwenty = "20"
 const val TimeMinuteHalf = "30"
+const val TimeMinuteForty = "40"
+const val TimeMinuteFifty = "50"
 const val TimeAM = "오전"
 const val TimePM = "오후"
 const val Time24Format = "%02d:%02d:00"

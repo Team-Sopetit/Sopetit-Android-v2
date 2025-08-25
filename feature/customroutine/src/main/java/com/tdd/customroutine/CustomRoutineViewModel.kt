@@ -2,6 +2,11 @@ package com.tdd.customroutine
 
 import androidx.lifecycle.viewModelScope
 import com.sopetit.design_system.TimeAM
+import com.sopetit.design_system.TimeMinuteFifty
+import com.sopetit.design_system.TimeMinuteForty
+import com.sopetit.design_system.TimeMinuteHalf
+import com.sopetit.design_system.TimeMinuteTen
+import com.sopetit.design_system.TimeMinuteTwenty
 import com.sopetit.design_system.TimeMinuteZero
 import com.sopetit.domain.entity.enums.CustomScreenType
 import com.sopetit.domain.entity.request.customroutine.CustomRoutineRequestModel
@@ -104,9 +109,14 @@ class CustomRoutineViewModel @Inject constructor(
     }
 
     fun convertMinuteState(time: String): Int {
-        return when (time == TimeMinuteZero) {
-            true -> 0
-            false -> 1
+        return when (time) {
+            TimeMinuteZero -> 0
+            TimeMinuteTen -> 1
+            TimeMinuteTwenty -> 2
+            TimeMinuteHalf -> 3
+            TimeMinuteForty -> 4
+            TimeMinuteFifty -> 5
+            else -> 0
         }
     }
 }
