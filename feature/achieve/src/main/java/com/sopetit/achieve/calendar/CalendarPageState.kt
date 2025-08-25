@@ -4,7 +4,8 @@ import com.sopetit.domain.entity.response.calendar.CalendarModel
 import com.sopetit.ui.base.PageState
 import org.threeten.bp.LocalDate
 
-data class CalendarPageState (
+data class CalendarPageState(
     val selectedDate: LocalDate = LocalDate.now(),
-    val calendarList: Map<String, CalendarModel> = emptyMap()
-): PageState
+    val calendarList: Map<String, CalendarModel> = emptyMap(),
+    val dollType: String = "",
+) : PageState

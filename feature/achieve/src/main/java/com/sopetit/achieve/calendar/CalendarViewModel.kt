@@ -7,9 +7,11 @@ import com.sopetit.domain.entity.request.calendar.CalendarRequestModel
 import com.sopetit.domain.entity.request.memo.MemoWriteRequestModel
 import com.sopetit.domain.entity.response.calendar.CalendarHistoryItemModel
 import com.sopetit.domain.entity.response.calendar.CalendarModel
+import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.usecase.calendar.GetCalendarUseCase
+import com.sopetit.domain.usecase.member.GetMemberUseCase
 import com.sopetit.domain.usecase.memberchallenge.DeleteChallengeHistoryUseCase
 import com.sopetit.domain.usecase.memberroutine.DeleteDailyRoutineHistoryUseCase
 import com.sopetit.domain.usecase.memo.DeleteMemoUseCase
@@ -19,7 +21,6 @@ import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,12 +31,28 @@ class CalendarViewModel @Inject constructor(
     private val postWriteMemoUseCase: PostWriteMemoUseCase,
     private val deleteMemoUseCase: DeleteMemoUseCase,
     private val patchModifyMemoUseCase: PatchModifyMemoUseCase,
+    private val getMemberUseCase: GetMemberUseCase,
 ) : BaseViewModel<CalendarPageState>(
     CalendarPageState()
 ) {
 
     init {
         initGetCalendarList(LocalDate.now())
+        initGetMember()
+    }
+
+    private fun initGetMember() {
+        viewModelScope.launch {
+            getMemberUseCase(Unit).collect { resultResponse(it, ::onSuccessGetMember) }
+        }
+    }
+
+    private fun onSuccessGetMember(data: GetMemberModel) {
+        updateState(
+            uiState.value.copy(
+                dollType = data.dollType
+            )
+        )
     }
 
     private fun initGetCalendarList(yearMonth: LocalDate) {

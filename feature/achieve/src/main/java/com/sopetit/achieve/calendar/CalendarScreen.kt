@@ -74,6 +74,7 @@ import com.sopetit.domain.entity.response.calendar.CalendarModel
 import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.ui.common.content.DashedDivider
+import com.sopetit.ui.common.type.BearType
 import com.sopetit.ui.common.type.ThemeIconType
 import com.sopetit.ui.util.generateCalendarDays
 import com.sopetit.ui.util.setAfterYearMonth
@@ -149,7 +150,8 @@ fun CalendarScreen(
             )
         },
         onClickMemoBtn = { showMemoWriteBottomSheet() },
-        onClickMemo = { showMemoDetailBottomSheet(it) }
+        onClickMemo = { showMemoDetailBottomSheet(it) },
+        dollImg = BearType.getDollFace(uiState.dollType)
     )
 }
 
@@ -170,6 +172,7 @@ fun CalendarContent(
     onClickRoutineDelete: (RoutineType, CalendarHistoryItemModel) -> Unit = { type, item -> },
     onClickMemoBtn: () -> Unit = {},
     onClickMemo: (MemoActionModel) -> Unit = {},
+    dollImg: Int = R.drawable.ic_brown_face,
 ) {
     Column(
         modifier = Modifier
@@ -203,7 +206,8 @@ fun CalendarContent(
             onClickRoutineDelete = onClickRoutineDelete,
             interactionSource = interactionSource,
             onClickMemoBtn = onClickMemoBtn,
-            onClickMemo = onClickMemo
+            onClickMemo = onClickMemo,
+            dollImg = dollImg
         )
     }
 }
@@ -418,6 +422,7 @@ fun CalendarDateDetailInfo(
     interactionSource: MutableInteractionSource,
     onClickMemoBtn: () -> Unit,
     onClickMemo: (MemoActionModel) -> Unit,
+    dollImg: Int,
 ) {
     Divider(
         modifier = Modifier
@@ -487,7 +492,8 @@ fun CalendarDateDetailInfo(
             dateItem = dateItem,
             onClickRoutineDelete = onClickRoutineDelete,
             interactionSource = interactionSource,
-            onClickMemo = onClickMemo
+            onClickMemo = onClickMemo,
+            dollImg = dollImg
         )
     }
 }
@@ -498,6 +504,7 @@ fun CalendarDateRoutineAchieve(
     onClickRoutineDelete: (RoutineType, CalendarHistoryItemModel) -> Unit,
     interactionSource: MutableInteractionSource,
     onClickMemo: (MemoActionModel) -> Unit,
+    dollImg: Int,
 ) {
     Column(
         modifier = Modifier
@@ -515,7 +522,8 @@ fun CalendarDateRoutineAchieve(
                             content = dateItem.memoContent
                         )
                     )
-                }
+                },
+                dollImg = dollImg
             )
         }
 
@@ -534,6 +542,7 @@ fun CalendarDateMemoBox(
     memo: String,
     onClickAction: () -> Unit,
     interactionSource: MutableInteractionSource,
+    dollImg: Int,
 ) {
     Column(
         modifier = Modifier
@@ -559,7 +568,13 @@ fun CalendarDateMemoBox(
                     .clip(CircleShape)
                     .background(Gray200)
             ) {
-                // TODO 아이콘
+                Image(
+                    painter = painterResource(id = dollImg),
+                    contentDescription = "doll img",
+                    modifier = Modifier
+                        .size(29.dp)
+                        .align(Alignment.Center)
+                )
             }
 
             Text(
