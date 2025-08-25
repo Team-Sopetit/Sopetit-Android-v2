@@ -522,7 +522,7 @@ fun AlarmTimeItem(
     LazyColumn(
         state = listState,
         modifier = modifier
-            .height(itemHeight * visibleItemsCount)
+            .height(itemHeight * visibleItemsCount + 5.dp)
             .fadingEdge(fadingEdgeGradient),
         flingBehavior = flingBehavior
     ) {
@@ -539,7 +539,7 @@ fun AlarmTimeItem(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(itemHeight),
+                    .height(itemHeight + 5.dp),
                 contentAlignment = Alignment.Center
             ) {
                 if (item != ZeroString) {
