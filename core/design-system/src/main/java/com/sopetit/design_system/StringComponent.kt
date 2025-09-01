@@ -3,6 +3,8 @@ package com.sopetit.design_system
 // Common
 const val Softie = "소프티"
 const val Empty = ""
+const val Blank = " "
+const val Colon = ":"
 const val Question = "?"
 const val Home = "홈"
 const val Progress = "진행 중"

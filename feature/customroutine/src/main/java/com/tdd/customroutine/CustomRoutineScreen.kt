@@ -51,6 +51,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.AlarmTitle
+import com.sopetit.design_system.Blank
+import com.sopetit.design_system.Colon
+import com.sopetit.design_system.Empty
 import com.sopetit.design_system.FinishContent
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
@@ -81,7 +84,7 @@ import com.sopetit.ui.util.fadingEdge
 fun CustomRoutineScreen(
     goToProgressPage: () -> Unit,
     modifyRoutineModel: ModifyRoutineModel?,
-    goBackPage: () -> Unit
+    goBackPage: () -> Unit,
 ) {
 
     val viewModel: CustomRoutineViewModel = hiltViewModel()
@@ -93,18 +96,18 @@ fun CustomRoutineScreen(
     val timeState = rememberLazyListState(initialFirstVisibleItemIndex = 2)
 
     if (modifyRoutineModel != null) {
-        viewModel.setModifyRoutine(modifyRoutineModel)
+        LaunchedEffect(modifyRoutineModel) {
+            viewModel.setModifyRoutine(modifyRoutineModel)
 
-        if (!modifyRoutineModel.alarmTime.isNullOrEmpty()) {
-            viewModel.updateAlarmActivated(true)
+            if (!modifyRoutineModel.alarmTime.isNullOrEmpty()) {
+                viewModel.updateAlarmActivated(true)
 
-            val time = convertToAmPmFormat(modifyRoutineModel.alarmTime ?: return)
-            val timePart = time.split(" ", ":")
-            val amPm = timePart.getOrNull(0) ?: return
-            val hour = timePart.getOrNull(1)?.toIntOrNull() ?: return
-            val minute = timePart.getOrNull(2) ?: return
+                val time = convertToAmPmFormat(modifyRoutineModel.alarmTime ?: Empty)
+                val timePart = time.split(Blank, Colon)
+                val amPm = timePart.getOrNull(0) ?: Empty
+                val hour = timePart.getOrNull(1)?.toIntOrNull() ?: 0
+                val minute = timePart.getOrNull(2) ?: Empty
 
-            LaunchedEffect(Unit) {
                 timeState.scrollToItem(viewModel.convertTimeState(amPm))
                 hourState.scrollToItem(hour - 1)
                 minuteState.scrollToItem(viewModel.convertMinuteState(minute))
@@ -161,7 +164,7 @@ fun CustomRoutineContent(
     minuteState: LazyListState = LazyListState(),
     timeState: LazyListState = LazyListState(),
     modifyRoutineModel: ModifyRoutineModel? = null,
-    onClickBack: () -> Unit = {}
+    onClickBack: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier

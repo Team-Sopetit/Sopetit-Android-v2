@@ -18,6 +18,7 @@ import com.sopetit.domain.usecase.customroutine.PostCreateCustomRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,10 +32,11 @@ class CustomRoutineViewModel @Inject constructor(
     fun setModifyRoutine(modifyRoutineModel: ModifyRoutineModel) {
         updateState(
             uiState.value.copy(
-                selectedThemeId = modifyRoutineModel.routineId,
+                selectedThemeId = modifyRoutineModel.themeId,
                 routineWriteInput = modifyRoutineModel.content,
                 modifyType = modifyRoutineModel.routineType,
-                customScreenType = modifyRoutineModel.customScreenType
+                customScreenType = modifyRoutineModel.customScreenType,
+                modifyRoutine = modifyRoutineModel
             )
         )
     }
@@ -86,7 +88,7 @@ class CustomRoutineViewModel @Inject constructor(
         viewModelScope.launch {
             modifyCustomRoutineUseCase(
                 ModifyCustomRoutineRequestModel(
-                    uiState.value.selectedThemeId,
+                    uiState.value.modifyRoutine.routineId,
                     CustomRoutineRequestModel(
                         uiState.value.routineWriteInput,
                         uiState.value.selectedThemeId,
