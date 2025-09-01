@@ -200,7 +200,8 @@ fun NavGraphBuilder.achieveNavGraph(
         composable(NavRoutes.AchieveRoutineScreen.route) {
             AchieveRoutineScreen(
                 achieveThemeId = achieveThemeId,
-                goToAddRoutinePage = { navController.navigate(NavRoutes.AddRoutineScreen.route) }
+                goToAddRoutinePage = { navController.navigate(NavRoutes.AddRoutineScreen.route) },
+                goBackToAchievePage = { navController.popBackStack() }
             )
         }
     }
@@ -262,7 +263,8 @@ fun NavGraphBuilder.addRoutineNavGraph(
                 },
                 goToCustomRoutinePage = {
                     navController.navigate(NavRoutes.CustomRoutineScreen.setRouteModel(null))
-                }
+                },
+                goBackToProgressPage = { navController.popBackStack() }
             )
         }
 
@@ -294,14 +296,16 @@ fun NavGraphBuilder.customRoutineNavGraph(
 
             CustomRoutineScreen(
                 goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
-                modifyRoutineModel = data
+                modifyRoutineModel = data,
+                goBackPage = { navController.popBackStack() }
             )
         }
 
         composable(route = NavRoutes.CustomRoutineScreen.route) {
             CustomRoutineScreen(
                 goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
-                modifyRoutineModel = null
+                modifyRoutineModel = null,
+                goBackPage = { navController.popBackStack() }
             )
         }
     }

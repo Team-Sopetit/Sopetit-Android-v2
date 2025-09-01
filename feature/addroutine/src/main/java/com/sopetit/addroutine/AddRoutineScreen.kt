@@ -51,6 +51,7 @@ import com.sopetit.ui.common.type.ThemeIconType
 fun AddRoutineScreen(
     goToDetailPage: (ThemeListItemModel) -> Unit,
     goToCustomRoutinePage: () -> Unit,
+    goBackToProgressPage: () -> Unit
 ) {
 
     val viewModel: AddRoutineViewModel = hiltViewModel()
@@ -62,7 +63,8 @@ fun AddRoutineScreen(
         routineThemeList = uiState.routineThemeList,
         onClickTheme = { goToDetailPage(it) },
         interactionSource = interactionSource,
-        onClickCustomRoutine = { goToCustomRoutinePage() }
+        onClickCustomRoutine = { goToCustomRoutinePage() },
+        onClickBackBtn = { goBackToProgressPage() }
     )
 }
 
@@ -72,6 +74,7 @@ fun AddRoutineContent(
     onClickTheme: (ThemeListItemModel) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     onClickCustomRoutine: () -> Unit = {},
+    onClickBackBtn: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -90,6 +93,11 @@ fun AddRoutineContent(
                     .padding(start = 20.dp)
                     .align(Alignment.CenterStart)
                     .size(28.dp)
+                    .clickable(
+                        indication = null,
+                        onClick = onClickBackBtn,
+                        interactionSource = interactionSource
+                    )
             )
 
             Text(

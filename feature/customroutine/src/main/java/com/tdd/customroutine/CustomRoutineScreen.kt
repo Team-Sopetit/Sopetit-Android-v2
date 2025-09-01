@@ -81,6 +81,7 @@ import com.sopetit.ui.util.fadingEdge
 fun CustomRoutineScreen(
     goToProgressPage: () -> Unit,
     modifyRoutineModel: ModifyRoutineModel?,
+    goBackPage: () -> Unit
 ) {
 
     val viewModel: CustomRoutineViewModel = hiltViewModel()
@@ -135,20 +136,14 @@ fun CustomRoutineScreen(
                     TimeDayType.getDayData(timeState.firstVisibleItemIndex)
                 )
             )
-//            viewModel.createCustomRoutine(
-//                convertTo24HourFormat(
-//                    hourState.firstVisibleItemIndex + 1,
-//                    TimeMinuteType.getMinuteData(minuteState.firstVisibleItemIndex),
-//                    TimeDayType.getDayData(timeState.firstVisibleItemIndex)
-//                )
-//            )
         },
         onActivateAlarm = { viewModel.updateAlarmActivated(!uiState.isAlarmActivated) },
         isAlarmActivated = uiState.isAlarmActivated,
         hourState = hourState,
         minuteState = minuteState,
         timeState = timeState,
-        modifyRoutineModel = modifyRoutineModel
+        modifyRoutineModel = modifyRoutineModel,
+        onClickBack = { goBackPage() }
     )
 }
 
@@ -166,6 +161,7 @@ fun CustomRoutineContent(
     minuteState: LazyListState = LazyListState(),
     timeState: LazyListState = LazyListState(),
     modifyRoutineModel: ModifyRoutineModel? = null,
+    onClickBack: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -182,6 +178,11 @@ fun CustomRoutineContent(
                     .align(Alignment.CenterStart)
                     .padding(top = 14.dp, bottom = 14.dp, start = 20.dp)
                     .size(28.dp)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = onClickBack
+                    )
             )
 
             FinishBtn(
