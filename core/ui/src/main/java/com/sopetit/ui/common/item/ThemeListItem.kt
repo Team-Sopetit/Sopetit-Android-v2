@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
+import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.SoftieTypo
@@ -30,6 +31,7 @@ fun ThemeListItem(
     themeItemIcon: Int = -1,
     onClick: () -> Unit = {},
     isSelectedTheme: Boolean = false,
+    isClickEnabled: Boolean = true
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -38,7 +40,8 @@ fun ThemeListItem(
         themeName = themeName,
         themeItemIcon = themeItemIcon,
         onClick = onClick,
-        isSelectedTheme = isSelectedTheme
+        isSelectedTheme = isSelectedTheme,
+        isClickEnabled = isClickEnabled
     )
 }
 
@@ -48,7 +51,8 @@ fun ThemeListItemContent(
     themeItemIcon: Int,
     onClick: () -> Unit,
     isSelectedTheme: Boolean,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
+    isClickEnabled: Boolean
 ) {
     Row(
         modifier = Modifier
@@ -59,7 +63,8 @@ fun ThemeListItemContent(
             .clickable(
                 onClick = onClick,
                 interactionSource = interactionSource,
-                indication = null
+                indication = null,
+                enabled = isClickEnabled
             )
     ) {
         Image(
@@ -73,7 +78,7 @@ fun ThemeListItemContent(
 
         Text(
             text = themeName,
-            color = Gray700,
+            color = if (isClickEnabled) Gray700 else Gray400,
             style = SoftieTypo.body1,
             modifier = Modifier
                 .padding(vertical = 15.dp)

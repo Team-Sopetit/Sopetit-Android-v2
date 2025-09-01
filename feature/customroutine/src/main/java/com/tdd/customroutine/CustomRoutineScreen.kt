@@ -64,6 +64,7 @@ import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.Red200
+import com.sopetit.design_system.RoutineModifyDisabled
 import com.sopetit.design_system.RoutineTitle
 import com.sopetit.design_system.RoutineWriteHint
 import com.sopetit.design_system.RoutineWriteLengthOver
@@ -71,6 +72,8 @@ import com.sopetit.design_system.SoftieTypo
 import com.sopetit.design_system.Switch
 import com.sopetit.design_system.ThemeTitle
 import com.sopetit.design_system.ZeroString
+import com.sopetit.domain.entity.enums.CustomScreenType
+import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
 import com.sopetit.ui.common.item.ThemeListItem
 import com.sopetit.ui.common.type.ThemeIconType
@@ -146,7 +149,8 @@ fun CustomRoutineScreen(
         minuteState = minuteState,
         timeState = timeState,
         modifyRoutineModel = modifyRoutineModel,
-        onClickBack = { goBackPage() }
+        onClickBack = { goBackPage() },
+        isModifyDisabled = (uiState.customScreenType == CustomScreenType.Modify && uiState.modifyType != RoutineType.Custom)
     )
 }
 
@@ -165,6 +169,7 @@ fun CustomRoutineContent(
     timeState: LazyListState = LazyListState(),
     modifyRoutineModel: ModifyRoutineModel? = null,
     onClickBack: () -> Unit = {},
+    isModifyDisabled: Boolean = false,
 ) {
     Column(
         modifier = Modifier
@@ -200,12 +205,14 @@ fun CustomRoutineContent(
 
         CustomRoutineWrite(
             textInput = routineWriteInput,
-            onValueChange = onRoutineValueChange
+            onValueChange = onRoutineValueChange,
+            isModifyDisabled = isModifyDisabled
         )
 
         CustomRoutineTheme(
             onSelectThemeId = onSelectThemeId,
-            selectedThemeId = selectedThemeId
+            selectedThemeId = selectedThemeId,
+            isModifyDisabled = isModifyDisabled
         )
 
         CustomRoutineAlarm(
@@ -251,6 +258,7 @@ fun FinishBtn(
 fun CustomRoutineWrite(
     textInput: String,
     onValueChange: (String) -> Unit,
+    isModifyDisabled: Boolean,
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
@@ -289,7 +297,7 @@ fun CustomRoutineWrite(
 
     Row(
         modifier = Modifier
-            .padding(top = 6.dp, bottom = 19.dp, start = 20.dp, end = 20.dp)
+            .padding(top = 6.dp, start = 20.dp, end = 20.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(Gray0)
@@ -302,16 +310,18 @@ fun CustomRoutineWrite(
         BasicTextField(
             value = textInput,
             onValueChange = { input ->
-                onValueChange(input)
+                if (!isModifyDisabled) onValueChange(input)
             },
             modifier = Modifier
                 .padding(16.dp)
                 .weight(1f)
                 .onFocusChanged { focusState ->
-                    isFocused = focusState.isFocused
+                    if (!isModifyDisabled) {
+                        isFocused = focusState.isFocused
+                    }
                 },
             textStyle = SoftieTypo.body2.copy(
-                color = Gray700,
+                color = if (isModifyDisabled) Gray400 else Gray700,
                 textAlign = TextAlign.Start
             ),
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -322,6 +332,7 @@ fun CustomRoutineWrite(
                     focusManager.clearFocus()
                 }
             ),
+            readOnly = isModifyDisabled,
             decorationBox = { innerTextField ->
                 Box(
                     modifier = Modifier
@@ -350,6 +361,16 @@ fun CustomRoutineWrite(
             )
         }
     }
+
+    if (isModifyDisabled) {
+        Text(
+            text = RoutineModifyDisabled,
+            color = Red200,
+            style = SoftieTypo.caption1,
+            modifier = Modifier
+                .padding(top = 6.dp, start = 20.dp)
+        )
+    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -357,6 +378,7 @@ fun CustomRoutineWrite(
 fun CustomRoutineTheme(
     onSelectThemeId: (Int) -> Unit,
     selectedThemeId: Int,
+    isModifyDisabled: Boolean,
 ) {
     Text(
         text = ThemeTitle,
@@ -382,7 +404,8 @@ fun CustomRoutineTheme(
                     themeName = theme.themeName,
                     themeItemIcon = theme.themeIcon,
                     onClick = { onSelectThemeId(theme.themeId) },
-                    isSelectedTheme = (selectedThemeId == theme.themeId)
+                    isSelectedTheme = (selectedThemeId == theme.themeId),
+                    isClickEnabled = !isModifyDisabled
                 )
             }
         }
