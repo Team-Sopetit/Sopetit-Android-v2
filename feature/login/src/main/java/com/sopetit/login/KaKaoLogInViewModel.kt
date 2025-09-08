@@ -8,7 +8,6 @@ import com.sopetit.domain.entity.response.auth.LogInResponseModel
 import com.sopetit.domain.entity.response.auth.TokenStoreModel
 import com.sopetit.domain.usecase.auth.PostLogInUseCase
 import com.sopetit.domain.usecase.auth.SaveTokenUseCase
-import com.sopetit.domain.usecase.member.PostFcmTokenUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,7 +19,6 @@ class KaKaoLogInViewModel @Inject constructor(
     private val kakaoLoginService: KaKaoLogInService,
     private val postLogInUseCase: PostLogInUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
-    private val postFcmTokenUseCase: PostFcmTokenUseCase
 ) : BaseViewModel<KaKaoLogInPageState>(
     KaKaoLogInPageState()
 ) {
@@ -67,16 +65,7 @@ class KaKaoLogInViewModel @Inject constructor(
                 )
             ).collect { resultResponse(it, {}) }
 
-            postFcmToken(data.isMemberDollExist)
-//            setDestination(data.isMemberDollExist)
-        }
-    }
-
-    private fun postFcmToken(data: Boolean) {
-        viewModelScope.launch {
-            postFcmTokenUseCase(Unit).collect{ resultResponse(it, {} )}
-
-            setDestination(data)
+            setDestination(data.isMemberDollExist)
         }
     }
 

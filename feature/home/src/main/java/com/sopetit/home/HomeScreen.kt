@@ -80,6 +80,12 @@ fun HomeScreen(
         }
     }
 
+    LaunchedEffect(permissionState.status.isGranted) {
+        if (permissionState.status.isGranted) {
+            viewModel.postFCMToken()
+        }
+    }
+
     LaunchedEffect(isTutorialValid) {
         isTutorialValid.collect {
             if (it) {

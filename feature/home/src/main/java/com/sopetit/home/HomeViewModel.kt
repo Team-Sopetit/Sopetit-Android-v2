@@ -7,6 +7,7 @@ import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.usecase.member.GetMemberUseCase
 import com.sopetit.domain.usecase.member.PatchCottonUseCase
+import com.sopetit.domain.usecase.member.PostFcmTokenUseCase
 import com.sopetit.ui.base.BaseViewModel
 import com.sopetit.ui.common.type.BearType
 import com.sopetit.ui.common.type.CottonType
@@ -18,7 +19,8 @@ import kotlin.random.Random
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMemberUseCase: GetMemberUseCase,
-    private val patchCottonUseCase: PatchCottonUseCase
+    private val patchCottonUseCase: PatchCottonUseCase,
+    private val postFcmTokenUseCase: PostFcmTokenUseCase
 ) : BaseViewModel<HomePageState>(
     HomePageState()
 ) {
@@ -139,5 +141,11 @@ class HomeViewModel @Inject constructor(
                 happinessCottonCount = data
             )
         )
+    }
+
+    fun postFCMToken() {
+        viewModelScope.launch {
+            postFcmTokenUseCase(Unit).collect{ resultResponse(it, {} )}
+        }
     }
 }
