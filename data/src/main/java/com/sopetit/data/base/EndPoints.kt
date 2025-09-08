@@ -5,6 +5,7 @@ object EndPoints {
     object Auth {
         private const val AUTH = "/api/v1/auth"
         const val LOGIN = AUTH
+        const val REISSUE = "$AUTH/token"
     }
 
     object Theme {
