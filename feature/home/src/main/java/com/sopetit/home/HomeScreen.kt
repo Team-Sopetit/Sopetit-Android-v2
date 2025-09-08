@@ -1,5 +1,6 @@
 package com.sopetit.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,6 +43,9 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.sopetit.design_system.Brown100
 import com.sopetit.design_system.Brown200
 import com.sopetit.design_system.Gray0
@@ -57,6 +61,7 @@ import com.sopetit.ui.common.type.CottonType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit = {},
@@ -67,6 +72,13 @@ fun HomeScreen(
     val interactionSource = remember { MutableInteractionSource() }
 
     val eatingLottieSpec = remember { mutableStateOf<LottieCompositionSpec?>(null) }
+    val permissionState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+    LaunchedEffect(Unit) {
+        if (!permissionState.status.isGranted) {
+            permissionState.launchPermissionRequest()
+        }
+    }
 
     LaunchedEffect(isTutorialValid) {
         isTutorialValid.collect {
