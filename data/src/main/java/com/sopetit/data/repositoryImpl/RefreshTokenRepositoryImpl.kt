@@ -17,7 +17,7 @@ class RefreshTokenRepositoryImpl @Inject constructor(
     override suspend fun refreshToken(): Flow<Result<AccessToken>> =
         RefreshTokenMapper.responseToModel(apiCall = { refreshDataSource.postRefreshToken() })
 
-    override suspend fun saveToken(request: String): Flow<Result<Unit>> = flow {
+    override suspend fun saveAccessToken(request: String): Flow<Result<Unit>> = flow {
         localDataStore.saveAccessToken(request)
     }
 }

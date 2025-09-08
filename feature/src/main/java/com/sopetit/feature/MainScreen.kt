@@ -82,6 +82,7 @@ import com.sopetit.ui.common.bottomsheet.TwoBtnDetailBottomSheet
 import com.sopetit.ui.common.item.CommonSnackBar
 import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
+import com.sopetit.ui.util.CommonEventManager
 import com.sopetit.ui.util.DismissKeyboardOnClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -160,6 +161,14 @@ fun MainScreen() {
     val setAchieveThemeId: (Int) -> Unit = {
         scope.launch {
             viewModel.achieveThemeId.emit(it)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        CommonEventManager.logoutTriggerFlow.collect {
+            navController.navigate(NavRoutes.LogInGraph.route) {
+                popUpTo(0) { inclusive = true }
+            }
         }
     }
 

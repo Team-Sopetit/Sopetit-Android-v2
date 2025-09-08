@@ -8,6 +8,7 @@ import com.sopetit.data.repositoryImpl.MemberChallengeRepositoryImpl
 import com.sopetit.data.repositoryImpl.MemberRepositoryImpl
 import com.sopetit.data.repositoryImpl.MemberRoutineRepositoryImpl
 import com.sopetit.data.repositoryImpl.MemoRepositoryImpl
+import com.sopetit.data.repositoryImpl.RefreshTokenRepositoryImpl
 import com.sopetit.data.repositoryImpl.RoutineRepositoryImpl
 import com.sopetit.data.repositoryImpl.ThemeRepositoryImpl
 import com.sopetit.domain.repository.AchieveRepository
@@ -18,6 +19,7 @@ import com.sopetit.domain.repository.MemberChallengeRepository
 import com.sopetit.domain.repository.MemberRepository
 import com.sopetit.domain.repository.MemberRoutineRepository
 import com.sopetit.domain.repository.MemoRepository
+import com.sopetit.domain.repository.RefreshTokenRepository
 import com.sopetit.domain.repository.RoutineRepository
 import com.sopetit.domain.repository.ThemeRepository
 import dagger.Binds
@@ -33,6 +35,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsAuthRepository(repositoryImpl: AuthRepositoryImpl): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsRefreshRepository(repositoryImpl: RefreshTokenRepositoryImpl): RefreshTokenRepository
 
     @Binds
     @Singleton

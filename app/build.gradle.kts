@@ -35,6 +35,7 @@ dependencies {
     implementation(projects.core)
     implementation(projects.core.firebase)
     implementation(projects.data)
+    implementation(projects.core.ui)
 
     implementation(libs.gson)
     implementation(libs.retrofit.gson)

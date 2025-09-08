@@ -8,6 +8,7 @@ import com.sopetit.data.service.MemberChallengeService
 import com.sopetit.data.service.MemberRoutineService
 import com.sopetit.data.service.MemberService
 import com.sopetit.data.service.MemoService
+import com.sopetit.data.service.RefreshTokenService
 import com.sopetit.data.service.RoutineService
 import com.sopetit.data.service.ThemeService
 import dagger.Module
@@ -23,6 +24,11 @@ object ServiceModule {
     @Provides
     fun provideAuthService(@SoftieRetrofit retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
+    }
+
+    @Provides
+    fun provideRefreshService(@RefreshTokenRetrofit retrofit: Retrofit): RefreshTokenService {
+        return retrofit.create(RefreshTokenService::class.java)
     }
 
     @Provides

@@ -11,6 +11,6 @@ class GetTokenUseCase @Inject constructor(
 ): UseCase<Unit, TokenStoreModel>() {
 
     override suspend fun invoke(request: Unit): Flow<TokenStoreModel> {
-        TODO("Not yet implemented")
+        return authRepository.getToken()
     }
 }
