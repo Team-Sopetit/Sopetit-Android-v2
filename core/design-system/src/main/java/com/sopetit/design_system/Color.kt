@@ -71,3 +71,4 @@ val Brown200 = Color(0xFFC4AC98)
 // Add
 val SplashBottom = Color(0xFFCEB59E)
 val ThemeChoiceSpeechHighLight = Color(0xFFC0804C)
+val Switch = Color(0x16787880)

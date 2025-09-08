@@ -3,6 +3,8 @@ package com.sopetit.achieve.routine
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,9 +62,12 @@ import kotlinx.coroutines.flow.SharedFlow
 fun AchieveRoutineScreen(
     achieveThemeId: SharedFlow<Int>,
     goToAddRoutinePage: () -> Unit,
+    goBackToAchievePage: () -> Unit
 ) {
     val viewModel: AchieveRoutineViewModel = hiltViewModel()
     val uiState: AchieveRoutinePageState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val interactionSource = remember { MutableInteractionSource() }
 
     LaunchedEffect(achieveThemeId) {
         achieveThemeId.collect {
@@ -72,7 +78,9 @@ fun AchieveRoutineScreen(
     AchieveRoutineContent(
         achieveRoutine = uiState.achieveRoutine,
         achieveThemeId = uiState.achieveThemeId,
-        onClickAddRoutine = { goToAddRoutinePage() }
+        onClickAddRoutine = { goToAddRoutinePage() },
+        onClickBackBtn = { goBackToAchievePage() },
+        interactionSource = interactionSource
     )
 }
 
@@ -81,6 +89,8 @@ fun AchieveRoutineContent(
     achieveRoutine: AchieveRoutineModel = AchieveRoutineModel(),
     achieveThemeId: Int = 0,
     onClickAddRoutine: () -> Unit = {},
+    onClickBackBtn: () -> Unit = {},
+    interactionSource: MutableInteractionSource = MutableInteractionSource()
 ) {
     Column(
         modifier = Modifier
@@ -108,6 +118,11 @@ fun AchieveRoutineContent(
                     .padding(start = 20.dp)
                     .size(28.dp)
                     .align(Alignment.CenterStart)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = onClickBackBtn
+                    )
             )
         }
 

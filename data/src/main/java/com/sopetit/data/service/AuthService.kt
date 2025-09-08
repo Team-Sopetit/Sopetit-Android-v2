@@ -12,6 +12,6 @@ interface AuthService {
 
     @POST(EndPoints.Auth.LOGIN)
     suspend fun login(
-        @Body body: LogInRequestDto
+        @Body body: LogInRequestDto,
     ): Response<BaseResponse<LogInResponseDto>>
 }

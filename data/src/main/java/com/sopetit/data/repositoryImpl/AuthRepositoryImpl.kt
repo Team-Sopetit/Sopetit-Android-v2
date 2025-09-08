@@ -9,19 +9,33 @@ import com.sopetit.domain.entity.response.auth.LogInResponseModel
 import com.sopetit.domain.entity.response.auth.TokenStoreModel
 import com.sopetit.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource,
-    private val localDataStore: LocalDataStore
+    private val localDataStore: LocalDataStore,
 ) : AuthRepository {
     override suspend fun postLogIn(request: LogInRequestModel): Flow<Result<LogInResponseModel>> =
-        LogInMapper.responseToModel(apiCall = { authDataSource.postLogIn(request.toDto()) } )
+        LogInMapper.responseToModel(apiCall = { authDataSource.postLogIn(request.toDto()) })
 
     override suspend fun saveToken(request: TokenStoreModel): Flow<Result<Unit>> = flow {
         localDataStore.saveAccessToken(request.accessToken)
         localDataStore.saveRefreshToken(request.refreshToken)
         localDataStore.saveIsMemberDollExist(request.isMemberDollExist)
     }
+
+    override suspend fun getToken(): Flow<TokenStoreModel> =
+        combine(
+            localDataStore.accessToken,
+            localDataStore.refreshToken,
+            localDataStore.isMemberDollExist
+        ) { accessToken, refreshToken, isDollExist ->
+            TokenStoreModel(
+                accessToken = accessToken.orEmpty(),
+                refreshToken = refreshToken.orEmpty(),
+                isMemberDollExist = isDollExist ?: false
+            )
+        }
 }

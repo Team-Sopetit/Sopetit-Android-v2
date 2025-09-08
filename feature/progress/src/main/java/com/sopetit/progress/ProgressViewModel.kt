@@ -1,10 +1,14 @@
 package com.sopetit.progress
 
 import androidx.lifecycle.viewModelScope
+import com.sopetit.domain.entity.enums.CustomScreenType
 import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.memberroutine.AchieveDailyRoutineModel
 import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineTotalModel
+import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
+import com.sopetit.domain.usecase.customroutine.DeleteCustomRoutineUseCase
 import com.sopetit.domain.usecase.memberchallenge.AchieveMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.DeleteMemberChallengeUseCase
 import com.sopetit.domain.usecase.memberchallenge.GetMemberChallengeUseCase
@@ -23,7 +27,8 @@ class ProgressViewModel @Inject constructor(
     private val deleteMemberDailyRoutineUseCase: DeleteMemberDailyRoutineUseCase,
     private val deleteMemberChallengeUseCase: DeleteMemberChallengeUseCase,
     private val achieveMemberChallengeUseCase: AchieveMemberChallengeUseCase,
-    private val achieveDailyRoutineUseCase: AchieveDailyRoutineUseCase
+    private val achieveDailyRoutineUseCase: AchieveDailyRoutineUseCase,
+    private val deleteCustomRoutineUseCase: DeleteCustomRoutineUseCase,
 ) : BaseViewModel<ProgressPageState>(
     ProgressPageState()
 ) {
@@ -66,9 +71,11 @@ class ProgressViewModel @Inject constructor(
     }
 
     fun deleteRoutine(routineType: RoutineType, routineId: Int) {
-        if (routineType == RoutineType.Daily)
-            deleteDailyRoutine(routineId)
-        else deleteChallengeRoutine()
+        when (routineType) {
+            RoutineType.Daily -> deleteDailyRoutine(routineId)
+            RoutineType.Challenge -> deleteChallengeRoutine()
+            RoutineType.Custom -> deleteCustomRoutine(routineId)
+        }
     }
 
     private fun deleteDailyRoutine(routineId: Int) {
@@ -87,6 +94,33 @@ class ProgressViewModel @Inject constructor(
                 resultResponse(it, { initGetMemberChallenge() })
             }
         }
+    }
+
+    private fun deleteCustomRoutine(routineId: Int) {
+        viewModelScope.launch {
+            deleteCustomRoutineUseCase(routineId).collect {
+                resultResponse(
+                    it,
+                    { initGetMemberDailyRoutine() })
+            }
+        }
+    }
+
+    fun convertForModifyScreen(modRoutine: RoutineDetailModel): ModifyRoutineModel {
+        val themeId = uiState.value.memberDailyRoutineList.firstOrNull { member ->
+            member.routines.any { it.routineId == modRoutine.routineId }
+        }?.themeId ?: 0
+
+        val modifyModel = ModifyRoutineModel(
+            routineId = modRoutine.routineId,
+            routineType = modRoutine.routineType,
+            customScreenType = CustomScreenType.Modify,
+            content = modRoutine.content,
+            alarmTime = modRoutine.alarmTime,
+            themeId = themeId
+        )
+
+        return modifyModel
     }
 
     fun achieveChallengeRoutine() {

@@ -3,8 +3,11 @@ package com.sopetit.navigation
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.google.gson.Gson
 import com.sopetit.achieve.AchieveScreen
 import com.sopetit.achieve.routine.AchieveRoutineScreen
 import com.sopetit.addroutine.AddRoutineScreen
@@ -12,6 +15,7 @@ import com.sopetit.addroutine.detail.AddRoutineDetailScreen
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
+import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
@@ -26,7 +30,7 @@ import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
 import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
-import kotlinx.coroutines.flow.MutableSharedFlow
+import com.tdd.customroutine.CustomRoutineScreen
 import kotlinx.coroutines.flow.SharedFlow
 
 fun NavGraphBuilder.splashNavGraph(
@@ -38,7 +42,8 @@ fun NavGraphBuilder.splashNavGraph(
     ) {
         composable(NavRoutes.SplashScreen.route) {
             SplashScreen(
-                goToKaKaoLogIn = { navController.navigate(NavRoutes.LogInScreen.route) }
+                goToKaKaoLogIn = { navController.navigate(NavRoutes.LogInScreen.route) },
+                goToHome = { navController.navigate(NavRoutes.HomeScreen.route) { popUpTo(0) } }
             )
         }
     }
@@ -172,7 +177,7 @@ fun NavGraphBuilder.achieveNavGraph(
     showMemoDetailBottomSheet: (MemoActionModel) -> Unit,
     memoActionModel: SharedFlow<MemoActionModel>,
     setAchieveThemeId: (Int) -> Unit,
-    achieveThemeId: SharedFlow<Int>
+    achieveThemeId: SharedFlow<Int>,
 ) {
     navigation(
         startDestination = NavRoutes.AchieveScreen.route,
@@ -196,7 +201,8 @@ fun NavGraphBuilder.achieveNavGraph(
         composable(NavRoutes.AchieveRoutineScreen.route) {
             AchieveRoutineScreen(
                 achieveThemeId = achieveThemeId,
-                goToAddRoutinePage = { navController.navigate(NavRoutes.AddRoutineScreen.route) }
+                goToAddRoutinePage = { navController.navigate(NavRoutes.AddRoutineScreen.route) },
+                goBackToAchievePage = { navController.popBackStack() }
             )
         }
     }
@@ -204,8 +210,10 @@ fun NavGraphBuilder.achieveNavGraph(
 
 fun NavGraphBuilder.progressNavGraph(
     navController: NavHostController,
-    showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    showChallengeRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    showDailyRoutineBottomSheet: (RoutineDetailModel) -> Unit,
     deleteRoutineId: SharedFlow<RoutineDetailModel>,
+    modRoutine: SharedFlow<RoutineDetailModel>,
     showChallengeAchieveSom: (Boolean) -> Unit,
     showChallengeDailySom: (Boolean) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
@@ -217,14 +225,19 @@ fun NavGraphBuilder.progressNavGraph(
     ) {
         composable(NavRoutes.ProgressScreen.route) {
             ProgressScreen(
-                showRoutineBottomSheet = showRoutineBottomSheet,
+                showChallengeRoutineBottomSheet = showChallengeRoutineBottomSheet,
+                showDailyRoutineBottomSheet = showDailyRoutineBottomSheet,
                 deleteRoutineId = deleteRoutineId,
+                modRoutine = modRoutine,
                 showChallengeAchieveSom = showChallengeAchieveSom,
                 showChallengeDailySom = showChallengeDailySom,
                 showSnackBar = showSnackBar,
                 showTooltip = showToolTip,
                 goToAddRoutinePage = {
                     navController.navigate(NavRoutes.AddRoutineScreen.route)
+                },
+                goToModifyRoutinePage = {
+                    navController.navigate(NavRoutes.CustomRoutineScreen.setRouteModel(it))
                 }
             )
         }
@@ -248,7 +261,11 @@ fun NavGraphBuilder.addRoutineNavGraph(
                 goToDetailPage = {
                     setSelectedThemeId(it)
                     navController.navigate(NavRoutes.AddRoutineDetailScreen.route)
-                }
+                },
+                goToCustomRoutinePage = {
+                    navController.navigate(NavRoutes.CustomRoutineScreen.setRouteModel(null))
+                },
+                goBackToProgressPage = { navController.popBackStack() }
             )
         }
 
@@ -259,6 +276,37 @@ fun NavGraphBuilder.addRoutineNavGraph(
                 showSnackBar = showSnackBar,
                 showChallengeChangeBottomSheet = showChallengeChangeBottomSheet,
                 goBackToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) }
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.customRoutineNavGraph(
+    navController: NavHostController,
+) {
+    navigation(
+        startDestination = NavRoutes.CustomRoutineScreen.route,
+        route = NavRoutes.CustomRoutineGraph.route
+    ) {
+        composable(
+            route = NavRoutes.CustomRoutineScreen.routeWithParam,
+            arguments = listOf(navArgument("data") { type = NavType.StringType })
+        ) {
+            val json = it.arguments?.getString("data")
+            val data = Gson().fromJson(json, ModifyRoutineModel::class.java)
+
+            CustomRoutineScreen(
+                goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
+                modifyRoutineModel = data,
+                goBackPage = { navController.popBackStack() }
+            )
+        }
+
+        composable(route = NavRoutes.CustomRoutineScreen.route) {
+            CustomRoutineScreen(
+                goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
+                modifyRoutineModel = null,
+                goBackPage = { navController.popBackStack() }
             )
         }
     }

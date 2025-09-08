@@ -3,6 +3,8 @@ package com.sopetit.design_system
 // Common
 const val Softie = "소프티"
 const val Empty = ""
+const val Blank = " "
+const val Colon = ":"
 const val Question = "?"
 const val Home = "홈"
 const val Progress = "진행 중"
@@ -21,6 +23,11 @@ const val CountContent = "%d번"
 const val Percentage = "%d%%"
 const val PercentageString = "%s%%"
 const val Dash = "-"
+const val FinishContent = "완료"
+const val RoutineTitle = "루틴"
+const val ThemeTitle = "테마"
+const val AlarmTitle = "알림"
+const val ZeroString = "0"
 
 // DollType
 const val Brown = "BROWN"
@@ -37,6 +44,19 @@ const val Fri = "금"
 const val Sat = "토"
 const val Sun = "일"
 const val DateContent = "%d일"
+
+// Time
+const val TimeMinuteZero = "00"
+const val TimeMinuteTen = "10"
+const val TimeMinuteTwenty = "20"
+const val TimeMinuteHalf = "30"
+const val TimeMinuteForty = "40"
+const val TimeMinuteFifty = "50"
+const val TimeAM = "오전"
+const val TimePM = "오후"
+const val Time24Format = "%02d:%02d:00"
+const val TimeAmPmFormat = "%s %d:%02d"
+const val TimeDefault = "00:00:00"
 
 // Splash
 const val SplashSemiTitle = "하루를 바꾸는 가장 사소한 루틴"
@@ -121,3 +141,10 @@ const val AchieveRoutineStartedAt = "%s 마지막 달성"
 const val AchieveCountContent = "%d번 달성"
 const val AchieveEmptyAchieve = "달성한 %s 루틴이 없어요"
 const val AchieveStatEmptyTitle = "애착이의 성격이 만들어지기 전이에요\n목표를 달성하면 성격이 정해져요"
+
+// Custom Routine
+const val AddRoutineCustomTitle = "원하는 루틴이 없다면?"
+const val AddRoutineCustomSemiTitle = "나만의 루틴 만들기"
+const val RoutineWriteHint = "루틴을 입력해주세요"
+const val RoutineWriteLengthOver ="50자 이내로 가능해요"
+const val RoutineModifyDisabled = "소프티에서 제공하는 루틴은 수정할 수 없어요."

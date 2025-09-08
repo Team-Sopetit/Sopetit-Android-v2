@@ -1,5 +1,6 @@
 package com.sopetit.login
 
+import android.app.Activity
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.sopetit.domain.entity.request.LogInRequestModel
@@ -38,8 +39,8 @@ class KaKaoLogInViewModel @Inject constructor(
         }.handleResult(token, error)
     }
 
-    fun startKaKaoLogIn() {
-        kakaoLoginService.startKaKaoLogIn(kakaoLogInCallback)
+    fun startKaKaoLogIn(activity: Activity) {
+        kakaoLoginService.startKaKaoLogIn(activity, kakaoLogInCallback)
     }
 
     private fun postLogIn() {

@@ -68,6 +68,7 @@ import com.sopetit.feature.component.BottomNavBar
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.navigation.achieveNavGraph
 import com.sopetit.navigation.addRoutineNavGraph
+import com.sopetit.navigation.customRoutineNavGraph
 import com.sopetit.navigation.homeNavGraph
 import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
@@ -80,6 +81,8 @@ import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
 import com.sopetit.ui.common.bottomsheet.TwoBtnDetailBottomSheet
 import com.sopetit.ui.common.item.CommonSnackBar
 import com.sopetit.ui.common.type.BottomSheetType
+import com.sopetit.ui.common.type.TwoBtnBottomSheetType
+import com.sopetit.ui.util.CommonEventManager
 import com.sopetit.ui.util.DismissKeyboardOnClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -119,8 +122,12 @@ fun MainScreen() {
         viewModel.setTutorials(tutorials)
         scope.launch { sheetState.show() }
     }
-    val showRoutineBottomSheet: (RoutineDetailModel) -> Unit = { routine ->
-        viewModel.setRoutineDetail(routine)
+    val showRoutineBottomSheetOneBtn: (RoutineDetailModel) -> Unit = { routine ->
+        viewModel.setRoutineDetail(routine, BottomSheetType.ROUTINE)
+        scope.launch { sheetState.show() }
+    }
+    val showRoutineBottomSheetTwoBtn: (RoutineDetailModel) -> Unit = { routine ->
+        viewModel.setRoutineDetail(routine, BottomSheetType.BOTTOMTWOBTN)
         scope.launch { sheetState.show() }
     }
     val showChallengeChangeBottomSheet: (ChallengeChangeModel) -> Unit = { challenge ->
@@ -154,6 +161,14 @@ fun MainScreen() {
     val setAchieveThemeId: (Int) -> Unit = {
         scope.launch {
             viewModel.achieveThemeId.emit(it)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        CommonEventManager.logoutTriggerFlow.collect {
+            navController.navigate(NavRoutes.LogInGraph.route) {
+                popUpTo(0) { inclusive = true }
+            }
         }
     }
 
@@ -238,21 +253,35 @@ fun MainScreen() {
                             )
                         }
 
-                        BottomSheetType.MEMODETAIL -> {
+                        BottomSheetType.BOTTOMTWOBTN -> {
                             TwoBtnDetailBottomSheet(
                                 memoActionModel = uiState.memoActionModel,
-                                onClickDeleteBtn = {
+                                onClickMemoDeleteBtn = {
                                     scope.launch {
                                         viewModel.setMemoDetail(it)
+                                        sheetState.hide()
+                                    }
+                                },
+                                onClickRoutineDeleteBtn = {
+                                    scope.launch {
+                                        viewModel.deleteRoutineId.emit(it)
                                         sheetState.hide()
                                     }
                                 },
                                 onClickModBtn = {
                                     scope.launch {
                                         sheetState.hide()
-                                        showRoutineMemoWriteBottomSheet(uiState.memoActionModel)
+//                                        showRoutineMemoWriteBottomSheet(uiState.memoActionModel)
+
+                                        if (uiState.twoBtnType == TwoBtnBottomSheetType.MemoWrite) {
+                                            showRoutineMemoWriteBottomSheet(uiState.memoActionModel)
+                                        } else {
+                                            viewModel.modRoutine.emit(uiState.routineDetail)
+                                        }
                                     }
-                                }
+                                },
+                                type = uiState.twoBtnType,
+                                routine = uiState.routineDetail
                             )
                         }
 
@@ -325,8 +354,10 @@ fun MainScreen() {
                         )
                         progressNavGraph(
                             navController = navController,
-                            showRoutineBottomSheet = showRoutineBottomSheet,
+                            showChallengeRoutineBottomSheet = showRoutineBottomSheetOneBtn,
+                            showDailyRoutineBottomSheet = showRoutineBottomSheetTwoBtn,
                             deleteRoutineId = viewModel.deleteRoutineId,
+                            modRoutine = viewModel.modRoutine,
                             showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) },
                             showChallengeDailySom = { viewModel.updateDailyAchieve(it) },
                             showSnackBar = showSnackBar,
@@ -336,9 +367,13 @@ fun MainScreen() {
                         )
                         achieveNavGraph(
                             navController = navController,
-                            showRoutineBottomSheet = showRoutineBottomSheet,
+                            showRoutineBottomSheet = showRoutineBottomSheetOneBtn,
                             deleteRoutineId = viewModel.deleteRoutineId,
-                            showMemoWriteBottomSheet = { showRoutineMemoWriteBottomSheet(MemoActionModel()) },
+                            showMemoWriteBottomSheet = {
+                                showRoutineMemoWriteBottomSheet(
+                                    MemoActionModel()
+                                )
+                            },
                             writtenMemo = viewModel.writtenMemo,
                             showMemoDetailBottomSheet = showMemoDetailBottomSheet,
                             memoActionModel = viewModel.memoActionModel,
@@ -349,9 +384,12 @@ fun MainScreen() {
                             navController = navController,
                             setSelectedThemeId = setSelectedTheme,
                             selectedThemeId = viewModel.selectedTheme,
-                            showChallengeDetailBottomSheet = showRoutineBottomSheet,
+                            showChallengeDetailBottomSheet = showRoutineBottomSheetOneBtn,
                             showSnackBar = showSnackBar,
                             showChallengeChangeBottomSheet = showChallengeChangeBottomSheet
+                        )
+                        customRoutineNavGraph(
+                            navController = navController
                         )
                     }
                 }

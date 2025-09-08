@@ -1,5 +1,5 @@
 package com.sopetit.ui.common.type
 
 enum class BottomSheetType {
-    TUTORIAL, ROUTINE, DEFAULT, CHALLENGECHANGE, MEMO, MEMODETAIL
+    TUTORIAL, ROUTINE, DEFAULT, CHALLENGECHANGE, MEMO, BOTTOMTWOBTN
 }

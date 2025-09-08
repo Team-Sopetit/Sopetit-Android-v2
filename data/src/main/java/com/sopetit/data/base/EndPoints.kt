@@ -5,6 +5,7 @@ object EndPoints {
     object Auth {
         private const val AUTH = "/api/v1/auth"
         const val LOGIN = AUTH
+        const val REISSUE = "$AUTH/token"
     }
 
     object Theme {
@@ -19,6 +20,8 @@ object EndPoints {
 
     object Member {
         const val MEMBER = "/api/v1/members"
+        const val FCM = "$MEMBER/fcm"
+        const val COTTON = "$MEMBER/cotton/{cottonType}"
     }
 
     object MemberRoutine {
@@ -47,5 +50,10 @@ object EndPoints {
     object Achievement {
         const val ACHIEVE = "/api/v3/achievement/themes"
         const val ACHIEVEROUTINE = "$ACHIEVE/{themeId}/routines"
+    }
+
+    object CustomRoutine {
+        const val CREATE = "/api/v1/routines/custom"
+        const val MODIFY = "$CREATE/{customRoutineId}"
     }
 }

@@ -1,5 +1,6 @@
 package com.sopetit.login
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,6 +40,7 @@ fun LogInScreen(
     val viewModel: KaKaoLogInViewModel = hiltViewModel()
     val uiState: KaKaoLogInPageState by viewModel.uiState.collectAsStateWithLifecycle()
     val interactionSource = remember { MutableInteractionSource() }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
@@ -55,7 +58,9 @@ fun LogInScreen(
 
     LogInContent(
         startKaKaoLogIn = {
-            viewModel.startKaKaoLogIn()
+            (context as? Activity)?.let { activity ->
+                viewModel.startKaKaoLogIn(activity)
+            }
         },
         interactionSource = interactionSource
     )

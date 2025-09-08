@@ -1,12 +1,16 @@
 package com.sopetit.home
 
 import androidx.lifecycle.viewModelScope
+import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.sopetit.design_system.R
 import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.usecase.member.GetMemberUseCase
+import com.sopetit.domain.usecase.member.PatchCottonUseCase
+import com.sopetit.domain.usecase.member.PostFcmTokenUseCase
 import com.sopetit.ui.base.BaseViewModel
 import com.sopetit.ui.common.type.BearType
+import com.sopetit.ui.common.type.CottonType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,6 +19,8 @@ import kotlin.random.Random
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMemberUseCase: GetMemberUseCase,
+    private val patchCottonUseCase: PatchCottonUseCase,
+    private val postFcmTokenUseCase: PostFcmTokenUseCase
 ) : BaseViewModel<HomePageState>(
     HomePageState()
 ) {
@@ -69,7 +75,12 @@ class HomeViewModel @Inject constructor(
             uiState.value.copy(
                 homeMemberModel = data,
                 dollHelloResource = BearType.getDollHelloResource(data.dollType),
-                randomSelectedConversation = data.conversations[0]
+                dollType = data.dollType,
+                dollEatingDailyResource = BearType.getDollEatingDailyResource(data.dollType),
+                dollEatingHappyResource = BearType.getDollEatingHappyResource(data.dollType),
+                randomSelectedConversation = data.conversations[0],
+                dailyCottonCount = data.dailyCottonCount,
+                happinessCottonCount = data.happinessCottonCount
             )
         )
     }
@@ -92,5 +103,49 @@ class HomeViewModel @Inject constructor(
                 isTutorialValid = isValid
             )
         )
+    }
+
+    fun setEatingDollType(cottonType: CottonType): LottieCompositionSpec {
+        return when (cottonType) {
+            CottonType.DAILY -> uiState.value.dollEatingDailyResource
+            CottonType.HAPPINESS -> uiState.value.dollEatingHappyResource
+        }
+    }
+
+    fun patchCotton(cottonType: CottonType) {
+        viewModelScope.launch {
+            patchCottonUseCase(cottonType.toString()).collect {
+                resultResponse(it, { data -> onSuccessPatchCotton(data, cottonType)})
+            }
+        }
+    }
+
+    private fun onSuccessPatchCotton(data: Int, type: CottonType) {
+        when (type) {
+            CottonType.DAILY -> updateDailyCottonCount(data)
+            CottonType.HAPPINESS -> updateHappinessCottonCount(data)
+        }
+    }
+
+    private fun updateDailyCottonCount(data: Int) {
+        updateState(
+            uiState.value.copy(
+                dailyCottonCount = data
+            )
+        )
+    }
+
+    private fun updateHappinessCottonCount(data: Int) {
+        updateState(
+            uiState.value.copy(
+                happinessCottonCount = data
+            )
+        )
+    }
+
+    fun postFCMToken() {
+        viewModelScope.launch {
+            postFcmTokenUseCase(Unit).collect{ resultResponse(it, {} )}
+        }
     }
 }

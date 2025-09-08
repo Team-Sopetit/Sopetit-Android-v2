@@ -1,5 +1,6 @@
 package com.sopetit.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,6 +43,9 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.sopetit.design_system.Brown100
 import com.sopetit.design_system.Brown200
 import com.sopetit.design_system.Gray0
@@ -53,17 +57,34 @@ import com.sopetit.design_system.HomeSomTitle
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.ui.common.type.CottonType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit = {},
-    isTutorialValid: SharedFlow<Boolean> = MutableSharedFlow()
+    isTutorialValid: SharedFlow<Boolean> = MutableSharedFlow(),
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState: HomePageState by viewModel.uiState.collectAsStateWithLifecycle()
     val interactionSource = remember { MutableInteractionSource() }
+
+    val eatingLottieSpec = remember { mutableStateOf<LottieCompositionSpec?>(null) }
+    val permissionState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+    LaunchedEffect(Unit) {
+        if (!permissionState.status.isGranted) {
+            permissionState.launchPermissionRequest()
+        }
+    }
+
+    LaunchedEffect(permissionState.status.isGranted) {
+        if (permissionState.status.isGranted) {
+            viewModel.postFCMToken()
+        }
+    }
 
     LaunchedEffect(isTutorialValid) {
         isTutorialValid.collect {
@@ -79,11 +100,17 @@ fun HomeScreen(
         conversation = uiState.randomSelectedConversation,
         dollName = uiState.homeMemberModel.name,
         dollHelloResource = uiState.dollHelloResource,
-        dailyCottonCount = uiState.homeMemberModel.dailyCottonCount,
-        happinessCottonCount = uiState.homeMemberModel.happinessCottonCount,
+        dailyCottonCount = uiState.dailyCottonCount,
+        happinessCottonCount = uiState.happinessCottonCount,
         onClickDoll = {
             viewModel.updateRandomConversation()
-        }
+        },
+        onClickCotton = {
+            viewModel.patchCotton(it)
+            eatingLottieSpec.value = viewModel.setEatingDollType(it)
+        },
+        eatingLottieSpec = eatingLottieSpec.value,
+        onSetEatingLottieDefault = { eatingLottieSpec.value = null }
     )
 }
 
@@ -96,7 +123,10 @@ fun HomeScreenContent(
     dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
     dailyCottonCount: Int = -1,
     happinessCottonCount: Int = -1,
+    eatingLottieSpec: LottieCompositionSpec? = null,
     onClickDoll: () -> Unit = {},
+    onClickCotton: (CottonType) -> Unit = {},
+    onSetEatingLottieDefault: () -> Unit = {},
 ) {
 
     Box(
@@ -148,7 +178,9 @@ fun HomeScreenContent(
                 interactionSource = interactionSource,
                 conversation = conversation,
                 dollHelloResource = dollHelloResource,
-                onClickDoll = onClickDoll
+                onClickDoll = onClickDoll,
+                eatingLottieSpec = eatingLottieSpec,
+                onSetEatingLottieDefault = onSetEatingLottieDefault
             )
         }
 
@@ -179,7 +211,8 @@ fun HomeScreenContent(
 
             HomeCottonCount(
                 dailyCottonCount = dailyCottonCount,
-                happinessCottonCount = happinessCottonCount
+                happinessCottonCount = happinessCottonCount,
+                onClickCotton = onClickCotton
             )
         }
     }
@@ -191,10 +224,16 @@ fun HomeDollBoxContent(
     conversation: String = "",
     dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
     onClickDoll: () -> Unit = {},
+    eatingLottieSpec: LottieCompositionSpec?,
+    onSetEatingLottieDefault: () -> Unit,
 ) {
-    val composition by rememberLottieComposition(spec = dollHelloResource)
+
     var isPlaying by remember { mutableStateOf(true) }
     var isClickedReplay by remember { mutableStateOf(false) }
+
+    var currentLottieSpec by remember { mutableStateOf(dollHelloResource) }
+    var pendingRestore by remember { mutableStateOf(false) }
+    val composition by rememberLottieComposition(spec = currentLottieSpec)
 
     val progress by animateLottieCompositionAsState(
         composition = composition,
@@ -202,6 +241,29 @@ fun HomeDollBoxContent(
         iterations = 1,
         restartOnPlay = true,
     )
+
+    LaunchedEffect(dollHelloResource) {
+        if (!pendingRestore && eatingLottieSpec == null) {
+            currentLottieSpec = dollHelloResource
+        }
+    }
+
+    LaunchedEffect(progress) {
+        if (progress >= 1.0f && pendingRestore) {
+            currentLottieSpec = dollHelloResource
+            isPlaying = true
+            pendingRestore = false
+            onSetEatingLottieDefault()
+        }
+    }
+
+    LaunchedEffect(eatingLottieSpec) {
+        eatingLottieSpec?.let {
+            currentLottieSpec = it
+            isPlaying = true
+            pendingRestore = true
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -264,6 +326,7 @@ fun HomeDollBoxContent(
 fun HomeCottonCount(
     dailyCottonCount: Int = -1,
     happinessCottonCount: Int = -1,
+    onClickCotton: (CottonType) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -274,7 +337,8 @@ fun HomeCottonCount(
         HomeCottonCountItem(
             cottonCountTitle = HomeSomTitle,
             cottonCountImg = R.drawable.ic_som,
-            cottonCount = dailyCottonCount
+            cottonCount = dailyCottonCount,
+            onClickCotton = { onClickCotton(CottonType.DAILY) }
         )
 
         Spacer(modifier = Modifier.width(12.dp))
@@ -282,7 +346,8 @@ fun HomeCottonCount(
         HomeCottonCountItem(
             cottonCountTitle = HomeRainbowSomTitle,
             cottonCountImg = R.drawable.ic_som_rainbow,
-            cottonCount = happinessCottonCount
+            cottonCount = happinessCottonCount,
+            onClickCotton = { onClickCotton(CottonType.HAPPINESS) }
         )
     }
 }
@@ -293,12 +358,16 @@ fun HomeCottonCountItem(
     cottonCountTitle: String = "",
     cottonCountImg: Int = -1,
     cottonCount: Int = -1,
+    onClickCotton: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .width(160.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(Gray0),
+            .background(Gray0)
+            .clickable(
+                onClick = onClickCotton
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(

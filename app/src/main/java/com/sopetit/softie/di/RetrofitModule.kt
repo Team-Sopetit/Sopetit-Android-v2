@@ -3,6 +3,7 @@ package com.sopetit.softie.di
 import com.sopetit.core.util.isJsonArray
 import com.sopetit.core.util.isJsonObject
 import com.sopetit.data.dataStore.LocalDataStore
+import com.sopetit.domain.repository.RefreshTokenRepository
 import com.sopetit.softie.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -32,12 +33,14 @@ object RetrofitModule {
     private const val APPLICATION_JSON = "application/json"
     private const val BEARER = "Bearer "
     private const val AUTHORIZATION = "Authorization"
+    private const val EXPIRED_TOKEN = 401
 
     @Singleton
     @Provides
     @SoftieRetrofit
     fun providesAuthInterceptor(
-        localDataSource: LocalDataStore
+        localDataSource: LocalDataStore,
+        refreshTokenRepository: RefreshTokenRepository,
     ): Interceptor = Interceptor { chain ->
         val tokenFlow = localDataSource.accessToken
         val token = runBlocking { tokenFlow.first() }
@@ -50,6 +53,33 @@ object RetrofitModule {
                 .addHeader(AUTHORIZATION, BEARER + token)
                 .build()
         )
+
+        when (response.code) {
+            EXPIRED_TOKEN -> try {
+                runBlocking {
+                    refreshTokenRepository.refreshToken().collect { data ->
+                        data.onSuccess { accessToken ->
+                            refreshTokenRepository.saveAccessToken(accessToken.accessToken)
+                        }
+                    }
+                }
+                response.close()
+
+                val newRequest = chain.request()
+                val newResponse = chain.proceed(
+                    newRequest
+                        .newBuilder()
+                        .addHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .addHeader(AUTHORIZATION, BEARER + localDataSource.accessToken)
+                        .build()
+                )
+                return@Interceptor newResponse
+            } catch (t: Throwable) {
+                Timber.e(t.message)
+            }
+        }
+
+
         return@Interceptor response
     }
 
@@ -80,7 +110,7 @@ object RetrofitModule {
     @SoftieRetrofit
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        @SoftieRetrofit interceptor: Interceptor
+        @SoftieRetrofit interceptor: Interceptor,
     ): OkHttpClient =
         OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
@@ -94,7 +124,7 @@ object RetrofitModule {
     @Singleton
     @SoftieRetrofit
     fun providesRetrofit(
-        @SoftieRetrofit okHttpClient: OkHttpClient
+        @SoftieRetrofit okHttpClient: OkHttpClient,
     ): Retrofit =
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)

@@ -21,12 +21,16 @@ data class GetMemberRoutineResponseDto(
         data class MemberRoutineListItemDto(
             @SerializedName("routineId")
             val routineId: Int = -1,
+            @SerializedName("originRoutineId")
+            val originRoutineId: Int = -1,
             @SerializedName("content")
             val content: String = "",
             @SerializedName("achieveCount")
             val achieveCount: Int = -1,
             @SerializedName("isAchieve")
             val isAchieve: Boolean = false,
+            @SerializedName("alarmTime")
+            val alarmTime: String = ""
         )
     }
 }
