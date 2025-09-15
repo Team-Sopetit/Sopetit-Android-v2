@@ -37,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -398,20 +399,37 @@ fun MainScreen() {
 
         if (uiState.isChallengeAchieveShowValid) {
             val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.happy_complete_som))
-            val progress by animateLottieCompositionAsState(composition = composition)
+            var dismissed by remember { mutableStateOf(false) }
+            val progress by animateLottieCompositionAsState(
+                composition = composition,
+                iterations = 1,
+                isPlaying = !dismissed
+            )
+
+            fun dismiss() {
+                if (!dismissed) {
+                    dismissed = true
+                    viewModel.updateChallengeAchieve(false)
+                }
+            }
+
+            LaunchedEffect(progress) {
+                if (progress >= 1.0f) dismiss()
+            }
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Gray1000)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = { dismiss() }
+                    )
             ) {
                 LottieAnimation(
                     composition = composition,
-                    progress = {
-                        if (progress >= 1.0f) viewModel.updateChallengeAchieve(false)
-
-                        progress
-                    },
+                    progress = { progress },
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -419,20 +437,37 @@ fun MainScreen() {
 
         if (uiState.isDailyAchieveShowValid) {
             val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.daily_complete_som))
-            val progress by animateLottieCompositionAsState(composition = composition)
+            var dismissed by remember { mutableStateOf(false) }
+            val progress by animateLottieCompositionAsState(
+                composition = composition,
+                iterations = 1,
+                isPlaying = !dismissed
+            )
+
+            fun dismiss() {
+                if (!dismissed) {
+                    dismissed = true
+                    viewModel.updateDailyAchieve(false)
+                }
+            }
+
+            LaunchedEffect(progress) {
+                if (progress >= 1.0f) dismiss()
+            }
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Gray1000)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = { dismiss() }
+                    )
             ) {
                 LottieAnimation(
                     composition = composition,
-                    progress = {
-                        if (progress >= 1.0f) viewModel.updateDailyAchieve(false)
-
-                        progress
-                    },
+                    progress = { progress },
                     modifier = Modifier.fillMaxSize()
                 )
             }
