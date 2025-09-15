@@ -115,20 +115,20 @@ fun ProgressScreen(
             when (event) {
                 is ProgressEvent.OnShowChallengeAchieveSom -> {
                     showChallengeAchieveSom(true)
-                    showSnackBar(MemberChallengeAchieve, 24, R.drawable.ic_som_rainbow)
+                    showSnackBar(MemberChallengeAchieve, 104, R.drawable.ic_som_rainbow)
                 }
 
                 is ProgressEvent.OnShowDailyAchieveSom -> {
                     showChallengeDailySom(true)
-                    showSnackBar(MemberDailyAchieve, 24, R.drawable.ic_som)
+                    showSnackBar(MemberDailyAchieve, 104, R.drawable.ic_som)
                 }
 
                 is ProgressEvent.OnShowDailyAchieveHasSomFalse -> {
-                    showSnackBar(MemberDailyAchieveHasSomFalse, 24, R.drawable.ic_snackbar_caution)
+                    showSnackBar(MemberDailyAchieveHasSomFalse, 104, R.drawable.ic_snackbar_caution)
                 }
 
                 is ProgressEvent.OnShowDailyAchieveCancel -> {
-                    showSnackBar(MemberDailyAchieveCancel, 24, R.drawable.ic_toast_check)
+                    showSnackBar(MemberDailyAchieveCancel, 104, R.drawable.ic_toast_check)
                 }
             }
         }
