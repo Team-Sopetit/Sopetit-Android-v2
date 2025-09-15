@@ -72,7 +72,8 @@ fun HomeScreen(
     val interactionSource = remember { MutableInteractionSource() }
 
     val eatingLottieSpec = remember { mutableStateOf<LottieCompositionSpec?>(null) }
-    val permissionState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+    val permissionState =
+        rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
 
     LaunchedEffect(Unit) {
         if (!permissionState.status.isGranted) {
@@ -366,7 +367,8 @@ fun HomeCottonCountItem(
             .clip(RoundedCornerShape(16.dp))
             .background(Gray0)
             .clickable(
-                onClick = onClickCotton
+                onClick = onClickCotton,
+                enabled = (cottonCount > 0)
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
