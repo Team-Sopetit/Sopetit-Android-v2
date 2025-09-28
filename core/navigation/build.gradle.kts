@@ -20,4 +20,5 @@ dependencies {
     implementation(projects.feature.progress)
     implementation(projects.feature.addroutine)
     implementation(projects.feature.customroutine)
+    implementation(projects.feature.setting)
 }

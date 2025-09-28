@@ -57,4 +57,8 @@ sealed class NavRoutes(val route: String) {
 
         const val routeWithParam = "custom_routine/{data}"
     }
+
+    // Setting Graph
+    data object SettingGraph: NavRoutes("setting_graph")
+    data object SettingScreen: NavRoutes("setting")
 }

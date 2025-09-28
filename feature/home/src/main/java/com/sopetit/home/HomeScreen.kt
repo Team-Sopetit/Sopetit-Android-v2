@@ -66,6 +66,7 @@ import kotlinx.coroutines.flow.SharedFlow
 fun HomeScreen(
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit = {},
     isTutorialValid: SharedFlow<Boolean> = MutableSharedFlow(),
+    goToSettingPage: () -> Unit
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState: HomePageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -111,7 +112,8 @@ fun HomeScreen(
             eatingLottieSpec.value = viewModel.setEatingDollType(it)
         },
         eatingLottieSpec = eatingLottieSpec.value,
-        onSetEatingLottieDefault = { eatingLottieSpec.value = null }
+        onSetEatingLottieDefault = { eatingLottieSpec.value = null },
+        onClickSetting = { goToSettingPage() }
     )
 }
 
@@ -128,6 +130,7 @@ fun HomeScreenContent(
     onClickDoll: () -> Unit = {},
     onClickCotton: (CottonType) -> Unit = {},
     onSetEatingLottieDefault: () -> Unit = {},
+    onClickSetting: () -> Unit = {}
 ) {
 
     Box(
@@ -167,7 +170,11 @@ fun HomeScreenContent(
 
             Image(
                 painter = painterResource(id = R.drawable.ic_home_settings),
-                contentDescription = "home setting icon"
+                contentDescription = "home setting icon",
+                modifier = Modifier
+                    .clickable(
+                        onClick = onClickSetting
+                    )
             )
         }
 

@@ -1,6 +1,7 @@
 package com.sopetit.navigation
 
 import androidx.compose.ui.unit.IntOffset
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -31,6 +32,7 @@ import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
 import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
 import com.tdd.customroutine.CustomRoutineScreen
+import com.tdd.setting.SettingScreen
 import kotlinx.coroutines.flow.SharedFlow
 
 fun NavGraphBuilder.splashNavGraph(
@@ -162,7 +164,8 @@ fun NavGraphBuilder.homeNavGraph(
         composable(NavRoutes.HomeScreen.route) {
             HomeScreen(
                 showTutorialBottomSheet = showTutorialBottomSheet,
-                isTutorialValid = isTutorialValid
+                isTutorialValid = isTutorialValid,
+                goToSettingPage = { navController.navigate(NavRoutes.SettingScreen.route) }
             )
         }
     }
@@ -308,6 +311,19 @@ fun NavGraphBuilder.customRoutineNavGraph(
                 modifyRoutineModel = null,
                 goBackPage = { navController.popBackStack() }
             )
+        }
+    }
+}
+
+fun NavGraphBuilder.settingNavGraph(
+    navController: NavController,
+) {
+    navigation(
+        startDestination = NavRoutes.SettingScreen.route,
+        route = NavRoutes.SettingGraph.route
+    ) {
+        composable(NavRoutes.SettingScreen.route) {
+            SettingScreen()
         }
     }
 }
