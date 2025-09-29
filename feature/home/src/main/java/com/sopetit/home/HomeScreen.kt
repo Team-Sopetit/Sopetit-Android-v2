@@ -66,7 +66,7 @@ import kotlinx.coroutines.flow.SharedFlow
 fun HomeScreen(
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit = {},
     isTutorialValid: SharedFlow<Boolean> = MutableSharedFlow(),
-    goToSettingPage: () -> Unit
+    goToSettingPage: () -> Unit,
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState: HomePageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -130,7 +130,7 @@ fun HomeScreenContent(
     onClickDoll: () -> Unit = {},
     onClickCotton: (CottonType) -> Unit = {},
     onSetEatingLottieDefault: () -> Unit = {},
-    onClickSetting: () -> Unit = {}
+    onClickSetting: () -> Unit = {},
 ) {
 
     Box(
@@ -300,6 +300,15 @@ fun HomeDollBoxContent(
                     .padding(top = 21.dp, bottom = 29.dp, start = 32.dp, end = 33.dp)
             )
         }
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_shadow),
+            contentDescription = "shadow",
+            modifier = Modifier
+                .size(width = 123.dp, height = 23.dp)
+                .align(Alignment.BottomCenter)
+                .offset(y = (-273).dp)
+        )
 
         LottieAnimation(
             composition = composition,
