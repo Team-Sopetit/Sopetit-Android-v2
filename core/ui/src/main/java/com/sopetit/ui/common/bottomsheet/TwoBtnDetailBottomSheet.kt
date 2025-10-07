@@ -20,17 +20,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.DailyRoutine
+import com.sopetit.design_system.Delete
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray200
 import com.sopetit.design_system.Gray500
+import com.sopetit.design_system.Gray650
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.MemoTitle
+import com.sopetit.design_system.Modify
 import com.sopetit.design_system.R
+import com.sopetit.design_system.Red200
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.enums.BottomSheetActionType
 import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
-import com.sopetit.ui.common.button.BottomTwoBtnContent
+import com.sopetit.ui.common.button.BottomTwoBtn
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
 import com.sopetit.ui.util.convertToAmPmFormat
 
@@ -119,9 +123,18 @@ fun TwoBtnDetailContent(
             }
         }
 
-        BottomTwoBtnContent(
-            onClickModBtn = onClickModBtn,
-            onClickDeleteBtn = { if (type == TwoBtnBottomSheetType.MemoWrite) onClickMemoDeleteBtn() else onClickRoutineDeleteBtn() }
+        BottomTwoBtn(
+            onClickLeftBtn = onClickModBtn,
+            onClickRightBtn = { if (type == TwoBtnBottomSheetType.MemoWrite) onClickMemoDeleteBtn() else onClickRoutineDeleteBtn() },
+            leftIcon = R.drawable.ic_pen,
+            rightIcon = R.drawable.ic_trash,
+            leftColor = Gray650,
+            rightColor = Red200,
+            iconVisible = true,
+            leftContent = Modify,
+            rightContent = Delete,
+            leftBtnTextColor = Gray0,
+            rightBtnTextColor = Gray0
         )
     }
 }

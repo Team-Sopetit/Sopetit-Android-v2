@@ -22,33 +22,54 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Delete
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.Modify
-import com.sopetit.design_system.R
-import com.sopetit.design_system.Red200
 import com.sopetit.design_system.SoftieTypo
 
 @Composable
 fun BottomTwoBtn(
-    onClickModBtn: () -> Unit,
-    onClickDeleteBtn: () -> Unit,
+    onClickLeftBtn: () -> Unit,
+    onClickRightBtn: () -> Unit,
+    leftIcon: Int = 0,
+    rightIcon: Int = 0,
+    iconVisible: Boolean = false,
+    leftColor: Color,
+    rightColor: Color,
+    leftContent: String,
+    rightContent: String,
+    leftBtnTextColor: Color,
+    rightBtnTextColor: Color,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     BottomTwoBtnContent(
         interactionSource = interactionSource,
-        onClickModBtn = onClickModBtn,
-        onClickDeleteBtn = onClickDeleteBtn
+        onClickLeftBtn = onClickLeftBtn,
+        onClickRightBtn = onClickRightBtn,
+        leftIcon = leftIcon,
+        rightIcon = rightIcon,
+        leftColor = leftColor,
+        rightColor = rightColor,
+        leftContent = leftContent,
+        rightContent = rightContent,
+        leftBtnTextColor = leftBtnTextColor,
+        rightBtnTextColor = rightBtnTextColor,
+        iconVisible = iconVisible
     )
 }
 
 @Composable
 fun BottomTwoBtnContent(
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
-    onClickModBtn: () -> Unit,
-    onClickDeleteBtn: () -> Unit,
+    onClickLeftBtn: () -> Unit,
+    onClickRightBtn: () -> Unit,
+    leftIcon: Int = 0,
+    rightIcon: Int = 0,
+    iconVisible: Boolean = false,
+    leftColor: Color,
+    rightColor: Color,
+    leftContent: String,
+    rightContent: String,
+    leftBtnTextColor: Color,
+    rightBtnTextColor: Color,
 ) {
     Row(
         modifier = Modifier
@@ -56,23 +77,27 @@ fun BottomTwoBtnContent(
             .padding(horizontal = 20.dp)
     ) {
         TwoBtnBox(
-            btnColor = Gray650,
-            icon = R.drawable.ic_pen,
-            btnText = Modify,
+            btnColor = leftColor,
+            icon = leftIcon,
+            btnText = leftContent,
             modifier = Modifier.weight(1f),
             interactionSource = interactionSource,
-            onClickBtnAction = onClickModBtn
+            onClickBtnAction = onClickLeftBtn,
+            btnTextColor = leftBtnTextColor,
+            iconVisible = iconVisible
         )
 
         Spacer(modifier = Modifier.width(7.dp))
 
         TwoBtnBox(
-            btnColor = Red200,
-            icon = R.drawable.ic_trash,
-            btnText = Delete,
+            btnColor = rightColor,
+            icon = rightIcon,
+            btnText = rightContent,
             modifier = Modifier.weight(1f),
             interactionSource = interactionSource,
-            onClickBtnAction = onClickDeleteBtn
+            onClickBtnAction = onClickRightBtn,
+            btnTextColor = rightBtnTextColor,
+            iconVisible = iconVisible
         )
     }
 }
@@ -85,6 +110,8 @@ fun TwoBtnBox(
     icon: Int,
     btnText: String,
     modifier: Modifier,
+    btnTextColor: Color,
+    iconVisible: Boolean = false,
 ) {
     Box(
         modifier = modifier
@@ -105,18 +132,20 @@ fun TwoBtnBox(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = icon),
-                contentDescription = "btn icon",
-                modifier = Modifier
-                    .size(18.dp)
-            )
+            if (iconVisible) {
+                Image(
+                    painter = painterResource(id = icon),
+                    contentDescription = "btn icon",
+                    modifier = Modifier
+                        .padding(end = 4.dp)
+                        .size(18.dp)
+                )
+            }
 
             Text(
                 text = btnText,
-                color = Gray0,
-                style = SoftieTypo.body1,
-                modifier = Modifier.padding(start = 4.dp)
+                color = btnTextColor,
+                style = SoftieTypo.body1
             )
         }
     }
