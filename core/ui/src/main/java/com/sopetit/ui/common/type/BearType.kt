@@ -15,7 +15,8 @@ enum class BearType(
     val dollUpBox: Int,
     val dollHelloLottie: LottieCompositionSpec,
     val dollEatingDaily: LottieCompositionSpec,
-    val dollEatingHappy: LottieCompositionSpec
+    val dollEatingHappy: LottieCompositionSpec,
+    val dollCrying: Int
 ) {
     BROWN(
         1,
@@ -25,7 +26,8 @@ enum class BearType(
         R.drawable.ic_doll_brown_box_up,
         LottieCompositionSpec.RawRes(R.raw.brown_hello),
         LottieCompositionSpec.RawRes(R.raw.brown_eating_daily),
-        LottieCompositionSpec.RawRes(R.raw.brown_eating_happy)
+        LottieCompositionSpec.RawRes(R.raw.brown_eating_happy),
+        R.drawable.ic_bear_brown_crying
     ),
     GRAY(
         2,
@@ -35,7 +37,8 @@ enum class BearType(
         R.drawable.ic_doll_gray_box_up,
         LottieCompositionSpec.RawRes(R.raw.gray_hello),
         LottieCompositionSpec.RawRes(R.raw.gray_eating_daily),
-        LottieCompositionSpec.RawRes(R.raw.gray_eating_happy)
+        LottieCompositionSpec.RawRes(R.raw.gray_eating_happy),
+        R.drawable.ic_bear_gray_crying
     ),
     WHITE(
         3,
@@ -45,7 +48,8 @@ enum class BearType(
         R.drawable.ic_doll_white_box_up,
         LottieCompositionSpec.RawRes(R.raw.white_hello),
         LottieCompositionSpec.RawRes(R.raw.panda_eating_daily),
-        LottieCompositionSpec.RawRes(R.raw.panda_eating_happy)
+        LottieCompositionSpec.RawRes(R.raw.panda_eating_happy),
+        R.drawable.ic_bear_white_crying
     ),
     RED(
         4,
@@ -55,7 +59,8 @@ enum class BearType(
         R.drawable.ic_doll_red_box_up,
         LottieCompositionSpec.RawRes(R.raw.red_hello),
         LottieCompositionSpec.RawRes(R.raw.red_eating_daily),
-        LottieCompositionSpec.RawRes(R.raw.red_eating_happy)
+        LottieCompositionSpec.RawRes(R.raw.red_eating_happy),
+        R.drawable.ic_bear_red_crying
     );
 
     companion object {
@@ -76,5 +81,8 @@ enum class BearType(
 
         fun getDollEatingHappyResource(dollType: String): LottieCompositionSpec =
             entries.firstOrNull { it.dollType == dollType }?.dollEatingHappy ?: LottieCompositionSpec.RawRes(R.raw.brown_eating_happy)
+
+        fun getDollCrying(dollType: String): Int =
+            entries.firstOrNull { it.dollType == dollType }?.dollCrying ?: R.drawable.ic_bear_brown_crying
     }
 }

@@ -61,4 +61,5 @@ sealed class NavRoutes(val route: String) {
     // Setting Graph
     data object SettingGraph: NavRoutes("setting_graph")
     data object SettingScreen: NavRoutes("setting")
+    data object DeleteUserScreen: NavRoutes("delete_user")
 }

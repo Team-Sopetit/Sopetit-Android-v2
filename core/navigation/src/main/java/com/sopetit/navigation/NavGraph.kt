@@ -33,6 +33,7 @@ import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
 import com.tdd.customroutine.CustomRoutineScreen
 import com.tdd.setting.SettingScreen
+import com.tdd.setting.deleteuser.DeleteUserScreen
 import kotlinx.coroutines.flow.SharedFlow
 
 fun NavGraphBuilder.splashNavGraph(
@@ -324,6 +325,13 @@ fun NavGraphBuilder.settingNavGraph(
     ) {
         composable(NavRoutes.SettingScreen.route) {
             SettingScreen(
+                goBackPage = { navController.popBackStack() },
+                goToDeleteUserScreen = { navController.navigate(NavRoutes.DeleteUserScreen.route) }
+            )
+        }
+
+        composable(NavRoutes.DeleteUserScreen.route) {
+            DeleteUserScreen(
                 goBackPage = { navController.popBackStack() }
             )
         }

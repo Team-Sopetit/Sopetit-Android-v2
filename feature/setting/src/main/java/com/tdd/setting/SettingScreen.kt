@@ -26,6 +26,7 @@ import com.sopetit.design_system.Gray50
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SettingAlarm
+import com.sopetit.design_system.SettingDeleteUser
 import com.sopetit.design_system.SettingLogOut
 import com.sopetit.design_system.SettingPersonalInfo
 import com.sopetit.design_system.SettingService
@@ -38,12 +39,14 @@ import com.sopetit.ui.common.topbar.TopBarContent
 @Composable
 fun SettingScreen(
     goBackPage: () -> Unit,
+    goToDeleteUserScreen: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     SettingContent(
         interactionSource = interactionSource,
-        onClickBackBtn = { goBackPage() }
+        onClickBackBtn = { goBackPage() },
+        onClickDeleteUser = { goToDeleteUserScreen() }
     )
 }
 
@@ -51,6 +54,7 @@ fun SettingScreen(
 fun SettingContent(
     interactionSource: MutableInteractionSource,
     onClickBackBtn: () -> Unit,
+    onClickDeleteUser: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -111,21 +115,41 @@ fun SettingContent(
 
         SettingCommonDivider()
 
-        Text(
-            text = SettingLogOut,
-            color = Gray400,
-            style = SoftieTypo.body2,
+        Row(
             modifier = Modifier
-                .padding(vertical = 16.dp, horizontal = 20.dp)
-        )
+                .fillMaxWidth()
+                .clickable(
+                    onClick = {},
+                    indication = null,
+                    interactionSource = interactionSource
+                )
+        ) {
+            Text(
+                text = SettingLogOut,
+                color = Gray400,
+                style = SoftieTypo.body2,
+                modifier = Modifier
+                    .padding(vertical = 16.dp, horizontal = 20.dp)
+            )
+        }
 
-        Text(
-            text = SettingLogOut,
-            color = Gray400,
-            style = SoftieTypo.body2.copy(textDecoration = TextDecoration.Underline),
-            modifier = Modifier
-                .padding(vertical = 16.dp, horizontal = 20.dp)
-        )
+       Row(
+           modifier = Modifier
+               .fillMaxWidth()
+               .clickable(
+                   onClick = onClickDeleteUser,
+                   indication = null,
+                   interactionSource = interactionSource
+               )
+       ) {
+           Text(
+               text = SettingDeleteUser,
+               color = Gray400,
+               style = SoftieTypo.body2.copy(textDecoration = TextDecoration.Underline),
+               modifier = Modifier
+                   .padding(vertical = 16.dp, horizontal = 20.dp)
+           )
+       }
     }
 }
 
