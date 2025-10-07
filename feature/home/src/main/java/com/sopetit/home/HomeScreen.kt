@@ -173,7 +173,9 @@ fun HomeScreenContent(
                 contentDescription = "home setting icon",
                 modifier = Modifier
                     .clickable(
-                        onClick = onClickSetting
+                        onClick = onClickSetting,
+                        interactionSource = interactionSource,
+                        indication = null
                     )
             )
         }
@@ -324,6 +326,13 @@ fun HomeDollBoxContent(
             },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+        )
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .size(width = 220.dp, height = 264.dp)
+                .offset(y = (-250).dp)
                 .clickable(
                     indication = null,
                     interactionSource = interactionSource,
