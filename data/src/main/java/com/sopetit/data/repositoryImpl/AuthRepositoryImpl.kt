@@ -2,6 +2,7 @@ package com.sopetit.data.repositoryImpl
 
 import com.sopetit.data.dataSource.AuthDataSource
 import com.sopetit.data.dataStore.LocalDataStore
+import com.sopetit.data.mapper.DefaultUnitMapper
 import com.sopetit.data.mapper.auth.LogInMapper
 import com.sopetit.data.mapper.auth.LogInMapper.toDto
 import com.sopetit.domain.entity.request.LogInRequestModel
@@ -38,4 +39,7 @@ class AuthRepositoryImpl @Inject constructor(
                 isMemberDollExist = isDollExist ?: false
             )
         }
+
+    override suspend fun deleteUser(): Flow<Result<Unit>> =
+        DefaultUnitMapper.responseToModel(apiCall = { authDataSource.deleteUser() })
 }
