@@ -323,7 +323,9 @@ fun NavGraphBuilder.settingNavGraph(
         route = NavRoutes.SettingGraph.route
     ) {
         composable(NavRoutes.SettingScreen.route) {
-            SettingScreen()
+            SettingScreen(
+                goBackPage = { navController.popBackStack() }
+            )
         }
     }
 }
