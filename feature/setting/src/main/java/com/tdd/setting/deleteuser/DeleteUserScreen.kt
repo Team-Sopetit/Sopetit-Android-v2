@@ -22,6 +22,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sopetit.design_system.Brown
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray100
@@ -46,13 +47,14 @@ import com.sopetit.ui.common.type.BearType
 fun DeleteUserScreen(
     goBackPage: () -> Unit,
 ) {
+    val viewModel: DeleteUserViewModel = hiltViewModel()
 
     val interactionSource = remember { MutableInteractionSource() }
 
     DeleteUserContent(
         interactionSource = interactionSource,
         onClickBackBtn = { goBackPage() },
-        onClickDeleteUser = {}
+        onClickDeleteUser = { viewModel.deleteUser() }
     )
 }
 
