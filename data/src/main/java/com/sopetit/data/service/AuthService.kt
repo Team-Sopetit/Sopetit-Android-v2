@@ -18,4 +18,7 @@ interface AuthService {
 
     @DELETE(EndPoints.Auth.AUTH)
     suspend fun deleteUser(): Response<BaseResponse<Unit>>
+
+    @POST(EndPoints.Auth.LOGOUT)
+    suspend fun logout(): Response<BaseResponse<Unit>>
 }

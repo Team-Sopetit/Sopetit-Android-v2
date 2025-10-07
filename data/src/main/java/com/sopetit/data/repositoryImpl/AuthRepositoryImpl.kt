@@ -42,4 +42,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun deleteUser(): Flow<Result<Unit>> =
         DefaultUnitMapper.responseToModel(apiCall = { authDataSource.deleteUser() })
+
+    override suspend fun postLogOut(): Flow<Result<Unit>> =
+        DefaultUnitMapper.responseToModel(apiCall = { authDataSource.postLogOut() })
 }

@@ -5,11 +5,11 @@ import com.sopetit.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class PostDeleteUserUseCase @Inject constructor(
+class PostLogOutUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ): UseCase<Unit, Result<Unit>>() {
 
     override suspend fun invoke(request: Unit): Flow<Result<Unit>> {
-        return authRepository.deleteUser()
+        return authRepository.postLogOut()
     }
 }

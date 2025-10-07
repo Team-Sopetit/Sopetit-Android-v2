@@ -17,4 +17,7 @@ data class AuthDataSourceImpl @Inject constructor(
 
     override suspend fun deleteUser(): Response<BaseResponse<Unit>> =
         authService.deleteUser()
+
+    override suspend fun postLogOut(): Response<BaseResponse<Unit>> =
+        authService.logout()
 }
