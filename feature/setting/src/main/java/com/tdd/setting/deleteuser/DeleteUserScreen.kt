@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Brown
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray100
@@ -48,13 +50,15 @@ fun DeleteUserScreen(
     goBackPage: () -> Unit,
 ) {
     val viewModel: DeleteUserViewModel = hiltViewModel()
+    val uiState: DeleteUserPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val interactionSource = remember { MutableInteractionSource() }
 
     DeleteUserContent(
         interactionSource = interactionSource,
         onClickBackBtn = { goBackPage() },
-        onClickDeleteUser = { viewModel.deleteUser() }
+        onClickDeleteUser = { viewModel.deleteUser() },
+        dollType = uiState.dollType
     )
 }
 
@@ -63,6 +67,7 @@ fun DeleteUserContent(
     interactionSource: MutableInteractionSource,
     onClickBackBtn: () -> Unit,
     onClickDeleteUser: () -> Unit,
+    dollType: String
 ) {
     Column(
         modifier = Modifier
@@ -98,7 +103,8 @@ fun DeleteUserContent(
 
         DeleteUserImageBox(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
+                .align(Alignment.CenterHorizontally),
+            dollType = dollType
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -122,6 +128,7 @@ fun DeleteUserContent(
 @Composable
 fun DeleteUserImageBox(
     modifier: Modifier,
+    dollType: String
 ) {
     Box(
         modifier = modifier
@@ -144,7 +151,7 @@ fun DeleteUserImageBox(
     }
 
     Image(
-        painter = painterResource(id = BearType.getDollCrying(Brown)),
+        painter = painterResource(id = BearType.getDollCrying(dollType)),
         contentDescription = "crying doll",
         modifier = modifier
             .padding(top = 30.dp)
