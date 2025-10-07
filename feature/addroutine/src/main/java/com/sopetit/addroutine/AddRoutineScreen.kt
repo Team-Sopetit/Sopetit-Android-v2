@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,13 +44,14 @@ import com.sopetit.design_system.R
 import com.sopetit.design_system.RoutineAllTitle
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
+import com.sopetit.ui.common.topbar.TopBarContent
 import com.sopetit.ui.common.type.ThemeIconType
 
 @Composable
 fun AddRoutineScreen(
     goToDetailPage: (ThemeListItemModel) -> Unit,
     goToCustomRoutinePage: () -> Unit,
-    goBackToProgressPage: () -> Unit
+    goBackToProgressPage: () -> Unit,
 ) {
 
     val viewModel: AddRoutineViewModel = hiltViewModel()
@@ -74,40 +74,18 @@ fun AddRoutineContent(
     onClickTheme: (ThemeListItemModel) -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     onClickCustomRoutine: () -> Unit = {},
-    onClickBackBtn: () -> Unit = {}
+    onClickBackBtn: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Gray50)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = "back",
-                modifier = Modifier
-                    .padding(vertical = 14.dp)
-                    .padding(start = 20.dp)
-                    .align(Alignment.CenterStart)
-                    .size(28.dp)
-                    .clickable(
-                        indication = null,
-                        onClick = onClickBackBtn,
-                        interactionSource = interactionSource
-                    )
-            )
-
-            Text(
-                text = AddRoutineTitle,
-                color = Gray700,
-                style = SoftieTypo.head3,
-                modifier = Modifier
-                    .align(Alignment.Center)
-            )
-        }
+        TopBarContent(
+            content = AddRoutineTitle,
+            onClickIcon = onClickBackBtn,
+            interactionSource = interactionSource
+        )
 
         RoutineCustomBox(
             interactionSource = interactionSource,

@@ -148,3 +148,6 @@ const val AddRoutineCustomSemiTitle = "나만의 루틴 만들기"
 const val RoutineWriteHint = "루틴을 입력해주세요"
 const val RoutineWriteLengthOver ="50자 이내로 가능해요"
 const val RoutineModifyDisabled = "소프티에서 제공하는 루틴은 수정할 수 없어요."
+
+// Setting
+const val SettingTitle = "설정"

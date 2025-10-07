@@ -3,7 +3,6 @@ package com.sopetit.achieve.routine
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +16,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,6 +53,7 @@ import com.sopetit.design_system.StatAchieveRoutineTitle
 import com.sopetit.domain.entity.response.achieve.AchieveRoutineItem
 import com.sopetit.domain.entity.response.achieve.AchieveRoutineModel
 import com.sopetit.ui.common.content.EmptyRoutineScreen
+import com.sopetit.ui.common.topbar.TopBarContent
 import com.sopetit.ui.common.type.ThemeIconType
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -62,7 +61,7 @@ import kotlinx.coroutines.flow.SharedFlow
 fun AchieveRoutineScreen(
     achieveThemeId: SharedFlow<Int>,
     goToAddRoutinePage: () -> Unit,
-    goBackToAchievePage: () -> Unit
+    goBackToAchievePage: () -> Unit,
 ) {
     val viewModel: AchieveRoutineViewModel = hiltViewModel()
     val uiState: AchieveRoutinePageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -90,7 +89,7 @@ fun AchieveRoutineContent(
     achieveThemeId: Int = 0,
     onClickAddRoutine: () -> Unit = {},
     onClickBackBtn: () -> Unit = {},
-    interactionSource: MutableInteractionSource = MutableInteractionSource()
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
         modifier = Modifier
@@ -98,33 +97,11 @@ fun AchieveRoutineContent(
             .background(Gray50)
             .verticalScroll(rememberScrollState())
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = StatAchieveRoutineTitle,
-                style = SoftieTypo.head3,
-                color = Gray700,
-                modifier = Modifier
-                    .padding(vertical = 16.dp)
-                    .align(Alignment.Center)
-            )
-
-            Icon(
-                painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = "back",
-                modifier = Modifier
-                    .padding(start = 20.dp)
-                    .size(28.dp)
-                    .align(Alignment.CenterStart)
-                    .clickable(
-                        interactionSource = interactionSource,
-                        indication = null,
-                        onClick = onClickBackBtn
-                    )
-            )
-        }
+        TopBarContent(
+            content = StatAchieveRoutineTitle,
+            onClickIcon = onClickBackBtn,
+            interactionSource = interactionSource
+        )
 
         Divider(modifier = Modifier.border(2.dp, Gray200))
 
