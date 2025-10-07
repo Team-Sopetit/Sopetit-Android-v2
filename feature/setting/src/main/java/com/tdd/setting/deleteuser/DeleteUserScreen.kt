@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,16 +24,21 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.Brown
 import com.sopetit.design_system.Gray0
+import com.sopetit.design_system.Gray100
+import com.sopetit.design_system.Gray300
 import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
 import com.sopetit.design_system.Red200
 import com.sopetit.design_system.SettingDeleteSpeechText
+import com.sopetit.design_system.SettingDeleteUserBtn
 import com.sopetit.design_system.SettingDeleteUserSemiTitle
 import com.sopetit.design_system.SettingDeleteUserTitleAfterWord
 import com.sopetit.design_system.SettingDeleteUserTitleBeforeWord
 import com.sopetit.design_system.SettingDeleteUserTitleWord
+import com.sopetit.design_system.SettingNotDeleteUserBtn
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.ui.common.button.BottomTwoBtn
 import com.sopetit.ui.common.topbar.LeftTopBarContent
 import com.sopetit.ui.common.type.BearType
 
@@ -45,7 +51,8 @@ fun DeleteUserScreen(
 
     DeleteUserContent(
         interactionSource = interactionSource,
-        onClickBackBtn = { goBackPage() }
+        onClickBackBtn = { goBackPage() },
+        onClickDeleteUser = {}
     )
 }
 
@@ -53,6 +60,7 @@ fun DeleteUserScreen(
 fun DeleteUserContent(
     interactionSource: MutableInteractionSource,
     onClickBackBtn: () -> Unit,
+    onClickDeleteUser: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -90,6 +98,22 @@ fun DeleteUserContent(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
         )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        BottomTwoBtn(
+            onClickLeftBtn = onClickBackBtn,
+            onClickRightBtn = onClickDeleteUser,
+            leftColor = Gray100,
+            rightColor = Red200,
+            leftContent = SettingNotDeleteUserBtn,
+            rightContent = SettingDeleteUserBtn,
+            leftBtnTextColor = Gray300,
+            rightBtnTextColor = Gray0,
+            iconVisible = false
+        )
+
+        Spacer(modifier = Modifier.padding(bottom = 35.dp))
     }
 }
 
