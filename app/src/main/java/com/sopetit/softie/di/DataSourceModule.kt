@@ -11,6 +11,7 @@ import com.sopetit.data.dataSource.MemoDataSource
 import com.sopetit.data.dataSource.RefreshDataSource
 import com.sopetit.data.dataSource.RoutineDataSource
 import com.sopetit.data.dataSource.ThemeDataSource
+import com.sopetit.data.dataSource.VersionDataSource
 import com.sopetit.data.dataSource.dataSourceImpl.AchieveDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.AuthDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.CalendarDataSourceImpl
@@ -22,6 +23,7 @@ import com.sopetit.data.dataSource.dataSourceImpl.MemoDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.RefreshDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.RoutineDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.ThemeDataSourceImpl
+import com.sopetit.data.dataSource.dataSourceImpl.VersionDataSourceImpl
 import com.sopetit.domain.repository.CustomRoutineRepository
 import dagger.Binds
 import dagger.Module
@@ -76,4 +78,8 @@ abstract class DataSourceModule {
     @Binds
     @Singleton
     abstract fun bindsCustomRoutineDataSource(customRoutineDataSourceImpl: CustomRoutineDataSourceImpl): CustomRoutineDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindsVersionDataSource(versionDataSourceImpl: VersionDataSourceImpl): VersionDataSource
 }
