@@ -2,6 +2,10 @@ package com.sopetit.data.base
 
 object EndPoints {
 
+    object Version {
+        const val VERSION = "/api/v1/versions/client/app"
+    }
+
     object Auth {
         const val AUTH = "/api/v1/auth"
         const val REISSUE = "$AUTH/token"
