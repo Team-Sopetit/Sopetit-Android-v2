@@ -319,7 +319,8 @@ fun NavGraphBuilder.customRoutineNavGraph(
 
 fun NavGraphBuilder.settingNavGraph(
     navController: NavController,
-    showLogOutBottomSheet: (TwoBtnIconModel) -> Unit
+    showLogOutBottomSheet: (TwoBtnIconModel) -> Unit,
+    isSelectedLogOut: SharedFlow<Boolean>
 ) {
     navigation(
         startDestination = NavRoutes.SettingScreen.route,
@@ -329,7 +330,8 @@ fun NavGraphBuilder.settingNavGraph(
             SettingScreen(
                 goBackPage = { navController.popBackStack() },
                 goToDeleteUserScreen = { navController.navigate(NavRoutes.DeleteUserScreen.route) },
-                showLogOutBottomSheet = showLogOutBottomSheet
+                showLogOutBottomSheet = showLogOutBottomSheet,
+                isSelectedLogOut = isSelectedLogOut
             )
         }
 

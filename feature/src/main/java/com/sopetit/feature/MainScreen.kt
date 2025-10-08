@@ -305,6 +305,7 @@ fun MainScreen() {
                                     onClickRightBtn = {
                                         scope.launch {
                                             sheetState.hide()
+                                            viewModel.isSelectedLogOut.emit(true)
                                         }
                                     }
                                 )
@@ -411,7 +412,8 @@ fun MainScreen() {
                             )
                             settingNavGraph(
                                 navController = navController,
-                                showLogOutBottomSheet = showTwoBtnIconBottomSheet
+                                showLogOutBottomSheet = showTwoBtnIconBottomSheet,
+                                isSelectedLogOut = viewModel.isSelectedLogOut
                             )
                         }
                     }

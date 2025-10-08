@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -39,17 +40,25 @@ import com.sopetit.design_system.SettingVersion
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.topbar.TopBarContent
+import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 fun SettingScreen(
     goBackPage: () -> Unit,
     goToDeleteUserScreen: () -> Unit,
     showLogOutBottomSheet: (TwoBtnIconModel) -> Unit,
+    isSelectedLogOut: SharedFlow<Boolean>
 ) {
     val viewModel: SettingViewModel = hiltViewModel()
     val uiState: SettingPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val interactionSource = remember { MutableInteractionSource() }
+
+    LaunchedEffect(isSelectedLogOut) {
+        isSelectedLogOut.collect {
+            viewModel.postLogOut(it)
+        }
+    }
 
     SettingContent(
         interactionSource = interactionSource,
