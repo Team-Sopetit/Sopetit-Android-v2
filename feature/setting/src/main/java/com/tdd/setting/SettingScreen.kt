@@ -75,7 +75,8 @@ fun SettingScreen(
         interactionSource = interactionSource,
         onClickBackBtn = { goBackPage() },
         onClickDeleteUser = { goToDeleteUserScreen() },
-        onClickLogOut = { showLogOutBottomSheet(uiState.logOutModel) }
+        onClickLogOut = { showLogOutBottomSheet(uiState.logOutModel) },
+        appVersion = uiState.appVersion
     )
 }
 
@@ -85,6 +86,7 @@ fun SettingContent(
     onClickBackBtn: () -> Unit,
     onClickDeleteUser: () -> Unit,
     onClickLogOut: () -> Unit,
+    appVersion: String,
 ) {
     Column(
         modifier = Modifier
@@ -136,7 +138,7 @@ fun SettingContent(
         SettingCommonDivider()
 
         Text(
-            text = SettingVersion,
+            text = String.format(SettingVersion, appVersion),
             color = Gray700,
             style = SoftieTypo.body1,
             modifier = Modifier
