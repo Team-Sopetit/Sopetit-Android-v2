@@ -47,12 +47,23 @@ fun SettingScreen(
     goBackPage: () -> Unit,
     goToDeleteUserScreen: () -> Unit,
     showLogOutBottomSheet: (TwoBtnIconModel) -> Unit,
-    isSelectedLogOut: SharedFlow<Boolean>
+    isSelectedLogOut: SharedFlow<Boolean>,
+    goBackToLogInPage: () -> Unit,
 ) {
     val viewModel: SettingViewModel = hiltViewModel()
     val uiState: SettingPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val interactionSource = remember { MutableInteractionSource() }
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is SettingEvent.GoBackToLogInPage -> {
+                    goBackToLogInPage()
+                }
+            }
+        }
+    }
 
     LaunchedEffect(isSelectedLogOut) {
         isSelectedLogOut.collect {

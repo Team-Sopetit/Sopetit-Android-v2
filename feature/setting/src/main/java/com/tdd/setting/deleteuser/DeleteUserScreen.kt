@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,7 +26,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sopetit.design_system.Brown
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray100
 import com.sopetit.design_system.Gray300
@@ -48,11 +48,22 @@ import com.sopetit.ui.common.type.BearType
 @Composable
 fun DeleteUserScreen(
     goBackPage: () -> Unit,
+    goBackToLogInPage: () -> Unit,
 ) {
     val viewModel: DeleteUserViewModel = hiltViewModel()
     val uiState: DeleteUserPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val interactionSource = remember { MutableInteractionSource() }
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is DeleteUserEvent.GoBackToLogInPage -> {
+                    goBackToLogInPage()
+                }
+            }
+        }
+    }
 
     DeleteUserContent(
         interactionSource = interactionSource,
@@ -67,7 +78,7 @@ fun DeleteUserContent(
     interactionSource: MutableInteractionSource,
     onClickBackBtn: () -> Unit,
     onClickDeleteUser: () -> Unit,
-    dollType: String
+    dollType: String,
 ) {
     Column(
         modifier = Modifier
@@ -128,7 +139,7 @@ fun DeleteUserContent(
 @Composable
 fun DeleteUserImageBox(
     modifier: Modifier,
-    dollType: String
+    dollType: String,
 ) {
     Box(
         modifier = modifier

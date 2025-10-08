@@ -50,6 +50,8 @@ class SettingViewModel @Inject constructor(
         if (isSelected) {
             viewModelScope.launch {
                 postLogOutUseCase(Unit).collect { resultResponse(it, {} )}
+
+                emitEventFlow(SettingEvent.GoBackToLogInPage)
             }
         }
     }

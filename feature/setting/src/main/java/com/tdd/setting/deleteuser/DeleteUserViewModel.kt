@@ -38,6 +38,8 @@ class DeleteUserViewModel @Inject constructor(
     fun deleteUser() {
         viewModelScope.launch {
             deleteUserUseCase(Unit).collect { resultResponse(it, {}) }
+
+            emitEventFlow(DeleteUserEvent.GoBackToLogInPage)
         }
     }
 }

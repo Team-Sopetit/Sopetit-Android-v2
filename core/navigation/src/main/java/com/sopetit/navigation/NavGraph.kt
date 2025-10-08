@@ -320,7 +320,7 @@ fun NavGraphBuilder.customRoutineNavGraph(
 fun NavGraphBuilder.settingNavGraph(
     navController: NavController,
     showLogOutBottomSheet: (TwoBtnIconModel) -> Unit,
-    isSelectedLogOut: SharedFlow<Boolean>
+    isSelectedLogOut: SharedFlow<Boolean>,
 ) {
     navigation(
         startDestination = NavRoutes.SettingScreen.route,
@@ -331,13 +331,15 @@ fun NavGraphBuilder.settingNavGraph(
                 goBackPage = { navController.popBackStack() },
                 goToDeleteUserScreen = { navController.navigate(NavRoutes.DeleteUserScreen.route) },
                 showLogOutBottomSheet = showLogOutBottomSheet,
-                isSelectedLogOut = isSelectedLogOut
+                isSelectedLogOut = isSelectedLogOut,
+                goBackToLogInPage = { navController.navigate(NavRoutes.LogInScreen.route) }
             )
         }
 
         composable(NavRoutes.DeleteUserScreen.route) {
             DeleteUserScreen(
-                goBackPage = { navController.popBackStack() }
+                goBackPage = { navController.popBackStack() },
+                goBackToLogInPage = { navController.navigate(NavRoutes.LogInScreen.route) }
             )
         }
     }
