@@ -165,3 +165,7 @@ const val SettingDeleteUserSemiTitle = "탈퇴하면 계정이 삭제되고 모�
 const val SettingDeleteSpeechText = "정말 가는거야...?\n나는 영영 사라져..."
 const val SettingNotDeleteUserBtn = "더 써볼래"
 const val SettingDeleteUserBtn = "탈퇴할래"
+const val LogOutBottomSheetTitle = "정말 로그아웃할까요?"
+const val LogOutBottomSheetSemiTitle = "잠시만 안녕... 다음에 또 봐!"
+const val LogOutLeftBtnText = "더 생각해볼래"
+const val LogOutRightBtnText = "로그아웃 할래"

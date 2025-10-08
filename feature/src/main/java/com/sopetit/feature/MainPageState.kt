@@ -7,6 +7,7 @@ import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.ui.base.PageState
+import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
 
@@ -24,5 +25,6 @@ data class MainPageState(
     val challengeChangeModel: ChallengeChangeModel = ChallengeChangeModel(),
     val memoActionModel: MemoActionModel = MemoActionModel(),
     val twoBtnType: TwoBtnBottomSheetType = TwoBtnBottomSheetType.MemoWrite,
-    val modifyRoutine: ModifyRoutineModel = ModifyRoutineModel()
+    val modifyRoutine: ModifyRoutineModel = ModifyRoutineModel(),
+    val twoBtnIconModel: TwoBtnIconModel = TwoBtnIconModel()
 ) : PageState

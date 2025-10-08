@@ -14,12 +14,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sopetit.design_system.Gray0
 import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray50
@@ -34,19 +37,25 @@ import com.sopetit.design_system.SettingTitle
 import com.sopetit.design_system.SettingUserFeedback
 import com.sopetit.design_system.SettingVersion
 import com.sopetit.design_system.SoftieTypo
+import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.topbar.TopBarContent
 
 @Composable
 fun SettingScreen(
     goBackPage: () -> Unit,
-    goToDeleteUserScreen: () -> Unit
+    goToDeleteUserScreen: () -> Unit,
+    showLogOutBottomSheet: (TwoBtnIconModel) -> Unit,
 ) {
+    val viewModel: SettingViewModel = hiltViewModel()
+    val uiState: SettingPageState by viewModel.uiState.collectAsStateWithLifecycle()
+
     val interactionSource = remember { MutableInteractionSource() }
 
     SettingContent(
         interactionSource = interactionSource,
         onClickBackBtn = { goBackPage() },
-        onClickDeleteUser = { goToDeleteUserScreen() }
+        onClickDeleteUser = { goToDeleteUserScreen() },
+        onClickLogOut = { showLogOutBottomSheet(uiState.logOutModel) }
     )
 }
 
@@ -54,7 +63,8 @@ fun SettingScreen(
 fun SettingContent(
     interactionSource: MutableInteractionSource,
     onClickBackBtn: () -> Unit,
-    onClickDeleteUser: () -> Unit
+    onClickDeleteUser: () -> Unit,
+    onClickLogOut: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -119,7 +129,7 @@ fun SettingContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(
-                    onClick = {},
+                    onClick = onClickLogOut,
                     indication = null,
                     interactionSource = interactionSource
                 )
@@ -133,23 +143,23 @@ fun SettingContent(
             )
         }
 
-       Row(
-           modifier = Modifier
-               .fillMaxWidth()
-               .clickable(
-                   onClick = onClickDeleteUser,
-                   indication = null,
-                   interactionSource = interactionSource
-               )
-       ) {
-           Text(
-               text = SettingDeleteUser,
-               color = Gray400,
-               style = SoftieTypo.body2.copy(textDecoration = TextDecoration.Underline),
-               modifier = Modifier
-                   .padding(vertical = 16.dp, horizontal = 20.dp)
-           )
-       }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    onClick = onClickDeleteUser,
+                    indication = null,
+                    interactionSource = interactionSource
+                )
+        ) {
+            Text(
+                text = SettingDeleteUser,
+                color = Gray400,
+                style = SoftieTypo.body2.copy(textDecoration = TextDecoration.Underline),
+                modifier = Modifier
+                    .padding(vertical = 16.dp, horizontal = 20.dp)
+            )
+        }
     }
 }
 

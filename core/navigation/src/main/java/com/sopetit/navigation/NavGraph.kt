@@ -31,6 +31,7 @@ import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
 import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
+import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.tdd.customroutine.CustomRoutineScreen
 import com.tdd.setting.SettingScreen
 import com.tdd.setting.deleteuser.DeleteUserScreen
@@ -318,6 +319,7 @@ fun NavGraphBuilder.customRoutineNavGraph(
 
 fun NavGraphBuilder.settingNavGraph(
     navController: NavController,
+    showLogOutBottomSheet: (TwoBtnIconModel) -> Unit
 ) {
     navigation(
         startDestination = NavRoutes.SettingScreen.route,
@@ -326,7 +328,8 @@ fun NavGraphBuilder.settingNavGraph(
         composable(NavRoutes.SettingScreen.route) {
             SettingScreen(
                 goBackPage = { navController.popBackStack() },
-                goToDeleteUserScreen = { navController.navigate(NavRoutes.DeleteUserScreen.route) }
+                goToDeleteUserScreen = { navController.navigate(NavRoutes.DeleteUserScreen.route) },
+                showLogOutBottomSheet = showLogOutBottomSheet
             )
         }
 

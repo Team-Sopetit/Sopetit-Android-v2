@@ -10,6 +10,7 @@ import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.ui.base.BaseViewModel
+import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -145,6 +146,15 @@ class MainViewModel @Inject constructor(
                 memoActionModel = memoModel,
                 bottomSheetType = BottomSheetType.BOTTOMTWOBTN,
                 twoBtnType = TwoBtnBottomSheetType.MemoWrite
+            )
+        )
+    }
+
+    fun setTwoBtnIconBottomSheet(data: TwoBtnIconModel) {
+        updateState(
+            uiState.value.copy(
+                twoBtnIconModel = data,
+                bottomSheetType = BottomSheetType.BOTTOMTWOBTNICON
             )
         )
     }

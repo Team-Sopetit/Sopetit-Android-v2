@@ -61,7 +61,7 @@ fun TwoBtnIconContent(
             .background(Gray0)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_bear_brown_crying),
+            painter = painterResource(id = R.drawable.ic_bear_face_crying),
             contentDescription = "crying",
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)

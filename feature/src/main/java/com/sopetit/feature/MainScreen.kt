@@ -82,7 +82,9 @@ import com.sopetit.ui.common.bottomsheet.MemoWriteBottomSheet
 import com.sopetit.ui.common.bottomsheet.RoutineDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
 import com.sopetit.ui.common.bottomsheet.TwoBtnDetailBottomSheet
+import com.sopetit.ui.common.bottomsheet.TwoBtnIconBottomSheet
 import com.sopetit.ui.common.item.CommonSnackBar
+import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
 import com.sopetit.ui.util.CommonEventManager
@@ -143,6 +145,10 @@ fun MainScreen() {
     }
     val showMemoDetailBottomSheet: (MemoActionModel) -> Unit = {
         viewModel.setMemoDetail(it)
+        scope.launch { sheetState.show() }
+    }
+    val showTwoBtnIconBottomSheet: (TwoBtnIconModel) -> Unit = {
+        viewModel.setTwoBtnIconBottomSheet(it)
         scope.launch { sheetState.show() }
     }
 
@@ -288,6 +294,22 @@ fun MainScreen() {
                                 )
                             }
 
+                            BottomSheetType.BOTTOMTWOBTNICON -> {
+                                TwoBtnIconBottomSheet(
+                                    twoBtnIconModel = uiState.twoBtnIconModel,
+                                    onClickLeftBtn = {
+                                        scope.launch {
+                                            sheetState.hide()
+                                        }
+                                    },
+                                    onClickRightBtn = {
+                                        scope.launch {
+                                            sheetState.hide()
+                                        }
+                                    }
+                                )
+                            }
+
                             BottomSheetType.DEFAULT -> {}
                         }
                     }
@@ -388,7 +410,8 @@ fun MainScreen() {
                                 navController = navController
                             )
                             settingNavGraph(
-                                navController = navController
+                                navController = navController,
+                                showLogOutBottomSheet = showTwoBtnIconBottomSheet
                             )
                         }
                     }
