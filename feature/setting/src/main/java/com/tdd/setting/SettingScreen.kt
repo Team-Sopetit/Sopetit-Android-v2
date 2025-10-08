@@ -1,5 +1,7 @@
 package com.tdd.setting
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -54,6 +57,7 @@ fun SettingScreen(
     val uiState: SettingPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val interactionSource = remember { MutableInteractionSource() }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
@@ -76,7 +80,11 @@ fun SettingScreen(
         onClickBackBtn = { goBackPage() },
         onClickDeleteUser = { goToDeleteUserScreen() },
         onClickLogOut = { showLogOutBottomSheet(uiState.logOutModel) },
-        appVersion = uiState.appVersion
+        appVersion = uiState.appVersion,
+        onClickFeedBack = {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.FEEDBACK_FORM))
+            context.startActivity(intent)
+        }
     )
 }
 
@@ -87,6 +95,7 @@ fun SettingContent(
     onClickDeleteUser: () -> Unit,
     onClickLogOut: () -> Unit,
     appVersion: String,
+    onClickFeedBack: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -131,7 +140,7 @@ fun SettingContent(
         SettingBarItem(
             icon = R.drawable.ic_setting_feedback,
             content = SettingUserFeedback,
-            onClickAction = { /*TODO*/ },
+            onClickAction = onClickFeedBack,
             interactionSource = interactionSource
         )
 
