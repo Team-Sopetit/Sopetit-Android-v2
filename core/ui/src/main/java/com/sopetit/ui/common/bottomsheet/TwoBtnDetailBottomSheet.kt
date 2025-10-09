@@ -134,7 +134,9 @@ fun TwoBtnDetailContent(
             leftContent = Modify,
             rightContent = Delete,
             leftBtnTextColor = Gray0,
-            rightBtnTextColor = Gray0
+            rightBtnTextColor = Gray0,
+            twoBtnBottomPadding = 32,
+            twoBtnHorizontalPadding = 20
         )
     }
 }

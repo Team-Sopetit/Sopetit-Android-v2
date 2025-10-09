@@ -37,6 +37,8 @@ fun BottomTwoBtn(
     rightContent: String,
     leftBtnTextColor: Color,
     rightBtnTextColor: Color,
+    twoBtnHorizontalPadding: Int,
+    twoBtnBottomPadding: Int
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -52,7 +54,9 @@ fun BottomTwoBtn(
         rightContent = rightContent,
         leftBtnTextColor = leftBtnTextColor,
         rightBtnTextColor = rightBtnTextColor,
-        iconVisible = iconVisible
+        iconVisible = iconVisible,
+        twoBtnBottomPadding = twoBtnBottomPadding,
+        twoBtnHorizontalPadding = twoBtnHorizontalPadding
     )
 }
 
@@ -70,6 +74,8 @@ fun BottomTwoBtnContent(
     rightContent: String,
     leftBtnTextColor: Color,
     rightBtnTextColor: Color,
+    twoBtnHorizontalPadding: Int,
+    twoBtnBottomPadding: Int
 ) {
     Row(
         modifier = Modifier

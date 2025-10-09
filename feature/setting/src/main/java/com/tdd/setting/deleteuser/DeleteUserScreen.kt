@@ -129,7 +129,9 @@ fun DeleteUserContent(
             rightContent = SettingDeleteUserBtn,
             leftBtnTextColor = Gray300,
             rightBtnTextColor = Gray0,
-            iconVisible = false
+            iconVisible = false,
+            twoBtnBottomPadding = 32,
+            twoBtnHorizontalPadding = 20
         )
 
         Spacer(modifier = Modifier.padding(bottom = 35.dp))

@@ -95,7 +95,9 @@ fun TwoBtnIconContent(
             leftContent = leftBtnText,
             rightContent = rightBtnText,
             leftBtnTextColor = leftBtnTextColor,
-            rightBtnTextColor = rightBtnTextColor
+            rightBtnTextColor = rightBtnTextColor,
+            twoBtnBottomPadding = 32,
+            twoBtnHorizontalPadding = 20
         )
     }
 }
