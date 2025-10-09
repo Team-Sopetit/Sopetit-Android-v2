@@ -1,5 +1,7 @@
 package com.sopetit.feature
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -41,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -100,6 +103,8 @@ fun MainScreen() {
 
     val viewModel: MainViewModel = hiltViewModel()
     val uiState: MainPageState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
     val snackBarHost = remember { SnackbarHostState() }
@@ -202,7 +207,11 @@ fun MainScreen() {
                 TwoBtnDialog(
                     twoBtnDialogModel = uiState.twoBtnDialogModel,
                     onDismiss = { isShowDialog.value = false },
-                    onClickDoBtn = { isShowDialog.value = false }
+                    onClickDoBtn = {
+                        isShowDialog.value = false
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.FEEDBACK_FORM))
+                        context.startActivity(intent)
+                    }
                 )
             }
 
