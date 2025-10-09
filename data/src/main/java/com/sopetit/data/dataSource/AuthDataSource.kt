@@ -7,4 +7,6 @@ import retrofit2.Response
 
 interface AuthDataSource {
     suspend fun postLogIn(request: LogInRequestDto): Response<BaseResponse<LogInResponseDto>>
+    suspend fun deleteUser(): Response<BaseResponse<Unit>>
+    suspend fun postLogOut(): Response<BaseResponse<Unit>>
 }

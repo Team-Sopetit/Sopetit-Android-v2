@@ -2,10 +2,14 @@ package com.sopetit.data.base
 
 object EndPoints {
 
+    object Version {
+        const val VERSION = "/api/v1/versions/client/app"
+    }
+
     object Auth {
-        private const val AUTH = "/api/v1/auth"
-        const val LOGIN = AUTH
+        const val AUTH = "/api/v1/auth"
         const val REISSUE = "$AUTH/token"
+        const val LOGOUT = "$AUTH/logout"
     }
 
     object Theme {

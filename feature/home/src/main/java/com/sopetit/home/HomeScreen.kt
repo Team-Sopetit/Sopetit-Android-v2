@@ -27,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,9 +40,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
+import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieClipSpec
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -57,22 +60,27 @@ import com.sopetit.design_system.HomeSomTitle
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.ui.common.model.TwoBtnDialogModel
 import com.sopetit.ui.common.type.CottonType
+import com.sopetit.ui.common.type.LottieType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit = {},
     isTutorialValid: SharedFlow<Boolean> = MutableSharedFlow(),
+    goToSettingPage: () -> Unit,
+    showFeedbackDialog: (TwoBtnDialogModel) -> Unit,
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState: HomePageState by viewModel.uiState.collectAsStateWithLifecycle()
     val interactionSource = remember { MutableInteractionSource() }
 
-    val eatingLottieSpec = remember { mutableStateOf<LottieCompositionSpec?>(null) }
-    val permissionState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+    val permissionState =
+        rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
 
     LaunchedEffect(Unit) {
         if (!permissionState.status.isGranted) {
@@ -99,18 +107,22 @@ fun HomeScreen(
         backGroundImg = uiState.homeMemberModel.frameImageUrl,
         conversation = uiState.randomSelectedConversation,
         dollName = uiState.homeMemberModel.name,
-        dollHelloResource = uiState.dollHelloResource,
+        dollLottieResource = uiState.dollLottieResource,
+        dollLottieStart = uiState.dollLottieStart,
+        dollLottieEnd = uiState.dollLottieEnd,
         dailyCottonCount = uiState.dailyCottonCount,
         happinessCottonCount = uiState.happinessCottonCount,
-        onClickDoll = {
-            viewModel.updateRandomConversation()
-        },
+        onClickDoll = { viewModel.updateRandomConversation() },
         onClickCotton = {
             viewModel.patchCotton(it)
-            eatingLottieSpec.value = viewModel.setEatingDollType(it)
+            viewModel.setEatingDollType(it)
         },
-        eatingLottieSpec = eatingLottieSpec.value,
-        onSetEatingLottieDefault = { eatingLottieSpec.value = null }
+        onSetCurrentMode = {
+            viewModel.setCurrentDollHello(it)
+        },
+        onClickSetting = { goToSettingPage() },
+        onClickFeedback = { showFeedbackDialog(uiState.feedBackDialog) },
+        mode = uiState.dollCurrentMode,
     )
 }
 
@@ -120,13 +132,17 @@ fun HomeScreenContent(
     backGroundImg: String = "",
     conversation: String = "",
     dollName: String = "",
-    dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
+    dollLottieResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(0),
+    onSetCurrentMode: (LottieType) -> Unit = {},
+    dollLottieStart: Float = 0f,
+    dollLottieEnd: Float = 0f,
     dailyCottonCount: Int = -1,
     happinessCottonCount: Int = -1,
-    eatingLottieSpec: LottieCompositionSpec? = null,
     onClickDoll: () -> Unit = {},
     onClickCotton: (CottonType) -> Unit = {},
-    onSetEatingLottieDefault: () -> Unit = {},
+    onClickSetting: () -> Unit = {},
+    onClickFeedback: () -> Unit = {},
+    mode: LottieType = LottieType.HELLO,
 ) {
 
     Box(
@@ -159,14 +175,26 @@ fun HomeScreenContent(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_home_clova),
-                contentDescription = "home clova icon"
+                contentDescription = "home clova icon",
+                modifier = Modifier
+                    .clickable(
+                        onClick = onClickFeedback,
+                        interactionSource = interactionSource,
+                        indication = null
+                    )
             )
 
             Spacer(modifier = Modifier.width(13.dp))
 
             Image(
                 painter = painterResource(id = R.drawable.ic_home_settings),
-                contentDescription = "home setting icon"
+                contentDescription = "home setting icon",
+                modifier = Modifier
+                    .clickable(
+                        onClick = onClickSetting,
+                        interactionSource = interactionSource,
+                        indication = null
+                    )
             )
         }
 
@@ -177,10 +205,12 @@ fun HomeScreenContent(
             HomeDollBoxContent(
                 interactionSource = interactionSource,
                 conversation = conversation,
-                dollHelloResource = dollHelloResource,
                 onClickDoll = onClickDoll,
-                eatingLottieSpec = eatingLottieSpec,
-                onSetEatingLottieDefault = onSetEatingLottieDefault
+                mode = mode,
+                dollLottieResource = dollLottieResource,
+                onSetCurrentMode = onSetCurrentMode,
+                dollLottieStart = dollLottieStart,
+                dollLottieEnd = dollLottieEnd
             )
         }
 
@@ -222,48 +252,60 @@ fun HomeScreenContent(
 fun HomeDollBoxContent(
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     conversation: String = "",
-    dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
     onClickDoll: () -> Unit = {},
-    eatingLottieSpec: LottieCompositionSpec?,
-    onSetEatingLottieDefault: () -> Unit,
+    mode: LottieType,
+    dollLottieResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(0),
+    onSetCurrentMode: (LottieType) -> Unit,
+    dollLottieStart: Float,
+    dollLottieEnd: Float,
 ) {
 
-    var isPlaying by remember { mutableStateOf(true) }
-    var isClickedReplay by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    var currentLottieSpec by remember { mutableStateOf(dollLottieResource) }
+    val composition by rememberLottieComposition(currentLottieSpec)
+    val anim = rememberLottieAnimatable()
 
-    var currentLottieSpec by remember { mutableStateOf(dollHelloResource) }
-    var pendingRestore by remember { mutableStateOf(false) }
-    val composition by rememberLottieComposition(spec = currentLottieSpec)
+    var helloEnded by remember { mutableStateOf(false) }
 
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        isPlaying = isPlaying,
-        iterations = 1,
-        restartOnPlay = true,
-    )
-
-    LaunchedEffect(dollHelloResource) {
-        if (!pendingRestore && eatingLottieSpec == null) {
-            currentLottieSpec = dollHelloResource
+    fun playLottie(c: LottieComposition, onEnd: () -> Unit) {
+        helloEnded = false
+        scope.launch {
+            anim.snapTo(progress = 0f)
+            anim.animate(
+                composition = c,
+                clipSpec = LottieClipSpec.Progress(dollLottieStart, dollLottieEnd),
+                iterations = 1
+            )
+            onEnd()
+            helloEnded = true
         }
     }
 
-    LaunchedEffect(progress) {
-        if (progress >= 1.0f && pendingRestore) {
-            currentLottieSpec = dollHelloResource
-            isPlaying = true
-            pendingRestore = false
-            onSetEatingLottieDefault()
-        }
-    }
 
-    LaunchedEffect(eatingLottieSpec) {
-        eatingLottieSpec?.let {
+    LaunchedEffect(dollLottieResource) {
+        dollLottieResource.let {
             currentLottieSpec = it
-            isPlaying = true
-            pendingRestore = true
+            anim.snapTo(progress = 0f)
         }
     }
+
+    LaunchedEffect(composition, mode) {
+        val c = composition ?: return@LaunchedEffect
+        when (mode) {
+            LottieType.HELLO -> {
+                playLottie(c) {}
+            }
+
+            LottieType.EATING -> {
+                playLottie(c) {
+                    onSetCurrentMode(LottieType.DEFAULT)
+                }
+            }
+
+            LottieType.DEFAULT -> {}
+        }
+    }
+
 
     Box(
         modifier = Modifier
@@ -275,7 +317,7 @@ fun HomeDollBoxContent(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .wrapContentSize()
-                .offset(y = (-510).dp)
+                .offset(y = (-450).dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_home_speech),
@@ -293,28 +335,38 @@ fun HomeDollBoxContent(
             )
         }
 
+        Image(
+            painter = painterResource(id = R.drawable.ic_shadow),
+            contentDescription = "shadow",
+            modifier = Modifier
+                .size(width = 123.dp, height = 23.dp)
+                .align(Alignment.BottomCenter)
+                .offset(y = (-220).dp)
+        )
+
         LottieAnimation(
             composition = composition,
             progress = {
-                if (progress >= 1.0f) isPlaying = false
-
-                if (isClickedReplay) {
-                    isClickedReplay = false
-                    isPlaying = true
-                }
-
-                progress
+                anim.progress
             },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .size(width = 414.dp, height = 418.dp)
+                .offset(y = (-120).dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .size(width = 200.dp, height = 180.dp)
+                .offset(y = (-250).dp)
                 .clickable(
                     indication = null,
                     interactionSource = interactionSource,
                     onClick = {
-                        if (!isPlaying) {
+                        if (mode != LottieType.EATING && helloEnded) {
                             onClickDoll()
-                            isPlaying = true
-                            isClickedReplay = true
+                            composition?.let { playLottie(it) {} }
                         }
                     }
                 )
@@ -366,7 +418,8 @@ fun HomeCottonCountItem(
             .clip(RoundedCornerShape(16.dp))
             .background(Gray0)
             .clickable(
-                onClick = onClickCotton
+                onClick = onClickCotton,
+                enabled = (cottonCount > 0)
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

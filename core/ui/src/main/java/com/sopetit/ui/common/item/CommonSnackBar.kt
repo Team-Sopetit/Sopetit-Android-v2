@@ -29,11 +29,11 @@ fun CommonSnackBar(
     hostState: SnackbarHostState,
     paddingBottom: Int,
     iconResource: Int,
+    modifier: Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-//            .padding(bottom = 104.dp),
             .padding(bottom = paddingBottom.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
@@ -63,7 +63,6 @@ fun CommonSnackBarContent(
                         .padding(horizontal = 16.dp)
                 ) {
                     Image(
-//                        painter = painterResource(id = R.drawable.ic_snackbar_caution),
                         painter = painterResource(id = iconResource),
                         contentDescription = "snackbar icon",
                         modifier = Modifier

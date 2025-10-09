@@ -2,6 +2,7 @@ package com.sopetit.data.repositoryImpl
 
 import com.sopetit.data.dataSource.AuthDataSource
 import com.sopetit.data.dataStore.LocalDataStore
+import com.sopetit.data.mapper.DefaultUnitMapper
 import com.sopetit.data.mapper.auth.LogInMapper
 import com.sopetit.data.mapper.auth.LogInMapper.toDto
 import com.sopetit.domain.entity.request.LogInRequestModel
@@ -10,7 +11,10 @@ import com.sopetit.domain.entity.response.auth.TokenStoreModel
 import com.sopetit.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -26,16 +30,36 @@ class AuthRepositoryImpl @Inject constructor(
         localDataStore.saveIsMemberDollExist(request.isMemberDollExist)
     }
 
-    override suspend fun getToken(): Flow<TokenStoreModel> =
-        combine(
-            localDataStore.accessToken,
-            localDataStore.refreshToken,
-            localDataStore.isMemberDollExist
-        ) { accessToken, refreshToken, isDollExist ->
-            TokenStoreModel(
-                accessToken = accessToken.orEmpty(),
-                refreshToken = refreshToken.orEmpty(),
-                isMemberDollExist = isDollExist ?: false
-            )
-        }
+    override suspend fun saveMemberDollExist(request: Boolean): Flow<Result<Unit>> = flow {
+        localDataStore.saveIsMemberDollExist(request)
+    }
+
+    override suspend fun getMemberDollExist(): Flow<Result<Boolean>> =
+        localDataStore.isMemberDollExist
+            .distinctUntilChanged()
+            .map { Result.success(it ?: false) }
+
+    override suspend fun getToken(): Flow<Result<TokenStoreModel>> = flow {
+        emitAll(
+            combine(
+                localDataStore.accessToken,
+                localDataStore.refreshToken,
+                localDataStore.isMemberDollExist
+            ) { accessToken, refreshToken, isDollExist ->
+                TokenStoreModel(
+                    accessToken = accessToken.orEmpty(),
+                    refreshToken = refreshToken.orEmpty(),
+                    isMemberDollExist = isDollExist ?: false
+                )
+            }
+                .distinctUntilChanged()
+                .map { Result.success(it) }
+        )
+    }
+
+    override suspend fun deleteUser(): Flow<Result<Unit>> =
+        DefaultUnitMapper.responseToModel(apiCall = { authDataSource.deleteUser() })
+
+    override suspend fun postLogOut(): Flow<Result<Unit>> =
+        DefaultUnitMapper.responseToModel(apiCall = { authDataSource.postLogOut() })
 }

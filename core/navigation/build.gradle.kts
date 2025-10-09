@@ -10,6 +10,7 @@ android {
 dependencies {
     implementation(libs.gson)
     implementation(projects.core)
+    implementation(projects.core.ui)
     implementation(projects.domain)
 
     implementation(projects.feature.splash)
@@ -20,4 +21,5 @@ dependencies {
     implementation(projects.feature.progress)
     implementation(projects.feature.addroutine)
     implementation(projects.feature.customroutine)
+    implementation(projects.feature.setting)
 }

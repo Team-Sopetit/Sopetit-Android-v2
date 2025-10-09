@@ -1,7 +1,14 @@
 package com.sopetit.home
 
 import androidx.lifecycle.viewModelScope
-import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.sopetit.design_system.FeedbackLeftBtn
+import com.sopetit.design_system.FeedbackRightBtn
+import com.sopetit.design_system.FeedbackSemiTitle
+import com.sopetit.design_system.FeedbackTitle
+import com.sopetit.design_system.Gray0
+import com.sopetit.design_system.Gray100
+import com.sopetit.design_system.Gray400
+import com.sopetit.design_system.PurpleGradient
 import com.sopetit.design_system.R
 import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -9,8 +16,10 @@ import com.sopetit.domain.usecase.member.GetMemberUseCase
 import com.sopetit.domain.usecase.member.PatchCottonUseCase
 import com.sopetit.domain.usecase.member.PostFcmTokenUseCase
 import com.sopetit.ui.base.BaseViewModel
+import com.sopetit.ui.common.model.TwoBtnDialogModel
 import com.sopetit.ui.common.type.BearType
 import com.sopetit.ui.common.type.CottonType
+import com.sopetit.ui.common.type.LottieType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,13 +29,14 @@ import kotlin.random.Random
 class HomeViewModel @Inject constructor(
     private val getMemberUseCase: GetMemberUseCase,
     private val patchCottonUseCase: PatchCottonUseCase,
-    private val postFcmTokenUseCase: PostFcmTokenUseCase
+    private val postFcmTokenUseCase: PostFcmTokenUseCase,
 ) : BaseViewModel<HomePageState>(
     HomePageState()
 ) {
 
     init {
         initSetTutorial()
+        initSetFeedBackDialog()
         initGetHomeMember()
     }
 
@@ -62,6 +72,25 @@ class HomeViewModel @Inject constructor(
         )
     }
 
+    private fun initSetFeedBackDialog() {
+        val feedbackData = TwoBtnDialogModel(
+            title = FeedbackTitle,
+            semiTitle = FeedbackSemiTitle,
+            leftBtnText = FeedbackLeftBtn,
+            rightBtnText = FeedbackRightBtn,
+            leftBtnColor = Gray100,
+            leftBtnTextColor = Gray400,
+            rightBtnColorBrush = PurpleGradient,
+            rightBtnTextColor = Gray0
+        )
+
+        updateState(
+            uiState.value.copy(
+                feedBackDialog = feedbackData
+            )
+        )
+    }
+
     private fun initGetHomeMember() {
         viewModelScope.launch {
             getMemberUseCase(request = Unit).collect {
@@ -74,10 +103,10 @@ class HomeViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 homeMemberModel = data,
-                dollHelloResource = BearType.getDollHelloResource(data.dollType),
+                dollLottieResource = BearType.getDollResource(data.dollType),
                 dollType = data.dollType,
-                dollEatingDailyResource = BearType.getDollEatingDailyResource(data.dollType),
-                dollEatingHappyResource = BearType.getDollEatingHappyResource(data.dollType),
+                dollLottieStart = LOTTIE_HELLO_START,
+                dollLottieEnd = LOTTIE_DAILY_START,
                 randomSelectedConversation = data.conversations[0],
                 dailyCottonCount = data.dailyCottonCount,
                 happinessCottonCount = data.happinessCottonCount
@@ -91,7 +120,8 @@ class HomeViewModel @Inject constructor(
 
         updateState(
             uiState.value.copy(
-                randomSelectedConversation = uiState.value.homeMemberModel.conversations[randomSplashIndex]
+                randomSelectedConversation = uiState.value.homeMemberModel.conversations[randomSplashIndex],
+                dollCurrentMode = LottieType.HELLO
 
             )
         )
@@ -105,17 +135,44 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun setEatingDollType(cottonType: CottonType): LottieCompositionSpec {
+    fun setEatingDollType(cottonType: CottonType) {
         return when (cottonType) {
-            CottonType.DAILY -> uiState.value.dollEatingDailyResource
-            CottonType.HAPPINESS -> uiState.value.dollEatingHappyResource
+            CottonType.DAILY -> {
+                updateState(
+                    uiState.value.copy(
+                        dollCurrentMode = LottieType.EATING,
+                        dollLottieStart = LOTTIE_DAILY_START,
+                        dollLottieEnd = LOTTIE_CHALLENGE_START
+                    )
+                )
+            }
+
+            CottonType.HAPPINESS -> {
+                updateState(
+                    uiState.value.copy(
+                        dollCurrentMode = LottieType.EATING,
+                        dollLottieStart = LOTTIE_CHALLENGE_START,
+                        dollLottieEnd = LOTTIE_END
+                    )
+                )
+            }
         }
+    }
+
+    fun setCurrentDollHello(lottieType: LottieType) {
+        updateState(
+            uiState.value.copy(
+                dollCurrentMode = lottieType,
+                dollLottieStart = LOTTIE_HELLO_START,
+                dollLottieEnd = LOTTIE_DAILY_START
+            )
+        )
     }
 
     fun patchCotton(cottonType: CottonType) {
         viewModelScope.launch {
             patchCottonUseCase(cottonType.toString()).collect {
-                resultResponse(it, { data -> onSuccessPatchCotton(data, cottonType)})
+                resultResponse(it, { data -> onSuccessPatchCotton(data, cottonType) })
             }
         }
     }
@@ -145,7 +202,14 @@ class HomeViewModel @Inject constructor(
 
     fun postFCMToken() {
         viewModelScope.launch {
-            postFcmTokenUseCase(Unit).collect{ resultResponse(it, {} )}
+            postFcmTokenUseCase(Unit).collect { resultResponse(it, {}) }
         }
+    }
+
+    companion object {
+        const val LOTTIE_HELLO_START = 0f
+        const val LOTTIE_DAILY_START = 0.3f
+        const val LOTTIE_CHALLENGE_START = 0.65f
+        const val LOTTIE_END = 1f
     }
 }

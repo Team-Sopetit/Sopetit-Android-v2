@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieClipSpec
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
@@ -61,7 +62,7 @@ import kotlinx.coroutines.flow.SharedFlow
 fun DollNamingScreen(
     memberModel: SharedFlow<CreateMemberModel> = MutableSharedFlow(),
     goToThemeChoicePage: (CreateMemberModel) -> Unit = {},
-    goBackToDollTypePage: () -> Unit = {}
+    goBackToDollTypePage: () -> Unit = {},
 ) {
     val viewModel: DollNamingViewModel = hiltViewModel()
     val uiState: DollNamingPageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -83,16 +84,17 @@ fun DollNamingScreen(
 
 @Composable
 fun DollNamingContent(
-    dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
+    dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_all),
     dollInputName: String = "",
     onValueChange: (String) -> Unit = {},
     onClickBtnAction: () -> Unit = {},
-    onClickBackBtnAction: () -> Unit = {}
+    onClickBackBtnAction: () -> Unit = {},
 ) {
     val composition by rememberLottieComposition(spec = dollHelloResource)
     val progress by animateLottieCompositionAsState(
         composition = composition,
-        iterations = LottieConstants.IterateForever
+        iterations = LottieConstants.IterateForever,
+        clipSpec = LottieClipSpec.Progress(0.0f, 0.30f)
     )
 
     Box(
@@ -160,7 +162,7 @@ fun DollNamingContent(
 @Composable
 fun DollNamingTextField(
     textInput: String = "",
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (String) -> Unit = {},
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current

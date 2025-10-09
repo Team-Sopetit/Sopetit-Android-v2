@@ -13,9 +13,8 @@ enum class BearType(
     val dollFace: Int,
     val dollInBox: Int,
     val dollUpBox: Int,
-    val dollHelloLottie: LottieCompositionSpec,
-    val dollEatingDaily: LottieCompositionSpec,
-    val dollEatingHappy: LottieCompositionSpec
+    val dollLottie: LottieCompositionSpec,
+    val dollCrying: Int
 ) {
     BROWN(
         1,
@@ -23,9 +22,8 @@ enum class BearType(
         R.drawable.ic_brown_face,
         R.drawable.ic_doll_brown_box_in,
         R.drawable.ic_doll_brown_box_up,
-        LottieCompositionSpec.RawRes(R.raw.brown_hello),
-        LottieCompositionSpec.RawRes(R.raw.brown_eating_daily),
-        LottieCompositionSpec.RawRes(R.raw.brown_eating_happy)
+        LottieCompositionSpec.RawRes(R.raw.brown_all),
+        R.drawable.ic_bear_brown_crying
     ),
     GRAY(
         2,
@@ -33,9 +31,8 @@ enum class BearType(
         R.drawable.ic_gray_face,
         R.drawable.ic_doll_gray_box_in,
         R.drawable.ic_doll_gray_box_up,
-        LottieCompositionSpec.RawRes(R.raw.gray_hello),
-        LottieCompositionSpec.RawRes(R.raw.gray_eating_daily),
-        LottieCompositionSpec.RawRes(R.raw.gray_eating_happy)
+        LottieCompositionSpec.RawRes(R.raw.gray_all),
+        R.drawable.ic_bear_gray_crying
     ),
     WHITE(
         3,
@@ -43,9 +40,8 @@ enum class BearType(
         R.drawable.ic_white_face,
         R.drawable.ic_doll_white_box_in,
         R.drawable.ic_doll_white_box_up,
-        LottieCompositionSpec.RawRes(R.raw.white_hello),
-        LottieCompositionSpec.RawRes(R.raw.panda_eating_daily),
-        LottieCompositionSpec.RawRes(R.raw.panda_eating_happy)
+        LottieCompositionSpec.RawRes(R.raw.white_all),
+        R.drawable.ic_bear_white_crying
     ),
     RED(
         4,
@@ -53,9 +49,8 @@ enum class BearType(
         R.drawable.ic_red_face,
         R.drawable.ic_doll_red_box_in,
         R.drawable.ic_doll_red_box_up,
-        LottieCompositionSpec.RawRes(R.raw.red_hello),
-        LottieCompositionSpec.RawRes(R.raw.red_eating_daily),
-        LottieCompositionSpec.RawRes(R.raw.red_eating_happy)
+        LottieCompositionSpec.RawRes(R.raw.red_all),
+        R.drawable.ic_bear_red_crying
     );
 
     companion object {
@@ -68,13 +63,10 @@ enum class BearType(
                 false -> entries.firstOrNull { it.dollType == dollType }?.dollInBox ?: -1
             }
 
-        fun getDollHelloResource(dollType: String): LottieCompositionSpec =
-            entries.firstOrNull { it.dollType == dollType }?.dollHelloLottie ?: LottieCompositionSpec.RawRes(R.raw.brown_hello)
+        fun getDollResource(dollType: String): LottieCompositionSpec =
+            entries.firstOrNull { it.dollType == dollType }?.dollLottie ?: LottieCompositionSpec.RawRes(R.raw.brown_all)
 
-        fun getDollEatingDailyResource(dollType: String): LottieCompositionSpec =
-            entries.firstOrNull { it.dollType == dollType }?.dollEatingDaily ?: LottieCompositionSpec.RawRes(R.raw.brown_eating_daily)
-
-        fun getDollEatingHappyResource(dollType: String): LottieCompositionSpec =
-            entries.firstOrNull { it.dollType == dollType }?.dollEatingHappy ?: LottieCompositionSpec.RawRes(R.raw.brown_eating_happy)
+        fun getDollCrying(dollType: String): Int =
+            entries.firstOrNull { it.dollType == dollType }?.dollCrying ?: R.drawable.ic_bear_brown_crying
     }
 }

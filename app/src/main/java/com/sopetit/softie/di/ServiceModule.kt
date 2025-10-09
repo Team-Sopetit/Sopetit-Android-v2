@@ -11,6 +11,7 @@ import com.sopetit.data.service.MemoService
 import com.sopetit.data.service.RefreshTokenService
 import com.sopetit.data.service.RoutineService
 import com.sopetit.data.service.ThemeService
+import com.sopetit.data.service.VersionService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +25,11 @@ object ServiceModule {
     @Provides
     fun provideAuthService(@SoftieRetrofit retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
+    }
+
+    @Provides
+    fun provideVersionService(@SoftieRetrofit retrofit: Retrofit): VersionService {
+        return retrofit.create(VersionService::class.java)
     }
 
     @Provides

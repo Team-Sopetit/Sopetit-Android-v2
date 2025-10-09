@@ -1,6 +1,7 @@
 package com.sopetit.navigation
 
 import androidx.compose.ui.unit.IntOffset
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -30,11 +31,16 @@ import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
 import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
+import com.sopetit.ui.common.model.TwoBtnDialogModel
+import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.tdd.customroutine.CustomRoutineScreen
+import com.tdd.setting.SettingScreen
+import com.tdd.setting.deleteuser.DeleteUserScreen
 import kotlinx.coroutines.flow.SharedFlow
 
 fun NavGraphBuilder.splashNavGraph(
     navController: NavHostController,
+    setTutorialValid: (Boolean) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.SplashScreen.route,
@@ -43,7 +49,14 @@ fun NavGraphBuilder.splashNavGraph(
         composable(NavRoutes.SplashScreen.route) {
             SplashScreen(
                 goToKaKaoLogIn = { navController.navigate(NavRoutes.LogInScreen.route) },
-                goToHome = { navController.navigate(NavRoutes.HomeScreen.route) { popUpTo(0) } }
+                goToHome = {
+                    setTutorialValid(it)
+                    navController.navigate(NavRoutes.HomeScreen.route) { popUpTo(0) }
+                },
+                goToOnboarding = {
+                    setTutorialValid(it)
+                    navController.navigate(NavRoutes.StoryTellingFirstScreen.route) { popUpTo(0) }
+                }
             )
         }
     }
@@ -154,6 +167,7 @@ fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit,
     isTutorialValid: SharedFlow<Boolean>,
+    showFeedbackDialog: (TwoBtnDialogModel) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.HomeScreen.route,
@@ -162,7 +176,9 @@ fun NavGraphBuilder.homeNavGraph(
         composable(NavRoutes.HomeScreen.route) {
             HomeScreen(
                 showTutorialBottomSheet = showTutorialBottomSheet,
-                isTutorialValid = isTutorialValid
+                isTutorialValid = isTutorialValid,
+                goToSettingPage = { navController.navigate(NavRoutes.SettingScreen.route) },
+                showFeedbackDialog = showFeedbackDialog
             )
         }
     }
@@ -307,6 +323,34 @@ fun NavGraphBuilder.customRoutineNavGraph(
                 goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
                 modifyRoutineModel = null,
                 goBackPage = { navController.popBackStack() }
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.settingNavGraph(
+    navController: NavController,
+    showLogOutBottomSheet: (TwoBtnIconModel) -> Unit,
+    isSelectedLogOut: SharedFlow<Boolean>,
+) {
+    navigation(
+        startDestination = NavRoutes.SettingScreen.route,
+        route = NavRoutes.SettingGraph.route
+    ) {
+        composable(NavRoutes.SettingScreen.route) {
+            SettingScreen(
+                goBackPage = { navController.popBackStack() },
+                goToDeleteUserScreen = { navController.navigate(NavRoutes.DeleteUserScreen.route) },
+                showLogOutBottomSheet = showLogOutBottomSheet,
+                isSelectedLogOut = isSelectedLogOut,
+                goBackToLogInPage = { navController.navigate(NavRoutes.LogInScreen.route) }
+            )
+        }
+
+        composable(NavRoutes.DeleteUserScreen.route) {
+            DeleteUserScreen(
+                goBackPage = { navController.popBackStack() },
+                goBackToLogInPage = { navController.navigate(NavRoutes.LogInScreen.route) }
             )
         }
     }

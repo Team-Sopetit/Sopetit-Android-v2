@@ -15,13 +15,18 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ModalBottomSheetLayout
@@ -37,13 +42,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -73,17 +81,23 @@ import com.sopetit.navigation.homeNavGraph
 import com.sopetit.navigation.logInNavGraph
 import com.sopetit.navigation.onBoardingNavGraph
 import com.sopetit.navigation.progressNavGraph
+import com.sopetit.navigation.settingNavGraph
 import com.sopetit.navigation.splashNavGraph
 import com.sopetit.ui.common.bottomsheet.ChallengeChangeBottomSheet
 import com.sopetit.ui.common.bottomsheet.MemoWriteBottomSheet
 import com.sopetit.ui.common.bottomsheet.RoutineDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
 import com.sopetit.ui.common.bottomsheet.TwoBtnDetailBottomSheet
+import com.sopetit.ui.common.bottomsheet.TwoBtnIconBottomSheet
+import com.sopetit.ui.common.dialog.TwoBtnDialog
 import com.sopetit.ui.common.item.CommonSnackBar
+import com.sopetit.ui.common.model.TwoBtnDialogModel
+import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
 import com.sopetit.ui.util.CommonEventManager
 import com.sopetit.ui.util.DismissKeyboardOnClick
+import com.sopetit.ui.util.intentToFeedback
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -93,6 +107,8 @@ fun MainScreen() {
 
     val viewModel: MainViewModel = hiltViewModel()
     val uiState: MainPageState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
     val snackBarHost = remember { SnackbarHostState() }
@@ -102,6 +118,7 @@ fun MainScreen() {
         skipHalfExpanded = true
     )
 
+    val isShowDialog = remember { mutableStateOf(false) }
     val snackBarPadding = remember { mutableStateOf(0) }
     val snackBarIcon = remember { mutableStateOf(R.drawable.ic_snackbar_caution) }
     val showSnackBar: (String, Int, Int) -> Unit = { message, paddingBottom, icon ->
@@ -117,6 +134,10 @@ fun MainScreen() {
             delay(1000L)
             job.cancel()
         }
+    }
+    val showTwoBtnDialog: (TwoBtnDialogModel) -> Unit = {
+        viewModel.onSetTwoBtnDialog(it)
+        isShowDialog.value = true
     }
     val showTutorialBottomSheet: (List<TutorialModel>) -> Unit = { tutorials ->
         viewModel.setTutorials(tutorials)
@@ -140,6 +161,10 @@ fun MainScreen() {
     }
     val showMemoDetailBottomSheet: (MemoActionModel) -> Unit = {
         viewModel.setMemoDetail(it)
+        scope.launch { sheetState.show() }
+    }
+    val showTwoBtnIconBottomSheet: (TwoBtnIconModel) -> Unit = {
+        viewModel.setTwoBtnIconBottomSheet(it)
         scope.launch { sheetState.show() }
     }
 
@@ -180,322 +205,402 @@ fun MainScreen() {
             }
     }
 
-    DismissKeyboardOnClick {
-        ModalBottomSheetLayout(
-            sheetState = sheetState,
-            sheetContent = {
-                AnimatedContent(
-                    targetState = uiState.bottomSheetType,
-                    transitionSpec = {
-                        fadeIn(animationSpec = tween(500)) togetherWith fadeOut(
-                            animationSpec = tween(
-                                500
-                            )
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .navigationBarsPadding(),
-                    label = ""
-                ) { currentSheet ->
-                    when (currentSheet) {
-                        BottomSheetType.TUTORIAL -> {
-                            TutorialBottomSheet(
-                                tutorials = uiState.tutorials,
-                                closeTutorials = {
-                                    scope.launch {
-                                        sheetState.hide()
-                                        viewModel.isTutorialValid.emit(false)
-                                    }
-                                }
-                            )
-                        }
-
-                        BottomSheetType.ROUTINE -> {
-                            RoutineDetailBottomSheet(
-                                routine = uiState.routineDetail,
-                                onClickRoutineDeleteBtn = {
-                                    scope.launch {
-                                        viewModel.deleteRoutineId.emit(it)
-                                        sheetState.hide()
-                                    }
-                                },
-                                onClickConfirmBtn = {
-                                    scope.launch {
-                                        sheetState.hide()
-                                    }
-                                }
-                            )
-                        }
-
-                        BottomSheetType.CHALLENGECHANGE -> {
-                            ChallengeChangeBottomSheet(
-                                challengeChangeModel = uiState.challengeChangeModel
-                            )
-                        }
-
-                        BottomSheetType.MEMO -> {
-                            MemoWriteBottomSheet(
-                                onClickConfirmBtn = {
-                                    scope.launch {
-                                        viewModel.writtenMemo.emit(it)
-                                        sheetState.hide()
-                                    }
-                                },
-                                memoActionModel = uiState.memoActionModel,
-                                onClickModifyBtn = {
-                                    scope.launch {
-                                        viewModel.setMemoDetail(it)
-                                        sheetState.hide()
-                                    }
-                                }
-                            )
-                        }
-
-                        BottomSheetType.BOTTOMTWOBTN -> {
-                            TwoBtnDetailBottomSheet(
-                                memoActionModel = uiState.memoActionModel,
-                                onClickMemoDeleteBtn = {
-                                    scope.launch {
-                                        viewModel.setMemoDetail(it)
-                                        sheetState.hide()
-                                    }
-                                },
-                                onClickRoutineDeleteBtn = {
-                                    scope.launch {
-                                        viewModel.deleteRoutineId.emit(it)
-                                        sheetState.hide()
-                                    }
-                                },
-                                onClickModBtn = {
-                                    scope.launch {
-                                        sheetState.hide()
-//                                        showRoutineMemoWriteBottomSheet(uiState.memoActionModel)
-
-                                        if (uiState.twoBtnType == TwoBtnBottomSheetType.MemoWrite) {
-                                            showRoutineMemoWriteBottomSheet(uiState.memoActionModel)
-                                        } else {
-                                            viewModel.modRoutine.emit(uiState.routineDetail)
-                                        }
-                                    }
-                                },
-                                type = uiState.twoBtnType,
-                                routine = uiState.routineDetail
-                            )
-                        }
-
-                        BottomSheetType.DEFAULT -> {}
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(
+                WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
+            )
+    ) {
+        DismissKeyboardOnClick {
+            if (isShowDialog.value) {
+                TwoBtnDialog(
+                    twoBtnDialogModel = uiState.twoBtnDialogModel,
+                    onDismiss = { isShowDialog.value = false },
+                    onClickDoBtn = {
+                        isShowDialog.value = false
+                        intentToFeedback(context)
                     }
-                }
-            },
-            sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-            scrimColor = Color(0, 0, 0, 128)
-        ) {
-            Scaffold(
-                bottomBar = {
-                    AnimatedVisibility(
-                        visible = uiState.bottomNavType != BottomNavType.DEFAULT,
-                        modifier = Modifier.background(Gray0),
-                        enter = fadeIn() + slideIn { IntOffset(0, 0) },
-                        exit = fadeOut() + slideOut { IntOffset(0, 0) }
-                    ) {
-                        BottomNavBar(
-                            modifier = Modifier.navigationBarsPadding(),
-                            interactionSource = interactionSource,
-                            type = uiState.bottomNavType,
-                            onClick = { route: String ->
-                                if (navController.currentDestination?.route != route) {
-                                    navController.navigate(route) {
-                                        popUpTo(navController.currentDestination?.route!!) {
-                                            inclusive = true
+                )
+            }
+
+            ModalBottomSheetLayout(
+                sheetState = sheetState,
+                sheetContent = {
+                    AnimatedContent(
+                        targetState = uiState.bottomSheetType,
+                        transitionSpec = {
+                            fadeIn(animationSpec = tween(500)) togetherWith fadeOut(
+                                animationSpec = tween(
+                                    500
+                                )
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .navigationBarsPadding(),
+                        label = ""
+                    ) { currentSheet ->
+                        when (currentSheet) {
+                            BottomSheetType.TUTORIAL -> {
+                                TutorialBottomSheet(
+                                    tutorials = uiState.tutorials,
+                                    closeTutorials = {
+                                        scope.launch {
+                                            sheetState.hide()
+                                            viewModel.isTutorialValid.emit(false)
                                         }
-                                        launchSingleTop = true
                                     }
-                                }
+                                )
                             }
-                        )
+
+                            BottomSheetType.ROUTINE -> {
+                                RoutineDetailBottomSheet(
+                                    routine = uiState.routineDetail,
+                                    onClickRoutineDeleteBtn = {
+                                        scope.launch {
+                                            viewModel.deleteRoutineId.emit(it)
+                                            sheetState.hide()
+                                        }
+                                    },
+                                    onClickConfirmBtn = {
+                                        scope.launch {
+                                            sheetState.hide()
+                                        }
+                                    }
+                                )
+                            }
+
+                            BottomSheetType.CHALLENGECHANGE -> {
+                                ChallengeChangeBottomSheet(
+                                    challengeChangeModel = uiState.challengeChangeModel
+                                )
+                            }
+
+                            BottomSheetType.MEMO -> {
+                                MemoWriteBottomSheet(
+                                    onClickConfirmBtn = {
+                                        scope.launch {
+                                            viewModel.writtenMemo.emit(it)
+                                            sheetState.hide()
+                                        }
+                                    },
+                                    memoActionModel = uiState.memoActionModel,
+                                    onClickModifyBtn = {
+                                        scope.launch {
+                                            viewModel.setMemoDetail(it)
+                                            sheetState.hide()
+                                        }
+                                    }
+                                )
+                            }
+
+                            BottomSheetType.BOTTOMTWOBTN -> {
+                                TwoBtnDetailBottomSheet(
+                                    memoActionModel = uiState.memoActionModel,
+                                    onClickMemoDeleteBtn = {
+                                        scope.launch {
+                                            viewModel.setMemoDetail(it)
+                                            sheetState.hide()
+                                        }
+                                    },
+                                    onClickRoutineDeleteBtn = {
+                                        scope.launch {
+                                            viewModel.deleteRoutineId.emit(it)
+                                            sheetState.hide()
+                                        }
+                                    },
+                                    onClickModBtn = {
+                                        scope.launch {
+                                            sheetState.hide()
+
+                                            if (uiState.twoBtnType == TwoBtnBottomSheetType.MemoWrite) {
+                                                showRoutineMemoWriteBottomSheet(uiState.memoActionModel)
+                                            } else {
+                                                viewModel.modRoutine.emit(uiState.routineDetail)
+                                            }
+                                        }
+                                    },
+                                    type = uiState.twoBtnType,
+                                    routine = uiState.routineDetail
+                                )
+                            }
+
+                            BottomSheetType.BOTTOMTWOBTNICON -> {
+                                TwoBtnIconBottomSheet(
+                                    twoBtnIconModel = uiState.twoBtnIconModel,
+                                    onClickLeftBtn = {
+                                        scope.launch {
+                                            sheetState.hide()
+                                        }
+                                    },
+                                    onClickRightBtn = {
+                                        scope.launch {
+                                            sheetState.hide()
+                                            viewModel.isSelectedLogOut.emit(true)
+                                        }
+                                    }
+                                )
+                            }
+
+                            BottomSheetType.DEFAULT -> {}
+                        }
                     }
                 },
-                snackbarHost = {
-                    CommonSnackBar(
-                        hostState = snackBarHost,
-                        paddingBottom = snackBarPadding.value,
-                        iconResource = snackBarIcon.value
-                    )
-                }
-            ) { innerPadding ->
-                Box(
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .statusBarsPadding()
-                ) {
-                    NavHost(
-                        navController = navController,
-                        startDestination = NavRoutes.SplashGraph.route
-                    ) {
-                        splashNavGraph(
-                            navController = navController
-                        )
-                        logInNavGraph(
-                            navController = navController,
-                            setTutorialValid = setTutorialValid
-                        )
-                        onBoardingNavGraph(
-                            navController = navController,
-                            setMemberModel = settingMemberModel,
-                            showSnackBar = showSnackBar,
-                            memberModel = viewModel.memberModel,
-                        )
-                        homeNavGraph(
-                            navController = navController,
-                            showTutorialBottomSheet = showTutorialBottomSheet,
-                            isTutorialValid = viewModel.isTutorialValid
-                        )
-                        progressNavGraph(
-                            navController = navController,
-                            showChallengeRoutineBottomSheet = showRoutineBottomSheetOneBtn,
-                            showDailyRoutineBottomSheet = showRoutineBottomSheetTwoBtn,
-                            deleteRoutineId = viewModel.deleteRoutineId,
-                            modRoutine = viewModel.modRoutine,
-                            showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) },
-                            showChallengeDailySom = { viewModel.updateDailyAchieve(it) },
-                            showSnackBar = showSnackBar,
-                            showToolTip = { offset, title, content ->
-                                viewModel.initSetTooltip(true, offset, title, content)
-                            }
-                        )
-                        achieveNavGraph(
-                            navController = navController,
-                            showRoutineBottomSheet = showRoutineBottomSheetOneBtn,
-                            deleteRoutineId = viewModel.deleteRoutineId,
-                            showMemoWriteBottomSheet = {
-                                showRoutineMemoWriteBottomSheet(
-                                    MemoActionModel()
-                                )
-                            },
-                            writtenMemo = viewModel.writtenMemo,
-                            showMemoDetailBottomSheet = showMemoDetailBottomSheet,
-                            memoActionModel = viewModel.memoActionModel,
-                            setAchieveThemeId = setAchieveThemeId,
-                            achieveThemeId = viewModel.achieveThemeId
-                        )
-                        addRoutineNavGraph(
-                            navController = navController,
-                            setSelectedThemeId = setSelectedTheme,
-                            selectedThemeId = viewModel.selectedTheme,
-                            showChallengeDetailBottomSheet = showRoutineBottomSheetOneBtn,
-                            showSnackBar = showSnackBar,
-                            showChallengeChangeBottomSheet = showChallengeChangeBottomSheet
-                        )
-                        customRoutineNavGraph(
-                            navController = navController
-                        )
-                    }
-                }
-            }
-        }
-
-        if (uiState.isChallengeAchieveShowValid) {
-            val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.happy_complete_som))
-            val progress by animateLottieCompositionAsState(composition = composition)
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Gray1000)
+                sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+                scrimColor = Color(0, 0, 0, 128)
             ) {
-                LottieAnimation(
-                    composition = composition,
-                    progress = {
-                        if (progress >= 1.0f) viewModel.updateChallengeAchieve(false)
-
-                        progress
-                    },
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-        }
-
-        if (uiState.isDailyAchieveShowValid) {
-            val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.daily_complete_som))
-            val progress by animateLottieCompositionAsState(composition = composition)
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Gray1000)
-            ) {
-                LottieAnimation(
-                    composition = composition,
-                    progress = {
-                        if (progress >= 1.0f) viewModel.updateDailyAchieve(false)
-
-                        progress
-                    },
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-        }
-
-        if (uiState.isTooltipShowValid) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Gray1000)
-                    .clickable(
-                        onClick = { viewModel.updateTooltipState(false) }
-                    )
-            ) {
-                Popup(
-                    alignment = Alignment.TopEnd,
-                    offset = uiState.tooltipOffSet
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(end = 20.dp)
-                            .background(Gray0, RoundedCornerShape(10.dp))
-                            .width(272.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .padding(start = 16.dp, end = 12.dp, top = 12.dp)
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
+                Scaffold(
+                    bottomBar = {
+                        AnimatedVisibility(
+                            visible = uiState.bottomNavType != BottomNavType.DEFAULT,
+                            modifier = Modifier.background(Gray0),
+                            enter = fadeIn() + slideIn { IntOffset(0, 0) },
+                            exit = fadeOut() + slideOut { IntOffset(0, 0) }
                         ) {
-                            Text(
-                                text = uiState.tooltipTitle,
-                                color = Gray700,
-                                style = SoftieTypo.head4,
-                                modifier = Modifier
-                                    .weight(1f)
-                            )
-
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_close),
-                                contentDescription = "close tooltip",
-                                modifier = Modifier
-                                    .size(18.dp)
-                                    .clickable(
-                                        onClick = { viewModel.updateTooltipState(false) },
-                                        interactionSource = interactionSource,
-                                        indication = null
-                                    )
+                            BottomNavBar(
+                                modifier = Modifier.navigationBarsPadding(),
+                                interactionSource = interactionSource,
+                                type = uiState.bottomNavType,
+                                onClick = { route: String ->
+                                    if (navController.currentDestination?.route != route) {
+                                        navController.navigate(route) {
+                                            popUpTo(navController.currentDestination?.route!!) {
+                                                inclusive = true
+                                            }
+                                            launchSingleTop = true
+                                        }
+                                    }
+                                }
                             )
                         }
-
-                        Text(
-                            text = uiState.tooltipContent,
-                            color = Gray650,
-                            style = SoftieTypo.caption1,
-                            modifier = Modifier
-                                .padding(top = 6.dp, bottom = 16.dp)
-                                .padding(horizontal = 16.dp)
-                                .fillMaxWidth()
-                        )
+                    },
+                ) { innerPadding ->
+                    Box(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .statusBarsPadding()
+                    ) {
+                        NavHost(
+                            navController = navController,
+                            startDestination = NavRoutes.SplashGraph.route
+                        ) {
+                            splashNavGraph(
+                                navController = navController,
+                                setTutorialValid = setTutorialValid
+                            )
+                            logInNavGraph(
+                                navController = navController,
+                                setTutorialValid = setTutorialValid
+                            )
+                            onBoardingNavGraph(
+                                navController = navController,
+                                setMemberModel = settingMemberModel,
+                                showSnackBar = showSnackBar,
+                                memberModel = viewModel.memberModel,
+                            )
+                            homeNavGraph(
+                                navController = navController,
+                                showTutorialBottomSheet = showTutorialBottomSheet,
+                                isTutorialValid = viewModel.isTutorialValid,
+                                showFeedbackDialog = showTwoBtnDialog
+                            )
+                            progressNavGraph(
+                                navController = navController,
+                                showChallengeRoutineBottomSheet = showRoutineBottomSheetOneBtn,
+                                showDailyRoutineBottomSheet = showRoutineBottomSheetTwoBtn,
+                                deleteRoutineId = viewModel.deleteRoutineId,
+                                modRoutine = viewModel.modRoutine,
+                                showChallengeAchieveSom = { viewModel.updateChallengeAchieve(it) },
+                                showChallengeDailySom = { viewModel.updateDailyAchieve(it) },
+                                showSnackBar = showSnackBar,
+                                showToolTip = { offset, title, content ->
+                                    viewModel.initSetTooltip(true, offset, title, content)
+                                }
+                            )
+                            achieveNavGraph(
+                                navController = navController,
+                                showRoutineBottomSheet = showRoutineBottomSheetOneBtn,
+                                deleteRoutineId = viewModel.deleteRoutineId,
+                                showMemoWriteBottomSheet = {
+                                    showRoutineMemoWriteBottomSheet(
+                                        MemoActionModel()
+                                    )
+                                },
+                                writtenMemo = viewModel.writtenMemo,
+                                showMemoDetailBottomSheet = showMemoDetailBottomSheet,
+                                memoActionModel = viewModel.memoActionModel,
+                                setAchieveThemeId = setAchieveThemeId,
+                                achieveThemeId = viewModel.achieveThemeId
+                            )
+                            addRoutineNavGraph(
+                                navController = navController,
+                                setSelectedThemeId = setSelectedTheme,
+                                selectedThemeId = viewModel.selectedTheme,
+                                showChallengeDetailBottomSheet = showRoutineBottomSheetOneBtn,
+                                showSnackBar = showSnackBar,
+                                showChallengeChangeBottomSheet = showChallengeChangeBottomSheet
+                            )
+                            customRoutineNavGraph(
+                                navController = navController
+                            )
+                            settingNavGraph(
+                                navController = navController,
+                                showLogOutBottomSheet = showTwoBtnIconBottomSheet,
+                                isSelectedLogOut = viewModel.isSelectedLogOut
+                            )
+                        }
                     }
                 }
             }
+
+            if (uiState.isChallengeAchieveShowValid) {
+                val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.happy_complete_som))
+                var dismissed by remember { mutableStateOf(false) }
+                val progress by animateLottieCompositionAsState(
+                    composition = composition,
+                    iterations = 1,
+                    isPlaying = !dismissed
+                )
+
+                fun dismiss() {
+                    if (!dismissed) {
+                        dismissed = true
+                        viewModel.updateChallengeAchieve(false)
+                    }
+                }
+
+                LaunchedEffect(progress) {
+                    if (progress >= 1.0f) dismiss()
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Gray1000)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { dismiss() }
+                        )
+                        .zIndex(1f)
+                ) {
+                    LottieAnimation(
+                        composition = composition,
+                        progress = { progress },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+
+            if (uiState.isDailyAchieveShowValid) {
+                val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.daily_complete_som))
+                var dismissed by remember { mutableStateOf(false) }
+                val progress by animateLottieCompositionAsState(
+                    composition = composition,
+                    iterations = 1,
+                    isPlaying = !dismissed
+                )
+
+                fun dismiss() {
+                    if (!dismissed) {
+                        dismissed = true
+                        viewModel.updateDailyAchieve(false)
+                    }
+                }
+
+                LaunchedEffect(progress) {
+                    if (progress >= 1.0f) dismiss()
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Gray1000)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { dismiss() }
+                        )
+                        .zIndex(1f)
+                ) {
+                    LottieAnimation(
+                        composition = composition,
+                        progress = { progress },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+
+            if (uiState.isTooltipShowValid) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Gray1000)
+                        .clickable(
+                            onClick = { viewModel.updateTooltipState(false) }
+                        )
+                ) {
+                    Popup(
+                        alignment = Alignment.TopEnd,
+                        offset = uiState.tooltipOffSet
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .padding(end = 20.dp)
+                                .background(Gray0, RoundedCornerShape(10.dp))
+                                .width(272.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .padding(start = 16.dp, end = 12.dp, top = 12.dp)
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = uiState.tooltipTitle,
+                                    color = Gray700,
+                                    style = SoftieTypo.head4,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                )
+
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_close),
+                                    contentDescription = "close tooltip",
+                                    modifier = Modifier
+                                        .size(18.dp)
+                                        .clickable(
+                                            onClick = { viewModel.updateTooltipState(false) },
+                                            interactionSource = interactionSource,
+                                            indication = null
+                                        )
+                                )
+                            }
+
+                            Text(
+                                text = uiState.tooltipContent,
+                                color = Gray650,
+                                style = SoftieTypo.caption1,
+                                modifier = Modifier
+                                    .padding(top = 6.dp, bottom = 16.dp)
+                                    .padding(horizontal = 16.dp)
+                                    .fillMaxWidth()
+                            )
+                        }
+                    }
+                }
+            }
+
+            CommonSnackBar(
+                hostState = snackBarHost,
+                paddingBottom = snackBarPadding.value,
+                iconResource = snackBarIcon.value,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .zIndex(2f)
+            )
         }
     }
 }

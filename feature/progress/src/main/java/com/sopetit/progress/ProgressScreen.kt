@@ -17,10 +17,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -115,20 +115,20 @@ fun ProgressScreen(
             when (event) {
                 is ProgressEvent.OnShowChallengeAchieveSom -> {
                     showChallengeAchieveSom(true)
-                    showSnackBar(MemberChallengeAchieve, 24, R.drawable.ic_som_rainbow)
+                    showSnackBar(MemberChallengeAchieve, 104, R.drawable.ic_som_rainbow)
                 }
 
                 is ProgressEvent.OnShowDailyAchieveSom -> {
                     showChallengeDailySom(true)
-                    showSnackBar(MemberDailyAchieve, 24, R.drawable.ic_som)
+                    showSnackBar(MemberDailyAchieve, 104, R.drawable.ic_som)
                 }
 
                 is ProgressEvent.OnShowDailyAchieveHasSomFalse -> {
-                    showSnackBar(MemberDailyAchieveHasSomFalse, 24, R.drawable.ic_snackbar_caution)
+                    showSnackBar(MemberDailyAchieveHasSomFalse, 104, R.drawable.ic_snackbar_caution)
                 }
 
                 is ProgressEvent.OnShowDailyAchieveCancel -> {
-                    showSnackBar(MemberDailyAchieveCancel, 24, R.drawable.ic_toast_check)
+                    showSnackBar(MemberDailyAchieveCancel, 104, R.drawable.ic_toast_check)
                 }
             }
         }
@@ -193,7 +193,9 @@ fun ProgressContent(
 
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+//                    .fillMaxSize()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
             ) {
                 ProgressRoutineContent(
                     memberChallenge = memberChallenge,
@@ -367,7 +369,7 @@ fun ProgressDailyRoutine(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
     ) {
         RoutineTitleContent(
             title = ProgressDailyTitle,
@@ -377,15 +379,13 @@ fun ProgressDailyRoutine(
             interactionSource = interactionSource
         )
 
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .padding(top = 12.dp, bottom = 50.dp)
                 .padding(horizontal = 20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            itemsIndexed(
-                memberDailyRoutineList,
-                key = { index, themeItem -> themeItem.themeId }) { index, themeItem ->
+            memberDailyRoutineList.forEachIndexed { index, themeItem ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(id = ThemeIconType.getThemeIcon(themeItem.themeId)),

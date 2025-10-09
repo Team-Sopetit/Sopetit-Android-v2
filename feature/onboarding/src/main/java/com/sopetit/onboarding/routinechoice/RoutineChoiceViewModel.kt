@@ -6,6 +6,7 @@ import com.sopetit.domain.entity.request.routine.DailyRoutineListRequestModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListThemeTotalModel
 import com.sopetit.domain.entity.response.theme.ThemeListModel
+import com.sopetit.domain.usecase.auth.SaveMemberDollExistUseCase
 import com.sopetit.domain.usecase.member.PostCreateMemberUseCase
 import com.sopetit.domain.usecase.routine.GetDailyRoutineUseCase
 import com.sopetit.domain.usecase.theme.GetThemeListUseCase
@@ -22,6 +23,7 @@ class RoutineChoiceViewModel @Inject constructor(
     private val getThemeListUseCase: GetThemeListUseCase,
     private val getDailyRoutineUseCase: GetDailyRoutineUseCase,
     private val postCreateMemberUseCase: PostCreateMemberUseCase,
+    private val saveMemberDollExistUseCase: SaveMemberDollExistUseCase
 ) : BaseViewModel<RoutineChoicePageState>(
     RoutineChoicePageState()
 ) {
@@ -148,6 +150,15 @@ class RoutineChoiceViewModel @Inject constructor(
             postCreateMemberUseCase(
                 request = updateMemberModel()
             ).collect { resultResponse(it, {}) }
+
+//            emitEventFlow(RoutineChoiceEvent.OnSuccessCreateMember)
+            saveMemberDollExist()
+        }
+    }
+
+    private fun saveMemberDollExist() {
+        viewModelScope.launch {
+            saveMemberDollExistUseCase(true).collect { resultResponse(it, {} )}
 
             emitEventFlow(RoutineChoiceEvent.OnSuccessCreateMember)
         }

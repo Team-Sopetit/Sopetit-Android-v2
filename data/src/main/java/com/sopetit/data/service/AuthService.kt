@@ -6,12 +6,19 @@ import com.sopetit.data.entity.request.LogInRequestDto
 import com.sopetit.data.entity.response.auth.LogInResponseDto
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.POST
 
 interface AuthService {
 
-    @POST(EndPoints.Auth.LOGIN)
+    @POST(EndPoints.Auth.AUTH)
     suspend fun login(
         @Body body: LogInRequestDto,
     ): Response<BaseResponse<LogInResponseDto>>
+
+    @DELETE(EndPoints.Auth.AUTH)
+    suspend fun deleteUser(): Response<BaseResponse<Unit>>
+
+    @POST(EndPoints.Auth.LOGOUT)
+    suspend fun logout(): Response<BaseResponse<Unit>>
 }

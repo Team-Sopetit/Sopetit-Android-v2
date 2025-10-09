@@ -10,10 +10,13 @@ import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.ui.base.BaseViewModel
+import com.sopetit.ui.common.model.TwoBtnDialogModel
+import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,6 +35,7 @@ class MainViewModel @Inject constructor(
     val writtenMemo = MutableSharedFlow<String>(replay = 1)
     val memoActionModel = MutableSharedFlow<MemoActionModel>(replay = 1)
     val achieveThemeId = MutableSharedFlow<Int>(replay = 1)
+    val isSelectedLogOut = MutableSharedFlow<Boolean>(replay = 1)
 
     fun setBottomNavType(route: String?) {
         val type = when (route) {
@@ -59,6 +63,14 @@ class MainViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 bottomNavType = type
+            )
+        )
+    }
+
+    fun onSetTwoBtnDialog(data: TwoBtnDialogModel) {
+        updateState(
+            uiState.value.copy(
+                twoBtnDialogModel = data
             )
         )
     }
@@ -145,6 +157,15 @@ class MainViewModel @Inject constructor(
                 memoActionModel = memoModel,
                 bottomSheetType = BottomSheetType.BOTTOMTWOBTN,
                 twoBtnType = TwoBtnBottomSheetType.MemoWrite
+            )
+        )
+    }
+
+    fun setTwoBtnIconBottomSheet(data: TwoBtnIconModel) {
+        updateState(
+            uiState.value.copy(
+                twoBtnIconModel = data,
+                bottomSheetType = BottomSheetType.BOTTOMTWOBTNICON
             )
         )
     }

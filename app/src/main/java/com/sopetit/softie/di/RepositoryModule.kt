@@ -11,6 +11,7 @@ import com.sopetit.data.repositoryImpl.MemoRepositoryImpl
 import com.sopetit.data.repositoryImpl.RefreshTokenRepositoryImpl
 import com.sopetit.data.repositoryImpl.RoutineRepositoryImpl
 import com.sopetit.data.repositoryImpl.ThemeRepositoryImpl
+import com.sopetit.data.repositoryImpl.VersionRepositoryImpl
 import com.sopetit.domain.repository.AchieveRepository
 import com.sopetit.domain.repository.AuthRepository
 import com.sopetit.domain.repository.CalendarRepository
@@ -22,6 +23,7 @@ import com.sopetit.domain.repository.MemoRepository
 import com.sopetit.domain.repository.RefreshTokenRepository
 import com.sopetit.domain.repository.RoutineRepository
 import com.sopetit.domain.repository.ThemeRepository
+import com.sopetit.domain.repository.VersionRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -75,4 +77,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsCustomRoutineRepository(repositoryImpl: CustomRoutineRepositoryImpl): CustomRoutineRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsVersionRepository(repositoryImpl: VersionRepositoryImpl): VersionRepository
 }
