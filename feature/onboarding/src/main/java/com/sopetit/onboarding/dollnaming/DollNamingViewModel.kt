@@ -22,7 +22,10 @@ class DollNamingViewModel @Inject constructor(
         Timber.d("[온보딩] (dollNaming) member -> ${uiState.value.memberModel}")
     }
 
-    fun updateMemberModel() = CreateMemberModel(dollType = uiState.value.memberModel.dollType, dollName = uiState.value.dollInputName)
+    fun updateMemberModel() = CreateMemberModel(
+        dollType = uiState.value.memberModel.dollType,
+        dollName = uiState.value.dollInputName
+    )
 
     fun onValueChange(newValue: String) {
         updateState(

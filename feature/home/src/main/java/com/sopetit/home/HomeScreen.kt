@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieClipSpec
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -68,7 +69,7 @@ fun HomeScreen(
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit = {},
     isTutorialValid: SharedFlow<Boolean> = MutableSharedFlow(),
     goToSettingPage: () -> Unit,
-    showFeedbackDialog: (TwoBtnDialogModel) -> Unit
+    showFeedbackDialog: (TwoBtnDialogModel) -> Unit,
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState: HomePageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -134,7 +135,7 @@ fun HomeScreenContent(
     onClickCotton: (CottonType) -> Unit = {},
     onSetEatingLottieDefault: () -> Unit = {},
     onClickSetting: () -> Unit = {},
-    onClickFeedback: () -> Unit = {}
+    onClickFeedback: () -> Unit = {},
 ) {
 
     Box(
@@ -242,7 +243,7 @@ fun HomeScreenContent(
 fun HomeDollBoxContent(
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     conversation: String = "",
-    dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
+    dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_all),
     onClickDoll: () -> Unit = {},
     eatingLottieSpec: LottieCompositionSpec?,
     onSetEatingLottieDefault: () -> Unit,
@@ -260,6 +261,7 @@ fun HomeDollBoxContent(
         isPlaying = isPlaying,
         iterations = 1,
         restartOnPlay = true,
+        clipSpec = LottieClipSpec.Progress(0.0f, 0.30f)
     )
 
     LaunchedEffect(dollHelloResource) {

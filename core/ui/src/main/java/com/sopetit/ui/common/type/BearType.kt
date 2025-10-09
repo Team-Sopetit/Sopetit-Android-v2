@@ -24,7 +24,7 @@ enum class BearType(
         R.drawable.ic_brown_face,
         R.drawable.ic_doll_brown_box_in,
         R.drawable.ic_doll_brown_box_up,
-        LottieCompositionSpec.RawRes(R.raw.brown_hello),
+        LottieCompositionSpec.RawRes(R.raw.brown_all),
         LottieCompositionSpec.RawRes(R.raw.brown_eating_daily),
         LottieCompositionSpec.RawRes(R.raw.brown_eating_happy),
         R.drawable.ic_bear_brown_crying
@@ -35,7 +35,7 @@ enum class BearType(
         R.drawable.ic_gray_face,
         R.drawable.ic_doll_gray_box_in,
         R.drawable.ic_doll_gray_box_up,
-        LottieCompositionSpec.RawRes(R.raw.gray_hello),
+        LottieCompositionSpec.RawRes(R.raw.gray_all),
         LottieCompositionSpec.RawRes(R.raw.gray_eating_daily),
         LottieCompositionSpec.RawRes(R.raw.gray_eating_happy),
         R.drawable.ic_bear_gray_crying
@@ -46,7 +46,7 @@ enum class BearType(
         R.drawable.ic_white_face,
         R.drawable.ic_doll_white_box_in,
         R.drawable.ic_doll_white_box_up,
-        LottieCompositionSpec.RawRes(R.raw.white_hello),
+        LottieCompositionSpec.RawRes(R.raw.white_all),
         LottieCompositionSpec.RawRes(R.raw.panda_eating_daily),
         LottieCompositionSpec.RawRes(R.raw.panda_eating_happy),
         R.drawable.ic_bear_white_crying
@@ -57,7 +57,7 @@ enum class BearType(
         R.drawable.ic_red_face,
         R.drawable.ic_doll_red_box_in,
         R.drawable.ic_doll_red_box_up,
-        LottieCompositionSpec.RawRes(R.raw.red_hello),
+        LottieCompositionSpec.RawRes(R.raw.red_all),
         LottieCompositionSpec.RawRes(R.raw.red_eating_daily),
         LottieCompositionSpec.RawRes(R.raw.red_eating_happy),
         R.drawable.ic_bear_red_crying
