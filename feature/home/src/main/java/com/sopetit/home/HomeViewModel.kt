@@ -1,7 +1,6 @@
 package com.sopetit.home
 
 import androidx.lifecycle.viewModelScope
-import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.sopetit.design_system.FeedbackLeftBtn
 import com.sopetit.design_system.FeedbackRightBtn
 import com.sopetit.design_system.FeedbackSemiTitle
@@ -20,6 +19,7 @@ import com.sopetit.ui.base.BaseViewModel
 import com.sopetit.ui.common.model.TwoBtnDialogModel
 import com.sopetit.ui.common.type.BearType
 import com.sopetit.ui.common.type.CottonType
+import com.sopetit.ui.common.type.LottieType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -104,6 +104,7 @@ class HomeViewModel @Inject constructor(
             uiState.value.copy(
                 homeMemberModel = data,
                 dollHelloResource = BearType.getDollHelloResource(data.dollType),
+                dollCurrentResource = BearType.getDollHelloResource(data.dollType),
                 dollType = data.dollType,
                 dollEatingDailyResource = BearType.getDollEatingDailyResource(data.dollType),
                 dollEatingHappyResource = BearType.getDollEatingHappyResource(data.dollType),
@@ -120,7 +121,8 @@ class HomeViewModel @Inject constructor(
 
         updateState(
             uiState.value.copy(
-                randomSelectedConversation = uiState.value.homeMemberModel.conversations[randomSplashIndex]
+                randomSelectedConversation = uiState.value.homeMemberModel.conversations[randomSplashIndex],
+                dollCurrentMode = LottieType.HELLO
 
             )
         )
@@ -134,11 +136,35 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun setEatingDollType(cottonType: CottonType): LottieCompositionSpec {
+    fun setEatingDollType(cottonType: CottonType) {
         return when (cottonType) {
-            CottonType.DAILY -> uiState.value.dollEatingDailyResource
-            CottonType.HAPPINESS -> uiState.value.dollEatingHappyResource
+            CottonType.DAILY -> {
+                updateState(
+                    uiState.value.copy(
+                        dollCurrentResource = uiState.value.dollEatingDailyResource,
+                        dollCurrentMode = LottieType.EATING
+                    )
+                )
+            }
+
+            CottonType.HAPPINESS -> {
+                updateState(
+                    uiState.value.copy(
+                        dollCurrentResource = uiState.value.dollEatingHappyResource,
+                        dollCurrentMode = LottieType.EATING
+                    )
+                )
+            }
         }
+    }
+
+    fun setCurrentDollHello(lottieType: LottieType) {
+        updateState(
+            uiState.value.copy(
+                dollCurrentResource = uiState.value.dollHelloResource,
+                dollCurrentMode = lottieType
+            )
+        )
     }
 
     fun patchCotton(cottonType: CottonType) {
