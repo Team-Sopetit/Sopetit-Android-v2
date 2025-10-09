@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class GetTokenUseCase @Inject constructor(
     private val authRepository: AuthRepository
-): UseCase<Unit, TokenStoreModel>() {
+): UseCase<Unit, Result<TokenStoreModel>>() {
 
-    override suspend fun invoke(request: Unit): Flow<TokenStoreModel> {
+    override suspend fun invoke(request: Unit): Flow<Result<TokenStoreModel>> {
         return authRepository.getToken()
     }
 }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRepository {
     suspend fun postLogIn(request: LogInRequestModel): Flow<Result<LogInResponseModel>>
     suspend fun saveToken(request: TokenStoreModel): Flow<Result<Unit>>
-    suspend fun getToken(): Flow<TokenStoreModel>
+    suspend fun getToken(): Flow<Result<TokenStoreModel>>
     suspend fun deleteUser(): Flow<Result<Unit>>
     suspend fun postLogOut(): Flow<Result<Unit>>
 }

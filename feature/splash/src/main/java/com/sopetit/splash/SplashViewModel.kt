@@ -22,7 +22,7 @@ class SplashViewModel @Inject constructor(
     private val getTokenUseCase: GetTokenUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val saveAccessTokenUseCase: SaveAccessTokenUseCase,
-    private val postLogInUseCase: PostLogInUseCase,
+//    private val postLogInUseCase: PostLogInUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
 ) : BaseViewModel<SplashPageState>(SplashPageState()) {
 
@@ -33,10 +33,24 @@ class SplashViewModel @Inject constructor(
     private fun initCheckLocalToken() {
         viewModelScope.launch(Dispatchers.Main) {
             getTokenUseCase(Unit).collect {
-                if (it.accessToken.isNotEmpty() && it.refreshToken.isNotEmpty()) {
-                    reissueToken()
-                }
+//                if (it.accessToken.isNotEmpty() && it.refreshToken.isNotEmpty()) {
+//                    reissueToken()
+//                }
+                resultResponse(it, ::onSuccessGetDataStore)
             }
+        }
+    }
+
+    private fun onSuccessGetDataStore(data: TokenStoreModel) {
+        Timber.d("[test] -> $data")
+        updateState(
+            uiState.value.copy(
+                isMemberDollExist = data.isMemberDollExist
+            )
+        )
+
+        if (data.accessToken.isNotEmpty() && data.refreshToken.isNotEmpty()) {
+            reissueToken()
         }
     }
 
@@ -54,40 +68,41 @@ class SplashViewModel @Inject constructor(
     private fun onSuccessReissueToken(response: AccessToken) {
         viewModelScope.launch(Dispatchers.Main) {
             saveAccessTokenUseCase(response.accessToken).collect {}
-            postLogIn()
+//            postLogIn()
+            setDestination()
         }
 //        updateState(uiState.value.copy(skipLogin = true))
 //        postLogIn()
     }
 
-    private fun postLogIn() {
-        viewModelScope.launch {
-            postLogInUseCase(LogInRequestModel(SOCIAL_TYPE)).collect { resultResponse(it, ::onSuccessLogIn) }
-        }
-    }
+//    private fun postLogIn() {
+//        viewModelScope.launch {
+//            postLogInUseCase(LogInRequestModel(SOCIAL_TYPE)).collect { resultResponse(it, ::onSuccessLogIn) }
+//        }
+//    }
+//
+//    private fun onSuccessLogIn(data: LogInResponseModel) {
+//        viewModelScope.launch {
+//            saveTokenUseCase(
+//                request = TokenStoreModel(
+//                    accessToken = data.accessToken,
+//                    refreshToken = data.refreshToken,
+//                    isMemberDollExist = data.isMemberDollExist
+//                )
+//            ).collect { resultResponse(it, {}) }
+//
+//            setDestination(data.isMemberDollExist)
+//        }
+//    }
 
-    private fun onSuccessLogIn(data: LogInResponseModel) {
-        viewModelScope.launch {
-            saveTokenUseCase(
-                request = TokenStoreModel(
-                    accessToken = data.accessToken,
-                    refreshToken = data.refreshToken,
-                    isMemberDollExist = data.isMemberDollExist
-                )
-            ).collect { resultResponse(it, {}) }
-
-            setDestination(data.isMemberDollExist)
-        }
-    }
-
-    private fun setDestination(isMemberDollExist: Boolean) {
-        when (isMemberDollExist) {
+    private fun setDestination() {
+        when (uiState.value.isMemberDollExist) {
             true -> emitEventFlow(SplashEvent.GoToHome)
             false -> emitEventFlow(SplashEvent.GoToOnboarding)
         }
     }
 
-    companion object {
-        private const val SOCIAL_TYPE = "KAKAO"
-    }
+//    companion object {
+//        private const val SOCIAL_TYPE = "KAKAO"
+//    }
 }

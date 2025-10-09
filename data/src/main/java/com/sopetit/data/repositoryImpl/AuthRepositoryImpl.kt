@@ -11,7 +11,10 @@ import com.sopetit.domain.entity.response.auth.TokenStoreModel
 import com.sopetit.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -27,18 +30,23 @@ class AuthRepositoryImpl @Inject constructor(
         localDataStore.saveIsMemberDollExist(request.isMemberDollExist)
     }
 
-    override suspend fun getToken(): Flow<TokenStoreModel> =
-        combine(
-            localDataStore.accessToken,
-            localDataStore.refreshToken,
-            localDataStore.isMemberDollExist
-        ) { accessToken, refreshToken, isDollExist ->
-            TokenStoreModel(
-                accessToken = accessToken.orEmpty(),
-                refreshToken = refreshToken.orEmpty(),
-                isMemberDollExist = isDollExist ?: false
-            )
-        }
+    override suspend fun getToken(): Flow<Result<TokenStoreModel>> = flow {
+        emitAll(
+            combine(
+                localDataStore.accessToken,
+                localDataStore.refreshToken,
+                localDataStore.isMemberDollExist
+            ) { accessToken, refreshToken, isDollExist ->
+                TokenStoreModel(
+                    accessToken = accessToken.orEmpty(),
+                    refreshToken = refreshToken.orEmpty(),
+                    isMemberDollExist = isDollExist ?: false
+                )
+            }
+                .distinctUntilChanged()
+                .map { Result.success(it) }
+        )
+    }
 
     override suspend fun deleteUser(): Flow<Result<Unit>> =
         DefaultUnitMapper.responseToModel(apiCall = { authDataSource.deleteUser() })
