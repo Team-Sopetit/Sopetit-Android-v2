@@ -1,7 +1,5 @@
 package com.sopetit.feature
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -99,6 +97,7 @@ import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
 import com.sopetit.ui.util.CommonEventManager
 import com.sopetit.ui.util.DismissKeyboardOnClick
+import com.sopetit.ui.util.intentToFeedback
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -206,11 +205,12 @@ fun MainScreen() {
             }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .windowInsetsPadding(
-            WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
-        )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(
+                WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
+            )
     ) {
         DismissKeyboardOnClick {
             if (isShowDialog.value) {
@@ -219,9 +219,7 @@ fun MainScreen() {
                     onDismiss = { isShowDialog.value = false },
                     onClickDoBtn = {
                         isShowDialog.value = false
-                        val intent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.FEEDBACK_FORM))
-                        context.startActivity(intent)
+                        intentToFeedback(context)
                     }
                 )
             }

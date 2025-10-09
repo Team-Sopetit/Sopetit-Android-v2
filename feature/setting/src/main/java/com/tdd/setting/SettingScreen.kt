@@ -1,7 +1,7 @@
 package com.tdd.setting
 
-import android.content.Intent
-import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -43,8 +43,10 @@ import com.sopetit.design_system.SettingVersion
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.topbar.TopBarContent
+import com.sopetit.ui.util.intentToFeedback
 import kotlinx.coroutines.flow.SharedFlow
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun SettingScreen(
     goBackPage: () -> Unit,
@@ -81,10 +83,8 @@ fun SettingScreen(
         onClickDeleteUser = { goToDeleteUserScreen() },
         onClickLogOut = { showLogOutBottomSheet(uiState.logOutModel) },
         appVersion = uiState.appVersion,
-        onClickFeedBack = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.FEEDBACK_FORM))
-            context.startActivity(intent)
-        }
+        onClickFeedBack = { intentToFeedback(context) },
+        onClickAlarmSetting = { openAppNotificationSettings(context) }
     )
 }
 
@@ -96,6 +96,7 @@ fun SettingContent(
     onClickLogOut: () -> Unit,
     appVersion: String,
     onClickFeedBack: () -> Unit,
+    onClickAlarmSetting: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -111,7 +112,7 @@ fun SettingContent(
         SettingBarItem(
             icon = R.drawable.ic_setting_alarm,
             content = SettingAlarm,
-            onClickAction = { /*TODO*/ },
+            onClickAction = onClickAlarmSetting,
             interactionSource = interactionSource
         )
 
