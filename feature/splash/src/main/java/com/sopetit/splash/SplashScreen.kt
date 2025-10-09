@@ -31,7 +31,8 @@ import kotlin.random.Random
 @Composable
 fun SplashScreen(
     goToKaKaoLogIn: () -> Unit = {},
-    goToHome:() -> Unit = {}
+    goToOnboarding: (Boolean) -> Unit,
+    goToHome: (Boolean) -> Unit = {},
 ) {
     val viewModel: SplashViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -41,8 +42,24 @@ fun SplashScreen(
     LaunchedEffect(Unit) {
         delay(1500L)
 
-        if (uiState.skipLogin) { goToHome() }
-        else { goToKaKaoLogIn()}
+//        if (uiState.skipLogin) { goToHome() }
+//        else { goToKaKaoLogIn()}
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is SplashEvent.GoToKaKaoLogIn -> {
+                    goToKaKaoLogIn()
+                }
+
+                is SplashEvent.GoToOnboarding -> {
+                    goToOnboarding(true)
+                }
+
+                is SplashEvent.GoToHome -> {
+                    goToHome(false)
+                }
+            }
+        }
     }
 
     SplashContent(
@@ -52,7 +69,7 @@ fun SplashScreen(
 
 @Composable
 fun SplashContent(
-    splashVersion: Int = 0
+    splashVersion: Int = 0,
 ) {
     val splashVersionList: List<SplashVersionModel> = listOf(
         SplashVersionModel(colorVersion = 0) { SplashFirstBottomContent() },
@@ -66,7 +83,7 @@ fun SplashContent(
 
 @Composable
 fun SplashItemForVersion(
-    splashVersionModel: SplashVersionModel
+    splashVersionModel: SplashVersionModel,
 ) {
     Box(
         modifier = Modifier

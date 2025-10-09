@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.SharedFlow
 
 fun NavGraphBuilder.splashNavGraph(
     navController: NavHostController,
+    setTutorialValid: (Boolean) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.SplashScreen.route,
@@ -48,7 +49,14 @@ fun NavGraphBuilder.splashNavGraph(
         composable(NavRoutes.SplashScreen.route) {
             SplashScreen(
                 goToKaKaoLogIn = { navController.navigate(NavRoutes.LogInScreen.route) },
-                goToHome = { navController.navigate(NavRoutes.HomeScreen.route) { popUpTo(0) } }
+                goToHome = {
+                    setTutorialValid(it)
+                    navController.navigate(NavRoutes.HomeScreen.route) { popUpTo(0) }
+                },
+                goToOnboarding = {
+                    setTutorialValid(it)
+                    navController.navigate(NavRoutes.StoryTellingFirstScreen.route) { popUpTo(0) }
+                }
             )
         }
     }
@@ -159,7 +167,7 @@ fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit,
     isTutorialValid: SharedFlow<Boolean>,
-    showFeedbackDialog: (TwoBtnDialogModel) -> Unit
+    showFeedbackDialog: (TwoBtnDialogModel) -> Unit,
 ) {
     navigation(
         startDestination = NavRoutes.HomeScreen.route,
