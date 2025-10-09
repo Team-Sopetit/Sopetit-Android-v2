@@ -19,7 +19,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.sopetit.design_system.SoftieTypo
@@ -33,6 +35,7 @@ fun BottomTwoBtn(
     iconVisible: Boolean = false,
     leftColor: Color,
     rightColor: Color,
+    rightBtnColorBrush: Brush? = null,
     leftContent: String,
     rightContent: String,
     leftBtnTextColor: Color,
@@ -50,6 +53,7 @@ fun BottomTwoBtn(
         rightIcon = rightIcon,
         leftColor = leftColor,
         rightColor = rightColor,
+        rightBtnColorBrush = rightBtnColorBrush,
         leftContent = leftContent,
         rightContent = rightContent,
         leftBtnTextColor = leftBtnTextColor,
@@ -70,6 +74,7 @@ fun BottomTwoBtnContent(
     iconVisible: Boolean = false,
     leftColor: Color,
     rightColor: Color,
+    rightBtnColorBrush: Brush? = null,
     leftContent: String,
     rightContent: String,
     leftBtnTextColor: Color,
@@ -80,30 +85,34 @@ fun BottomTwoBtnContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = twoBtnHorizontalPadding.dp)
     ) {
         TwoBtnBox(
             btnColor = leftColor,
+            btnColorBrush = null,
             icon = leftIcon,
             btnText = leftContent,
             modifier = Modifier.weight(1f),
             interactionSource = interactionSource,
             onClickBtnAction = onClickLeftBtn,
             btnTextColor = leftBtnTextColor,
-            iconVisible = iconVisible
+            iconVisible = iconVisible,
+            twoBtnBottomPadding = twoBtnBottomPadding
         )
 
         Spacer(modifier = Modifier.width(7.dp))
 
         TwoBtnBox(
             btnColor = rightColor,
+            btnColorBrush = rightBtnColorBrush,
             icon = rightIcon,
             btnText = rightContent,
             modifier = Modifier.weight(1f),
             interactionSource = interactionSource,
             onClickBtnAction = onClickRightBtn,
             btnTextColor = rightBtnTextColor,
-            iconVisible = iconVisible
+            iconVisible = iconVisible,
+            twoBtnBottomPadding = twoBtnBottomPadding
         )
     }
 }
@@ -113,18 +122,20 @@ fun TwoBtnBox(
     onClickBtnAction: () -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     btnColor: Color,
+    btnColorBrush: Brush? = null,
     icon: Int,
     btnText: String,
     modifier: Modifier,
     btnTextColor: Color,
     iconVisible: Boolean = false,
+    twoBtnBottomPadding: Int
 ) {
     Box(
         modifier = modifier
-            .padding(bottom = 32.dp)
+            .padding(bottom = twoBtnBottomPadding.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
-            .background(btnColor)
+            .background(btnColorBrush ?: SolidColor(btnColor))
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,

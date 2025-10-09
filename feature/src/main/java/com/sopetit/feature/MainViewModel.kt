@@ -10,6 +10,7 @@ import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.entity.response.theme.ThemeListItemModel
 import com.sopetit.navigation.NavRoutes
 import com.sopetit.ui.base.BaseViewModel
+import com.sopetit.ui.common.model.TwoBtnDialogModel
 import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
@@ -62,6 +63,14 @@ class MainViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 bottomNavType = type
+            )
+        )
+    }
+
+    fun onSetTwoBtnDialog(data: TwoBtnDialogModel) {
+        updateState(
+            uiState.value.copy(
+                twoBtnDialogModel = data
             )
         )
     }

@@ -2,6 +2,14 @@ package com.sopetit.home
 
 import androidx.lifecycle.viewModelScope
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.sopetit.design_system.FeedbackLeftBtn
+import com.sopetit.design_system.FeedbackRightBtn
+import com.sopetit.design_system.FeedbackSemiTitle
+import com.sopetit.design_system.FeedbackTitle
+import com.sopetit.design_system.Gray0
+import com.sopetit.design_system.Gray100
+import com.sopetit.design_system.Gray400
+import com.sopetit.design_system.PurpleGradient
 import com.sopetit.design_system.R
 import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
@@ -9,6 +17,7 @@ import com.sopetit.domain.usecase.member.GetMemberUseCase
 import com.sopetit.domain.usecase.member.PatchCottonUseCase
 import com.sopetit.domain.usecase.member.PostFcmTokenUseCase
 import com.sopetit.ui.base.BaseViewModel
+import com.sopetit.ui.common.model.TwoBtnDialogModel
 import com.sopetit.ui.common.type.BearType
 import com.sopetit.ui.common.type.CottonType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,13 +29,14 @@ import kotlin.random.Random
 class HomeViewModel @Inject constructor(
     private val getMemberUseCase: GetMemberUseCase,
     private val patchCottonUseCase: PatchCottonUseCase,
-    private val postFcmTokenUseCase: PostFcmTokenUseCase
+    private val postFcmTokenUseCase: PostFcmTokenUseCase,
 ) : BaseViewModel<HomePageState>(
     HomePageState()
 ) {
 
     init {
         initSetTutorial()
+        initSetFeedBackDialog()
         initGetHomeMember()
     }
 
@@ -58,6 +68,25 @@ class HomeViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 tutorialList = tutorials
+            )
+        )
+    }
+
+    private fun initSetFeedBackDialog() {
+        val feedbackData = TwoBtnDialogModel(
+            title = FeedbackTitle,
+            semiTitle = FeedbackSemiTitle,
+            leftBtnText = FeedbackLeftBtn,
+            rightBtnText = FeedbackRightBtn,
+            leftBtnColor = Gray100,
+            leftBtnTextColor = Gray400,
+            rightBtnColorBrush = PurpleGradient,
+            rightBtnTextColor = Gray0
+        )
+
+        updateState(
+            uiState.value.copy(
+                feedBackDialog = feedbackData
             )
         )
     }
@@ -115,7 +144,7 @@ class HomeViewModel @Inject constructor(
     fun patchCotton(cottonType: CottonType) {
         viewModelScope.launch {
             patchCottonUseCase(cottonType.toString()).collect {
-                resultResponse(it, { data -> onSuccessPatchCotton(data, cottonType)})
+                resultResponse(it, { data -> onSuccessPatchCotton(data, cottonType) })
             }
         }
     }
@@ -145,7 +174,7 @@ class HomeViewModel @Inject constructor(
 
     fun postFCMToken() {
         viewModelScope.launch {
-            postFcmTokenUseCase(Unit).collect{ resultResponse(it, {} )}
+            postFcmTokenUseCase(Unit).collect { resultResponse(it, {}) }
         }
     }
 }

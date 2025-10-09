@@ -57,6 +57,7 @@ import com.sopetit.design_system.HomeSomTitle
 import com.sopetit.design_system.R
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.ui.common.model.TwoBtnDialogModel
 import com.sopetit.ui.common.type.CottonType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -67,6 +68,7 @@ fun HomeScreen(
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit = {},
     isTutorialValid: SharedFlow<Boolean> = MutableSharedFlow(),
     goToSettingPage: () -> Unit,
+    showFeedbackDialog: (TwoBtnDialogModel) -> Unit
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState: HomePageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -113,7 +115,8 @@ fun HomeScreen(
         },
         eatingLottieSpec = eatingLottieSpec.value,
         onSetEatingLottieDefault = { eatingLottieSpec.value = null },
-        onClickSetting = { goToSettingPage() }
+        onClickSetting = { goToSettingPage() },
+        onClickFeedback = { showFeedbackDialog(uiState.feedBackDialog) }
     )
 }
 
@@ -131,6 +134,7 @@ fun HomeScreenContent(
     onClickCotton: (CottonType) -> Unit = {},
     onSetEatingLottieDefault: () -> Unit = {},
     onClickSetting: () -> Unit = {},
+    onClickFeedback: () -> Unit = {}
 ) {
 
     Box(
@@ -163,7 +167,13 @@ fun HomeScreenContent(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_home_clova),
-                contentDescription = "home clova icon"
+                contentDescription = "home clova icon",
+                modifier = Modifier
+                    .clickable(
+                        onClick = onClickFeedback,
+                        interactionSource = interactionSource,
+                        indication = null
+                    )
             )
 
             Spacer(modifier = Modifier.width(13.dp))

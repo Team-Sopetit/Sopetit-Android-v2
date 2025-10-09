@@ -83,7 +83,9 @@ import com.sopetit.ui.common.bottomsheet.RoutineDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TutorialBottomSheet
 import com.sopetit.ui.common.bottomsheet.TwoBtnDetailBottomSheet
 import com.sopetit.ui.common.bottomsheet.TwoBtnIconBottomSheet
+import com.sopetit.ui.common.dialog.TwoBtnDialog
 import com.sopetit.ui.common.item.CommonSnackBar
+import com.sopetit.ui.common.model.TwoBtnDialogModel
 import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.type.BottomSheetType
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
@@ -107,6 +109,7 @@ fun MainScreen() {
         skipHalfExpanded = true
     )
 
+    val isShowDialog = remember { mutableStateOf(false) }
     val snackBarPadding = remember { mutableStateOf(0) }
     val snackBarIcon = remember { mutableStateOf(R.drawable.ic_snackbar_caution) }
     val showSnackBar: (String, Int, Int) -> Unit = { message, paddingBottom, icon ->
@@ -122,6 +125,10 @@ fun MainScreen() {
             delay(1000L)
             job.cancel()
         }
+    }
+    val showTwoBtnDialog: (TwoBtnDialogModel) -> Unit = {
+        viewModel.onSetTwoBtnDialog(it)
+        isShowDialog.value = true
     }
     val showTutorialBottomSheet: (List<TutorialModel>) -> Unit = { tutorials ->
         viewModel.setTutorials(tutorials)
@@ -191,6 +198,14 @@ fun MainScreen() {
 
     Box(modifier = Modifier.fillMaxSize()) {
         DismissKeyboardOnClick {
+            if (isShowDialog.value) {
+                TwoBtnDialog(
+                    twoBtnDialogModel = uiState.twoBtnDialogModel,
+                    onDismiss = { isShowDialog.value = false },
+                    onClickDoBtn = { isShowDialog.value = false }
+                )
+            }
+
             ModalBottomSheetLayout(
                 sheetState = sheetState,
                 sheetContent = {
@@ -369,7 +384,8 @@ fun MainScreen() {
                             homeNavGraph(
                                 navController = navController,
                                 showTutorialBottomSheet = showTutorialBottomSheet,
-                                isTutorialValid = viewModel.isTutorialValid
+                                isTutorialValid = viewModel.isTutorialValid,
+                                showFeedbackDialog = showTwoBtnDialog
                             )
                             progressNavGraph(
                                 navController = navController,

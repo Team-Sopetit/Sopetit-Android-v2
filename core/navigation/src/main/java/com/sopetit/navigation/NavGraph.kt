@@ -31,6 +31,7 @@ import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
 import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
 import com.sopetit.progress.ProgressScreen
 import com.sopetit.splash.SplashScreen
+import com.sopetit.ui.common.model.TwoBtnDialogModel
 import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.tdd.customroutine.CustomRoutineScreen
 import com.tdd.setting.SettingScreen
@@ -158,6 +159,7 @@ fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
     showTutorialBottomSheet: (List<TutorialModel>) -> Unit,
     isTutorialValid: SharedFlow<Boolean>,
+    showFeedbackDialog: (TwoBtnDialogModel) -> Unit
 ) {
     navigation(
         startDestination = NavRoutes.HomeScreen.route,
@@ -167,7 +169,8 @@ fun NavGraphBuilder.homeNavGraph(
             HomeScreen(
                 showTutorialBottomSheet = showTutorialBottomSheet,
                 isTutorialValid = isTutorialValid,
-                goToSettingPage = { navController.navigate(NavRoutes.SettingScreen.route) }
+                goToSettingPage = { navController.navigate(NavRoutes.SettingScreen.route) },
+                showFeedbackDialog = showFeedbackDialog
             )
         }
     }

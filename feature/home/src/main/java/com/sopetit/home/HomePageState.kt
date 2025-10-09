@@ -6,6 +6,7 @@ import com.sopetit.design_system.R
 import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.ui.base.PageState
+import com.sopetit.ui.common.model.TwoBtnDialogModel
 
 data class HomePageState(
     val isTutorialValid: Boolean = true,
@@ -17,5 +18,6 @@ data class HomePageState(
     val dollEatingHappyResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_eating_happy),
     val randomSelectedConversation: String = "",
     val dailyCottonCount: Int = 0,
-    val happinessCottonCount: Int = 0
+    val happinessCottonCount: Int = 0,
+    val feedBackDialog: TwoBtnDialogModel = TwoBtnDialogModel()
 ) : PageState

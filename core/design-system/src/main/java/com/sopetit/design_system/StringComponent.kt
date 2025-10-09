@@ -96,6 +96,10 @@ const val TutorialFirstTitle = "데일리 루틴"
 const val HomeSomTitle = "솜뭉치 주기"
 const val HomeRainbowSomTitle = "무지개 솜뭉치 주기"
 const val HomeSomCount = "%d개"
+const val FeedbackTitle = "솜뭉치, 모아두기만 하고\n안 쓰고 있나요?"
+const val FeedbackSemiTitle = "여러분의 사용 습관을 듣고\n더 잘 쓰일 수 있도록 개선하려고 해요!"
+const val FeedbackLeftBtn = "다음에 할래요"
+const val FeedbackRightBtn = "의견 남기기"
 
 // Progress
 const val ProgressTitleDate = "%04d년 %02d월 %02d일"
