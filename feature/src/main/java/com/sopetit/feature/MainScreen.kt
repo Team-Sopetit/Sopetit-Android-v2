@@ -378,6 +378,9 @@ fun MainScreen() {
                         modifier = Modifier
                             .padding(innerPadding)
                             .statusBarsPadding()
+                            .windowInsetsPadding(
+                                WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
+                            )
                     ) {
                         NavHost(
                             navController = navController,
