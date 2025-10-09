@@ -206,7 +206,12 @@ fun MainScreen() {
             }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .windowInsetsPadding(
+            WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
+        )
+    ) {
         DismissKeyboardOnClick {
             if (isShowDialog.value) {
                 TwoBtnDialog(
@@ -378,9 +383,6 @@ fun MainScreen() {
                         modifier = Modifier
                             .padding(innerPadding)
                             .statusBarsPadding()
-                            .windowInsetsPadding(
-                                WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
-                            )
                     ) {
                         NavHost(
                             navController = navController,

@@ -114,7 +114,7 @@ fun HomeScreen(
         happinessCottonCount = uiState.happinessCottonCount,
         onClickDoll = { viewModel.updateRandomConversation() },
         onClickCotton = {
-//            viewModel.patchCotton(it)    // TODO 추후 살리기
+            viewModel.patchCotton(it)
             viewModel.setEatingDollType(it)
         },
         onSetCurrentMode = {
@@ -317,7 +317,7 @@ fun HomeDollBoxContent(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .wrapContentSize()
-                .offset(y = (-510).dp)
+                .offset(y = (-450).dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_home_speech),
@@ -341,7 +341,7 @@ fun HomeDollBoxContent(
             modifier = Modifier
                 .size(width = 123.dp, height = 23.dp)
                 .align(Alignment.BottomCenter)
-                .offset(y = (-270).dp)
+                .offset(y = (-220).dp)
         )
 
         LottieAnimation(
@@ -351,12 +351,14 @@ fun HomeDollBoxContent(
             },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .size(width = 414.dp, height = 418.dp)
+                .offset(y = (-120).dp)
         )
 
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .size(width = 220.dp, height = 264.dp)
+                .size(width = 200.dp, height = 180.dp)
                 .offset(y = (-250).dp)
                 .clickable(
                     indication = null,

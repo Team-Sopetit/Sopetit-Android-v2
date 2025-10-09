@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +36,8 @@ fun BottomNavBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(84.dp)
+            .height(70.dp)
+            .wrapContentHeight()
             .background(Gray0),
         horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
