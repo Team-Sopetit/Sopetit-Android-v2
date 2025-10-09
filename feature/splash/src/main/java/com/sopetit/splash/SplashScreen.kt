@@ -41,12 +41,6 @@ fun SplashScreen(
     val start = System.currentTimeMillis()
 
     LaunchedEffect(Unit) {
-//        delay(1500L)
-
-//        if (uiState.skipLogin) { goToHome() }
-//        else { goToKaKaoLogIn()}
-
-//        val start = System.currentTimeMillis()
         viewModel.eventFlow.collect { event ->
             val elapsed = System.currentTimeMillis() - start
             val remain = 1500 - elapsed

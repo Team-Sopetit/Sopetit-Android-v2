@@ -30,6 +30,15 @@ class AuthRepositoryImpl @Inject constructor(
         localDataStore.saveIsMemberDollExist(request.isMemberDollExist)
     }
 
+    override suspend fun saveMemberDollExist(request: Boolean): Flow<Result<Unit>> = flow {
+        localDataStore.saveIsMemberDollExist(request)
+    }
+
+    override suspend fun getMemberDollExist(): Flow<Result<Boolean>> =
+        localDataStore.isMemberDollExist
+            .distinctUntilChanged()
+            .map { Result.success(it ?: false) }
+
     override suspend fun getToken(): Flow<Result<TokenStoreModel>> = flow {
         emitAll(
             combine(
