@@ -133,8 +133,6 @@ fun DeleteUserContent(
             twoBtnBottomPadding = 32,
             twoBtnHorizontalPadding = 20
         )
-
-        Spacer(modifier = Modifier.padding(bottom = 35.dp))
     }
 }
 
