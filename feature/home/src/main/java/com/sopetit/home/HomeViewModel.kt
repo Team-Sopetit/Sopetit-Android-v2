@@ -103,11 +103,10 @@ class HomeViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 homeMemberModel = data,
-                dollHelloResource = BearType.getDollHelloResource(data.dollType),
-                dollCurrentResource = BearType.getDollHelloResource(data.dollType),
+                dollLottieResource = BearType.getDollResource(data.dollType),
                 dollType = data.dollType,
-                dollEatingDailyResource = BearType.getDollEatingDailyResource(data.dollType),
-                dollEatingHappyResource = BearType.getDollEatingHappyResource(data.dollType),
+                dollLottieStart = LOTTIE_HELLO_START,
+                dollLottieEnd = LOTTIE_DAILY_START,
                 randomSelectedConversation = data.conversations[0],
                 dailyCottonCount = data.dailyCottonCount,
                 happinessCottonCount = data.happinessCottonCount
@@ -141,8 +140,9 @@ class HomeViewModel @Inject constructor(
             CottonType.DAILY -> {
                 updateState(
                     uiState.value.copy(
-                        dollCurrentResource = uiState.value.dollEatingDailyResource,
-                        dollCurrentMode = LottieType.EATING
+                        dollCurrentMode = LottieType.EATING,
+                        dollLottieStart = LOTTIE_DAILY_START,
+                        dollLottieEnd = LOTTIE_CHALLENGE_START
                     )
                 )
             }
@@ -150,8 +150,9 @@ class HomeViewModel @Inject constructor(
             CottonType.HAPPINESS -> {
                 updateState(
                     uiState.value.copy(
-                        dollCurrentResource = uiState.value.dollEatingHappyResource,
-                        dollCurrentMode = LottieType.EATING
+                        dollCurrentMode = LottieType.EATING,
+                        dollLottieStart = LOTTIE_CHALLENGE_START,
+                        dollLottieEnd = LOTTIE_END
                     )
                 )
             }
@@ -161,8 +162,9 @@ class HomeViewModel @Inject constructor(
     fun setCurrentDollHello(lottieType: LottieType) {
         updateState(
             uiState.value.copy(
-                dollCurrentResource = uiState.value.dollHelloResource,
-                dollCurrentMode = lottieType
+                dollCurrentMode = lottieType,
+                dollLottieStart = LOTTIE_HELLO_START,
+                dollLottieEnd = LOTTIE_DAILY_START
             )
         )
     }
@@ -202,5 +204,12 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             postFcmTokenUseCase(Unit).collect { resultResponse(it, {}) }
         }
+    }
+
+    companion object {
+        const val LOTTIE_HELLO_START = 0f
+        const val LOTTIE_DAILY_START = 0.3f
+        const val LOTTIE_CHALLENGE_START = 0.65f
+        const val LOTTIE_END = 1f
     }
 }

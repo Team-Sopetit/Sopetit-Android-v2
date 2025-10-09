@@ -16,7 +16,7 @@ class DollNamingViewModel @Inject constructor(
         updateState(
             uiState.value.copy(
                 memberModel = memberModel,
-                dollHelloResource = BearType.getDollHelloResource(memberModel.dollType.value)
+                dollHelloResource = BearType.getDollResource(memberModel.dollType.value)
             )
         )
         Timber.d("[온보딩] (dollNaming) member -> ${uiState.value.memberModel}")

@@ -107,7 +107,9 @@ fun HomeScreen(
         backGroundImg = uiState.homeMemberModel.frameImageUrl,
         conversation = uiState.randomSelectedConversation,
         dollName = uiState.homeMemberModel.name,
-        dollCurrentResource = uiState.dollCurrentResource,
+        dollLottieResource = uiState.dollLottieResource,
+        dollLottieStart = uiState.dollLottieStart,
+        dollLottieEnd = uiState.dollLottieEnd,
         dailyCottonCount = uiState.dailyCottonCount,
         happinessCottonCount = uiState.happinessCottonCount,
         onClickDoll = { viewModel.updateRandomConversation() },
@@ -130,8 +132,10 @@ fun HomeScreenContent(
     backGroundImg: String = "",
     conversation: String = "",
     dollName: String = "",
-    dollCurrentResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(0),
+    dollLottieResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(0),
     onSetCurrentMode: (LottieType) -> Unit = {},
+    dollLottieStart: Float = 0f,
+    dollLottieEnd: Float = 0f,
     dailyCottonCount: Int = -1,
     happinessCottonCount: Int = -1,
     onClickDoll: () -> Unit = {},
@@ -203,8 +207,10 @@ fun HomeScreenContent(
                 conversation = conversation,
                 onClickDoll = onClickDoll,
                 mode = mode,
-                dollCurrentResource = dollCurrentResource,
-                onSetCurrentMode = onSetCurrentMode
+                dollLottieResource = dollLottieResource,
+                onSetCurrentMode = onSetCurrentMode,
+                dollLottieStart = dollLottieStart,
+                dollLottieEnd = dollLottieEnd
             )
         }
 
@@ -248,36 +254,26 @@ fun HomeDollBoxContent(
     conversation: String = "",
     onClickDoll: () -> Unit = {},
     mode: LottieType,
-    dollCurrentResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(0),
+    dollLottieResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(0),
     onSetCurrentMode: (LottieType) -> Unit,
+    dollLottieStart: Float,
+    dollLottieEnd: Float,
 ) {
 
     val scope = rememberCoroutineScope()
-    var currentLottieSpec by remember { mutableStateOf(dollCurrentResource) }
+    var currentLottieSpec by remember { mutableStateOf(dollLottieResource) }
     val composition by rememberLottieComposition(currentLottieSpec)
     val anim = rememberLottieAnimatable()
 
     var helloEnded by remember { mutableStateOf(false) }
 
-    fun playHello(c: LottieComposition) {
+    fun playLottie(c: LottieComposition, onEnd: () -> Unit) {
         helloEnded = false
         scope.launch {
             anim.snapTo(progress = 0f)
             anim.animate(
                 composition = c,
-                clipSpec = LottieClipSpec.Progress(0f, 0.30f),
-                iterations = 1
-            )
-            helloEnded = true
-        }
-    }
-
-    fun playEatingSom(c: LottieComposition, onEnd: () -> Unit) {
-        helloEnded = false
-        scope.launch {
-            anim.snapTo(progress = 0f)
-            anim.animate(
-                composition = c,
+                clipSpec = LottieClipSpec.Progress(dollLottieStart, dollLottieEnd),
                 iterations = 1
             )
             onEnd()
@@ -286,8 +282,8 @@ fun HomeDollBoxContent(
     }
 
 
-    LaunchedEffect(dollCurrentResource) {
-        dollCurrentResource.let {
+    LaunchedEffect(dollLottieResource) {
+        dollLottieResource.let {
             currentLottieSpec = it
             anim.snapTo(progress = 0f)
         }
@@ -297,11 +293,11 @@ fun HomeDollBoxContent(
         val c = composition ?: return@LaunchedEffect
         when (mode) {
             LottieType.HELLO -> {
-                playHello(c)
+                playLottie(c) {}
             }
 
             LottieType.EATING -> {
-                playEatingSom(c) {
+                playLottie(c) {
                     onSetCurrentMode(LottieType.DEFAULT)
                 }
             }
@@ -368,7 +364,7 @@ fun HomeDollBoxContent(
                     onClick = {
                         if (mode != LottieType.EATING && helloEnded) {
                             onClickDoll()
-                            composition?.let { playHello(it) }
+                            composition?.let { playLottie(it) {} }
                         }
                     }
                 )

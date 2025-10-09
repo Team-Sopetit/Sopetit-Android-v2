@@ -9,6 +9,6 @@ import com.sopetit.ui.base.PageState
 data class DollNamingPageState(
     val memberModel: CreateMemberModel = CreateMemberModel(),
     val selectedDollType: DollType = DollType.NONE,
-    val dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_hello),
+    val dollHelloResource: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.brown_all),
     val dollInputName: String = ""
 ): PageState
