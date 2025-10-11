@@ -15,6 +15,12 @@ android {
     defaultConfig {
         val feedbackUrl = properties.getProperty("FEEDBACK_FORM")
         buildConfigField("String", "FEEDBACK_FORM", "\"$feedbackUrl\"")
+
+        val servicePolicyUrl = properties.getProperty("SERVICE_POLICY")
+        buildConfigField("String", "SERVICE_POLICY", "\"$servicePolicyUrl\"")
+
+        val personalInfoPolicyUrl = properties.getProperty("PERSONAL_INFO_POLICY")
+        buildConfigField("String", "PERSONAL_INFO_POLICY", "\"$personalInfoPolicyUrl\"")
     }
 }
 
