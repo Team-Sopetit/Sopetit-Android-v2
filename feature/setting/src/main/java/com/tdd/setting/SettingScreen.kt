@@ -43,7 +43,8 @@ import com.sopetit.design_system.SettingVersion
 import com.sopetit.design_system.SoftieTypo
 import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.topbar.TopBarContent
-import com.sopetit.ui.util.intentToFeedback
+import com.sopetit.ui.common.type.IntentNavigationType
+import com.sopetit.ui.util.intentToUrl
 import kotlinx.coroutines.flow.SharedFlow
 
 @RequiresApi(Build.VERSION_CODES.S)
@@ -83,8 +84,10 @@ fun SettingScreen(
         onClickDeleteUser = { goToDeleteUserScreen() },
         onClickLogOut = { showLogOutBottomSheet(uiState.logOutModel) },
         appVersion = uiState.appVersion,
-        onClickFeedBack = { intentToFeedback(context) },
-        onClickAlarmSetting = { openAppNotificationSettings(context) }
+        onClickFeedBack = { intentToUrl(context, IntentNavigationType.FEEDBACK) },
+        onClickAlarmSetting = { openAppNotificationSettings(context) },
+        onClickServicePolicy = { intentToUrl(context, IntentNavigationType.SERVICEPOLICY) },
+        onClickPersonalInfoPolicy = { intentToUrl(context, IntentNavigationType.PERSONALINFOPOLICY) }
     )
 }
 
@@ -97,6 +100,8 @@ fun SettingContent(
     appVersion: String,
     onClickFeedBack: () -> Unit,
     onClickAlarmSetting: () -> Unit,
+    onClickServicePolicy: () -> Unit,
+    onClickPersonalInfoPolicy: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -119,7 +124,7 @@ fun SettingContent(
         SettingBarItem(
             icon = R.drawable.ic_setting_personal,
             content = SettingPersonalInfo,
-            onClickAction = { /*TODO*/ },
+            onClickAction = onClickPersonalInfoPolicy,
             interactionSource = interactionSource
         )
 
@@ -132,7 +137,7 @@ fun SettingContent(
         SettingBarItem(
             icon = R.drawable.ic_setting_service,
             content = SettingService,
-            onClickAction = { /*TODO*/ },
+            onClickAction = onClickServicePolicy,
             interactionSource = interactionSource
         )
 

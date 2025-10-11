@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     id("sopetit.android.feature")
     id("sopetit.android.compose")
@@ -7,17 +5,8 @@ plugins {
     id("sopetit.android.kotlin")
 }
 
-val properties = Properties().apply {
-    load(rootProject.file("local.properties").inputStream())
-}
-
 android {
     namespace = "com.sopetit.feature"
-
-    defaultConfig {
-        val feedbackUrl = properties.getProperty("FEEDBACK_FORM")
-        buildConfigField("String", "FEEDBACK_FORM", "\"$feedbackUrl\"")
-    }
 }
 
 dependencies {

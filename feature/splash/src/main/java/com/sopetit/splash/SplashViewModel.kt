@@ -26,7 +26,10 @@ class SplashViewModel @Inject constructor(
 
     private fun initCheckLocalToken() {
         viewModelScope.launch(Dispatchers.Main) {
-            getTokenUseCase(Unit).collect { resultResponse(it, ::onSuccessGetDataStore) }
+            getTokenUseCase(Unit).collect { resultResponse(it, ::onSuccessGetDataStore) { error ->
+                Timber.d("[datastore] getToken 실패 $error")
+                emitEventFlow(SplashEvent.GoToKaKaoLogIn)
+            } }
         }
     }
 
@@ -39,6 +42,8 @@ class SplashViewModel @Inject constructor(
 
         if (data.accessToken.isNotEmpty() && data.refreshToken.isNotEmpty()) {
             reissueToken()
+        } else {
+            emitEventFlow(SplashEvent.GoToKaKaoLogIn)
         }
     }
 

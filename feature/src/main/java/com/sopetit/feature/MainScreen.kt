@@ -94,10 +94,11 @@ import com.sopetit.ui.common.item.CommonSnackBar
 import com.sopetit.ui.common.model.TwoBtnDialogModel
 import com.sopetit.ui.common.model.TwoBtnIconModel
 import com.sopetit.ui.common.type.BottomSheetType
+import com.sopetit.ui.common.type.IntentNavigationType
 import com.sopetit.ui.common.type.TwoBtnBottomSheetType
 import com.sopetit.ui.util.CommonEventManager
 import com.sopetit.ui.util.DismissKeyboardOnClick
-import com.sopetit.ui.util.intentToFeedback
+import com.sopetit.ui.util.intentToUrl
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -219,7 +220,7 @@ fun MainScreen() {
                     onDismiss = { isShowDialog.value = false },
                     onClickDoBtn = {
                         isShowDialog.value = false
-                        intentToFeedback(context)
+                        intentToUrl(context, IntentNavigationType.FEEDBACK)
                     }
                 )
             }
