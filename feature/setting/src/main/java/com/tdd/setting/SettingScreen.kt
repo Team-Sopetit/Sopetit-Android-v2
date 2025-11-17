@@ -87,7 +87,7 @@ fun SettingScreen(
         onClickFeedBack = { intentToUrl(context, IntentNavigationType.FEEDBACK) },
         onClickAlarmSetting = { openAppNotificationSettings(context) },
         onClickServicePolicy = { intentToUrl(context, IntentNavigationType.SERVICEPOLICY) },
-        onClickPersonalInfoPolicy = { intentToUrl(context, IntentNavigationType.PERSONALINFOPOLICY) }
+        onClickPersonalInfoPolicy = { intentToUrl(context, IntentNavigationType.PERSONALINFOPOLICY) },
     )
 }
 
@@ -104,41 +104,43 @@ fun SettingContent(
     onClickPersonalInfoPolicy: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray0)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray0),
     ) {
         TopBarContent(
             content = SettingTitle,
             interactionSource = interactionSource,
-            onClickIcon = onClickBackBtn
+            onClickIcon = onClickBackBtn,
         )
 
         SettingBarItem(
             icon = R.drawable.ic_setting_alarm,
             content = SettingAlarm,
             onClickAction = onClickAlarmSetting,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
         )
 
         SettingBarItem(
             icon = R.drawable.ic_setting_personal,
             content = SettingPersonalInfo,
             onClickAction = onClickPersonalInfoPolicy,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
         )
 
         Divider(
-            modifier = Modifier
-                .padding(horizontal = 10.dp)
-                .border(1.dp, Gray50)
+            modifier =
+                Modifier
+                    .padding(horizontal = 10.dp)
+                    .border(1.dp, Gray50),
         )
 
         SettingBarItem(
             icon = R.drawable.ic_setting_service,
             content = SettingService,
             onClickAction = onClickServicePolicy,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
         )
 
         SettingCommonDivider()
@@ -147,7 +149,7 @@ fun SettingContent(
             icon = R.drawable.ic_setting_feedback,
             content = SettingUserFeedback,
             onClickAction = onClickFeedBack,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
         )
 
         SettingCommonDivider()
@@ -156,45 +158,50 @@ fun SettingContent(
             text = String.format(SettingVersion, appVersion),
             color = Gray700,
             style = SoftieTypo.body1,
-            modifier = Modifier
-                .padding(vertical = 14.dp, horizontal = 20.dp)
+            modifier =
+                Modifier
+                    .padding(vertical = 14.dp, horizontal = 20.dp),
         )
 
         SettingCommonDivider()
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(
-                    onClick = onClickLogOut,
-                    indication = null,
-                    interactionSource = interactionSource
-                )
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        onClick = onClickLogOut,
+                        indication = null,
+                        interactionSource = interactionSource,
+                    ),
         ) {
             Text(
                 text = SettingLogOut,
                 color = Gray400,
                 style = SoftieTypo.body2,
-                modifier = Modifier
-                    .padding(vertical = 16.dp, horizontal = 20.dp)
+                modifier =
+                    Modifier
+                        .padding(vertical = 16.dp, horizontal = 20.dp),
             )
         }
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(
-                    onClick = onClickDeleteUser,
-                    indication = null,
-                    interactionSource = interactionSource
-                )
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        onClick = onClickDeleteUser,
+                        indication = null,
+                        interactionSource = interactionSource,
+                    ),
         ) {
             Text(
                 text = SettingDeleteUser,
                 color = Gray400,
                 style = SoftieTypo.body2.copy(textDecoration = TextDecoration.Underline),
-                modifier = Modifier
-                    .padding(vertical = 16.dp, horizontal = 20.dp)
+                modifier =
+                    Modifier
+                        .padding(vertical = 16.dp, horizontal = 20.dp),
             )
         }
     }
@@ -203,8 +210,9 @@ fun SettingContent(
 @Composable
 fun SettingCommonDivider() {
     Divider(
-        modifier = Modifier
-            .border(8.dp, Gray50)
+        modifier =
+            Modifier
+                .border(8.dp, Gray50),
     )
 }
 
@@ -216,40 +224,44 @@ fun SettingBarItem(
     interactionSource: MutableInteractionSource,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(
-                onClick = onClickAction,
-                interactionSource = interactionSource,
-                indication = null
-            )
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable(
+                    onClick = onClickAction,
+                    interactionSource = interactionSource,
+                    indication = null,
+                ),
     ) {
         Image(
             painter = painterResource(id = icon),
             contentDescription = "setting bar icon",
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .padding(start = 20.dp, end = 3.dp)
-                .align(Alignment.CenterVertically)
-                .size(19.dp)
+            modifier =
+                Modifier
+                    .padding(vertical = 16.dp)
+                    .padding(start = 20.dp, end = 3.dp)
+                    .align(Alignment.CenterVertically)
+                    .size(19.dp),
         )
 
         Text(
             text = content,
             color = Gray700,
             style = SoftieTypo.body1,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(1f)
+            modifier =
+                Modifier
+                    .align(Alignment.CenterVertically)
+                    .weight(1f),
         )
 
         Image(
             painter = painterResource(id = R.drawable.ic_arrow_next),
             contentDescription = "go setting",
-            modifier = Modifier
-                .padding(vertical = 14.dp, horizontal = 20.dp)
-                .size(23.dp)
-                .align(Alignment.CenterVertically)
+            modifier =
+                Modifier
+                    .padding(vertical = 14.dp, horizontal = 20.dp)
+                    .size(23.dp)
+                    .align(Alignment.CenterVertically),
         )
     }
 }

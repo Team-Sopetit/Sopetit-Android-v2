@@ -89,7 +89,6 @@ fun CustomRoutineScreen(
     modifyRoutineModel: ModifyRoutineModel?,
     goBackPage: () -> Unit,
 ) {
-
     val viewModel: CustomRoutineViewModel = hiltViewModel()
     val uiState: CustomRoutinePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -139,8 +138,8 @@ fun CustomRoutineScreen(
                 convertTo24HourFormat(
                     hourState.firstVisibleItemIndex + 1,
                     TimeMinuteType.getMinuteData(minuteState.firstVisibleItemIndex),
-                    TimeDayType.getDayData(timeState.firstVisibleItemIndex)
-                )
+                    TimeDayType.getDayData(timeState.firstVisibleItemIndex),
+                ),
             )
         },
         onActivateAlarm = { viewModel.updateAlarmActivated(!uiState.isAlarmActivated) },
@@ -150,7 +149,7 @@ fun CustomRoutineScreen(
         timeState = timeState,
         modifyRoutineModel = modifyRoutineModel,
         onClickBack = { goBackPage() },
-        isModifyDisabled = (uiState.customScreenType == CustomScreenType.Modify && uiState.modifyType != RoutineType.Custom)
+        isModifyDisabled = (uiState.customScreenType == CustomScreenType.Modify && uiState.modifyType != RoutineType.Custom),
     )
 }
 
@@ -172,47 +171,50 @@ fun CustomRoutineContent(
     isModifyDisabled: Boolean = false,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = "back",
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(top = 14.dp, bottom = 14.dp, start = 20.dp)
-                    .size(28.dp)
-                    .clickable(
-                        interactionSource = interactionSource,
-                        indication = null,
-                        onClick = onClickBack
-                    )
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(top = 14.dp, bottom = 14.dp, start = 20.dp)
+                        .size(28.dp)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = onClickBack,
+                        ),
             )
 
             FinishBtn(
-                modifier = Modifier
-                    .padding(end = 20.dp)
-                    .align(Alignment.CenterEnd),
+                modifier =
+                    Modifier
+                        .padding(end = 20.dp)
+                        .align(Alignment.CenterEnd),
                 interactionSource = interactionSource,
                 onClickAction = onClickFinishBtn,
-                isFinish = routineWriteInput.isNotEmpty() && selectedThemeId != 0
+                isFinish = routineWriteInput.isNotEmpty() && selectedThemeId != 0,
             )
         }
 
         CustomRoutineWrite(
             textInput = routineWriteInput,
             onValueChange = onRoutineValueChange,
-            isModifyDisabled = isModifyDisabled
+            isModifyDisabled = isModifyDisabled,
         )
 
         CustomRoutineTheme(
             onSelectThemeId = onSelectThemeId,
             selectedThemeId = selectedThemeId,
-            isModifyDisabled = isModifyDisabled
+            isModifyDisabled = isModifyDisabled,
         )
 
         CustomRoutineAlarm(
@@ -221,7 +223,7 @@ fun CustomRoutineContent(
             interactionSource = interactionSource,
             hourState = hourState,
             minuteState = minuteState,
-            timeState = timeState
+            timeState = timeState,
         )
     }
 }
@@ -234,21 +236,23 @@ fun FinishBtn(
     onClickAction: () -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(99.dp))
-            .background(if (isFinish) Gray650 else Gray200)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClickAction
-            )
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(99.dp))
+                .background(if (isFinish) Gray650 else Gray200)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = onClickAction,
+                ),
     ) {
         Text(
             text = FinishContent,
             style = SoftieTypo.body2,
             color = if (isFinish) Gray0 else Gray400,
-            modifier = Modifier
-                .padding(vertical = 6.dp, horizontal = 12.dp)
+            modifier =
+                Modifier
+                    .padding(vertical = 6.dp, horizontal = 12.dp),
         )
     }
 }
@@ -272,16 +276,18 @@ fun CustomRoutineWrite(
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 4.dp, bottom = 6.dp, start = 20.dp, end = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, bottom = 6.dp, start = 20.dp, end = 20.dp),
     ) {
         Text(
             text = RoutineTitle,
             style = SoftieTypo.body2,
             color = Gray700,
-            modifier = Modifier
-                .align(Alignment.CenterStart)
+            modifier =
+                Modifier
+                    .align(Alignment.CenterStart),
         )
 
         if (isLengthOver) {
@@ -289,75 +295,89 @@ fun CustomRoutineWrite(
                 text = RoutineWriteLengthOver,
                 style = SoftieTypo.caption1,
                 color = Red200,
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterEnd),
             )
         }
     }
 
     Row(
-        modifier = Modifier
-            .padding(top = 6.dp, start = 20.dp, end = 20.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(Gray0)
-            .border(
-                1.dp,
-                if (isLengthOver) Red200 else if (isFocused) Gray650 else Gray0,
-                RoundedCornerShape(8.dp)
-            )
+        modifier =
+            Modifier
+                .padding(top = 6.dp, start = 20.dp, end = 20.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(Gray0)
+                .border(
+                    1.dp,
+                    if (isLengthOver) {
+                        Red200
+                    } else if (isFocused) {
+                        Gray650
+                    } else {
+                        Gray0
+                    },
+                    RoundedCornerShape(8.dp),
+                ),
     ) {
         BasicTextField(
             value = textInput,
             onValueChange = { input ->
                 if (!isModifyDisabled) onValueChange(input)
             },
-            modifier = Modifier
-                .padding(16.dp)
-                .weight(1f)
-                .onFocusChanged { focusState ->
-                    if (!isModifyDisabled) {
-                        isFocused = focusState.isFocused
-                    }
-                },
-            textStyle = SoftieTypo.body2.copy(
-                color = if (isModifyDisabled) Gray400 else Gray700,
-                textAlign = TextAlign.Start
-            ),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus()
-                }
-            ),
+            modifier =
+                Modifier
+                    .padding(16.dp)
+                    .weight(1f)
+                    .onFocusChanged { focusState ->
+                        if (!isModifyDisabled) {
+                            isFocused = focusState.isFocused
+                        }
+                    },
+            textStyle =
+                SoftieTypo.body2.copy(
+                    color = if (isModifyDisabled) Gray400 else Gray700,
+                    textAlign = TextAlign.Start,
+                ),
+            keyboardOptions =
+                KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done,
+                ),
+            keyboardActions =
+                KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    },
+                ),
             readOnly = isModifyDisabled,
             decorationBox = { innerTextField ->
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
                 ) {
                     if (textInput.isEmpty() && !isFocused) {
                         Text(
                             text = RoutineWriteHint,
                             style = SoftieTypo.body2,
                             color = Gray300,
-                            textAlign = TextAlign.Start
+                            textAlign = TextAlign.Start,
                         )
                     }
                     innerTextField()
                 }
-            }
+            },
         )
 
         if (isFocused && textInput.isNotEmpty()) {
             Image(
                 painter = painterResource(id = R.drawable.ic_close_circle),
                 contentDescription = "delete",
-                modifier = Modifier
-                    .padding(top = 16.dp, bottom = 16.dp, end = 16.dp)
-                    .size(20.dp)
+                modifier =
+                    Modifier
+                        .padding(top = 16.dp, bottom = 16.dp, end = 16.dp)
+                        .size(20.dp),
             )
         }
     }
@@ -367,8 +387,9 @@ fun CustomRoutineWrite(
             text = RoutineModifyDisabled,
             color = Red200,
             style = SoftieTypo.caption1,
-            modifier = Modifier
-                .padding(top = 6.dp, start = 20.dp)
+            modifier =
+                Modifier
+                    .padding(top = 6.dp, start = 20.dp),
         )
     }
 }
@@ -384,20 +405,23 @@ fun CustomRoutineTheme(
         text = ThemeTitle,
         style = SoftieTypo.body2,
         color = Gray700,
-        modifier = Modifier
-            .padding(top = 19.dp, start = 20.dp)
+        modifier =
+            Modifier
+                .padding(top = 19.dp, start = 20.dp),
     )
 
     Column(
-        modifier = Modifier
-            .padding(top = 10.dp, bottom = 19.dp, start = 20.dp, end = 20.dp)
-            .fillMaxWidth(),
+        modifier =
+            Modifier
+                .padding(top = 10.dp, bottom = 19.dp, start = 20.dp, end = 20.dp)
+                .fillMaxWidth(),
     ) {
         FlowRow(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             ThemeIconType.entries.forEach { theme ->
                 ThemeListItem(
@@ -405,7 +429,7 @@ fun CustomRoutineTheme(
                     themeItemIcon = theme.themeIcon,
                     onClick = { onSelectThemeId(theme.themeId) },
                     isSelectedTheme = (selectedThemeId == theme.themeId),
-                    isClickEnabled = !isModifyDisabled
+                    isClickEnabled = !isModifyDisabled,
                 )
             }
         }
@@ -422,45 +446,50 @@ fun CustomRoutineAlarm(
     timeState: LazyListState,
 ) {
     Column(
-        modifier = Modifier
-            .padding(top = 19.dp, start = 20.dp, end = 20.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(Gray0)
+        modifier =
+            Modifier
+                .padding(top = 19.dp, start = 20.dp, end = 20.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(Gray0),
     ) {
         Box(
-            modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(horizontal = 20.dp)
+                    .fillMaxWidth(),
         ) {
             Text(
                 text = AlarmTitle,
                 color = Gray700,
                 style = SoftieTypo.body2,
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(vertical = 17.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(vertical = 17.dp),
             )
 
             CustomRoutineSwitch(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(vertical = 12.dp),
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(vertical = 12.dp),
                 isAlarmActivated = isAlarmActivated,
                 onActivateAlarm = onActivateAlarm,
-                interactionSource = interactionSource
+                interactionSource = interactionSource,
             )
         }
 
         if (isAlarmActivated) {
             CustomRoutineAlarmTime(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 10.dp, bottom = 13.dp, start = 69.dp, end = 68.dp)
-                    .fillMaxSize(),
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 10.dp, bottom = 13.dp, start = 69.dp, end = 68.dp)
+                        .fillMaxSize(),
                 hourState = hourState,
                 minuteState = minuteState,
-                timeState = timeState
+                timeState = timeState,
             )
         }
     }
@@ -474,25 +503,27 @@ fun CustomRoutineSwitch(
     interactionSource: MutableInteractionSource,
 ) {
     Box(
-        modifier = modifier
-            .width(51.dp)
-            .clip(RoundedCornerShape(100.dp))
-            .background(if (isAlarmActivated) Gray650 else Switch)
-            .clickable(
-                onClick = onActivateAlarm,
-                indication = null,
-                interactionSource = interactionSource
-            )
+        modifier =
+            modifier
+                .width(51.dp)
+                .clip(RoundedCornerShape(100.dp))
+                .background(if (isAlarmActivated) Gray650 else Switch)
+                .clickable(
+                    onClick = onActivateAlarm,
+                    indication = null,
+                    interactionSource = interactionSource,
+                ),
     ) {
         Box(
-            modifier = Modifier
-                .align(if (isAlarmActivated) Alignment.CenterEnd else Alignment.CenterStart)
-                .padding(vertical = 2.dp)
-                .padding(start = if (isAlarmActivated) 0.dp else 2.dp)
-                .padding(end = if (isAlarmActivated) 2.dp else 0.dp)
-                .size(27.dp)
-                .clip(CircleShape)
-                .background(Gray0)
+            modifier =
+                Modifier
+                    .align(if (isAlarmActivated) Alignment.CenterEnd else Alignment.CenterStart)
+                    .padding(vertical = 2.dp)
+                    .padding(start = if (isAlarmActivated) 0.dp else 2.dp)
+                    .padding(end = if (isAlarmActivated) 2.dp else 0.dp)
+                    .size(27.dp)
+                    .clip(CircleShape)
+                    .background(Gray0),
         )
     }
 }
@@ -506,24 +537,24 @@ fun CustomRoutineAlarmTime(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         AlarmTimeItem(
             modifier = Modifier.weight(1f),
             timeList = (1..12).map { it.toString() },
-            listState = hourState
+            listState = hourState,
         )
 
         AlarmTimeItem(
             modifier = Modifier.weight(1f),
             timeList = TimeMinuteType.entries.map { it.data },
-            listState = minuteState
+            listState = minuteState,
         )
 
         AlarmTimeItem(
             modifier = Modifier.weight(1f),
             timeList = TimeDayType.entries.map { it.data },
-            listState = timeState
+            listState = timeState,
         )
     }
 }
@@ -538,45 +569,50 @@ fun AlarmTimeItem(
     val visibleItemsCount = 5
     val itemHeight = 30.dp
     val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
-    val fadingEdgeGradient = remember {
-        Brush.verticalGradient(
-            0f to Color.Transparent,
-            0.5f to Color.Black,
-            1f to Color.Transparent
-        )
-    }
+    val fadingEdgeGradient =
+        remember {
+            Brush.verticalGradient(
+                0f to Color.Transparent,
+                0.5f to Color.Black,
+                1f to Color.Transparent,
+            )
+        }
 
     LazyColumn(
         state = listState,
-        modifier = modifier
-            .height(itemHeight * visibleItemsCount + 5.dp)
-            .fadingEdge(fadingEdgeGradient),
-        flingBehavior = flingBehavior
+        modifier =
+            modifier
+                .height(itemHeight * visibleItemsCount + 5.dp)
+                .fadingEdge(fadingEdgeGradient),
+        flingBehavior = flingBehavior,
     ) {
         items(extendedItems.size) { index ->
             val item = extendedItems[index]
             val firstVisibleItemIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
-            val fontStyle = when (index) {
-                firstVisibleItemIndex + 2 -> SoftieTypo.head1
-                firstVisibleItemIndex + 1, firstVisibleItemIndex + 3 -> SoftieTypo.head3
-                firstVisibleItemIndex, firstVisibleItemIndex + 4 -> SoftieTypo.body1
-                else -> SoftieTypo.body2
-            }
+            val fontStyle =
+                when (index) {
+                    firstVisibleItemIndex + 2 -> SoftieTypo.head1
+                    firstVisibleItemIndex + 1, firstVisibleItemIndex + 3 -> SoftieTypo.head3
+                    firstVisibleItemIndex, firstVisibleItemIndex + 4 -> SoftieTypo.body1
+                    else -> SoftieTypo.body2
+                }
 
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(itemHeight + 5.dp),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(itemHeight + 5.dp),
+                contentAlignment = Alignment.Center,
             ) {
                 if (item != ZeroString) {
                     Text(
                         text = item,
                         style = fontStyle,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 5.dp)
-                            .height(itemHeight),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 5.dp)
+                                .height(itemHeight),
                         textAlign = TextAlign.Center,
                         color = Color.Black,
                     )

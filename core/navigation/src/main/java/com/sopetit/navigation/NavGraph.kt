@@ -305,7 +305,7 @@ fun NavGraphBuilder.customRoutineNavGraph(
         route = NavRoutes.CustomRoutineGraph.route,
     ) {
         composable(
-            route = NavRoutes.CustomRoutineScreen.routeWithParam,
+            route = NavRoutes.CustomRoutineScreen.ROUTE_WITH_PARAM,
             arguments = listOf(navArgument("data") { type = NavType.StringType }),
         ) {
             val json = it.arguments?.getString("data")

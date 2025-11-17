@@ -63,7 +63,7 @@ fun ThemeChoiceScreen(
         selectedThemeIdList = uiState.selectedThemeIdList,
         onClickBtnAction = {
             goToRoutineChoicePage(viewModel.updateMemberModel())
-        }
+        },
     )
 }
 
@@ -80,51 +80,55 @@ fun ThemeChoiceContent(
     onClickBtnAction: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) {
             OnboardingTopBar(
                 page = 3,
                 enabledGoBack = true,
-                goBack = { onClickBackBtnAction() }
+                goBack = { onClickBackBtnAction() },
             )
 
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 TopBearFaceSpeech(
                     dollType = selectedDollType.value,
-                    speechContent = ThemeChoiceTopSpeech
+                    speechContent = ThemeChoiceTopSpeech,
                 )
 
                 ThemeChoiceList(
                     themeList = themeList,
                     onSelectThemeId = onSelectThemeId,
-                    selectedThemeIdList = selectedThemeIdList
+                    selectedThemeIdList = selectedThemeIdList,
                 )
             }
 
             BottomRectangleBtn(
                 btnTextContent = ThemeChoiceBtn,
                 isBtnActivated = (selectedThemeIdList.size >= 3),
-                onClickAction = onClickBtnAction
+                onClickAction = onClickBtnAction,
             )
         }
 
         if (isFirstChoicePage) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Gray1000)
-                    .clickable { onClickFirstPage() }
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(Gray1000)
+                        .clickable { onClickFirstPage() },
             ) {
                 Box(modifier = Modifier.padding(top = 65.dp)) {
                     TopBearFaceSpeech(
@@ -133,7 +137,7 @@ fun ThemeChoiceContent(
                         isHighlightSpeechExist = isFirstChoicePage,
                         highlightSpeech = dollName,
                         highlightColor = ThemeChoiceSpeechHighLight,
-                        speechContentAfterHighlight = ThemeChoiceTopOriginalSpeechAfter
+                        speechContentAfterHighlight = ThemeChoiceTopOriginalSpeechAfter,
                     )
                 }
             }
@@ -149,17 +153,18 @@ fun ThemeChoiceList(
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
-            .wrapContentSize()
-            .padding(top = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .wrapContentSize()
+                .padding(top = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         itemsIndexed(themeList, key = { _, item -> item.themeId }) { _, item ->
             ThemeListItem(
                 themeName = item.title,
                 themeItemIcon = ThemeIconType.getThemeIcon(item.themeId),
                 onClick = { onSelectThemeId(item.themeId) },
-                isSelectedTheme = selectedThemeIdList.contains(item.themeId)
+                isSelectedTheme = selectedThemeIdList.contains(item.themeId),
             )
         }
     }

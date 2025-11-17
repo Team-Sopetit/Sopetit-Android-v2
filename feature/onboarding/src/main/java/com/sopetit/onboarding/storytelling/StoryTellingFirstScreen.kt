@@ -19,47 +19,49 @@ import com.sopetit.design_system.R
 import com.sopetit.designsystem.StoryTellingContent1
 import com.sopetit.ui.common.item.StoryTellingTextItem
 
-
 @Composable
 fun StoryTellingFirstScreen(
-    goToSecondStoryPage: () -> Unit = {}
+    goToSecondStoryPage: () -> Unit = {},
 ) {
-
     StoryTellingFirstContent(
-        onClickContent = { goToSecondStoryPage() }
+        onClickContent = { goToSecondStoryPage() },
     )
 }
 
 @Composable
 fun StoryTellingFirstContent(
-    onClickContent: () -> Unit = {}
+    onClickContent: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
     ) {
         Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter),
         ) {
             Box(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(start = 20.dp)
+                modifier =
+                    Modifier
+                        .wrapContentSize()
+                        .padding(start = 20.dp),
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_storytelling_girl1),
                     contentDescription = "story telling girl",
-                    modifier = Modifier
-                        .size(width = 210.dp, height = 360.dp)
-                        .align(Alignment.TopStart)
+                    modifier =
+                        Modifier
+                            .size(width = 210.dp, height = 360.dp)
+                            .align(Alignment.TopStart),
                 )
             }
 
             StoryTellingTextItem(
                 storyContent = StoryTellingContent1,
-                onClickAction = onClickContent
+                onClickAction = onClickContent,
             )
         }
     }

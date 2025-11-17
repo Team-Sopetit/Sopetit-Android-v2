@@ -62,7 +62,7 @@ fun LogInScreen(
                 viewModel.startKaKaoLogIn(activity)
             }
         },
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     )
 }
 
@@ -72,54 +72,60 @@ fun LogInContent(
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50),
-        contentAlignment = Alignment.TopCenter
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
+        contentAlignment = Alignment.TopCenter,
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_splash_logo_black),
             contentDescription = "login logo",
-            modifier = Modifier
-                .padding(top = 143.dp)
+            modifier =
+                Modifier
+                    .padding(top = 143.dp),
         )
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
         ) {
             Text(
                 text = LogInSpeechContent,
                 color = Gray0,
                 textAlign = TextAlign.Center,
                 style = SoftieTypo.caption1,
-                modifier = Modifier
-                    .paint(painterResource(id = R.drawable.ic_speech))
-                    .padding(top = 8.dp, bottom = 17.dp)
-                    .align(Alignment.CenterHorizontally)
+                modifier =
+                    Modifier
+                        .paint(painterResource(id = R.drawable.ic_speech))
+                        .padding(top = 8.dp, bottom = 17.dp)
+                        .align(Alignment.CenterHorizontally),
             )
 
             Image(
                 painter = painterResource(id = R.drawable.ic_doll_brown_box_in),
                 contentDescription = "bear in box",
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 44.dp)
-                    .size(160.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 44.dp)
+                        .size(160.dp),
             )
 
             Image(
                 painter = painterResource(id = R.drawable.ic_login_kakao),
                 contentDescription = "login btn",
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 104.dp)
-                    .clickable(
-                        indication = null,
-                        interactionSource = interactionSource,
-                        onClick = { startKaKaoLogIn() }
-                    )
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 104.dp)
+                        .clickable(
+                            indication = null,
+                            interactionSource = interactionSource,
+                            onClick = { startKaKaoLogIn() },
+                        ),
             )
         }
     }

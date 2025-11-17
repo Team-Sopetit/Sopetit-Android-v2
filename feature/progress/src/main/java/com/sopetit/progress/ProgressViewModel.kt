@@ -21,143 +21,158 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProgressViewModel @Inject constructor(
-    private val getMemberDailyRoutineUseCase: GetMemberDailyRoutineUseCase,
-    private val getMemberChallengeUseCase: GetMemberChallengeUseCase,
-    private val deleteMemberDailyRoutineUseCase: DeleteMemberDailyRoutineUseCase,
-    private val deleteMemberChallengeUseCase: DeleteMemberChallengeUseCase,
-    private val achieveMemberChallengeUseCase: AchieveMemberChallengeUseCase,
-    private val achieveDailyRoutineUseCase: AchieveDailyRoutineUseCase,
-    private val deleteCustomRoutineUseCase: DeleteCustomRoutineUseCase,
-) : BaseViewModel<ProgressPageState>(
-    ProgressPageState()
-) {
+class ProgressViewModel
+    @Inject
+    constructor(
+        private val getMemberDailyRoutineUseCase: GetMemberDailyRoutineUseCase,
+        private val getMemberChallengeUseCase: GetMemberChallengeUseCase,
+        private val deleteMemberDailyRoutineUseCase: DeleteMemberDailyRoutineUseCase,
+        private val deleteMemberChallengeUseCase: DeleteMemberChallengeUseCase,
+        private val achieveMemberChallengeUseCase: AchieveMemberChallengeUseCase,
+        private val achieveDailyRoutineUseCase: AchieveDailyRoutineUseCase,
+        private val deleteCustomRoutineUseCase: DeleteCustomRoutineUseCase,
+    ) : BaseViewModel<ProgressPageState>(
+            ProgressPageState(),
+        ) {
+        init {
+            initGetMemberChallenge()
+            initGetMemberDailyRoutine()
+        }
 
-    init {
-        initGetMemberChallenge()
-        initGetMemberDailyRoutine()
-    }
-
-    private fun initGetMemberChallenge() {
-        viewModelScope.launch {
-            getMemberChallengeUseCase(request = Unit).collect {
-                resultResponse(it, ::onSuccessGetMemberChallenge)
+        private fun initGetMemberChallenge() {
+            viewModelScope.launch {
+                getMemberChallengeUseCase(request = Unit).collect {
+                    resultResponse(it, ::onSuccessGetMemberChallenge)
+                }
             }
         }
-    }
 
-    private fun onSuccessGetMemberChallenge(data: MemberChallengeModel) {
-        updateState(
-            uiState.value.copy(
-                memberChallenge = data
+        private fun onSuccessGetMemberChallenge(data: MemberChallengeModel) {
+            updateState(
+                uiState.value.copy(
+                    memberChallenge = data,
+                ),
             )
-        )
-    }
+        }
 
-    private fun initGetMemberDailyRoutine() {
-        viewModelScope.launch {
-            getMemberDailyRoutineUseCase(request = Unit).collect {
-                resultResponse(it, ::onSuccessGetMemberDailyRoutine)
+        private fun initGetMemberDailyRoutine() {
+            viewModelScope.launch {
+                getMemberDailyRoutineUseCase(request = Unit).collect {
+                    resultResponse(it, ::onSuccessGetMemberDailyRoutine)
+                }
             }
         }
-    }
 
-    private fun onSuccessGetMemberDailyRoutine(data: MemberDailyRoutineTotalModel) {
-        updateState(
-            uiState.value.copy(
-                memberDailyRoutineList = data.routines
+        private fun onSuccessGetMemberDailyRoutine(data: MemberDailyRoutineTotalModel) {
+            updateState(
+                uiState.value.copy(
+                    memberDailyRoutineList = data.routines,
+                ),
             )
-        )
-    }
-
-    fun deleteRoutine(routineType: RoutineType, routineId: Int) {
-        when (routineType) {
-            RoutineType.Daily -> deleteDailyRoutine(routineId)
-            RoutineType.Challenge -> deleteChallengeRoutine()
-            RoutineType.Custom -> deleteCustomRoutine(routineId)
         }
-    }
 
-    private fun deleteDailyRoutine(routineId: Int) {
-        viewModelScope.launch {
-            deleteMemberDailyRoutineUseCase(
-                request = listOf(routineId)
-            ).collect {
-                resultResponse(it, { initGetMemberDailyRoutine() })
+        fun deleteRoutine(
+            routineType: RoutineType,
+            routineId: Int,
+        ) {
+            when (routineType) {
+                RoutineType.Daily -> deleteDailyRoutine(routineId)
+                RoutineType.Challenge -> deleteChallengeRoutine()
+                RoutineType.Custom -> deleteCustomRoutine(routineId)
             }
         }
-    }
 
-    private fun deleteChallengeRoutine() {
-        viewModelScope.launch {
-            deleteMemberChallengeUseCase(request = Unit).collect {
-                resultResponse(it, { initGetMemberChallenge() })
+        private fun deleteDailyRoutine(routineId: Int) {
+            viewModelScope.launch {
+                deleteMemberDailyRoutineUseCase(
+                    request = listOf(routineId),
+                ).collect {
+                    resultResponse(it, { initGetMemberDailyRoutine() })
+                }
             }
         }
-    }
 
-    private fun deleteCustomRoutine(routineId: Int) {
-        viewModelScope.launch {
-            deleteCustomRoutineUseCase(routineId).collect {
-                resultResponse(
-                    it,
-                    { initGetMemberDailyRoutine() })
+        private fun deleteChallengeRoutine() {
+            viewModelScope.launch {
+                deleteMemberChallengeUseCase(request = Unit).collect {
+                    resultResponse(it, { initGetMemberChallenge() })
+                }
             }
         }
-    }
 
-    fun convertForModifyScreen(modRoutine: RoutineDetailModel): ModifyRoutineModel {
-        val themeId = uiState.value.memberDailyRoutineList.firstOrNull { member ->
-            member.routines.any { it.routineId == modRoutine.routineId }
-        }?.themeId ?: 0
-
-        val modifyModel = ModifyRoutineModel(
-            routineId = modRoutine.routineId,
-            routineType = modRoutine.routineType,
-            customScreenType = CustomScreenType.Modify,
-            content = modRoutine.content,
-            alarmTime = modRoutine.alarmTime,
-            themeId = themeId
-        )
-
-        return modifyModel
-    }
-
-    fun achieveChallengeRoutine() {
-        viewModelScope.launch {
-            achieveMemberChallengeUseCase(request = Unit).collect {
-                resultResponse(it, {
-                    initGetMemberChallenge()
-                })
-                emitEventFlow(ProgressEvent.OnShowChallengeAchieveSom)
+        private fun deleteCustomRoutine(routineId: Int) {
+            viewModelScope.launch {
+                deleteCustomRoutineUseCase(routineId).collect {
+                    resultResponse(
+                        it,
+                        { initGetMemberDailyRoutine() },
+                    )
+                }
             }
         }
-    }
 
-    fun achieveDailyRoutine(routineId: Int) {
-        viewModelScope.launch {
-            achieveDailyRoutineUseCase(request = routineId).collect {
-                resultResponse(it, ::onSuccessAchieveMemberDailyRoutine)
+        fun convertForModifyScreen(modRoutine: RoutineDetailModel): ModifyRoutineModel {
+            val themeId =
+                uiState.value.memberDailyRoutineList.firstOrNull { member ->
+                    member.routines.any { it.routineId == modRoutine.routineId }
+                }?.themeId ?: 0
+
+            val modifyModel =
+                ModifyRoutineModel(
+                    routineId = modRoutine.routineId,
+                    routineType = modRoutine.routineType,
+                    customScreenType = CustomScreenType.Modify,
+                    content = modRoutine.content,
+                    alarmTime = modRoutine.alarmTime,
+                    themeId = themeId,
+                )
+
+            return modifyModel
+        }
+
+        fun achieveChallengeRoutine() {
+            viewModelScope.launch {
+                achieveMemberChallengeUseCase(request = Unit).collect {
+                    resultResponse(it, {
+                        initGetMemberChallenge()
+                    })
+                    emitEventFlow(ProgressEvent.OnShowChallengeAchieveSom)
+                }
             }
         }
-    }
 
-    private fun onSuccessAchieveMemberDailyRoutine(data: AchieveDailyRoutineModel) {
-        updateState(
-            uiState.value.copy(
-                memberAchieveDailyRoutine = data
+        fun achieveDailyRoutine(routineId: Int) {
+            viewModelScope.launch {
+                achieveDailyRoutineUseCase(request = routineId).collect {
+                    resultResponse(it, ::onSuccessAchieveMemberDailyRoutine)
+                }
+            }
+        }
+
+        private fun onSuccessAchieveMemberDailyRoutine(data: AchieveDailyRoutineModel) {
+            updateState(
+                uiState.value.copy(
+                    memberAchieveDailyRoutine = data,
+                ),
             )
-        )
 
-        initGetMemberDailyRoutine()
+            initGetMemberDailyRoutine()
 
-        checkDailyAchieveResult(data.isAchieve, data.hasCotton)
+            checkDailyAchieveResult(data.isAchieve, data.hasCotton)
+        }
+
+        private fun checkDailyAchieveResult(
+            isAchieve: Boolean,
+            hasCotton: Boolean,
+        ) {
+            if (isAchieve) {
+                if (hasCotton) {
+                    emitEventFlow(ProgressEvent.OnShowDailyAchieveSom)
+                } else {
+                    emitEventFlow(ProgressEvent.OnShowDailyAchieveHasSomFalse)
+                }
+            } else {
+                emitEventFlow(ProgressEvent.OnShowDailyAchieveCancel)
+            }
+        }
     }
-
-    private fun checkDailyAchieveResult(isAchieve: Boolean, hasCotton: Boolean) {
-        if (isAchieve) {
-            if (hasCotton) emitEventFlow(ProgressEvent.OnShowDailyAchieveSom)
-            else emitEventFlow(ProgressEvent.OnShowDailyAchieveHasSomFalse)
-        } else emitEventFlow(ProgressEvent.OnShowDailyAchieveCancel)
-    }
-}

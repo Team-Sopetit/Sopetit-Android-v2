@@ -16,5 +16,5 @@ data class RoutineChoicePageState(
     val isAfterRoutineSelect: Boolean = false,
     val eachThemeRoutineList: List<DailyRoutineListItemModel> = emptyList(),
     val selectedRoutineNumForTheme: List<Int> = listOf(0, 0, 0),
-    val selectedRoutineIdList: List<Int> = emptyList()
+    val selectedRoutineIdList: List<Int> = emptyList(),
 ) : PageState

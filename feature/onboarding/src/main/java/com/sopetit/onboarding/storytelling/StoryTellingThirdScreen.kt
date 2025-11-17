@@ -21,56 +21,60 @@ import com.sopetit.ui.common.item.StoryTellingTextItem
 
 @Composable
 fun StoryTellingThirdScreen(
-    goToDollTypeChoicePage: () -> Unit = {}
+    goToDollTypeChoicePage: () -> Unit = {},
 ) {
     StoryTellingThirdContent(
-        onClickContent = { goToDollTypeChoicePage() }
+        onClickContent = { goToDollTypeChoicePage() },
     )
 }
 
 @Composable
 fun StoryTellingThirdContent(
-    onClickContent: () -> Unit = {}
+    onClickContent: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
     ) {
         Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_door),
                     contentDescription = "story telling girl",
-                    modifier = Modifier
-                        .size(width = 211.dp, height = 390.dp)
-                        .padding(bottom = 40.dp)
-                        .align(Alignment.Center)
+                    modifier =
+                        Modifier
+                            .size(width = 211.dp, height = 390.dp)
+                            .padding(bottom = 40.dp)
+                            .align(Alignment.Center),
                 )
 
                 Image(
                     painter = painterResource(id = R.drawable.ic_box_closed),
                     contentDescription = "story telling closed box",
-                    modifier = Modifier
-                        .size(width = 141.dp, height = 120.dp)
-                        .align(Alignment.BottomCenter)
+                    modifier =
+                        Modifier
+                            .size(width = 141.dp, height = 120.dp)
+                            .align(Alignment.BottomCenter),
                 )
             }
 
             StoryTellingTextItem(
                 storyContent = StoryTellingContent3,
-                onClickAction = onClickContent
+                onClickAction = onClickContent,
             )
         }
     }
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

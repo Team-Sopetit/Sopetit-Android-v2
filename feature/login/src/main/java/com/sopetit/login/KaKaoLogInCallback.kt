@@ -5,9 +5,12 @@ import com.kakao.sdk.common.model.AuthErrorCause
 import timber.log.Timber
 
 class KaKaoLogInCallback(
-    private val onSuccess: (accessToken: String) -> Unit
+    private val onSuccess: (accessToken: String) -> Unit,
 ) {
-    fun handleResult(token: OAuthToken?, error: Throwable?) {
+    fun handleResult(
+        token: OAuthToken?,
+        error: Throwable?,
+    ) {
         if (error != null) {
             when {
                 error.toString() == AuthErrorCause.AccessDenied.toString() -> {

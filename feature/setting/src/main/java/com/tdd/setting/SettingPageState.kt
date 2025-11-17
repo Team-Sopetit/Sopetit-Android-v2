@@ -3,7 +3,7 @@ package com.tdd.setting
 import com.sopetit.ui.base.PageState
 import com.sopetit.ui.common.model.TwoBtnIconModel
 
-data class SettingPageState (
+data class SettingPageState(
     val logOutModel: TwoBtnIconModel = TwoBtnIconModel(),
-    val appVersion: String = ""
-): PageState
+    val appVersion: String = "",
+) : PageState

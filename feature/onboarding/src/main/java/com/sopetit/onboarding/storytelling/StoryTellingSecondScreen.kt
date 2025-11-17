@@ -23,57 +23,59 @@ import com.sopetit.ui.common.item.StoryTellingTextItem
 
 @Composable
 fun StoryTellingSecondScreen(
-    goToThirdStoryPage: () -> Unit = {}
+    goToThirdStoryPage: () -> Unit = {},
 ) {
-
     StoryTellingSecondContent(
-        onClickContent = { goToThirdStoryPage() }
+        onClickContent = { goToThirdStoryPage() },
     )
-
 }
 
 @Composable
 fun StoryTellingSecondContent(
-    onClickContent: () -> Unit = {}
+    onClickContent: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
     ) {
         Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter),
         ) {
             Box(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
-                    .padding(start = 20.dp)
+                modifier =
+                    Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+                        .padding(start = 20.dp),
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_storytelling_girl2),
                     contentDescription = "story telling girl",
-                    modifier = Modifier
-                        .size(width = 210.dp, height = 360.dp)
-                        .align(Alignment.TopStart)
+                    modifier =
+                        Modifier
+                            .size(width = 210.dp, height = 360.dp)
+                            .align(Alignment.TopStart),
                 )
 
                 Image(
                     painter = painterResource(id = R.drawable.ic_box_closed_split),
                     contentDescription = "story telling closed box",
-                    modifier = Modifier
-                        .size(width = 141.dp, height = 120.dp)
-                        .align(Alignment.BottomEnd)
-                        .offset(x = 20.dp)
+                    modifier =
+                        Modifier
+                            .size(width = 141.dp, height = 120.dp)
+                            .align(Alignment.BottomEnd)
+                            .offset(x = 20.dp),
                 )
             }
 
             StoryTellingTextItem(
                 storyContent = StoryTellingContent2,
-                onClickAction = onClickContent
+                onClickAction = onClickContent,
             )
-
         }
     }
 }

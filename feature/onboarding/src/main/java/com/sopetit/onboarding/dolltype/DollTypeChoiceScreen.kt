@@ -38,9 +38,8 @@ import com.sopetit.ui.common.type.BearType
 
 @Composable
 fun DollTypeChoiceScreen(
-    goToDollNamingPage: (CreateMemberModel) -> Unit = {}
+    goToDollNamingPage: (CreateMemberModel) -> Unit = {},
 ) {
-
     val viewModel: DollTypeChoiceViewModel = hiltViewModel()
     val uiState: DollTypeChoicePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -51,7 +50,7 @@ fun DollTypeChoiceScreen(
         },
         onClickBtnAction = {
             goToDollNamingPage(viewModel.setMemberModel())
-        }
+        },
     )
 }
 
@@ -59,54 +58,59 @@ fun DollTypeChoiceScreen(
 fun DollTypeChoiceContent(
     onSelectDollType: (DollType) -> Unit = {},
     selectedDollType: DollType = DollType.NONE,
-    onClickBtnAction: () -> Unit = {}
+    onClickBtnAction: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) {
             OnboardingTopBar(
                 page = 1,
-                enabledGoBack = false
+                enabledGoBack = false,
             )
 
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = DollTypeChoiceTitle,
                     style = SoftieTypo.head1,
                     color = Gray700,
-                    modifier = Modifier
-                        .padding(top = 28.dp)
+                    modifier =
+                        Modifier
+                            .padding(top = 28.dp),
                 )
 
                 Text(
                     text = DollTypeChoiceSemiTitle,
                     style = SoftieTypo.body2,
                     color = Gray500,
-                    modifier = Modifier
-                        .padding(top = 4.dp)
+                    modifier =
+                        Modifier
+                            .padding(top = 4.dp),
                 )
 
                 DollTypeChoiceItem(
                     selectedDollType = selectedDollType,
-                    onSelectDollType = onSelectDollType
+                    onSelectDollType = onSelectDollType,
                 )
             }
 
             BottomRectangleBtn(
                 btnTextContent = DollTypeChoiceBtn,
                 isBtnActivated = (selectedDollType != DollType.NONE),
-                onClickAction = onClickBtnAction
+                onClickAction = onClickBtnAction,
             )
         }
     }
@@ -115,28 +119,29 @@ fun DollTypeChoiceContent(
 @Composable
 fun DollTypeChoiceItem(
     onSelectDollType: (DollType) -> Unit = {},
-    selectedDollType: DollType = DollType.NONE
+    selectedDollType: DollType = DollType.NONE,
 ) {
-
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .padding(top = 97.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(top = 97.dp),
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(15.dp),
-            verticalArrangement = Arrangement.spacedBy(15.dp)
+            verticalArrangement = Arrangement.spacedBy(15.dp),
         ) {
             itemsIndexed(BearType.entries, key = { _, item -> item.id }) { _, item ->
                 Image(
                     painter = painterResource(id = BearType.getDollBox(item.dollType, (selectedDollType.value == item.dollType))),
                     contentDescription = "bear type",
-                    modifier = Modifier
-                        .size(160.dp)
-                        .align(Alignment.Center)
-                        .clickable { onSelectDollType(DollType.stringToEnum(item.dollType))}
+                    modifier =
+                        Modifier
+                            .size(160.dp)
+                            .align(Alignment.Center)
+                            .clickable { onSelectDollType(DollType.stringToEnum(item.dollType)) },
                 )
             }
         }

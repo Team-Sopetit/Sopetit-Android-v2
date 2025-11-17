@@ -19,58 +19,60 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingViewModel @Inject constructor(
-    private val postLogOutUseCase: PostLogOutUseCase,
-    private val getVersionUseCase: GetVersionUseCase
-): BaseViewModel<SettingPageState>(
-    SettingPageState()
-) {
-
-    init {
-        initSetLogOutBottomSheetModel()
-        initSetAppVersion()
-    }
-
-    private fun initSetAppVersion() {
-        viewModelScope.launch {
-            getVersionUseCase(Unit).collect { resultResponse(it, ::onSuccessAppVersion) }
+class SettingViewModel
+    @Inject
+    constructor(
+        private val postLogOutUseCase: PostLogOutUseCase,
+        private val getVersionUseCase: GetVersionUseCase,
+    ) : BaseViewModel<SettingPageState>(
+            SettingPageState(),
+        ) {
+        init {
+            initSetLogOutBottomSheetModel()
+            initSetAppVersion()
         }
-    }
 
-    private fun onSuccessAppVersion(data: VersionModel) {
-        updateState(
-            uiState.value.copy(
-                appVersion = data.androidVersion.appVersion
-            )
-        )
-    }
-
-    private fun initSetLogOutBottomSheetModel() {
-        val logOutModel = TwoBtnIconModel(
-            title = LogOutBottomSheetTitle,
-            semiTitle = LogOutBottomSheetSemiTitle,
-            leftBtnText = LogOutLeftBtnText,
-            rightBtnText = LogOutRightBtnText,
-            leftBtnTextColor = Gray300,
-            leftBtnColor = Gray100,
-            rightBtnColor = Red200,
-            rightBtnTextColor = Gray0
-        )
-
-        updateState(
-            uiState.value.copy(
-                logOutModel = logOutModel
-            )
-        )
-    }
-
-    fun postLogOut(isSelected: Boolean) {
-        if (isSelected) {
+        private fun initSetAppVersion() {
             viewModelScope.launch {
-                postLogOutUseCase(Unit).collect { resultResponse(it, {} )}
+                getVersionUseCase(Unit).collect { resultResponse(it, ::onSuccessAppVersion) }
+            }
+        }
 
-                emitEventFlow(SettingEvent.GoBackToLogInPage)
+        private fun onSuccessAppVersion(data: VersionModel) {
+            updateState(
+                uiState.value.copy(
+                    appVersion = data.androidVersion.appVersion,
+                ),
+            )
+        }
+
+        private fun initSetLogOutBottomSheetModel() {
+            val logOutModel =
+                TwoBtnIconModel(
+                    title = LogOutBottomSheetTitle,
+                    semiTitle = LogOutBottomSheetSemiTitle,
+                    leftBtnText = LogOutLeftBtnText,
+                    rightBtnText = LogOutRightBtnText,
+                    leftBtnTextColor = Gray300,
+                    leftBtnColor = Gray100,
+                    rightBtnColor = Red200,
+                    rightBtnTextColor = Gray0,
+                )
+
+            updateState(
+                uiState.value.copy(
+                    logOutModel = logOutModel,
+                ),
+            )
+        }
+
+        fun postLogOut(isSelected: Boolean) {
+            if (isSelected) {
+                viewModelScope.launch {
+                    postLogOutUseCase(Unit).collect { resultResponse(it, {}) }
+
+                    emitEventFlow(SettingEvent.GoBackToLogInPage)
+                }
             }
         }
     }
-}

@@ -7,17 +7,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DollTypeChoiceViewModel @Inject constructor(
-
-) : BaseViewModel<DollTypeChoicePageState>(DollTypeChoicePageState()) {
-
-    fun setSelectedDollType(dollType: DollType) {
-        updateState(
-            uiState.value.copy(
-                selectedDollType = dollType
+class DollTypeChoiceViewModel
+    @Inject
+    constructor() : BaseViewModel<DollTypeChoicePageState>(DollTypeChoicePageState()) {
+        fun setSelectedDollType(dollType: DollType) {
+            updateState(
+                uiState.value.copy(
+                    selectedDollType = dollType,
+                ),
             )
-        )
-    }
+        }
 
-    fun setMemberModel() = CreateMemberModel(dollType = uiState.value.selectedDollType)
-}
+        fun setMemberModel() = CreateMemberModel(dollType = uiState.value.selectedDollType)
+    }

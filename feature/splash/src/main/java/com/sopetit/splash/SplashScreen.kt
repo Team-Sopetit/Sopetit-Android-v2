@@ -63,7 +63,7 @@ fun SplashScreen(
     }
 
     SplashContent(
-        splashVersion = randomSplashVersion
+        splashVersion = randomSplashVersion,
     )
 }
 
@@ -71,12 +71,13 @@ fun SplashScreen(
 fun SplashContent(
     splashVersion: Int = 0,
 ) {
-    val splashVersionList: List<SplashVersionModel> = listOf(
-        SplashVersionModel(colorVersion = 0) { SplashFirstBottomContent() },
-        SplashVersionModel(colorVersion = 0) { SplashSecondThirdBottomContent() },
-        SplashVersionModel(colorVersion = 1) { SplashSecondThirdBottomContent() },
-        SplashVersionModel(colorVersion = 1) { SplashFourthBottomContent() }
-    )
+    val splashVersionList: List<SplashVersionModel> =
+        listOf(
+            SplashVersionModel(colorVersion = 0) { SplashFirstBottomContent() },
+            SplashVersionModel(colorVersion = 0) { SplashSecondThirdBottomContent() },
+            SplashVersionModel(colorVersion = 1) { SplashSecondThirdBottomContent() },
+            SplashVersionModel(colorVersion = 1) { SplashFourthBottomContent() },
+        )
 
     SplashItemForVersion(splashVersionModel = splashVersionList[splashVersion])
 }
@@ -86,18 +87,20 @@ fun SplashItemForVersion(
     splashVersionModel: SplashVersionModel,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(if (splashVersionModel.colorVersion == 0) Brown50 else Gray650)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(if (splashVersionModel.colorVersion == 0) Brown50 else Gray650),
     ) {
         SplashTitle(
-            contentColor = if (splashVersionModel.colorVersion == 0) Gray650 else Brown50
+            contentColor = if (splashVersionModel.colorVersion == 0) Gray650 else Brown50,
         )
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
         ) {
             splashVersionModel.bottomContent()
         }
@@ -106,23 +109,24 @@ fun SplashItemForVersion(
 
 @Composable
 fun SplashFirstBottomContent() {
-
     Box {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(225.dp)
-                .background(SplashBottom)
-                .align(Alignment.BottomCenter)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(225.dp)
+                    .background(SplashBottom)
+                    .align(Alignment.BottomCenter),
         )
 
         Image(
             painter = painterResource(id = R.drawable.ic_splash_bear1),
             contentDescription = "splash bottom bear",
-            modifier = Modifier
-                .size(width = 319.dp, height = 278.dp)
-                .offset(y = (-79).dp)
-                .align(Alignment.Center)
+            modifier =
+                Modifier
+                    .size(width = 319.dp, height = 278.dp)
+                    .offset(y = (-79).dp)
+                    .align(Alignment.Center),
         )
     }
 }
@@ -133,9 +137,10 @@ fun SplashSecondThirdBottomContent() {
         Image(
             painter = painterResource(id = R.drawable.ic_splash_bear2),
             contentDescription = "splash bottom bear",
-            modifier = Modifier
-                .size(width = 286.dp, height = 499.dp)
-                .align(Alignment.BottomStart)
+            modifier =
+                Modifier
+                    .size(width = 286.dp, height = 499.dp)
+                    .align(Alignment.BottomStart),
         )
     }
 }
@@ -146,14 +151,14 @@ fun SplashFourthBottomContent() {
         Image(
             painter = painterResource(id = R.drawable.ic_splash_bear3),
             contentDescription = "splash bottom bear",
-            modifier = Modifier
-                .size(width = 420.dp, height = 430.dp)
-                .offset(y = 30.dp)
-                .align(Alignment.BottomCenter)
+            modifier =
+                Modifier
+                    .size(width = 420.dp, height = 430.dp)
+                    .offset(y = 30.dp)
+                    .align(Alignment.BottomCenter),
         )
     }
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

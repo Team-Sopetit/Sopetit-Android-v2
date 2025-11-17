@@ -19,148 +19,155 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class RoutineChoiceViewModel @Inject constructor(
-    private val getThemeListUseCase: GetThemeListUseCase,
-    private val getDailyRoutineUseCase: GetDailyRoutineUseCase,
-    private val postCreateMemberUseCase: PostCreateMemberUseCase,
-    private val saveMemberDollExistUseCase: SaveMemberDollExistUseCase
-) : BaseViewModel<RoutineChoicePageState>(
-    RoutineChoicePageState()
-) {
-
-    init {
-        initGetThemeList()
-    }
-
-    private fun initGetThemeList() {
-        viewModelScope.launch {
-            getThemeListUseCase(request = Unit).collect {
-                resultResponse(it, ::onSuccessGetThemeList)
-            }
-        }
-    }
-
-    private fun onSuccessGetThemeList(data: ThemeListModel) {
-        updateState(
-            uiState.value.copy(
-                originalThemeList = data.themes
-            )
-        )
-    }
-
-    fun getMemberModel(memberModel: CreateMemberModel) {
-        updateState(
-            uiState.value.copy(
-                memberModel = memberModel
-            )
-        )
-        Timber.d("[온보딩] (routineChoice) member -> ${uiState.value.memberModel}")
-        initGetDailyRoutineList()
-    }
-
-    private fun initGetDailyRoutineList() {
-        viewModelScope.launch {
-            getDailyRoutineUseCase(request = DailyRoutineListRequestModel(uiState.value.memberModel.selectedThemeIdList)).collect {
-                resultResponse(it, ::onSuccessGetDailyRoutine)
-            }
-        }
-    }
-
-    private fun onSuccessGetDailyRoutine(data: DailyRoutineListThemeTotalModel) {
-        val routines: List<DailyRoutineListModel> = data.themeTotalList
-        val chipThemeList: List<SelectedThemeItem> = listOf(
-            mapSelectedThemeItem(routines, 0),
-            mapSelectedThemeItem(routines, 1),
-            mapSelectedThemeItem(routines, 2)
-        )
-
-        updateState(
-            uiState.value.copy(
-                routineTotalList = routines,
-                chipThemeList = chipThemeList,
-                selectedThemeId = chipThemeList[0].themeId,
-                eachThemeRoutineList = routines[0].routines
-            )
-        )
-    }
-
-    private fun mapSelectedThemeItem(routines: List<DailyRoutineListModel>, index: Int) =
-        with(routines) {
-            SelectedThemeItem(
-                themeId = get(index).themeId,
-                title = uiState.value.originalThemeList.first { get(index).themeId == it.themeId }.title,
-                themeIcon = ThemeIconType.getThemeIcon(get(index).themeId)
-            )
+class RoutineChoiceViewModel
+    @Inject
+    constructor(
+        private val getThemeListUseCase: GetThemeListUseCase,
+        private val getDailyRoutineUseCase: GetDailyRoutineUseCase,
+        private val postCreateMemberUseCase: PostCreateMemberUseCase,
+        private val saveMemberDollExistUseCase: SaveMemberDollExistUseCase,
+    ) : BaseViewModel<RoutineChoicePageState>(
+            RoutineChoicePageState(),
+        ) {
+        init {
+            initGetThemeList()
         }
 
-    fun setSelectedThemeId(themeId: Int) {
-        updateState(
-            uiState.value.copy(
-                selectedThemeId = themeId,
-                eachThemeRoutineList = uiState.value.routineTotalList.find { it.themeId == themeId }?.routines
-                    ?: emptyList()
-            )
-        )
-    }
-
-    fun setSelectedRoutineIdList(routineId: Int) {
-        val newList: MutableList<Int> = mutableListOf()
-        val newSelectedRoutineNumForTheme: MutableList<Int> = mutableListOf()
-        val index =
-            uiState.value.chipThemeList.indexOfFirst { it.themeId == uiState.value.selectedThemeId }
-
-        newList.addAll(uiState.value.selectedRoutineIdList)
-        newSelectedRoutineNumForTheme.addAll(uiState.value.selectedRoutineNumForTheme)
-
-        when (uiState.value.selectedRoutineIdList.contains(routineId)) {
-            true -> {
-                newList.remove(routineId)
-                newSelectedRoutineNumForTheme[index] = newSelectedRoutineNumForTheme[index] - 1
-            }
-
-            false -> {
-                if (uiState.value.selectedRoutineIdList.size < 3) {
-                    newList.add(routineId)
-                    newSelectedRoutineNumForTheme[index] = newSelectedRoutineNumForTheme[index] + 1
-                } else {
-                    emitEventFlow(RoutineChoiceEvent.IsOverRoutineNumSize)
+        private fun initGetThemeList() {
+            viewModelScope.launch {
+                getThemeListUseCase(request = Unit).collect {
+                    resultResponse(it, ::onSuccessGetThemeList)
                 }
             }
         }
 
-        updateState(
-            uiState.value.copy(
-                isAfterRoutineSelect = true,
-                selectedRoutineIdList = newList,
-                selectedRoutineNumForTheme = newSelectedRoutineNumForTheme
+        private fun onSuccessGetThemeList(data: ThemeListModel) {
+            updateState(
+                uiState.value.copy(
+                    originalThemeList = data.themes,
+                ),
             )
-        )
+        }
 
-        Timber.d("[온보딩] 선택한 루틴 리스트 -> $newList && index: $index  list: $newSelectedRoutineNumForTheme")
-    }
+        fun getMemberModel(memberModel: CreateMemberModel) {
+            updateState(
+                uiState.value.copy(
+                    memberModel = memberModel,
+                ),
+            )
+            Timber.d("[온보딩] (routineChoice) member -> ${uiState.value.memberModel}")
+            initGetDailyRoutineList()
+        }
 
-    private fun updateMemberModel() = CreateMemberModel(
-        dollType = uiState.value.memberModel.dollType,
-        dollName = uiState.value.memberModel.dollName,
-        selectedRoutineIdList = uiState.value.selectedRoutineIdList
-    )
+        private fun initGetDailyRoutineList() {
+            viewModelScope.launch {
+                getDailyRoutineUseCase(request = DailyRoutineListRequestModel(uiState.value.memberModel.selectedThemeIdList)).collect {
+                    resultResponse(it, ::onSuccessGetDailyRoutine)
+                }
+            }
+        }
 
-    fun createMember() {
-        viewModelScope.launch {
-            postCreateMemberUseCase(
-                request = updateMemberModel()
-            ).collect { resultResponse(it, {}) }
+        private fun onSuccessGetDailyRoutine(data: DailyRoutineListThemeTotalModel) {
+            val routines: List<DailyRoutineListModel> = data.themeTotalList
+            val chipThemeList: List<SelectedThemeItem> =
+                listOf(
+                    mapSelectedThemeItem(routines, 0),
+                    mapSelectedThemeItem(routines, 1),
+                    mapSelectedThemeItem(routines, 2),
+                )
+
+            updateState(
+                uiState.value.copy(
+                    routineTotalList = routines,
+                    chipThemeList = chipThemeList,
+                    selectedThemeId = chipThemeList[0].themeId,
+                    eachThemeRoutineList = routines[0].routines,
+                ),
+            )
+        }
+
+        private fun mapSelectedThemeItem(
+            routines: List<DailyRoutineListModel>,
+            index: Int,
+        ) =
+            with(routines) {
+                SelectedThemeItem(
+                    themeId = get(index).themeId,
+                    title = uiState.value.originalThemeList.first { get(index).themeId == it.themeId }.title,
+                    themeIcon = ThemeIconType.getThemeIcon(get(index).themeId),
+                )
+            }
+
+        fun setSelectedThemeId(themeId: Int) {
+            updateState(
+                uiState.value.copy(
+                    selectedThemeId = themeId,
+                    eachThemeRoutineList =
+                        uiState.value.routineTotalList.find { it.themeId == themeId }?.routines
+                            ?: emptyList(),
+                ),
+            )
+        }
+
+        fun setSelectedRoutineIdList(routineId: Int) {
+            val newList: MutableList<Int> = mutableListOf()
+            val newSelectedRoutineNumForTheme: MutableList<Int> = mutableListOf()
+            val index =
+                uiState.value.chipThemeList.indexOfFirst { it.themeId == uiState.value.selectedThemeId }
+
+            newList.addAll(uiState.value.selectedRoutineIdList)
+            newSelectedRoutineNumForTheme.addAll(uiState.value.selectedRoutineNumForTheme)
+
+            when (uiState.value.selectedRoutineIdList.contains(routineId)) {
+                true -> {
+                    newList.remove(routineId)
+                    newSelectedRoutineNumForTheme[index] = newSelectedRoutineNumForTheme[index] - 1
+                }
+
+                false -> {
+                    if (uiState.value.selectedRoutineIdList.size < 3) {
+                        newList.add(routineId)
+                        newSelectedRoutineNumForTheme[index] = newSelectedRoutineNumForTheme[index] + 1
+                    } else {
+                        emitEventFlow(RoutineChoiceEvent.IsOverRoutineNumSize)
+                    }
+                }
+            }
+
+            updateState(
+                uiState.value.copy(
+                    isAfterRoutineSelect = true,
+                    selectedRoutineIdList = newList,
+                    selectedRoutineNumForTheme = newSelectedRoutineNumForTheme,
+                ),
+            )
+
+            Timber.d("[온보딩] 선택한 루틴 리스트 -> $newList && index: $index  list: $newSelectedRoutineNumForTheme")
+        }
+
+        private fun updateMemberModel() =
+            CreateMemberModel(
+                dollType = uiState.value.memberModel.dollType,
+                dollName = uiState.value.memberModel.dollName,
+                selectedRoutineIdList = uiState.value.selectedRoutineIdList,
+            )
+
+        fun createMember() {
+            viewModelScope.launch {
+                postCreateMemberUseCase(
+                    request = updateMemberModel(),
+                ).collect { resultResponse(it, {}) }
 
 //            emitEventFlow(RoutineChoiceEvent.OnSuccessCreateMember)
-            saveMemberDollExist()
+                saveMemberDollExist()
+            }
+        }
+
+        private fun saveMemberDollExist() {
+            viewModelScope.launch {
+                saveMemberDollExistUseCase(true).collect { resultResponse(it, {}) }
+
+                emitEventFlow(RoutineChoiceEvent.OnSuccessCreateMember)
+            }
         }
     }
-
-    private fun saveMemberDollExist() {
-        viewModelScope.launch {
-            saveMemberDollExistUseCase(true).collect { resultResponse(it, {} )}
-
-            emitEventFlow(RoutineChoiceEvent.OnSuccessCreateMember)
-        }
-    }
-}
