@@ -1,0 +1,49 @@
+name: Softie PR Builder
+
+on:
+  pull_request:
+    branches: [ develop, main ]
+
+jobs:
+  build:
+    name: PR Checker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Prepare local.properties
+        run: |
+          cat <<EOF > local.properties
+          BASE_URL=${{ secrets.BASE_URL }}
+          KAKAO_APP_KEY=${{ secrets.KAKAO_APP_KEY }}
+          KAKAO_HOST_SCHEME=${{ secrets.KAKAO_HOST_SCHEME }}
+          FEEDBACK_FORM=${{ secrets.FEEDBACK_FORM }}
+          SERVICE_POLICY=${{ secrets.SERVICE_POLICY }}
+          PERSONAL_INFO_POLICY=${{ secrets.PERSONAL_INFO_POLICY }}
+          EOF
+
+
+      - name: Decode google-services.json
+        env:
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+        run: |
+          mkdir -p app
+          echo "$GOOGLE_SERVICES" | base64 -d > app/google-services.json
+
+      - name: Lint (ktlint)
+        run: ./gradlew ktlintCheck -PcompileSdkVersion=34
+
+      - name: Build (debug+release compile)
+        run: ./gradlew build -PcompileSdkVersion=34
