@@ -49,6 +49,7 @@ google-service = "4.4.2"
 firebase-bom = "33.6.0"
 firebase-messaging = "21.1.0"
 permissions = "0.33.1-alpha"
+ktlint = "12.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -179,3 +180,4 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspplugin" }
 google-serive = { id = "com.google.gms.google-services", version.ref = "google-service"}
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

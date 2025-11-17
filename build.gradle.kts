@@ -9,4 +9,29 @@ plugins {
     alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.google.serive) apply false
+    alias(libs.plugins.ktlint) apply  false
+}
+
+subprojects {
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
+    extensions.configure<org.jlleitschuh.gradle.ktlint.KtlintExtension>("ktlint") {
+        version.set("1.2.1")
+        android.set(true)
+        ignoreFailures.set(false)
+
+        filter {
+            exclude("**/src/test/**")
+            exclude("**/src/androidTest/**")
+        }
+    }
+
+    listOf(
+        "ktlintAndroidTestSourceSetCheck",
+        "ktlintAndroidTestSourceSetFormat",
+        "ktlintTestSourceSetCheck",
+        "ktlintTestSourceSetFormat",
+    ).forEach { n ->
+        tasks.matching { it.name == n }.configureEach { enabled = false }
+    }
 }
