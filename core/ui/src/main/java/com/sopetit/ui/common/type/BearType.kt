@@ -1,11 +1,11 @@
 package com.sopetit.ui.common.type
 
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.sopetit.design_system.Brown
-import com.sopetit.design_system.Gray
+import com.sopetit.designsystem.Brown
+import com.sopetit.designsystem.Gray
 import com.sopetit.design_system.R
-import com.sopetit.design_system.Red
-import com.sopetit.design_system.White
+import com.sopetit.designsystem.Red
+import com.sopetit.designsystem.White
 
 enum class BearType(
     val id: Int,
@@ -14,7 +14,7 @@ enum class BearType(
     val dollInBox: Int,
     val dollUpBox: Int,
     val dollLottie: LottieCompositionSpec,
-    val dollCrying: Int
+    val dollCrying: Int,
 ) {
     BROWN(
         1,
@@ -23,7 +23,7 @@ enum class BearType(
         R.drawable.ic_doll_brown_box_in,
         R.drawable.ic_doll_brown_box_up,
         LottieCompositionSpec.RawRes(R.raw.brown_all),
-        R.drawable.ic_bear_brown_crying
+        R.drawable.ic_bear_brown_crying,
     ),
     GRAY(
         2,
@@ -32,7 +32,7 @@ enum class BearType(
         R.drawable.ic_doll_gray_box_in,
         R.drawable.ic_doll_gray_box_up,
         LottieCompositionSpec.RawRes(R.raw.gray_all),
-        R.drawable.ic_bear_gray_crying
+        R.drawable.ic_bear_gray_crying,
     ),
     WHITE(
         3,
@@ -41,7 +41,7 @@ enum class BearType(
         R.drawable.ic_doll_white_box_in,
         R.drawable.ic_doll_white_box_up,
         LottieCompositionSpec.RawRes(R.raw.white_all),
-        R.drawable.ic_bear_white_crying
+        R.drawable.ic_bear_white_crying,
     ),
     RED(
         4,
@@ -50,14 +50,18 @@ enum class BearType(
         R.drawable.ic_doll_red_box_in,
         R.drawable.ic_doll_red_box_up,
         LottieCompositionSpec.RawRes(R.raw.red_all),
-        R.drawable.ic_bear_red_crying
-    );
+        R.drawable.ic_bear_red_crying,
+    ),
+    ;
 
     companion object {
         fun getDollFace(dollType: String): Int =
             entries.firstOrNull { it.dollType == dollType }?.dollFace ?: R.drawable.ic_brown_face
 
-        fun getDollBox(dollType: String, isDollSelected: Boolean): Int =
+        fun getDollBox(
+            dollType: String,
+            isDollSelected: Boolean,
+        ): Int =
             when (isDollSelected) {
                 true -> entries.firstOrNull { it.dollType == dollType }?.dollUpBox ?: -1
                 false -> entries.firstOrNull { it.dollType == dollType }?.dollInBox ?: -1

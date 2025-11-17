@@ -14,7 +14,6 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface MemberService {
-
     @POST(EndPoints.Member.MEMBER)
     suspend fun createMember(
         @Body body: CreateMemberRequestDto,
@@ -25,11 +24,11 @@ interface MemberService {
 
     @POST(EndPoints.Member.FCM)
     suspend fun postFcm(
-        @Body body: PostFcmRequestDto
+        @Body body: PostFcmRequestDto,
     ): Response<BaseResponse<Unit>>
 
     @PATCH(EndPoints.Member.COTTON)
     suspend fun patchCotton(
-        @Path("cottonType") cottonType: String
+        @Path("cottonType") cottonType: String,
     ): Response<BaseResponse<CottonResponseDto>>
 }

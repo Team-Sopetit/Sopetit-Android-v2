@@ -2,7 +2,7 @@ package com.sopetit.splash.model
 
 import androidx.compose.runtime.Composable
 
-data class SplashVersionModel (
+data class SplashVersionModel(
     val colorVersion: Int,
-    val bottomContent: @Composable () -> Unit
+    val bottomContent: @Composable () -> Unit,
 )

@@ -6,5 +6,5 @@ data class MemberDailyRoutineListItemModel(
     val content: String = "",
     val achieveCount: Int = -1,
     val isAchieve: Boolean = false,
-    val alarmTime: String = ""
+    val alarmTime: String = "",
 )

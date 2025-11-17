@@ -1,4 +1,4 @@
-package com.sopetit.design_system
+package com.sopetit.designsystem
 
 // Common
 const val Softie = "소프티"
@@ -150,7 +150,7 @@ const val AchieveStatEmptyTitle = "애착이의 성격이 만들어지기 전이
 const val AddRoutineCustomTitle = "원하는 루틴이 없다면?"
 const val AddRoutineCustomSemiTitle = "나만의 루틴 만들기"
 const val RoutineWriteHint = "루틴을 입력해주세요"
-const val RoutineWriteLengthOver ="50자 이내로 가능해요"
+const val RoutineWriteLengthOver = "50자 이내로 가능해요"
 const val RoutineModifyDisabled = "소프티에서 제공하는 루틴은 수정할 수 없어요."
 
 // Setting

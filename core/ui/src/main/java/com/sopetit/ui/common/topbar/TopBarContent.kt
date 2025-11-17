@@ -13,41 +13,43 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray700
+import com.sopetit.designsystem.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.SoftieTypo
 
 @Composable
 fun TopBarContent(
     content: String,
     onClickIcon: () -> Unit,
-    interactionSource: MutableInteractionSource
+    interactionSource: MutableInteractionSource,
 ) {
-
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier =
+            Modifier
+                .fillMaxWidth(),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_back),
             contentDescription = "back",
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(vertical = 14.dp, horizontal = 20.dp)
-                .size(28.dp)
-                .clickable(
-                    onClick = onClickIcon,
-                    interactionSource = interactionSource,
-                    indication = null
-                )
+            modifier =
+                Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(vertical = 14.dp, horizontal = 20.dp)
+                    .size(28.dp)
+                    .clickable(
+                        onClick = onClickIcon,
+                        interactionSource = interactionSource,
+                        indication = null,
+                    ),
         )
 
         Text(
             text = content,
             color = Gray700,
             style = SoftieTypo.head3,
-            modifier = Modifier
-                .align(Alignment.Center)
+            modifier =
+                Modifier
+                    .align(Alignment.Center),
         )
     }
 }

@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 object GetMemberChallengeMapper : BaseMapper() {
-
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<GetMemberChallengeResponseDto>>): Flow<Result<MemberChallengeModel>> {
         return baseMapper(
             apiCall = { apiCall() },
@@ -21,10 +20,10 @@ object GetMemberChallengeMapper : BaseMapper() {
                         content = data.content,
                         description = data.description,
                         place = data.place,
-                        timeTaken = data.timeTaken
+                        timeTaken = data.timeTaken,
                     )
                 } ?: MemberChallengeModel()
-            }
+            },
         )
     }
 }

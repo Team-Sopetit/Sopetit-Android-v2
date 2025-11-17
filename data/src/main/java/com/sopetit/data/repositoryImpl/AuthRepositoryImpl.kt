@@ -17,49 +17,54 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor(
-    private val authDataSource: AuthDataSource,
-    private val localDataStore: LocalDataStore,
-) : AuthRepository {
-    override suspend fun postLogIn(request: LogInRequestModel): Flow<Result<LogInResponseModel>> =
-        LogInMapper.responseToModel(apiCall = { authDataSource.postLogIn(request.toDto()) })
+class AuthRepositoryImpl
+    @Inject
+    constructor(
+        private val authDataSource: AuthDataSource,
+        private val localDataStore: LocalDataStore,
+    ) : AuthRepository {
+        override suspend fun postLogIn(request: LogInRequestModel): Flow<Result<LogInResponseModel>> =
+            LogInMapper.responseToModel(apiCall = { authDataSource.postLogIn(request.toDto()) })
 
-    override suspend fun saveToken(request: TokenStoreModel): Flow<Result<Unit>> = flow {
-        localDataStore.saveAccessToken(request.accessToken)
-        localDataStore.saveRefreshToken(request.refreshToken)
-        localDataStore.saveIsMemberDollExist(request.isMemberDollExist)
-    }
+        override suspend fun saveToken(request: TokenStoreModel): Flow<Result<Unit>> =
+            flow {
+                localDataStore.saveAccessToken(request.accessToken)
+                localDataStore.saveRefreshToken(request.refreshToken)
+                localDataStore.saveIsMemberDollExist(request.isMemberDollExist)
+            }
 
-    override suspend fun saveMemberDollExist(request: Boolean): Flow<Result<Unit>> = flow {
-        localDataStore.saveIsMemberDollExist(request)
-    }
+        override suspend fun saveMemberDollExist(request: Boolean): Flow<Result<Unit>> =
+            flow {
+                localDataStore.saveIsMemberDollExist(request)
+            }
 
-    override suspend fun getMemberDollExist(): Flow<Result<Boolean>> =
-        localDataStore.isMemberDollExist
-            .distinctUntilChanged()
-            .map { Result.success(it ?: false) }
+        override suspend fun getMemberDollExist(): Flow<Result<Boolean>> =
+            localDataStore.isMemberDollExist
+                .distinctUntilChanged()
+                .map { Result.success(it ?: false) }
 
-    override suspend fun getToken(): Flow<Result<TokenStoreModel>> = flow {
-        emitAll(
-            combine(
-                localDataStore.accessToken,
-                localDataStore.refreshToken,
-                localDataStore.isMemberDollExist
-            ) { accessToken, refreshToken, isDollExist ->
-                TokenStoreModel(
-                    accessToken = accessToken.orEmpty(),
-                    refreshToken = refreshToken.orEmpty(),
-                    isMemberDollExist = isDollExist ?: false
+        override suspend fun getToken(): Flow<Result<TokenStoreModel>> =
+            flow {
+                emitAll(
+                    combine(
+                        localDataStore.accessToken,
+                        localDataStore.refreshToken,
+                        localDataStore.isMemberDollExist,
+                    ) { accessToken, refreshToken, isDollExist ->
+                        TokenStoreModel(
+                            accessToken = accessToken.orEmpty(),
+                            refreshToken = refreshToken.orEmpty(),
+                            isMemberDollExist = isDollExist ?: false,
+                        )
+                    }
+                        .distinctUntilChanged()
+                        .map { Result.success(it) },
                 )
             }
-                .distinctUntilChanged()
-                .map { Result.success(it) }
-        )
+
+        override suspend fun deleteUser(): Flow<Result<Unit>> =
+            DefaultUnitMapper.responseToModel(apiCall = { authDataSource.deleteUser() })
+
+        override suspend fun postLogOut(): Flow<Result<Unit>> =
+            DefaultUnitMapper.responseToModel(apiCall = { authDataSource.postLogOut() })
     }
-
-    override suspend fun deleteUser(): Flow<Result<Unit>> =
-        DefaultUnitMapper.responseToModel(apiCall = { authDataSource.deleteUser() })
-
-    override suspend fun postLogOut(): Flow<Result<Unit>> =
-        DefaultUnitMapper.responseToModel(apiCall = { authDataSource.postLogOut() })
-}

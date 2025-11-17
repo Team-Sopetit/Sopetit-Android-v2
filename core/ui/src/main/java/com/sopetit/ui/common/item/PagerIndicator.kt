@@ -7,8 +7,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray300
-import com.sopetit.design_system.Gray650
+import com.sopetit.designsystem.Gray300
+import com.sopetit.designsystem.Gray650
 
 @Composable
 fun PagerIndicator(
@@ -17,7 +17,7 @@ fun PagerIndicator(
 ) {
     PagerIndicatorContent(
         pageNumber = pageNumber,
-        currentPage = currentPage
+        currentPage = currentPage,
     )
 }
 
@@ -27,11 +27,11 @@ fun PagerIndicatorContent(
     currentPage: Int,
 ) {
     LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         items(pageNumber, key = { it }) {
             PagerIndicatorItem(
-                isCurrentPage = it == currentPage
+                isCurrentPage = it == currentPage,
             )
         }
     }
@@ -42,13 +42,14 @@ fun PagerIndicatorItem(
     isCurrentPage: Boolean,
 ) {
     Canvas(
-        modifier = Modifier
-            .size(6.dp),
+        modifier =
+            Modifier
+                .size(6.dp),
         onDraw = {
             drawCircle(
                 color = if (isCurrentPage) Gray650 else Gray300,
-                radius = 3.dp.toPx()
+                radius = 3.dp.toPx(),
             )
-        }
+        },
     )
 }

@@ -16,6 +16,8 @@ dependencies {
     implementation(libs.agp)
     implementation(libs.kotlin.gradleplugin)
     compileOnly(libs.compose.compiler.extension)
+
+    testImplementation(libs.junit)
 }
 
 gradlePlugin {

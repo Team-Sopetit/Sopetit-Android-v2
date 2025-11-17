@@ -7,10 +7,14 @@ import com.sopetit.data.service.CalendarService
 import retrofit2.Response
 import javax.inject.Inject
 
-class CalendarDataSourceImpl @Inject constructor(
-    private val calendarService: CalendarService,
-) : CalendarDataSource {
-
-    override suspend fun calendarList(year: Int, month: Int): Response<BaseResponse<Map<String, GetCalendarItemResponseDto>>> =
-        calendarService.getCalendar(year, month)
-}
+class CalendarDataSourceImpl
+    @Inject
+    constructor(
+        private val calendarService: CalendarService,
+    ) : CalendarDataSource {
+        override suspend fun calendarList(
+            year: Int,
+            month: Int,
+        ): Response<BaseResponse<Map<String, GetCalendarItemResponseDto>>> =
+            calendarService.getCalendar(year, month)
+    }

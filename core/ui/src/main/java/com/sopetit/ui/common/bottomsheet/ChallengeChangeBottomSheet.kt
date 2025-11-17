@@ -20,16 +20,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.ChallengeChangeBottomSheetSemiTitle
-import com.sopetit.design_system.ChallengeChangeBottomSheetTitle
-import com.sopetit.design_system.ChangeRoutine
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.Gray700
+import com.sopetit.designsystem.ChallengeChangeBottomSheetSemiTitle
+import com.sopetit.designsystem.ChallengeChangeBottomSheetTitle
+import com.sopetit.designsystem.ChangeRoutine
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.Red200
-import com.sopetit.design_system.SelectedRoutineBottomSheetTitle
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Red200
+import com.sopetit.designsystem.SelectedRoutineBottomSheetTitle
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
@@ -43,7 +43,7 @@ fun ChallengeChangeBottomSheet(
 
     ChallengeChangeContent(
         hasChallenge = challengeChangeModel.hasChallenge,
-        changeChallenge = challengeChangeModel.changeChallenge
+        changeChallenge = challengeChangeModel.changeChallenge,
     )
 }
 
@@ -53,33 +53,36 @@ fun ChallengeChangeContent(
     changeChallenge: MemberChallengeModel = MemberChallengeModel(),
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Gray0)
-            .padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Gray0)
+                .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = ChallengeChangeBottomSheetTitle,
             color = Gray700,
             style = SoftieTypo.head3,
-            modifier = Modifier
-                .padding(top = 24.dp)
+            modifier =
+                Modifier
+                    .padding(top = 24.dp),
         )
 
         Text(
             text = ChallengeChangeBottomSheetSemiTitle,
             color = Red200,
             style = SoftieTypo.body2,
-            modifier = Modifier
-                .padding(top = 4.dp)
+            modifier =
+                Modifier
+                    .padding(top = 4.dp),
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         ChallengeContent(
             hasChallenge = hasChallenge,
-            changeChallenge = changeChallenge
+            changeChallenge = changeChallenge,
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -87,7 +90,7 @@ fun ChallengeChangeContent(
         BottomRectangleBtn(
             btnTextContent = ChangeRoutine,
             isBtnActivated = true,
-            onClickAction = {}
+            onClickAction = {},
         )
     }
 }
@@ -99,43 +102,47 @@ fun ChallengeContent(
 ) {
     ChallengeRoutineBox(
         challengeModel = hasChallenge,
-        isUsedForChange = true
+        isUsedForChange = true,
     )
 
     Box(
-        modifier = Modifier
+        modifier = Modifier,
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_arrow_down),
             contentDescription = "arrow down",
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(vertical = 2.dp)
-                .size(18.dp)
+            modifier =
+                Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(vertical = 2.dp)
+                    .size(18.dp),
         )
 
         Box(
-            modifier = Modifier
-                .padding(top = 22.dp)
+            modifier =
+                Modifier
+                    .padding(top = 22.dp),
         ) {
             ChallengeRoutineBox(
                 challengeModel = changeChallenge,
-                isUsedForChange = true
+                isUsedForChange = true,
             )
         }
 
         Box(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .clip(RoundedCornerShape(99.dp))
-                .background(Gray650)
+            modifier =
+                Modifier
+                    .align(Alignment.TopEnd)
+                    .clip(RoundedCornerShape(99.dp))
+                    .background(Gray650),
         ) {
             Text(
                 text = SelectedRoutineBottomSheetTitle,
                 color = Gray0,
                 style = SoftieTypo.caption2,
-                modifier = Modifier
-                    .padding(vertical = 6.dp, horizontal = 8.dp)
+                modifier =
+                    Modifier
+                        .padding(vertical = 6.dp, horizontal = 8.dp),
             )
         }
     }

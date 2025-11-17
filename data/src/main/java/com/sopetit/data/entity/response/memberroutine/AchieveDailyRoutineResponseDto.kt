@@ -12,5 +12,5 @@ data class AchieveDailyRoutineResponseDto(
     @SerialName("achieveCount")
     val achieveCount: Int = 0,
     @SerialName("hasCotton")
-    val hasCotton: Boolean = false
+    val hasCotton: Boolean = false,
 )

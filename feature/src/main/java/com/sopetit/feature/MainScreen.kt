@@ -60,12 +60,12 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray1000
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray1000
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
@@ -105,7 +105,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen() {
-
     val viewModel: MainViewModel = hiltViewModel()
     val uiState: MainPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -114,24 +113,26 @@ fun MainScreen() {
     val scope = rememberCoroutineScope()
     val snackBarHost = remember { SnackbarHostState() }
     val interactionSource = remember { MutableInteractionSource() }
-    val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = true
-    )
+    val sheetState =
+        rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
+            skipHalfExpanded = true,
+        )
 
     val isShowDialog = remember { mutableStateOf(false) }
     val snackBarPadding = remember { mutableStateOf(0) }
     val snackBarIcon = remember { mutableStateOf(R.drawable.ic_snackbar_caution) }
     val showSnackBar: (String, Int, Int) -> Unit = { message, paddingBottom, icon ->
         scope.launch {
-            val job = scope.launch {
-                snackBarPadding.value = paddingBottom
-                snackBarIcon.value = icon
-                snackBarHost.showSnackbar(
-                    message = message,
-                    duration = SnackbarDuration.Indefinite
-                )
-            }
+            val job =
+                scope.launch {
+                    snackBarPadding.value = paddingBottom
+                    snackBarIcon.value = icon
+                    snackBarHost.showSnackbar(
+                        message = message,
+                        duration = SnackbarDuration.Indefinite,
+                    )
+                }
             delay(1000L)
             job.cancel()
         }
@@ -207,11 +208,12 @@ fun MainScreen() {
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .windowInsetsPadding(
-                WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
-            )
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(
+                    WindowInsets.navigationBars.only(WindowInsetsSides.Bottom),
+                ),
     ) {
         DismissKeyboardOnClick {
             if (isShowDialog.value) {
@@ -221,7 +223,7 @@ fun MainScreen() {
                     onClickDoBtn = {
                         isShowDialog.value = false
                         intentToUrl(context, IntentNavigationType.FEEDBACK)
-                    }
+                    },
                 )
             }
 
@@ -231,17 +233,20 @@ fun MainScreen() {
                     AnimatedContent(
                         targetState = uiState.bottomSheetType,
                         transitionSpec = {
-                            fadeIn(animationSpec = tween(500)) togetherWith fadeOut(
-                                animationSpec = tween(
-                                    500
+                            fadeIn(animationSpec = tween(500)) togetherWith
+                                fadeOut(
+                                    animationSpec =
+                                        tween(
+                                            500,
+                                        ),
                                 )
-                            )
                         },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .navigationBarsPadding(),
-                        label = ""
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .navigationBarsPadding(),
+                        label = "",
                     ) { currentSheet ->
                         when (currentSheet) {
                             BottomSheetType.TUTORIAL -> {
@@ -252,7 +257,7 @@ fun MainScreen() {
                                             sheetState.hide()
                                             viewModel.isTutorialValid.emit(false)
                                         }
-                                    }
+                                    },
                                 )
                             }
 
@@ -269,13 +274,13 @@ fun MainScreen() {
                                         scope.launch {
                                             sheetState.hide()
                                         }
-                                    }
+                                    },
                                 )
                             }
 
                             BottomSheetType.CHALLENGECHANGE -> {
                                 ChallengeChangeBottomSheet(
-                                    challengeChangeModel = uiState.challengeChangeModel
+                                    challengeChangeModel = uiState.challengeChangeModel,
                                 )
                             }
 
@@ -293,7 +298,7 @@ fun MainScreen() {
                                             viewModel.setMemoDetail(it)
                                             sheetState.hide()
                                         }
-                                    }
+                                    },
                                 )
                             }
 
@@ -324,7 +329,7 @@ fun MainScreen() {
                                         }
                                     },
                                     type = uiState.twoBtnType,
-                                    routine = uiState.routineDetail
+                                    routine = uiState.routineDetail,
                                 )
                             }
 
@@ -341,7 +346,7 @@ fun MainScreen() {
                                             sheetState.hide()
                                             viewModel.isSelectedLogOut.emit(true)
                                         }
-                                    }
+                                    },
                                 )
                             }
 
@@ -350,7 +355,7 @@ fun MainScreen() {
                     }
                 },
                 sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-                scrimColor = Color(0, 0, 0, 128)
+                scrimColor = Color(0, 0, 0, 128),
             ) {
                 Scaffold(
                     bottomBar = {
@@ -358,7 +363,7 @@ fun MainScreen() {
                             visible = uiState.bottomNavType != BottomNavType.DEFAULT,
                             modifier = Modifier.background(Gray0),
                             enter = fadeIn() + slideIn { IntOffset(0, 0) },
-                            exit = fadeOut() + slideOut { IntOffset(0, 0) }
+                            exit = fadeOut() + slideOut { IntOffset(0, 0) },
                         ) {
                             BottomNavBar(
                                 modifier = Modifier.navigationBarsPadding(),
@@ -373,27 +378,28 @@ fun MainScreen() {
                                             launchSingleTop = true
                                         }
                                     }
-                                }
+                                },
                             )
                         }
                     },
                 ) { innerPadding ->
                     Box(
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .statusBarsPadding()
+                        modifier =
+                            Modifier
+                                .padding(innerPadding)
+                                .statusBarsPadding(),
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = NavRoutes.SplashGraph.route
+                            startDestination = NavRoutes.SplashGraph.route,
                         ) {
                             splashNavGraph(
                                 navController = navController,
-                                setTutorialValid = setTutorialValid
+                                setTutorialValid = setTutorialValid,
                             )
                             logInNavGraph(
                                 navController = navController,
-                                setTutorialValid = setTutorialValid
+                                setTutorialValid = setTutorialValid,
                             )
                             onBoardingNavGraph(
                                 navController = navController,
@@ -405,7 +411,7 @@ fun MainScreen() {
                                 navController = navController,
                                 showTutorialBottomSheet = showTutorialBottomSheet,
                                 isTutorialValid = viewModel.isTutorialValid,
-                                showFeedbackDialog = showTwoBtnDialog
+                                showFeedbackDialog = showTwoBtnDialog,
                             )
                             progressNavGraph(
                                 navController = navController,
@@ -418,7 +424,7 @@ fun MainScreen() {
                                 showSnackBar = showSnackBar,
                                 showToolTip = { offset, title, content ->
                                     viewModel.initSetTooltip(true, offset, title, content)
-                                }
+                                },
                             )
                             achieveNavGraph(
                                 navController = navController,
@@ -426,14 +432,14 @@ fun MainScreen() {
                                 deleteRoutineId = viewModel.deleteRoutineId,
                                 showMemoWriteBottomSheet = {
                                     showRoutineMemoWriteBottomSheet(
-                                        MemoActionModel()
+                                        MemoActionModel(),
                                     )
                                 },
                                 writtenMemo = viewModel.writtenMemo,
                                 showMemoDetailBottomSheet = showMemoDetailBottomSheet,
                                 memoActionModel = viewModel.memoActionModel,
                                 setAchieveThemeId = setAchieveThemeId,
-                                achieveThemeId = viewModel.achieveThemeId
+                                achieveThemeId = viewModel.achieveThemeId,
                             )
                             addRoutineNavGraph(
                                 navController = navController,
@@ -441,15 +447,15 @@ fun MainScreen() {
                                 selectedThemeId = viewModel.selectedTheme,
                                 showChallengeDetailBottomSheet = showRoutineBottomSheetOneBtn,
                                 showSnackBar = showSnackBar,
-                                showChallengeChangeBottomSheet = showChallengeChangeBottomSheet
+                                showChallengeChangeBottomSheet = showChallengeChangeBottomSheet,
                             )
                             customRoutineNavGraph(
-                                navController = navController
+                                navController = navController,
                             )
                             settingNavGraph(
                                 navController = navController,
                                 showLogOutBottomSheet = showTwoBtnIconBottomSheet,
-                                isSelectedLogOut = viewModel.isSelectedLogOut
+                                isSelectedLogOut = viewModel.isSelectedLogOut,
                             )
                         }
                     }
@@ -462,7 +468,7 @@ fun MainScreen() {
                 val progress by animateLottieCompositionAsState(
                     composition = composition,
                     iterations = 1,
-                    isPlaying = !dismissed
+                    isPlaying = !dismissed,
                 )
 
                 fun dismiss() {
@@ -477,20 +483,21 @@ fun MainScreen() {
                 }
 
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Gray1000)
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = null,
-                            onClick = { dismiss() }
-                        )
-                        .zIndex(1f)
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .background(Gray1000)
+                            .clickable(
+                                interactionSource = interactionSource,
+                                indication = null,
+                                onClick = { dismiss() },
+                            )
+                            .zIndex(1f),
                 ) {
                     LottieAnimation(
                         composition = composition,
                         progress = { progress },
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
             }
@@ -501,7 +508,7 @@ fun MainScreen() {
                 val progress by animateLottieCompositionAsState(
                     composition = composition,
                     iterations = 1,
-                    isPlaying = !dismissed
+                    isPlaying = !dismissed,
                 )
 
                 fun dismiss() {
@@ -516,67 +523,73 @@ fun MainScreen() {
                 }
 
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Gray1000)
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = null,
-                            onClick = { dismiss() }
-                        )
-                        .zIndex(1f)
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .background(Gray1000)
+                            .clickable(
+                                interactionSource = interactionSource,
+                                indication = null,
+                                onClick = { dismiss() },
+                            )
+                            .zIndex(1f),
                 ) {
                     LottieAnimation(
                         composition = composition,
                         progress = { progress },
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
             }
 
             if (uiState.isTooltipShowValid) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Gray1000)
-                        .clickable(
-                            onClick = { viewModel.updateTooltipState(false) }
-                        )
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .background(Gray1000)
+                            .clickable(
+                                onClick = { viewModel.updateTooltipState(false) },
+                            ),
                 ) {
                     Popup(
                         alignment = Alignment.TopEnd,
-                        offset = uiState.tooltipOffSet
+                        offset = uiState.tooltipOffSet,
                     ) {
                         Column(
-                            modifier = Modifier
-                                .padding(end = 20.dp)
-                                .background(Gray0, RoundedCornerShape(10.dp))
-                                .width(272.dp)
+                            modifier =
+                                Modifier
+                                    .padding(end = 20.dp)
+                                    .background(Gray0, RoundedCornerShape(10.dp))
+                                    .width(272.dp),
                         ) {
                             Row(
-                                modifier = Modifier
-                                    .padding(start = 16.dp, end = 12.dp, top = 12.dp)
-                                    .fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
+                                modifier =
+                                    Modifier
+                                        .padding(start = 16.dp, end = 12.dp, top = 12.dp)
+                                        .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
                                     text = uiState.tooltipTitle,
                                     color = Gray700,
                                     style = SoftieTypo.head4,
-                                    modifier = Modifier
-                                        .weight(1f)
+                                    modifier =
+                                        Modifier
+                                            .weight(1f),
                                 )
 
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_close),
                                     contentDescription = "close tooltip",
-                                    modifier = Modifier
-                                        .size(18.dp)
-                                        .clickable(
-                                            onClick = { viewModel.updateTooltipState(false) },
-                                            interactionSource = interactionSource,
-                                            indication = null
-                                        )
+                                    modifier =
+                                        Modifier
+                                            .size(18.dp)
+                                            .clickable(
+                                                onClick = { viewModel.updateTooltipState(false) },
+                                                interactionSource = interactionSource,
+                                                indication = null,
+                                            ),
                                 )
                             }
 
@@ -584,10 +597,11 @@ fun MainScreen() {
                                 text = uiState.tooltipContent,
                                 color = Gray650,
                                 style = SoftieTypo.caption1,
-                                modifier = Modifier
-                                    .padding(top = 6.dp, bottom = 16.dp)
-                                    .padding(horizontal = 16.dp)
-                                    .fillMaxWidth()
+                                modifier =
+                                    Modifier
+                                        .padding(top = 6.dp, bottom = 16.dp)
+                                        .padding(horizontal = 16.dp)
+                                        .fillMaxWidth(),
                             )
                         }
                     }
@@ -598,9 +612,10 @@ fun MainScreen() {
                 hostState = snackBarHost,
                 paddingBottom = snackBarPadding.value,
                 iconResource = snackBarIcon.value,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .zIndex(2f)
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .zIndex(2f),
             )
         }
     }

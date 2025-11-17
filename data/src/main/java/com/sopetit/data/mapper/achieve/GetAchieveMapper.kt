@@ -8,8 +8,7 @@ import com.sopetit.domain.entity.response.achieve.AchieveThemeItemModel
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-object GetAchieveMapper: BaseMapper() {
-
+object GetAchieveMapper : BaseMapper() {
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<GetAchieveResponseDto>>): Flow<Result<AchieveModel>> {
         return baseMapper(
             apiCall = { apiCall() },
@@ -17,16 +16,17 @@ object GetAchieveMapper: BaseMapper() {
                 response?.let { data ->
                     AchieveModel(
                         achievedCount = data.achievedCount,
-                        themes = data.themes.map { theme ->
-                            AchieveThemeItemModel(
-                                id = theme.id,
-                                name = theme.name,
-                                achievedCount = theme.achievedCount
-                            )
-                        }
+                        themes =
+                            data.themes.map { theme ->
+                                AchieveThemeItemModel(
+                                    id = theme.id,
+                                    name = theme.name,
+                                    achievedCount = theme.achievedCount,
+                                )
+                            },
                     )
                 } ?: AchieveModel()
-            }
+            },
         )
     }
 }

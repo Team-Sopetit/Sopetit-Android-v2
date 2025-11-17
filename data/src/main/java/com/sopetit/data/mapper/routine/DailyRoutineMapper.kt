@@ -19,20 +19,22 @@ object DailyRoutineMapper : BaseMapper() {
             responseToModel = { response ->
                 response?.let { data ->
                     DailyRoutineListThemeTotalModel(
-                        themeTotalList = data.themes.map { routineList ->
-                            DailyRoutineListModel(
-                                themeId = routineList.themeId,
-                                routines = routineList.routines.map { listItem ->
-                                    DailyRoutineListItemModel(
-                                        routineId = listItem.routineId,
-                                        content = listItem.content
-                                    )
-                                }
-                            )
-                        }
+                        themeTotalList =
+                            data.themes.map { routineList ->
+                                DailyRoutineListModel(
+                                    themeId = routineList.themeId,
+                                    routines =
+                                        routineList.routines.map { listItem ->
+                                            DailyRoutineListItemModel(
+                                                routineId = listItem.routineId,
+                                                content = listItem.content,
+                                            )
+                                        },
+                                )
+                            },
                     )
                 } ?: DailyRoutineListThemeTotalModel()
-            }
+            },
         )
     }
 }

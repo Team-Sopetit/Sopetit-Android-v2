@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 object AchieveDailyRoutineMapper : BaseMapper() {
-
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<AchieveDailyRoutineResponseDto>>): Flow<Result<AchieveDailyRoutineModel>> {
         return baseMapper(
             apiCall = { apiCall() },
@@ -18,10 +17,10 @@ object AchieveDailyRoutineMapper : BaseMapper() {
                         routineId = data.routineId,
                         isAchieve = data.isAchieve,
                         achieveCount = data.achieveCount,
-                        hasCotton = data.hasCotton
+                        hasCotton = data.hasCotton,
                     )
                 } ?: AchieveDailyRoutineModel()
-            }
+            },
         )
     }
 }

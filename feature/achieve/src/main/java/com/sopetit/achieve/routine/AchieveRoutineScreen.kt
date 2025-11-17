@@ -31,25 +31,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sopetit.design_system.AchieveCountContent
-import com.sopetit.design_system.AchieveEmptyAchieve
-import com.sopetit.design_system.AchieveRoutineStartedAt
-import com.sopetit.design_system.ChallengeRoutine
-import com.sopetit.design_system.CountContent
-import com.sopetit.design_system.DailyRoutine
-import com.sopetit.design_system.DailyTitle
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray300
-import com.sopetit.design_system.Gray50
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.ProgressEmptyAddTitle
-import com.sopetit.design_system.ProgressEmptyTitle
+import com.sopetit.designsystem.AchieveCountContent
+import com.sopetit.designsystem.AchieveEmptyAchieve
+import com.sopetit.designsystem.AchieveRoutineStartedAt
+import com.sopetit.designsystem.ChallengeRoutine
+import com.sopetit.designsystem.CountContent
+import com.sopetit.designsystem.DailyRoutine
+import com.sopetit.designsystem.DailyTitle
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray300
+import com.sopetit.designsystem.Gray50
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.ProgressEmptyAddTitle
+import com.sopetit.designsystem.ProgressEmptyTitle
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
-import com.sopetit.design_system.StatAchieveRoutineTitle
+import com.sopetit.designsystem.SoftieTypo
+import com.sopetit.designsystem.StatAchieveRoutineTitle
 import com.sopetit.domain.entity.response.achieve.AchieveRoutineItem
 import com.sopetit.domain.entity.response.achieve.AchieveRoutineModel
 import com.sopetit.ui.common.content.EmptyRoutineScreen
@@ -79,7 +79,7 @@ fun AchieveRoutineScreen(
         achieveThemeId = uiState.achieveThemeId,
         onClickAddRoutine = { goToAddRoutinePage() },
         onClickBackBtn = { goBackToAchievePage() },
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     )
 }
 
@@ -92,28 +92,29 @@ fun AchieveRoutineContent(
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
-            .verticalScroll(rememberScrollState())
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50)
+                .verticalScroll(rememberScrollState()),
     ) {
         TopBarContent(
             content = StatAchieveRoutineTitle,
             onClickIcon = onClickBackBtn,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
         )
 
         Divider(modifier = Modifier.border(2.dp, Gray200))
 
         if ((achieveRoutine.routineTotalCount + achieveRoutine.challengeTotalCount) == 0) {
             AddRoutineEmptyBox(
-                onClickAddRoutine = onClickAddRoutine
+                onClickAddRoutine = onClickAddRoutine,
             )
         } else {
             AddRoutineBox(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 achieveRoutine = achieveRoutine,
-                achieveThemeId = achieveThemeId
+                achieveThemeId = achieveThemeId,
             )
         }
     }
@@ -128,24 +129,26 @@ fun AddRoutineBox(
     AchieveThemeBox(
         achieveThemeId = achieveThemeId,
         achieveRoutine = achieveRoutine,
-        modifier = modifier
+        modifier = modifier,
     )
 
     AchieveChallengeRoutine(
         achieveThemeId = achieveThemeId,
         achieveRoutine = achieveRoutine,
         challengeRoutine = achieveRoutine.challenges,
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .fillMaxWidth()
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp)
+                .fillMaxWidth(),
     )
 
     AchieveDailyRoutine(
         achieveRoutine = achieveRoutine,
         dailyRoutine = achieveRoutine.routines,
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .fillMaxWidth()
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp)
+                .fillMaxWidth(),
     )
 }
 
@@ -154,9 +157,10 @@ fun AddRoutineEmptyBox(
     onClickAddRoutine: () -> Unit,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 148.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 148.dp),
     ) {
         EmptyRoutineScreen(
             titleContent = ProgressEmptyTitle,
@@ -170,7 +174,7 @@ fun AddRoutineEmptyBox(
             btnTextStyle = SoftieTypo.caption1,
             btnVerticalPadding = 12,
             btnHorizontalPadding = 16,
-            onClickAddRoutine = onClickAddRoutine
+            onClickAddRoutine = onClickAddRoutine,
         )
     }
 }
@@ -181,22 +185,24 @@ fun AddRoutineEachEmptyBox(
     modifier: Modifier,
 ) {
     Column(
-        modifier = modifier
-            .padding(vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            modifier
+                .padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_snackbar_caution),
             contentDescription = "notice empty",
-            colorFilter = ColorFilter.tint(Gray300)
+            colorFilter = ColorFilter.tint(Gray300),
         )
 
         Text(
             text = String.format(AchieveEmptyAchieve, emptyTitle),
             style = SoftieTypo.body2,
             color = Gray500,
-            modifier = Modifier
-                .padding(top = 8.dp)
+            modifier =
+                Modifier
+                    .padding(top = 8.dp),
         )
     }
 }
@@ -210,27 +216,30 @@ fun AchieveThemeBox(
     Image(
         painter = painterResource(id = ThemeIconType.getThemeIcon(achieveThemeId)),
         contentDescription = "theme",
-        modifier = modifier
-            .padding(top = 20.dp, bottom = 10.dp)
-            .size(40.dp)
+        modifier =
+            modifier
+                .padding(top = 20.dp, bottom = 10.dp)
+                .size(40.dp),
     )
 
     Text(
         text = achieveRoutine.name,
         style = SoftieTypo.body2,
         color = ThemeIconType.getThemeGraphColor(achieveThemeId),
-        modifier = modifier
+        modifier = modifier,
     )
 
     Text(
-        text = String.format(
-            CountContent,
-            achieveRoutine.routineTotalCount + achieveRoutine.challengeTotalCount
-        ),
+        text =
+            String.format(
+                CountContent,
+                achieveRoutine.routineTotalCount + achieveRoutine.challengeTotalCount,
+            ),
         style = SoftieTypo.head1,
         color = Gray700,
-        modifier = modifier
-            .padding(top = 10.dp, bottom = 20.dp)
+        modifier =
+            modifier
+                .padding(top = 10.dp, bottom = 20.dp),
     )
 }
 
@@ -243,33 +252,34 @@ fun AchieveChallengeRoutine(
 ) {
     Row(
         modifier = modifier.padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = ChallengeRoutine,
             style = SoftieTypo.head3,
-            color = Gray700
+            color = Gray700,
         )
 
         Text(
             text = String.format(CountContent, achieveRoutine.challengeTotalCount),
             style = SoftieTypo.body2,
             color = Gray500,
-            modifier = Modifier
-                .padding(start = 4.dp)
+            modifier =
+                Modifier
+                    .padding(start = 4.dp),
         )
     }
 
     if (achieveRoutine.challengeTotalCount == 0) {
         AddRoutineEachEmptyBox(
             emptyTitle = ChallengeRoutine,
-            modifier = modifier
+            modifier = modifier,
         )
     } else {
         challengeRoutine.forEach { challenge ->
             AchieveRoutineItemBox(
                 routine = challenge,
-                color = ThemeIconType.getThemeColor(achieveThemeId)
+                color = ThemeIconType.getThemeColor(achieveThemeId),
             )
         }
     }
@@ -285,33 +295,34 @@ fun AchieveDailyRoutine(
 
     Row(
         modifier = modifier.padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = DailyRoutine,
             style = SoftieTypo.head3,
-            color = Gray700
+            color = Gray700,
         )
 
         Text(
             text = String.format(CountContent, achieveRoutine.challengeTotalCount),
             style = SoftieTypo.body2,
             color = Gray500,
-            modifier = Modifier
-                .padding(start = 4.dp)
+            modifier =
+                Modifier
+                    .padding(start = 4.dp),
         )
     }
 
     if (achieveRoutine.routineTotalCount == 0) {
         AddRoutineEachEmptyBox(
             emptyTitle = DailyTitle,
-            modifier = modifier
+            modifier = modifier,
         )
     } else {
         dailyRoutine.forEach { daily ->
             AchieveRoutineItemBox(
                 routine = daily,
-                color = Gray0
+                color = Gray0,
             )
         }
     }
@@ -325,45 +336,50 @@ fun AchieveRoutineItemBox(
     color: Color,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 2.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .background(color)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 2.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(color),
     ) {
         Text(
             text = routine.content,
             style = SoftieTypo.body2,
             color = Gray700,
-            modifier = Modifier
-                .padding(top = 16.dp, bottom = 10.dp, start = 16.dp, end = 16.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(top = 16.dp, bottom = 10.dp, start = 16.dp, end = 16.dp)
+                    .fillMaxWidth(),
         )
 
         Divider(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .border(1.dp, Gray300)
+            modifier =
+                Modifier
+                    .padding(horizontal = 16.dp)
+                    .border(1.dp, Gray300),
         )
 
         Row(
-            modifier = Modifier
-                .padding(start = 16.dp, top = 10.dp, bottom = 5.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .padding(start = 16.dp, top = 10.dp, bottom = 5.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_routine_time),
                 contentDescription = "routine time",
-                colorFilter = ColorFilter.tint(Gray650)
+                colorFilter = ColorFilter.tint(Gray650),
             )
 
             Text(
                 text = String.format(AchieveCountContent, routine.achievedCount),
                 style = SoftieTypo.body2,
                 color = Gray700,
-                modifier = Modifier
-                    .padding(start = 6.dp)
-                    .fillMaxWidth()
+                modifier =
+                    Modifier
+                        .padding(start = 6.dp)
+                        .fillMaxWidth(),
             )
         }
 
@@ -371,9 +387,10 @@ fun AchieveRoutineItemBox(
             text = String.format(AchieveRoutineStartedAt, routine.startedAt),
             style = SoftieTypo.body2,
             color = Gray500,
-            modifier = Modifier
-                .padding(bottom = 16.dp, start = 40.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(bottom = 16.dp, start = 40.dp)
+                    .fillMaxWidth(),
         )
     }
 }

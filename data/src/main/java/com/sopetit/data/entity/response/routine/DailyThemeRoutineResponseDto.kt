@@ -15,6 +15,6 @@ data class DailyThemeRoutineResponseDto(
         @SerialName("content")
         val content: String = "",
         @SerialName("existedInMember")
-        val existedInMember: Boolean = false
+        val existedInMember: Boolean = false,
     )
 }

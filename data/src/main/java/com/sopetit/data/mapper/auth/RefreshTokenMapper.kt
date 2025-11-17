@@ -7,8 +7,7 @@ import com.sopetit.domain.entity.response.auth.AccessToken
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-object RefreshTokenMapper: BaseMapper() {
-
+object RefreshTokenMapper : BaseMapper() {
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<RefreshResponseDto>>): Flow<Result<AccessToken>> {
         return baseMapper(
             apiCall = { apiCall() },
@@ -16,7 +15,7 @@ object RefreshTokenMapper: BaseMapper() {
                 response?.let { data ->
                     AccessToken(data.accessToken)
                 } ?: AccessToken()
-            }
+            },
         )
     }
 }

@@ -26,21 +26,21 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray100
-import com.sopetit.design_system.Gray300
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.Gray700
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray100
+import com.sopetit.designsystem.Gray300
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.Red200
-import com.sopetit.design_system.SettingDeleteSpeechText
-import com.sopetit.design_system.SettingDeleteUserBtn
-import com.sopetit.design_system.SettingDeleteUserSemiTitle
-import com.sopetit.design_system.SettingDeleteUserTitleAfterWord
-import com.sopetit.design_system.SettingDeleteUserTitleBeforeWord
-import com.sopetit.design_system.SettingDeleteUserTitleWord
-import com.sopetit.design_system.SettingNotDeleteUserBtn
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Red200
+import com.sopetit.designsystem.SettingDeleteSpeechText
+import com.sopetit.designsystem.SettingDeleteUserBtn
+import com.sopetit.designsystem.SettingDeleteUserSemiTitle
+import com.sopetit.designsystem.SettingDeleteUserTitleAfterWord
+import com.sopetit.designsystem.SettingDeleteUserTitleBeforeWord
+import com.sopetit.designsystem.SettingDeleteUserTitleWord
+import com.sopetit.designsystem.SettingNotDeleteUserBtn
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.ui.common.button.BottomTwoBtn
 import com.sopetit.ui.common.topbar.LeftTopBarContent
 import com.sopetit.ui.common.type.BearType
@@ -69,7 +69,7 @@ fun DeleteUserScreen(
         interactionSource = interactionSource,
         onClickBackBtn = { goBackPage() },
         onClickDeleteUser = { viewModel.deleteUser() },
-        dollType = uiState.dollType
+        dollType = uiState.dollType,
     )
 }
 
@@ -81,41 +81,46 @@ fun DeleteUserContent(
     dollType: String,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray0)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray0),
     ) {
         LeftTopBarContent(
             interactionSource = interactionSource,
-            onClickIcon = onClickBackBtn
+            onClickIcon = onClickBackBtn,
         )
 
         Text(
-            text = buildAnnotatedString {
-                append(SettingDeleteUserTitleBeforeWord)
-                withStyle(style = SpanStyle(color = Red200)) { append(SettingDeleteUserTitleWord) }
-                append(SettingDeleteUserTitleAfterWord)
-            },
+            text =
+                buildAnnotatedString {
+                    append(SettingDeleteUserTitleBeforeWord)
+                    withStyle(style = SpanStyle(color = Red200)) { append(SettingDeleteUserTitleWord) }
+                    append(SettingDeleteUserTitleAfterWord)
+                },
             color = Gray700,
             style = SoftieTypo.head1,
-            modifier = Modifier
-                .padding(top = 60.dp)
-                .align(Alignment.CenterHorizontally)
+            modifier =
+                Modifier
+                    .padding(top = 60.dp)
+                    .align(Alignment.CenterHorizontally),
         )
 
         Text(
             text = SettingDeleteUserSemiTitle,
             color = Gray400,
             style = SoftieTypo.body2,
-            modifier = Modifier
-                .padding(top = 12.dp, bottom = 74.dp)
-                .align(Alignment.CenterHorizontally)
+            modifier =
+                Modifier
+                    .padding(top = 12.dp, bottom = 74.dp)
+                    .align(Alignment.CenterHorizontally),
         )
 
         DeleteUserImageBox(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally),
-            dollType = dollType
+            modifier =
+                Modifier
+                    .align(Alignment.CenterHorizontally),
+            dollType = dollType,
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -131,7 +136,7 @@ fun DeleteUserContent(
             rightBtnTextColor = Gray0,
             iconVisible = false,
             twoBtnBottomPadding = 32,
-            twoBtnHorizontalPadding = 20
+            twoBtnHorizontalPadding = 20,
         )
     }
 }
@@ -142,30 +147,33 @@ fun DeleteUserImageBox(
     dollType: String,
 ) {
     Box(
-        modifier = modifier
-            .wrapContentSize()
+        modifier =
+            modifier
+                .wrapContentSize(),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_home_speech),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
-            modifier = Modifier.matchParentSize()
+            modifier = Modifier.matchParentSize(),
         )
         Text(
             text = SettingDeleteSpeechText,
             color = Gray700,
             style = SoftieTypo.bubble1,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(top = 12.dp, bottom = 20.dp, start = 43.dp, end = 43.dp)
+            modifier =
+                Modifier
+                    .padding(top = 12.dp, bottom = 20.dp, start = 43.dp, end = 43.dp),
         )
     }
 
     Image(
         painter = painterResource(id = BearType.getDollCrying(dollType)),
         contentDescription = "crying doll",
-        modifier = modifier
-            .padding(top = 30.dp)
-            .size(208.dp)
+        modifier =
+            modifier
+                .padding(top = 30.dp)
+                .size(208.dp),
     )
 }

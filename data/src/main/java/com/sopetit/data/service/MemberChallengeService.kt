@@ -14,7 +14,6 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface MemberChallengeService {
-
     @GET(EndPoints.MemberChallenge.MEMBERCHALLENGE)
     suspend fun getMemberChallenge(): Response<BaseResponse<GetMemberChallengeResponseDto>>
 
@@ -26,11 +25,11 @@ interface MemberChallengeService {
 
     @POST(EndPoints.MemberChallenge.MEMBERCHALLENGE)
     suspend fun addMemberChallenge(
-        @Body body: AddMemberChallengeRequestDto
+        @Body body: AddMemberChallengeRequestDto,
     ): Response<BaseResponse<AddMemberChallengeResponseDto>>
 
     @DELETE(EndPoints.MemberChallenge.ROUTINEHISTORY)
     suspend fun deleteRoutineHistory(
-        @Path("historyId") historyId: Int
+        @Path("historyId") historyId: Int,
     ): Response<BaseResponse<Unit>>
 }

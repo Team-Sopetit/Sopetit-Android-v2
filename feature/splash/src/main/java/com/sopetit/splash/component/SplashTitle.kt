@@ -14,35 +14,38 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray650
+import com.sopetit.designsystem.Gray650
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
-import com.sopetit.design_system.SplashSemiTitle
+import com.sopetit.designsystem.SoftieTypo
+import com.sopetit.designsystem.SplashSemiTitle
 
 @Composable
 fun SplashTitle(
-    contentColor: Color = Gray650
+    contentColor: Color = Gray650,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentSize()
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentSize(),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_splash_logo_black),
             contentDescription = "splash logo",
             colorFilter = ColorFilter.tint(contentColor),
-            modifier = Modifier
-                .padding(top = 143.dp)
-                .align(Alignment.CenterHorizontally)
+            modifier =
+                Modifier
+                    .padding(top = 143.dp)
+                    .align(Alignment.CenterHorizontally),
         )
         Text(
             text = SplashSemiTitle,
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .align(Alignment.CenterHorizontally),
+            modifier =
+                Modifier
+                    .padding(top = 8.dp)
+                    .align(Alignment.CenterHorizontally),
             color = contentColor,
-            style = SoftieTypo.body1
+            style = SoftieTypo.body1,
         )
     }
 }

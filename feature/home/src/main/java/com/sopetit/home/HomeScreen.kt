@@ -49,16 +49,16 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.sopetit.design_system.Brown100
-import com.sopetit.design_system.Brown200
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.HomeRainbowSomTitle
-import com.sopetit.design_system.HomeSomCount
-import com.sopetit.design_system.HomeSomTitle
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Brown100
+import com.sopetit.designsystem.Brown200
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.HomeRainbowSomTitle
+import com.sopetit.designsystem.HomeSomCount
+import com.sopetit.designsystem.HomeSomTitle
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.ui.common.model.TwoBtnDialogModel
 import com.sopetit.ui.common.type.CottonType
@@ -144,44 +144,46 @@ fun HomeScreenContent(
     onClickFeedback: () -> Unit = {},
     mode: LottieType = LottieType.HELLO,
 ) {
-
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier =
+            Modifier
+                .fillMaxSize(),
     ) {
-
         Image(
             painter = rememberAsyncImagePainter(model = backGroundImg),
             contentDescription = "background frame",
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
 
         Image(
             painter = painterResource(id = R.drawable.ic_splash_logo_black),
             contentDescription = "logo",
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(top = 11.dp, start = 20.dp)
-                .size(width = 60.dp, height = 18.dp)
+            modifier =
+                Modifier
+                    .align(Alignment.TopStart)
+                    .padding(top = 11.dp, start = 20.dp)
+                    .size(width = 60.dp, height = 18.dp),
         )
 
         Row(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .wrapContentSize()
-                .padding(top = 1.dp, end = 20.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .align(Alignment.TopEnd)
+                    .wrapContentSize()
+                    .padding(top = 1.dp, end = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_home_clova),
                 contentDescription = "home clova icon",
-                modifier = Modifier
-                    .clickable(
-                        onClick = onClickFeedback,
-                        interactionSource = interactionSource,
-                        indication = null
-                    )
+                modifier =
+                    Modifier
+                        .clickable(
+                            onClick = onClickFeedback,
+                            interactionSource = interactionSource,
+                            indication = null,
+                        ),
             )
 
             Spacer(modifier = Modifier.width(13.dp))
@@ -189,18 +191,20 @@ fun HomeScreenContent(
             Image(
                 painter = painterResource(id = R.drawable.ic_home_settings),
                 contentDescription = "home setting icon",
-                modifier = Modifier
-                    .clickable(
-                        onClick = onClickSetting,
-                        interactionSource = interactionSource,
-                        indication = null
-                    )
+                modifier =
+                    Modifier
+                        .clickable(
+                            onClick = onClickSetting,
+                            interactionSource = interactionSource,
+                            indication = null,
+                        ),
             )
         }
 
         Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter),
         ) {
             HomeDollBoxContent(
                 interactionSource = interactionSource,
@@ -210,30 +214,33 @@ fun HomeScreenContent(
                 dollLottieResource = dollLottieResource,
                 onSetCurrentMode = onSetCurrentMode,
                 dollLottieStart = dollLottieStart,
-                dollLottieEnd = dollLottieEnd
+                dollLottieEnd = dollLottieEnd,
             )
         }
 
         Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .wrapContentHeight()
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .wrapContentHeight()
+                    .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .clip(RoundedCornerShape(99.dp))
-                    .border(1.dp, Brown200, RoundedCornerShape(99.dp))
-                    .background(Brown100)
+                modifier =
+                    Modifier
+                        .wrapContentSize()
+                        .clip(RoundedCornerShape(99.dp))
+                        .border(1.dp, Brown200, RoundedCornerShape(99.dp))
+                        .background(Brown100),
             ) {
                 Text(
                     text = dollName,
                     color = Gray700,
                     style = SoftieTypo.bubble2,
-                    modifier = Modifier
-                        .padding(vertical = 9.dp, horizontal = 13.dp)
+                    modifier =
+                        Modifier
+                            .padding(vertical = 9.dp, horizontal = 13.dp),
                 )
             }
 
@@ -242,7 +249,7 @@ fun HomeScreenContent(
             HomeCottonCount(
                 dailyCottonCount = dailyCottonCount,
                 happinessCottonCount = happinessCottonCount,
-                onClickCotton = onClickCotton
+                onClickCotton = onClickCotton,
             )
         }
     }
@@ -259,7 +266,6 @@ fun HomeDollBoxContent(
     dollLottieStart: Float,
     dollLottieEnd: Float,
 ) {
-
     val scope = rememberCoroutineScope()
     var currentLottieSpec by remember { mutableStateOf(dollLottieResource) }
     val composition by rememberLottieComposition(currentLottieSpec)
@@ -267,20 +273,22 @@ fun HomeDollBoxContent(
 
     var helloEnded by remember { mutableStateOf(false) }
 
-    fun playLottie(c: LottieComposition, onEnd: () -> Unit) {
+    fun playLottie(
+        c: LottieComposition,
+        onEnd: () -> Unit,
+    ) {
         helloEnded = false
         scope.launch {
             anim.snapTo(progress = 0f)
             anim.animate(
                 composition = c,
                 clipSpec = LottieClipSpec.Progress(dollLottieStart, dollLottieEnd),
-                iterations = 1
+                iterations = 1,
             )
             onEnd()
             helloEnded = true
         }
     }
-
 
     LaunchedEffect(dollLottieResource) {
         dollLottieResource.let {
@@ -306,42 +314,44 @@ fun HomeDollBoxContent(
         }
     }
 
-
     Box(
-        modifier = Modifier
-            .wrapContentHeight()
-            .fillMaxWidth(),
+        modifier =
+            Modifier
+                .wrapContentHeight()
+                .fillMaxWidth(),
     ) {
-
         Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .wrapContentSize()
-                .offset(y = (-450).dp)
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .wrapContentSize()
+                    .offset(y = (-450).dp),
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_home_speech),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
-                modifier = Modifier.matchParentSize()
+                modifier = Modifier.matchParentSize(),
             )
             Text(
                 text = conversation,
                 color = Gray700,
                 style = SoftieTypo.bubble1,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(top = 21.dp, bottom = 29.dp, start = 32.dp, end = 33.dp)
+                modifier =
+                    Modifier
+                        .padding(top = 21.dp, bottom = 29.dp, start = 32.dp, end = 33.dp),
             )
         }
 
         Image(
             painter = painterResource(id = R.drawable.ic_shadow),
             contentDescription = "shadow",
-            modifier = Modifier
-                .size(width = 123.dp, height = 23.dp)
-                .align(Alignment.BottomCenter)
-                .offset(y = (-220).dp)
+            modifier =
+                Modifier
+                    .size(width = 123.dp, height = 23.dp)
+                    .align(Alignment.BottomCenter)
+                    .offset(y = (-220).dp),
         )
 
         LottieAnimation(
@@ -349,27 +359,29 @@ fun HomeDollBoxContent(
             progress = {
                 anim.progress
             },
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .size(width = 414.dp, height = 418.dp)
-                .offset(y = (-120).dp)
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .size(width = 414.dp, height = 418.dp)
+                    .offset(y = (-120).dp),
         )
 
         Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .size(width = 200.dp, height = 180.dp)
-                .offset(y = (-250).dp)
-                .clickable(
-                    indication = null,
-                    interactionSource = interactionSource,
-                    onClick = {
-                        if (mode != LottieType.EATING && helloEnded) {
-                            onClickDoll()
-                            composition?.let { playLottie(it) {} }
-                        }
-                    }
-                )
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .size(width = 200.dp, height = 180.dp)
+                    .offset(y = (-250).dp)
+                    .clickable(
+                        indication = null,
+                        interactionSource = interactionSource,
+                        onClick = {
+                            if (mode != LottieType.EATING && helloEnded) {
+                                onClickDoll()
+                                composition?.let { playLottie(it) {} }
+                            }
+                        },
+                    ),
         )
     }
 }
@@ -381,16 +393,17 @@ fun HomeCottonCount(
     onClickCotton: (CottonType) -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .padding(bottom = 22.dp)
-            .padding(horizontal = 22.dp)
-            .wrapContentSize(Alignment.Center)
+        modifier =
+            Modifier
+                .padding(bottom = 22.dp)
+                .padding(horizontal = 22.dp)
+                .wrapContentSize(Alignment.Center),
     ) {
         HomeCottonCountItem(
             cottonCountTitle = HomeSomTitle,
             cottonCountImg = R.drawable.ic_som,
             cottonCount = dailyCottonCount,
-            onClickCotton = { onClickCotton(CottonType.DAILY) }
+            onClickCotton = { onClickCotton(CottonType.DAILY) },
         )
 
         Spacer(modifier = Modifier.width(12.dp))
@@ -399,7 +412,7 @@ fun HomeCottonCount(
             cottonCountTitle = HomeRainbowSomTitle,
             cottonCountImg = R.drawable.ic_som_rainbow,
             cottonCount = happinessCottonCount,
-            onClickCotton = { onClickCotton(CottonType.HAPPINESS) }
+            onClickCotton = { onClickCotton(CottonType.HAPPINESS) },
         )
     }
 }
@@ -413,27 +426,30 @@ fun HomeCottonCountItem(
     onClickCotton: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .width(160.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(Gray0)
-            .clickable(
-                onClick = onClickCotton,
-                enabled = (cottonCount > 0)
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .width(160.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Gray0)
+                .clickable(
+                    onClick = onClickCotton,
+                    enabled = (cottonCount > 0),
+                ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
-            modifier = Modifier
-                .padding(top = 13.dp)
-                .align(Alignment.CenterHorizontally),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .padding(top = 13.dp)
+                    .align(Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = cottonCountImg),
                 contentDescription = "cotton img",
-                modifier = Modifier
-                    .size(30.dp)
+                modifier =
+                    Modifier
+                        .size(30.dp),
             )
 
             Spacer(modifier = Modifier.width(4.dp))
@@ -441,7 +457,7 @@ fun HomeCottonCountItem(
             Text(
                 text = String.format(HomeSomCount, cottonCount),
                 color = Gray400,
-                style = SoftieTypo.body2
+                style = SoftieTypo.body2,
             )
         }
 
@@ -449,8 +465,9 @@ fun HomeCottonCountItem(
             text = cottonCountTitle,
             color = Gray700,
             style = SoftieTypo.body2,
-            modifier = Modifier
-                .padding(top = 4.dp, bottom = 13.dp)
+            modifier =
+                Modifier
+                    .padding(top = 4.dp, bottom = 13.dp),
         )
     }
 }

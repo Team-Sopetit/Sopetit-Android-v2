@@ -9,19 +9,20 @@ import com.sopetit.data.service.MemoService
 import retrofit2.Response
 import javax.inject.Inject
 
-class MemoDataSourceImpl @Inject constructor(
-    private val memoService: MemoService,
-) : MemoDataSource {
+class MemoDataSourceImpl
+    @Inject
+    constructor(
+        private val memoService: MemoService,
+    ) : MemoDataSource {
+        override suspend fun postWriteMemo(request: MemoWriteRequestDto): Response<BaseResponse<MemoWriteResponseDto>> =
+            memoService.writeMemo(request)
 
-    override suspend fun postWriteMemo(request: MemoWriteRequestDto): Response<BaseResponse<MemoWriteResponseDto>> =
-        memoService.writeMemo(request)
+        override suspend fun deleteMemo(request: Int): Response<BaseResponse<Unit>> =
+            memoService.deleteMemo(request)
 
-    override suspend fun deleteMemo(request: Int): Response<BaseResponse<Unit>> =
-        memoService.deleteMemo(request)
-
-    override suspend fun modifyMemo(
-        request: Int,
-        body: MemoModifyRequestDto,
-    ): Response<BaseResponse<Unit>> =
-        memoService.modifyMemo(request, body)
-}
+        override suspend fun modifyMemo(
+            request: Int,
+            body: MemoModifyRequestDto,
+        ): Response<BaseResponse<Unit>> =
+            memoService.modifyMemo(request, body)
+    }

@@ -7,10 +7,11 @@ import com.sopetit.domain.repository.CalendarRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetCalendarUseCase @Inject constructor(
-    private val calendarRepository: CalendarRepository,
-) : UseCase<CalendarRequestModel, Result<Map<String, CalendarModel>>>() {
-
-    override suspend fun invoke(request: CalendarRequestModel): Flow<Result<Map<String, CalendarModel>>> =
-        calendarRepository.getCalendar(request)
-}
+class GetCalendarUseCase
+    @Inject
+    constructor(
+        private val calendarRepository: CalendarRepository,
+    ) : UseCase<CalendarRequestModel, Result<Map<String, CalendarModel>>>() {
+        override suspend fun invoke(request: CalendarRequestModel): Flow<Result<Map<String, CalendarModel>>> =
+            calendarRepository.getCalendar(request)
+    }

@@ -6,10 +6,11 @@ import com.sopetit.domain.repository.MemoRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class PostWriteMemoUseCase @Inject constructor(
-    private val memoRepository: MemoRepository,
-) : UseCase<MemoWriteRequestModel, Result<Int>>() {
-
-    override suspend fun invoke(request: MemoWriteRequestModel): Flow<Result<Int>> =
-        memoRepository.postWriteMemo(request)
-}
+class PostWriteMemoUseCase
+    @Inject
+    constructor(
+        private val memoRepository: MemoRepository,
+    ) : UseCase<MemoWriteRequestModel, Result<Int>>() {
+        override suspend fun invoke(request: MemoWriteRequestModel): Flow<Result<Int>> =
+            memoRepository.postWriteMemo(request)
+    }

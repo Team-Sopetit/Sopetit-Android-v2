@@ -24,144 +24,151 @@ import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class CalendarViewModel @Inject constructor(
-    private val getCalendarUseCase: GetCalendarUseCase,
-    private val deleteChallengeHistoryUseCase: DeleteChallengeHistoryUseCase,
-    private val deleteDailyRoutineHistoryUseCase: DeleteDailyRoutineHistoryUseCase,
-    private val postWriteMemoUseCase: PostWriteMemoUseCase,
-    private val deleteMemoUseCase: DeleteMemoUseCase,
-    private val patchModifyMemoUseCase: PatchModifyMemoUseCase,
-    private val getMemberUseCase: GetMemberUseCase,
-) : BaseViewModel<CalendarPageState>(
-    CalendarPageState()
-) {
-
-    init {
-        initGetCalendarList(LocalDate.now())
-        initGetMember()
-    }
-
-    private fun initGetMember() {
-        viewModelScope.launch {
-            getMemberUseCase(Unit).collect { resultResponse(it, ::onSuccessGetMember) }
+class CalendarViewModel
+    @Inject
+    constructor(
+        private val getCalendarUseCase: GetCalendarUseCase,
+        private val deleteChallengeHistoryUseCase: DeleteChallengeHistoryUseCase,
+        private val deleteDailyRoutineHistoryUseCase: DeleteDailyRoutineHistoryUseCase,
+        private val postWriteMemoUseCase: PostWriteMemoUseCase,
+        private val deleteMemoUseCase: DeleteMemoUseCase,
+        private val patchModifyMemoUseCase: PatchModifyMemoUseCase,
+        private val getMemberUseCase: GetMemberUseCase,
+    ) : BaseViewModel<CalendarPageState>(
+            CalendarPageState(),
+        ) {
+        init {
+            initGetCalendarList(LocalDate.now())
+            initGetMember()
         }
-    }
 
-    private fun onSuccessGetMember(data: GetMemberModel) {
-        updateState(
-            uiState.value.copy(
-                dollType = data.dollType
+        private fun initGetMember() {
+            viewModelScope.launch {
+                getMemberUseCase(Unit).collect { resultResponse(it, ::onSuccessGetMember) }
+            }
+        }
+
+        private fun onSuccessGetMember(data: GetMemberModel) {
+            updateState(
+                uiState.value.copy(
+                    dollType = data.dollType,
+                ),
             )
-        )
-    }
+        }
 
-    private fun initGetCalendarList(yearMonth: LocalDate) {
-        viewModelScope.launch {
-            getCalendarUseCase(CalendarRequestModel(yearMonth.year, yearMonth.monthValue)).collect {
-                resultResponse(it, ::onSuccessGetCalendar)
+        private fun initGetCalendarList(yearMonth: LocalDate) {
+            viewModelScope.launch {
+                getCalendarUseCase(CalendarRequestModel(yearMonth.year, yearMonth.monthValue)).collect {
+                    resultResponse(it, ::onSuccessGetCalendar)
+                }
             }
         }
-    }
 
-    private fun onSuccessGetCalendar(data: Map<String, CalendarModel>) {
-        updateState(
-            uiState.value.copy(
-                calendarList = data
+        private fun onSuccessGetCalendar(data: Map<String, CalendarModel>) {
+            updateState(
+                uiState.value.copy(
+                    calendarList = data,
+                ),
             )
-        )
-    }
+        }
 
-    fun selectDate(date: LocalDate) {
-        updateState(
-            uiState.value.copy(
-                selectedDate = date
+        fun selectDate(date: LocalDate) {
+            updateState(
+                uiState.value.copy(
+                    selectedDate = date,
+                ),
             )
-        )
-    }
-
-    fun setRoutineDetail(type: RoutineType, item: CalendarHistoryItemModel): RoutineDetailModel =
-        RoutineDetailModel(
-            routineId = item.historyId,
-            routineType = type,
-            content = item.content
-        )
-
-    fun deleteRoutine(routine: RoutineDetailModel) {
-        when (routine.routineType) {
-            RoutineType.Daily -> {
-                deleteDailyRoutine(routine.routineId)
-            }
-
-            RoutineType.Challenge -> {
-                deleteChallengeRoutine(routine.routineId)
-            }
-
-            RoutineType.Custom -> {}
         }
-    }
 
-    private fun deleteDailyRoutine(routineId: Int) {
-        viewModelScope.launch {
-            deleteDailyRoutineHistoryUseCase(routineId).collect {
-                resultResponse(
-                    it,
-                    { initGetCalendarList(uiState.value.selectedDate) })
+        fun setRoutineDetail(
+            type: RoutineType,
+            item: CalendarHistoryItemModel,
+        ): RoutineDetailModel =
+            RoutineDetailModel(
+                routineId = item.historyId,
+                routineType = type,
+                content = item.content,
+            )
+
+        fun deleteRoutine(routine: RoutineDetailModel) {
+            when (routine.routineType) {
+                RoutineType.Daily -> {
+                    deleteDailyRoutine(routine.routineId)
+                }
+
+                RoutineType.Challenge -> {
+                    deleteChallengeRoutine(routine.routineId)
+                }
+
+                RoutineType.Custom -> {}
             }
         }
-    }
 
-    private fun deleteChallengeRoutine(routineId: Int) {
-        viewModelScope.launch {
-            deleteChallengeHistoryUseCase(routineId).collect {
-                resultResponse(it, { initGetCalendarList(uiState.value.selectedDate) })
+        private fun deleteDailyRoutine(routineId: Int) {
+            viewModelScope.launch {
+                deleteDailyRoutineHistoryUseCase(routineId).collect {
+                    resultResponse(
+                        it,
+                        { initGetCalendarList(uiState.value.selectedDate) },
+                    )
+                }
+            }
+        }
+
+        private fun deleteChallengeRoutine(routineId: Int) {
+            viewModelScope.launch {
+                deleteChallengeHistoryUseCase(routineId).collect {
+                    resultResponse(it, { initGetCalendarList(uiState.value.selectedDate) })
+                }
+            }
+        }
+
+        fun writeMemo(memo: String) {
+            viewModelScope.launch {
+                postWriteMemoUseCase(
+                    MemoWriteRequestModel(
+                        uiState.value.selectedDate.toString(),
+                        memo,
+                    ),
+                ).collect {
+                    resultResponse(it, { initGetCalendarList(uiState.value.selectedDate) })
+                }
+            }
+        }
+
+        fun setMemoAction(memoActionModel: MemoActionModel) {
+            when (memoActionModel.type) {
+                BottomSheetActionType.Delete -> {
+                    deleteMemo(memoActionModel.memoId)
+                }
+
+                BottomSheetActionType.Modify -> {
+                    modifyMemo(memoActionModel)
+                }
+
+                BottomSheetActionType.Default -> {}
+            }
+        }
+
+        private fun deleteMemo(memoId: Int) {
+            viewModelScope.launch {
+                deleteMemoUseCase(memoId).collect {
+                    resultResponse(
+                        it,
+                        { initGetCalendarList(uiState.value.selectedDate) },
+                    )
+                }
+            }
+        }
+
+        private fun modifyMemo(memoActionModel: MemoActionModel) {
+            viewModelScope.launch {
+                patchModifyMemoUseCase(memoActionModel).collect {
+                    resultResponse(
+                        it,
+                        { initGetCalendarList(uiState.value.selectedDate) },
+                    )
+                }
             }
         }
     }
-
-    fun writeMemo(memo: String) {
-        viewModelScope.launch {
-            postWriteMemoUseCase(
-                MemoWriteRequestModel(
-                    uiState.value.selectedDate.toString(),
-                    memo
-                )
-            ).collect {
-                resultResponse(it, { initGetCalendarList(uiState.value.selectedDate) })
-            }
-        }
-    }
-
-    fun setMemoAction(memoActionModel: MemoActionModel) {
-        when (memoActionModel.type) {
-            BottomSheetActionType.Delete -> {
-                deleteMemo(memoActionModel.memoId)
-            }
-
-            BottomSheetActionType.Modify -> {
-                modifyMemo(memoActionModel)
-            }
-
-            BottomSheetActionType.Default -> {}
-        }
-    }
-
-    private fun deleteMemo(memoId: Int) {
-        viewModelScope.launch {
-            deleteMemoUseCase(memoId).collect {
-                resultResponse(
-                    it,
-                    { initGetCalendarList(uiState.value.selectedDate) })
-            }
-        }
-    }
-
-    private fun modifyMemo(memoActionModel: MemoActionModel) {
-        viewModelScope.launch {
-            patchModifyMemoUseCase(memoActionModel).collect {
-                resultResponse(
-                    it,
-                    { initGetCalendarList(uiState.value.selectedDate) })
-            }
-        }
-    }
-}

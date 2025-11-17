@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface RoutineRepository {
     suspend fun dailyRoutineList(request: DailyRoutineListRequestModel): Flow<Result<DailyRoutineListThemeTotalModel>>
+
     suspend fun getDailyThemeRoutineList(request: Int): Flow<Result<List<DailyThemeRoutineItemModel>>>
+
     suspend fun getChallenge(request: Int): Flow<Result<List<ChallengeItemModel>>>
 }

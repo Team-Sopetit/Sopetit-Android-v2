@@ -1,6 +1,6 @@
 package com.sopetit.domain.entity.response.achieve
 
-data class AchieveRoutineModel (
+data class AchieveRoutineModel(
     val id: Int = 0,
     val name: String = "",
     val routineTotalCount: Int = 0,

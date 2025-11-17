@@ -5,11 +5,12 @@ import com.sopetit.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetMemberDollExistUseCase @Inject constructor(
-    private val authRepository: AuthRepository
-): UseCase<Unit, Result<Boolean>>() {
-
-    override suspend fun invoke(request: Unit): Flow<Result<Boolean>> {
-        return authRepository.getMemberDollExist()
+class GetMemberDollExistUseCase
+    @Inject
+    constructor(
+        private val authRepository: AuthRepository,
+    ) : UseCase<Unit, Result<Boolean>>() {
+        override suspend fun invoke(request: Unit): Flow<Result<Boolean>> {
+            return authRepository.getMemberDollExist()
+        }
     }
-}

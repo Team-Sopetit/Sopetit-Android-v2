@@ -9,12 +9,11 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface AchievementService {
-
     @GET(EndPoints.Achievement.ACHIEVE)
     suspend fun getAchievement(): Response<BaseResponse<GetAchieveResponseDto>>
 
     @GET(EndPoints.Achievement.ACHIEVEROUTINE)
     suspend fun getAchieveRoutine(
-        @Path("themeId") themeId: Int
+        @Path("themeId") themeId: Int,
     ): Response<BaseResponse<GetAchieveRoutineResponseDto>>
 }

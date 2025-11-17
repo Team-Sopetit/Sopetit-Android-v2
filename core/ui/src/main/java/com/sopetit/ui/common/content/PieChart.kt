@@ -4,7 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.sopetit.design_system.Gray50
+import com.sopetit.designsystem.Gray50
 
 @Composable
 fun PieChart(
@@ -22,7 +22,7 @@ fun PieChart(
                 color = colors[index],
                 startAngle = startAngle,
                 sweepAngle = sweepAngle,
-                useCenter = true
+                useCenter = true,
             )
             startAngle += sweepAngle
         }
@@ -30,7 +30,7 @@ fun PieChart(
         drawCircle(
             color = Gray50,
             radius = diameter * 0.5f / 2,
-            center = center
+            center = center,
         )
     }
 }

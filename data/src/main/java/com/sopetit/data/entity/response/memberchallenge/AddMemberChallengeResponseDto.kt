@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AddMemberChallengeResponseDto (
+data class AddMemberChallengeResponseDto(
     @SerialName("memberChallengeId")
-    val memberChallengeId: Int = 0
+    val memberChallengeId: Int = 0,
 )

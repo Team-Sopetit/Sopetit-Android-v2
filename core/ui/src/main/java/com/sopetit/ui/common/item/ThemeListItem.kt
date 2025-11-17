@@ -18,12 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.SoftieTypo
 
 @Composable
 fun ThemeListItem(
@@ -31,7 +31,7 @@ fun ThemeListItem(
     themeItemIcon: Int = -1,
     onClick: () -> Unit = {},
     isSelectedTheme: Boolean = false,
-    isClickEnabled: Boolean = true
+    isClickEnabled: Boolean = true,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -41,7 +41,7 @@ fun ThemeListItem(
         themeItemIcon = themeItemIcon,
         onClick = onClick,
         isSelectedTheme = isSelectedTheme,
-        isClickEnabled = isClickEnabled
+        isClickEnabled = isClickEnabled,
     )
 }
 
@@ -52,37 +52,40 @@ fun ThemeListItemContent(
     onClick: () -> Unit,
     isSelectedTheme: Boolean,
     interactionSource: MutableInteractionSource,
-    isClickEnabled: Boolean
+    isClickEnabled: Boolean,
 ) {
     Row(
-        modifier = Modifier
-            .wrapContentHeight()
-            .clip(RoundedCornerShape(99.dp))
-            .border(1.dp, if (isSelectedTheme) Gray650 else Gray200, RoundedCornerShape(99.dp))
-            .background(if (isSelectedTheme) Gray200 else Gray0)
-            .clickable(
-                onClick = onClick,
-                interactionSource = interactionSource,
-                indication = null,
-                enabled = isClickEnabled
-            )
+        modifier =
+            Modifier
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(99.dp))
+                .border(1.dp, if (isSelectedTheme) Gray650 else Gray200, RoundedCornerShape(99.dp))
+                .background(if (isSelectedTheme) Gray200 else Gray0)
+                .clickable(
+                    onClick = onClick,
+                    interactionSource = interactionSource,
+                    indication = null,
+                    enabled = isClickEnabled,
+                ),
     ) {
         Image(
             painter = painterResource(id = themeItemIcon),
             contentDescription = "theme icon",
-            modifier = Modifier
-                .padding(start = 20.dp)
-                .size(18.dp)
-                .align(Alignment.CenterVertically)
+            modifier =
+                Modifier
+                    .padding(start = 20.dp)
+                    .size(18.dp)
+                    .align(Alignment.CenterVertically),
         )
 
         Text(
             text = themeName,
             color = if (isClickEnabled) Gray700 else Gray400,
             style = SoftieTypo.body1,
-            modifier = Modifier
-                .padding(vertical = 15.dp)
-                .padding(start = 6.dp, end = 20.dp)
+            modifier =
+                Modifier
+                    .padding(vertical = 15.dp)
+                    .padding(start = 6.dp, end = 20.dp),
         )
     }
 }

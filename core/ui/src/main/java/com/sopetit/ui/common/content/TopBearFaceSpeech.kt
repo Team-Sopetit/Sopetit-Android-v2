@@ -21,9 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray700
+import com.sopetit.designsystem.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.ui.common.type.BearType
 
 @Composable
@@ -33,16 +33,15 @@ fun TopBearFaceSpeech(
     isHighlightSpeechExist: Boolean = false,
     highlightSpeech: String = "",
     highlightColor: Color = Color.Transparent,
-    speechContentAfterHighlight: String = ""
+    speechContentAfterHighlight: String = "",
 ) {
-
     TopBarFaceSpeechContent(
         dollType = dollType,
         speechContent = speechContent,
         isHighlightSpeechExist = isHighlightSpeechExist,
         highlightSpeech = highlightSpeech,
         highlightColor = highlightColor,
-        speechContentAfterHighlight = speechContentAfterHighlight
+        speechContentAfterHighlight = speechContentAfterHighlight,
     )
 }
 
@@ -53,42 +52,47 @@ fun TopBarFaceSpeechContent(
     isHighlightSpeechExist: Boolean = false,
     highlightSpeech: String = "",
     highlightColor: Color = Color.Transparent,
-    speechContentAfterHighlight: String = ""
+    speechContentAfterHighlight: String = "",
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentSize(Alignment.Center)
-            .padding(top = 24.dp)
-            .wrapContentHeight()
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.Center)
+                .padding(top = 24.dp)
+                .wrapContentHeight(),
     ) {
-
         Image(
             painter = painterResource(id = BearType.getDollFace(dollType)),
             contentDescription = "bear face",
-            modifier = Modifier
-                .padding(top = 5.dp)
-                .size(width = 53.dp, height = 50.dp)
+            modifier =
+                Modifier
+                    .padding(top = 5.dp)
+                    .size(width = 53.dp, height = 50.dp),
         )
 
         Spacer(modifier = Modifier.padding(start = 14.dp))
 
         Text(
-            text = buildAnnotatedString {
-                if (isHighlightSpeechExist) {
-                    append(speechContent)
-                    withStyle(style = SpanStyle(color = highlightColor)) { append(highlightSpeech) }
-                    append(speechContentAfterHighlight)
-                } else append(speechContent)
-            },
+            text =
+                buildAnnotatedString {
+                    if (isHighlightSpeechExist) {
+                        append(speechContent)
+                        withStyle(style = SpanStyle(color = highlightColor)) { append(highlightSpeech) }
+                        append(speechContentAfterHighlight)
+                    } else {
+                        append(speechContent)
+                    }
+                },
             textAlign = TextAlign.Center,
             color = Gray700,
             style = SoftieTypo.bubble2,
-            modifier = Modifier
-                .paint(painterResource(id = R.drawable.ic_speech_long))
-                .padding(start = 47.dp, end = 38.dp)
-                .padding(vertical = 14.dp)
-                .align(Alignment.CenterVertically)
+            modifier =
+                Modifier
+                    .paint(painterResource(id = R.drawable.ic_speech_long))
+                    .padding(start = 47.dp, end = 38.dp)
+                    .padding(vertical = 14.dp)
+                    .align(Alignment.CenterVertically),
         )
     }
 }

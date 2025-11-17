@@ -44,29 +44,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sopetit.design_system.CalendarYearMonthText
-import com.sopetit.design_system.DateContent
-import com.sopetit.design_system.EmptyAchieveRoutine
-import com.sopetit.design_system.Fri
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray300
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.Gray50
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.Mon
-import com.sopetit.design_system.Num
-import com.sopetit.design_system.Pink50
+import com.sopetit.designsystem.CalendarYearMonthText
+import com.sopetit.designsystem.DateContent
+import com.sopetit.designsystem.EmptyAchieveRoutine
+import com.sopetit.designsystem.Fri
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray300
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.Gray50
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.Mon
+import com.sopetit.designsystem.Num
+import com.sopetit.designsystem.Pink50
 import com.sopetit.design_system.R
-import com.sopetit.design_system.Red200
-import com.sopetit.design_system.Sat
-import com.sopetit.design_system.SoftieTypo
-import com.sopetit.design_system.Sun
-import com.sopetit.design_system.Thu
-import com.sopetit.design_system.Tue
-import com.sopetit.design_system.Wed
+import com.sopetit.designsystem.Red200
+import com.sopetit.designsystem.Sat
+import com.sopetit.designsystem.SoftieTypo
+import com.sopetit.designsystem.Sun
+import com.sopetit.designsystem.Thu
+import com.sopetit.designsystem.Tue
+import com.sopetit.designsystem.Wed
 import com.sopetit.domain.entity.enums.RoutineType
 import com.sopetit.domain.entity.response.calendar.CalendarHistoryItemModel
 import com.sopetit.domain.entity.response.calendar.CalendarHistoryModel
@@ -90,9 +90,7 @@ fun CalendarScreen(
     writtenMemo: SharedFlow<String>,
     showMemoDetailBottomSheet: (MemoActionModel) -> Unit,
     memoActionModel: SharedFlow<MemoActionModel>,
-
-    ) {
-
+) {
     val viewModel: CalendarViewModel = hiltViewModel()
     val uiState: CalendarPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -145,13 +143,13 @@ fun CalendarScreen(
             showRoutineDeleteBottomSheet(
                 viewModel.setRoutineDetail(
                     type,
-                    item
-                )
+                    item,
+                ),
             )
         },
         onClickMemoBtn = { showMemoWriteBottomSheet() },
         onClickMemo = { showMemoDetailBottomSheet(it) },
-        dollImg = BearType.getDollFace(uiState.dollType)
+        dollImg = BearType.getDollFace(uiState.dollType),
     )
 }
 
@@ -175,10 +173,11 @@ fun CalendarContent(
     dollImg: Int = R.drawable.ic_brown_face,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
-            .verticalScroll(rememberScrollState())
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50)
+                .verticalScroll(rememberScrollState()),
     ) {
         CalendarYearMonth(
             todayYear = todayYear,
@@ -186,7 +185,7 @@ fun CalendarContent(
             onClickMonthBefore = onClickMonthBefore,
             onClickMonthAfter = onClickMonthAfter,
             isClickAfterMonthEnabled = isClickAfterMonthEnabled,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
         )
 
         CalendarWeekTitle()
@@ -197,7 +196,7 @@ fun CalendarContent(
             todayDate = todayDate,
             onSelectDate = onSelectDate,
             selectedDate = selectedDate,
-            calendarList = calendarList
+            calendarList = calendarList,
         )
 
         CalendarDateDetailInfo(
@@ -207,7 +206,7 @@ fun CalendarContent(
             interactionSource = interactionSource,
             onClickMemoBtn = onClickMemoBtn,
             onClickMemo = onClickMemo,
-            dollImg = dollImg
+            dollImg = dollImg,
         )
     }
 }
@@ -222,41 +221,45 @@ fun CalendarYearMonth(
     isClickAfterMonthEnabled: Boolean,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 28.dp, bottom = 16.dp),
-        horizontalArrangement = Arrangement.Center
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 28.dp, bottom = 16.dp),
+        horizontalArrangement = Arrangement.Center,
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_arrow_left),
             contentDescription = "arrow before",
-            modifier = Modifier
-                .clickable(
-                    onClick = { onClickMonthBefore() },
-                    indication = null,
-                    interactionSource = interactionSource
-                )
+            modifier =
+                Modifier
+                    .clickable(
+                        onClick = { onClickMonthBefore() },
+                        indication = null,
+                        interactionSource = interactionSource,
+                    ),
         )
 
         Text(
             text = String.format(CalendarYearMonthText, todayYear, todayMonth),
             color = Gray700,
             style = SoftieTypo.head3,
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
+            modifier =
+                Modifier
+                    .padding(horizontal = 8.dp),
         )
 
         Image(
             painter = painterResource(id = R.drawable.ic_arrow_right),
             contentDescription = "arrow before",
             colorFilter = ColorFilter.tint(if (isClickAfterMonthEnabled) Gray650 else Gray300),
-            modifier = Modifier
-                .clickable(
-                    enabled = isClickAfterMonthEnabled,
-                    onClick = { onClickMonthAfter() },
-                    indication = null,
-                    interactionSource = interactionSource
-                )
+            modifier =
+                Modifier
+                    .clickable(
+                        enabled = isClickAfterMonthEnabled,
+                        onClick = { onClickMonthAfter() },
+                        indication = null,
+                        interactionSource = interactionSource,
+                    ),
         )
     }
 }
@@ -266,9 +269,10 @@ fun CalendarWeekTitle() {
     val weeks: List<String> = listOf(Sun, Mon, Tue, Wed, Thu, Fri, Sat)
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
     ) {
         weeks.forEach { week ->
             Text(
@@ -276,9 +280,10 @@ fun CalendarWeekTitle() {
                 color = Gray400,
                 style = SoftieTypo.body2,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(vertical = 10.dp)
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .padding(vertical = 10.dp),
             )
         }
     }
@@ -294,19 +299,20 @@ fun CalendarDayOfMonth(
     calendarList: Map<String, CalendarModel>,
 ) {
     Column(
-        modifier = Modifier
-            .padding(top = 12.dp, bottom = 20.dp, start = 24.dp, end = 24.dp)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        modifier =
+            Modifier
+                .padding(top = 12.dp, bottom = 20.dp, start = 24.dp, end = 24.dp)
+                .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         days.chunked(7).forEach { week ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(0.dp)
+                horizontalArrangement = Arrangement.spacedBy(0.dp),
             ) {
                 week.forEach { day ->
                     BoxWithConstraints(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     ) {
                         CalendarDateItem(
                             day = day,
@@ -316,7 +322,7 @@ fun CalendarDayOfMonth(
                             isDayAfter = (day > todayDate),
                             onSelect = { onSelectDate(day) },
                             isSelectedDate = (selectedDate == day),
-                            dateIcon = setCalendarDateItemIcon(calendarList[day.toString()])
+                            dateIcon = setCalendarDateItemIcon(calendarList[day.toString()]),
                         )
                     }
                 }
@@ -334,11 +340,14 @@ fun CalendarDayOfMonth(
 fun setCalendarDateItemIcon(
     dateItem: CalendarModel?,
 ): Int {
-
     val dateIcon: Int =
-        if (dateItem == null) 0
-        else if (dateItem.memoContent.isNotEmpty()) R.drawable.ic_som_rainbow
-        else R.drawable.ic_som
+        if (dateItem == null) {
+            0
+        } else if (dateItem.memoContent.isNotEmpty()) {
+            R.drawable.ic_som_rainbow
+        } else {
+            R.drawable.ic_som
+        }
 
     return dateIcon
 }
@@ -355,49 +364,54 @@ fun CalendarDateItem(
     dateIcon: Int = 0,
 ) {
     Column(
-        modifier = modifier
-            .clickable(
-                enabled = !isDayAfter,
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onSelect
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            modifier
+                .clickable(
+                    enabled = !isDayAfter,
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = onSelect,
+                ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (dateIcon != 0) {
             Image(
                 painter = painterResource(id = dateIcon),
                 contentDescription = "som",
-                modifier = Modifier
-                    .padding(bottom = 4.dp)
-                    .size(40.dp)
+                modifier =
+                    Modifier
+                        .padding(bottom = 4.dp)
+                        .size(40.dp),
             )
         } else {
             Box(
-                modifier = Modifier
-                    .padding(bottom = 4.dp)
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(Gray200)
+                modifier =
+                    Modifier
+                        .padding(bottom = 4.dp)
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(Gray200),
             )
         }
 
         if (isToday || isSelectedDate) {
             Box(
-                modifier = Modifier
-                    .width(30.dp)
-                    .clip(RoundedCornerShape(99.dp))
-                    .background(if (isToday) Gray400 else Gray650)
-                    .align(Alignment.CenterHorizontally),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .width(30.dp)
+                        .clip(RoundedCornerShape(99.dp))
+                        .background(if (isToday) Gray400 else Gray650)
+                        .align(Alignment.CenterHorizontally),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = "${day.dayOfMonth}",
                     color = Gray0,
                     style = SoftieTypo.caption1,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(vertical = 1.dp)
+                    modifier =
+                        Modifier
+                            .padding(vertical = 1.dp),
                 )
             }
         } else {
@@ -405,9 +419,10 @@ fun CalendarDateItem(
                 text = "${day.dayOfMonth}",
                 color = if (isDayAfter) Gray300 else Gray700,
                 style = SoftieTypo.caption1,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 1.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(vertical = 1.dp),
             )
         }
     }
@@ -425,66 +440,72 @@ fun CalendarDateDetailInfo(
     dollImg: Int,
 ) {
     Divider(
-        modifier = Modifier
-            .padding(bottom = 16.dp)
-            .border(2.dp, Gray200)
+        modifier =
+            Modifier
+                .padding(bottom = 16.dp)
+                .border(2.dp, Gray200),
     )
 
     Row(
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .height(32.dp),
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp)
+                .height(32.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = String.format(DateContent, todayDate.dayOfMonth),
             style = SoftieTypo.head3,
-            color = Gray700
+            color = Gray700,
         )
 
         Text(
-            text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = Red200)) {
-                    append(
-                        (dateItem?.histories?.size ?: 0).toString()
-                    )
-                }
-                append(Num)
-            },
+            text =
+                buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = Red200)) {
+                        append(
+                            (dateItem?.histories?.size ?: 0).toString(),
+                        )
+                    }
+                    append(Num)
+                },
             style = SoftieTypo.body2,
             color = Gray500,
-            modifier = Modifier
-                .padding(start = 4.dp)
-                .weight(1f)
+            modifier =
+                Modifier
+                    .padding(start = 4.dp)
+                    .weight(1f),
         )
 
         if (dateItem != null) {
             CalendarDateMemoBtn(
                 onClickAction = onClickMemoBtn,
-                interactionSource = interactionSource
+                interactionSource = interactionSource,
             )
         }
     }
 
     if (dateItem == null) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 32.dp, bottom = 96.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 32.dp, bottom = 96.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_empty_routine),
                 contentDescription = "empty routine",
-                modifier = Modifier
-                    .padding(bottom = 12.dp)
-                    .size(width = 100.dp, height = 120.dp)
+                modifier =
+                    Modifier
+                        .padding(bottom = 12.dp)
+                        .size(width = 100.dp, height = 120.dp),
             )
 
             Text(
                 text = EmptyAchieveRoutine,
                 style = SoftieTypo.head3,
-                color = Gray500
+                color = Gray500,
             )
         }
     } else {
@@ -493,7 +514,7 @@ fun CalendarDateDetailInfo(
             onClickRoutineDelete = onClickRoutineDelete,
             interactionSource = interactionSource,
             onClickMemo = onClickMemo,
-            dollImg = dollImg
+            dollImg = dollImg,
         )
     }
 }
@@ -507,9 +528,10 @@ fun CalendarDateRoutineAchieve(
     dollImg: Int,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp, bottom = 8.dp, start = 20.dp, end = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, bottom = 8.dp, start = 20.dp, end = 20.dp),
     ) {
         if (dateItem.memoContent.isNotEmpty()) {
             CalendarDateMemoBox(
@@ -519,11 +541,11 @@ fun CalendarDateRoutineAchieve(
                     onClickMemo(
                         MemoActionModel(
                             memoId = dateItem.memoId,
-                            content = dateItem.memoContent
-                        )
+                            content = dateItem.memoContent,
+                        ),
                     )
                 },
-                dollImg = dollImg
+                dollImg = dollImg,
             )
         }
 
@@ -531,7 +553,7 @@ fun CalendarDateRoutineAchieve(
             CalendarDateRoutineHistory(
                 history = history,
                 onClickAction = onClickRoutineDelete,
-                interactionSource = interactionSource
+                interactionSource = interactionSource,
             )
         }
     }
@@ -545,35 +567,39 @@ fun CalendarDateMemoBox(
     dollImg: Int,
 ) {
     Column(
-        modifier = Modifier
-            .padding(bottom = 16.dp, start = 20.dp, end = 20.dp)
-            .clickable(
-                onClick = onClickAction,
-                interactionSource = interactionSource,
-                indication = null
-            )
+        modifier =
+            Modifier
+                .padding(bottom = 16.dp, start = 20.dp, end = 20.dp)
+                .clickable(
+                    onClick = onClickAction,
+                    interactionSource = interactionSource,
+                    indication = null,
+                ),
     ) {
         DashedDivider()
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .size(50.dp)
-                    .clip(CircleShape)
-                    .background(Gray200)
+                modifier =
+                    Modifier
+                        .padding(horizontal = 5.dp)
+                        .size(50.dp)
+                        .clip(CircleShape)
+                        .background(Gray200),
             ) {
                 Image(
                     painter = painterResource(id = dollImg),
                     contentDescription = "doll img",
-                    modifier = Modifier
-                        .size(29.dp)
-                        .align(Alignment.Center)
+                    modifier =
+                        Modifier
+                            .size(29.dp)
+                            .align(Alignment.Center),
                 )
             }
 
@@ -581,9 +607,10 @@ fun CalendarDateMemoBox(
                 text = memo,
                 style = SoftieTypo.body2,
                 color = Gray500,
-                modifier = Modifier
-                    .padding(start = 6.dp)
-                    .weight(1f)
+                modifier =
+                    Modifier
+                        .padding(start = 6.dp)
+                        .weight(1f),
             )
         }
 
@@ -598,59 +625,64 @@ fun CalendarDateRoutineHistory(
     interactionSource: MutableInteractionSource,
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
             painter = painterResource(id = ThemeIconType.getThemeIcon(history.themeId)),
             contentDescription = "theme icon",
-            modifier = Modifier
-                .size(16.dp)
+            modifier =
+                Modifier
+                    .size(16.dp),
         )
 
         Text(
             text = history.themeName,
             color = Gray500,
             style = SoftieTypo.body2,
-            modifier = Modifier
-                .padding(start = 2.dp)
+            modifier =
+                Modifier
+                    .padding(start = 2.dp),
         )
     }
 
     history.histories.forEach { historyItem ->
         Row(
-            modifier = Modifier
-                .padding(top = 4.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
-                .background(if (historyItem.isChallenge) Pink50 else Gray0)
-                .border(1.dp, Gray200, RoundedCornerShape(10.dp)),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .padding(top = 4.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(if (historyItem.isChallenge) Pink50 else Gray0)
+                    .border(1.dp, Gray200, RoundedCornerShape(10.dp)),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = historyItem.content,
                 color = Gray700,
                 style = SoftieTypo.body2,
-                modifier = Modifier
-                    .padding(top = 18.dp, bottom = 18.dp, start = 16.dp)
-                    .weight(1f)
+                modifier =
+                    Modifier
+                        .padding(top = 18.dp, bottom = 18.dp, start = 16.dp)
+                        .weight(1f),
             )
 
             Image(
                 painter = painterResource(id = R.drawable.ic_more_info),
                 contentDescription = "more",
-                modifier = Modifier
-                    .padding(start = 23.dp, end = 16.dp, top = 24.dp, bottom = 24.dp)
-                    .size(24.dp)
-                    .clickable(
-                        onClick = {
-                            onClickAction(
-                                RoutineType.getType(historyItem.isChallenge),
-                                historyItem
-                            )
-                        },
-                        interactionSource = interactionSource,
-                        indication = null
-                    )
+                modifier =
+                    Modifier
+                        .padding(start = 23.dp, end = 16.dp, top = 24.dp, bottom = 24.dp)
+                        .size(24.dp)
+                        .clickable(
+                            onClick = {
+                                onClickAction(
+                                    RoutineType.getType(historyItem.isChallenge),
+                                    historyItem,
+                                )
+                            },
+                            interactionSource = interactionSource,
+                            indication = null,
+                        ),
             )
         }
     }
@@ -664,21 +696,23 @@ fun CalendarDateMemoBtn(
     interactionSource: MutableInteractionSource,
 ) {
     Box(
-        modifier = Modifier
-            .size(32.dp)
-            .clip(CircleShape)
-            .background(Gray650)
-            .clickable(
-                onClick = onClickAction,
-                indication = null,
-                interactionSource = interactionSource
-            )
+        modifier =
+            Modifier
+                .size(32.dp)
+                .clip(CircleShape)
+                .background(Gray650)
+                .clickable(
+                    onClick = onClickAction,
+                    indication = null,
+                    interactionSource = interactionSource,
+                ),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_pen),
             contentDescription = "pen",
-            modifier = Modifier
-                .padding(7.dp)
+            modifier =
+                Modifier
+                    .padding(7.dp),
         )
     }
 }

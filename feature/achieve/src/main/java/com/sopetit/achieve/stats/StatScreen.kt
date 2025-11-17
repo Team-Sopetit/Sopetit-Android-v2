@@ -33,21 +33,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sopetit.design_system.AchieveStatEmptyTitle
-import com.sopetit.design_system.CountContent
-import com.sopetit.design_system.Dash
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray50
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.Percentage
-import com.sopetit.design_system.PercentageString
+import com.sopetit.designsystem.AchieveStatEmptyTitle
+import com.sopetit.designsystem.CountContent
+import com.sopetit.designsystem.Dash
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray50
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.Percentage
+import com.sopetit.designsystem.PercentageString
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
-import com.sopetit.design_system.StatAchieveRoutineTitle
-import com.sopetit.design_system.StatGraphEmptyTitle
-import com.sopetit.design_system.StatGraphSemiTitle
-import com.sopetit.design_system.StatGraphTitle
+import com.sopetit.designsystem.SoftieTypo
+import com.sopetit.designsystem.StatAchieveRoutineTitle
+import com.sopetit.designsystem.StatGraphEmptyTitle
+import com.sopetit.designsystem.StatGraphSemiTitle
+import com.sopetit.designsystem.StatGraphTitle
 import com.sopetit.domain.entity.response.achieve.AchieveModel
 import com.sopetit.ui.common.content.PieChart
 import com.sopetit.ui.common.type.EmptyColorType
@@ -58,7 +58,6 @@ import com.sopetit.ui.common.type.ThemeStatType
 fun StatScreen(
     goToAchieveRoutinePage: (Int) -> Unit,
 ) {
-
     val viewModel: StatViewModel = hiltViewModel()
     val uiState: StatPageState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -67,7 +66,7 @@ fun StatScreen(
     StatContent(
         achieveModel = uiState.achieveModel,
         onClickAchieveRoutine = { goToAchieveRoutinePage(it) },
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     )
 }
 
@@ -78,16 +77,17 @@ fun StatContent(
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
-            .verticalScroll(rememberScrollState())
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50)
+                .verticalScroll(rememberScrollState()),
     ) {
         StatDetailBox(
             achieveModel = achieveModel,
             onClickAchieveRoutine = onClickAchieveRoutine,
             interactionSource = interactionSource,
-            isStatEmpty = (achieveModel.achievedCount == 0)
+            isStatEmpty = (achieveModel.achievedCount == 0),
         )
     }
 }
@@ -100,41 +100,53 @@ fun StatDetailBox(
     isStatEmpty: Boolean = true,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(260.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(260.dp),
     ) {
         Image(
-            painter = painterResource(
-                id =
-                if (isStatEmpty) R.drawable.ic_stat_background_empty
-                else ThemeStatType.getStatBackground(achieveModel.themes[0].id)
-            ),
+            painter =
+                painterResource(
+                    id =
+                        if (isStatEmpty) {
+                            R.drawable.ic_stat_background_empty
+                        } else {
+                            ThemeStatType.getStatBackground(achieveModel.themes[0].id)
+                        },
+                ),
             contentDescription = "stat",
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         )
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 26.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 26.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (!isStatEmpty) {
                 Text(
                     text = ThemeStatType.getStatTitle(achieveModel.themes[0].id),
                     style = SoftieTypo.head2,
-                    color = Gray700
+                    color = Gray700,
                 )
             }
 
             Text(
-                text = if (isStatEmpty) AchieveStatEmptyTitle else ThemeStatType.getStatContent(
-                    achieveModel.themes[0].id
-                ),
+                text =
+                    if (isStatEmpty) {
+                        AchieveStatEmptyTitle
+                    } else {
+                        ThemeStatType.getStatContent(
+                            achieveModel.themes[0].id,
+                        )
+                    },
                 style = SoftieTypo.body2,
-                color = Gray500
+                color = Gray500,
             )
         }
     }
@@ -143,84 +155,91 @@ fun StatDetailBox(
         StatEmptyGraphBox()
     } else {
         StatGraphBox(
-            achieveModel = achieveModel
+            achieveModel = achieveModel,
         )
     }
 
     StatRoutinesBox(
         achieveModel = achieveModel,
         onClickAchieveRoutine = onClickAchieveRoutine,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     )
 }
 
 @Composable
 fun StatEmptyGraphBox() {
     Column(
-        modifier = Modifier
-            .padding(top = 4.dp, start = 20.dp, end = 20.dp)
-            .fillMaxWidth()
-            .background(Color.White)
-            .clip(RoundedCornerShape(10.dp))
+        modifier =
+            Modifier
+                .padding(top = 4.dp, start = 20.dp, end = 20.dp)
+                .fillMaxWidth()
+                .background(Color.White)
+                .clip(RoundedCornerShape(10.dp)),
     ) {
         Text(
             text = StatGraphTitle,
             style = SoftieTypo.head3,
             color = Color.Black,
-            modifier = Modifier
-                .padding(top = 12.dp, start = 11.dp)
+            modifier =
+                Modifier
+                    .padding(top = 12.dp, start = 11.dp),
         )
 
         Text(
             text = StatGraphEmptyTitle,
             style = SoftieTypo.body2,
             color = Gray500,
-            modifier = Modifier
-                .padding(top = 4.dp, start = 11.dp)
+            modifier =
+                Modifier
+                    .padding(top = 4.dp, start = 11.dp),
         )
 
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_graph_empty),
                 contentDescription = "empty graph",
-                modifier = Modifier
-                    .padding(top = 24.dp, bottom = 27.dp, start = 28.dp)
-                    .size(143.dp)
+                modifier =
+                    Modifier
+                        .padding(top = 24.dp, bottom = 27.dp, start = 28.dp)
+                        .size(143.dp),
             )
 
             Column(
-                modifier = Modifier
-                    .padding(start = 24.dp, end = 29.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                modifier =
+                    Modifier
+                        .padding(start = 24.dp, end = 29.dp)
+                        .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 EmptyColorType.entries.forEach { color ->
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Box(
-                            modifier = Modifier
-                                .size(12.dp)
-                                .clip(RoundedCornerShape(2.dp))
-                                .background(color.color)
+                            modifier =
+                                Modifier
+                                    .size(12.dp)
+                                    .clip(RoundedCornerShape(2.dp))
+                                    .background(color.color),
                         )
 
                         Text(
                             text = Dash,
                             style = SoftieTypo.caption1,
                             color = Gray500,
-                            modifier = Modifier
-                                .padding(start = 4.dp)
-                                .weight(1f)
+                            modifier =
+                                Modifier
+                                    .padding(start = 4.dp)
+                                    .weight(1f),
                         )
 
                         Text(
                             text = String.format(PercentageString, Dash),
                             style = SoftieTypo.body2,
-                            color = Gray700
+                            color = Gray700,
                         )
                     }
                 }
@@ -234,44 +253,49 @@ fun StatGraphBox(
     achieveModel: AchieveModel,
 ) {
     Column(
-        modifier = Modifier
-            .padding(top = 4.dp, start = 20.dp, end = 20.dp)
-            .fillMaxWidth()
-            .background(Color.White)
-            .clip(RoundedCornerShape(10.dp))
+        modifier =
+            Modifier
+                .padding(top = 4.dp, start = 20.dp, end = 20.dp)
+                .fillMaxWidth()
+                .background(Color.White)
+                .clip(RoundedCornerShape(10.dp)),
     ) {
         Text(
             text = StatGraphTitle,
             style = SoftieTypo.head3,
             color = Color.Black,
-            modifier = Modifier
-                .padding(top = 12.dp, start = 11.dp)
+            modifier =
+                Modifier
+                    .padding(top = 12.dp, start = 11.dp),
         )
 
         Text(
             text = String.format(StatGraphSemiTitle, achieveModel.themes[0].name),
             style = SoftieTypo.body2,
             color = Gray500,
-            modifier = Modifier
-                .padding(top = 4.dp, start = 11.dp)
+            modifier =
+                Modifier
+                    .padding(top = 4.dp, start = 11.dp),
         )
 
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             PieChart(
                 proportions = setPieChartPortions(achieveModel),
                 colors = setPieChartColor(achieveModel),
-                modifier = Modifier
-                    .padding(top = 24.dp, bottom = 27.dp, start = 28.dp)
-                    .size(143.dp)
+                modifier =
+                    Modifier
+                        .padding(top = 24.dp, bottom = 27.dp, start = 28.dp)
+                        .size(143.dp),
             )
 
             Column(
-                modifier = Modifier
-                    .padding(start = 24.dp, end = 29.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                modifier =
+                    Modifier
+                        .padding(start = 24.dp, end = 29.dp)
+                        .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 achieveModel.themes.forEach { theme ->
                     val percentage =
@@ -279,28 +303,30 @@ fun StatGraphBox(
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Box(
-                            modifier = Modifier
-                                .size(12.dp)
-                                .clip(RoundedCornerShape(2.dp))
-                                .background(ThemeIconType.getThemeGraphColor(theme.id))
+                            modifier =
+                                Modifier
+                                    .size(12.dp)
+                                    .clip(RoundedCornerShape(2.dp))
+                                    .background(ThemeIconType.getThemeGraphColor(theme.id)),
                         )
 
                         Text(
                             text = ThemeIconType.getThemeName(theme.id),
                             style = SoftieTypo.caption1,
                             color = Gray500,
-                            modifier = Modifier
-                                .padding(start = 4.dp)
-                                .weight(1f)
+                            modifier =
+                                Modifier
+                                    .padding(start = 4.dp)
+                                    .weight(1f),
                         )
 
                         Text(
                             text = String.format(Percentage, percentage.toInt()),
                             style = SoftieTypo.body2,
-                            color = Gray700
+                            color = Gray700,
                         )
                     }
                 }
@@ -336,31 +362,34 @@ fun StatRoutinesBox(
         text = StatAchieveRoutineTitle,
         style = SoftieTypo.head3,
         color = Gray700,
-        modifier = Modifier
-            .padding(top = 20.dp, start = 17.dp)
+        modifier =
+            Modifier
+                .padding(top = 20.dp, start = 17.dp),
     )
 
     Column(
-        modifier = Modifier
-            .padding(top = 8.dp, bottom = 31.dp, start = 17.dp, end = 17.dp)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        modifier =
+            Modifier
+                .padding(top = 8.dp, bottom = 31.dp, start = 17.dp, end = 17.dp)
+                .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         ThemeIconType.entries.chunked(2).forEach { routines ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(11.dp)
+                horizontalArrangement = Arrangement.spacedBy(11.dp),
             ) {
                 routines.forEach { theme ->
                     BoxWithConstraints(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     ) {
                         StatRoutineBoxItem(
                             theme = theme,
-                            routineNum = achieveModel.themes.firstOrNull { it.id == theme.themeId }?.achievedCount
-                                ?: 0,
+                            routineNum =
+                                achieveModel.themes.firstOrNull { it.id == theme.themeId }?.achievedCount
+                                    ?: 0,
                             onClickAction = { onClickAchieveRoutine(theme.themeId) },
-                            interactionSource = interactionSource
+                            interactionSource = interactionSource,
                         )
                     }
                 }
@@ -381,34 +410,38 @@ fun StatRoutineBoxItem(
     interactionSource: MutableInteractionSource,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(Gray0)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClickAction
-            )
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(Gray0)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = onClickAction,
+                ),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(CircleShape)
-                    .background(Gray50)
+                modifier =
+                    Modifier
+                        .size(32.dp)
+                        .clip(CircleShape)
+                        .background(Gray50),
             ) {
                 Image(
                     painter = painterResource(id = theme.themeIcon),
                     contentDescription = "theme",
-                    modifier = Modifier
-                        .size(22.dp)
-                        .align(Alignment.Center)
+                    modifier =
+                        Modifier
+                            .size(22.dp)
+                            .align(Alignment.Center),
                 )
             }
 
@@ -417,7 +450,7 @@ fun StatRoutineBoxItem(
             Text(
                 text = String.format(CountContent, routineNum),
                 style = SoftieTypo.head2,
-                color = Gray700
+                color = Gray700,
             )
         }
 
@@ -425,8 +458,9 @@ fun StatRoutineBoxItem(
             text = theme.themeName,
             style = SoftieTypo.body2,
             color = Gray500,
-            modifier = Modifier
-                .padding(start = 12.dp, bottom = 11.dp, top = 8.dp)
+            modifier =
+                Modifier
+                    .padding(start = 12.dp, bottom = 11.dp, top = 8.dp),
         )
     }
 }

@@ -9,7 +9,10 @@ import retrofit2.Response
 
 interface MemberDataSource {
     suspend fun postCreateMember(request: CreateMemberRequestDto): Response<BaseResponse<Unit>>
+
     suspend fun getMember(): Response<BaseResponse<GetMemberResponseDto>>
+
     suspend fun postFcmToken(request: PostFcmRequestDto): Response<BaseResponse<Unit>>
+
     suspend fun patchCotton(request: String): Response<BaseResponse<CottonResponseDto>>
 }

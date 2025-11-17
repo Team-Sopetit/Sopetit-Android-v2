@@ -24,7 +24,6 @@ import com.sopetit.data.dataSource.dataSourceImpl.RefreshDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.RoutineDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.ThemeDataSourceImpl
 import com.sopetit.data.dataSource.dataSourceImpl.VersionDataSourceImpl
-import com.sopetit.domain.repository.CustomRoutineRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -34,7 +33,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataSourceModule {
-
     @Binds
     @Singleton
     abstract fun bindsAuthDataSource(authDataSourceImpl: AuthDataSourceImpl): AuthDataSource

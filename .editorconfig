@@ -1,0 +1,17 @@
+root = true
+
+[*]
+max_line_length = off
+
+[*.{kt,kts}]
+ktlint_function_naming_ignore_annotated = Composable,Preview
+ktlint_standard_import-ordering = disabled
+
+[feature/**.kt]
+ktlint_standard_function-naming = disabled
+
+[core/design-system/**.kt]
+ktlint_standard_property-naming = disabled
+
+[core/ui/**.kt]
+ktlint_standard_function-naming = disabled

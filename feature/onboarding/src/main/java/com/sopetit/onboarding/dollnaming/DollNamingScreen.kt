@@ -41,17 +41,17 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.sopetit.design_system.DollNamingBtn
-import com.sopetit.design_system.DollNamingSemiTitle
-import com.sopetit.design_system.DollNamingTitle
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray300
-import com.sopetit.design_system.Gray50
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.Gray700
+import com.sopetit.designsystem.DollNamingBtn
+import com.sopetit.designsystem.DollNamingSemiTitle
+import com.sopetit.designsystem.DollNamingTitle
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray300
+import com.sopetit.designsystem.Gray50
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.Softie
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Softie
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.ui.common.button.BottomRectangleBtn
 import com.sopetit.ui.common.topbar.OnboardingTopBar
@@ -78,7 +78,7 @@ fun DollNamingScreen(
         dollInputName = uiState.dollInputName,
         onValueChange = { newValue -> viewModel.onValueChange(newValue) },
         onClickBtnAction = { goToThemeChoicePage(viewModel.updateMemberModel()) },
-        onClickBackBtnAction = { goBackToDollTypePage() }
+        onClickBackBtnAction = { goBackToDollTypePage() },
     )
 }
 
@@ -94,65 +94,71 @@ fun DollNamingContent(
     val progress by animateLottieCompositionAsState(
         composition = composition,
         iterations = LottieConstants.IterateForever,
-        clipSpec = LottieClipSpec.Progress(0.0f, 0.30f)
+        clipSpec = LottieClipSpec.Progress(0.0f, 0.30f),
     )
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) {
             OnboardingTopBar(
                 page = 2,
                 enabledGoBack = true,
-                goBack = { onClickBackBtnAction() }
+                goBack = { onClickBackBtnAction() },
             )
 
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = DollNamingTitle,
                     style = SoftieTypo.head1,
                     color = Gray700,
-                    modifier = Modifier
-                        .padding(top = 28.dp),
+                    modifier =
+                        Modifier
+                            .padding(top = 28.dp),
                     textAlign = TextAlign.Center,
-                    lineHeight = 25.sp
+                    lineHeight = 25.sp,
                 )
 
                 Text(
                     text = DollNamingSemiTitle,
                     style = SoftieTypo.body2,
                     color = Gray500,
-                    modifier = Modifier
-                        .padding(top = 4.dp)
+                    modifier =
+                        Modifier
+                            .padding(top = 4.dp),
                 )
                 LottieAnimation(
                     composition = composition,
                     progress = { progress },
-                    modifier = Modifier
-                        .size(250.dp)
-                        .padding(top = 4.dp)
+                    modifier =
+                        Modifier
+                            .size(250.dp)
+                            .padding(top = 4.dp),
                 )
 
                 DollNamingTextField(
                     textInput = dollInputName,
-                    onValueChange = onValueChange
+                    onValueChange = onValueChange,
                 )
             }
 
             BottomRectangleBtn(
                 btnTextContent = DollNamingBtn,
                 isBtnActivated = dollInputName.isNotEmpty(),
-                onClickAction = onClickBtnAction
+                onClickAction = onClickBtnAction,
             )
         }
     }
@@ -175,54 +181,60 @@ fun DollNamingTextField(
     }
 
     Box(
-        modifier = Modifier
-            .height(40.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 108.dp)
-            .clip(RoundedCornerShape(99.dp))
-            .border(1.dp, Gray300, RoundedCornerShape(99.dp))
-            .background(Gray0)
+        modifier =
+            Modifier
+                .height(40.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 108.dp)
+                .clip(RoundedCornerShape(99.dp))
+                .border(1.dp, Gray300, RoundedCornerShape(99.dp))
+                .background(Gray0),
     ) {
         BasicTextField(
             value = textInput,
             onValueChange = { input ->
                 onValueChange(input)
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 18.dp, vertical = 12.dp)
-                .onFocusChanged { focusState ->
-                    isFocused = focusState.isFocused
-                },
-            textStyle = SoftieTypo.body2.copy(
-                color = Gray700,
-                textAlign = TextAlign.Center
-            ),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus()
-                }
-            ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 18.dp, vertical = 12.dp)
+                    .onFocusChanged { focusState ->
+                        isFocused = focusState.isFocused
+                    },
+            textStyle =
+                SoftieTypo.body2.copy(
+                    color = Gray700,
+                    textAlign = TextAlign.Center,
+                ),
+            keyboardOptions =
+                KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done,
+                ),
+            keyboardActions =
+                KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    },
+                ),
             decorationBox = { innerTextField ->
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
+                    contentAlignment = Alignment.Center,
                 ) {
                     if (textInput.isEmpty() && !isFocused) {
                         Text(
                             text = Softie,
                             style = SoftieTypo.body2,
                             color = Gray300,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     }
                     innerTextField()
                 }
-            }
+            },
         )
     }
 }

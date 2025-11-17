@@ -14,7 +14,7 @@ object CustomRoutineMapper : BaseMapper() {
         CustomRoutineRequestDto(
             content = content,
             themeId = themeId,
-            alarmTime = alarmTime
+            alarmTime = alarmTime,
         )
 
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<CustomRoutineResponseDto>>): Flow<Result<CustomRoutineModel>> {
@@ -26,10 +26,10 @@ object CustomRoutineMapper : BaseMapper() {
                         id = data.id,
                         content = data.content,
                         themeId = data.themeId,
-                        alarmTime = data.alarmTime
+                        alarmTime = data.alarmTime,
                     )
                 } ?: CustomRoutineModel()
-            }
+            },
         )
     }
 }

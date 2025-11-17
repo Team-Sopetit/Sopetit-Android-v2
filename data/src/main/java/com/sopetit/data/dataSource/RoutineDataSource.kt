@@ -8,6 +8,8 @@ import retrofit2.Response
 
 interface RoutineDataSource {
     suspend fun getDailyRoutine(request: List<Int>): Response<BaseResponse<DailyRoutineListResponseDto>>
+
     suspend fun getDailyThemeRoutine(request: Int): Response<BaseResponse<DailyThemeRoutineResponseDto>>
+
     suspend fun getChallengeRoutine(request: Int): Response<BaseResponse<ChallengeResponseDto>>
 }

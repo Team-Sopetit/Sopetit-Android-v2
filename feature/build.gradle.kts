@@ -15,4 +15,6 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.core.designSystem)
     implementation(projects.core.navigation)
+
+    testImplementation(libs.junit)
 }

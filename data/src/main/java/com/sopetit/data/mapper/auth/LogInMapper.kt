@@ -9,10 +9,11 @@ import com.sopetit.domain.entity.response.auth.LogInResponseModel
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-object LogInMapper: BaseMapper() {
-    fun LogInRequestModel.toDto() = LogInRequestDto(
-        socialType = socialType
-    )
+object LogInMapper : BaseMapper() {
+    fun LogInRequestModel.toDto() =
+        LogInRequestDto(
+            socialType = socialType,
+        )
 
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<LogInResponseDto>>): Flow<Result<LogInResponseModel>> {
         return baseMapper(
@@ -22,10 +23,10 @@ object LogInMapper: BaseMapper() {
                     LogInResponseModel(
                         accessToken = data.accessToken,
                         refreshToken = data.refreshToken,
-                        isMemberDollExist = data.isMemberDollExist
+                        isMemberDollExist = data.isMemberDollExist,
                     )
                 } ?: LogInResponseModel()
-            }
+            },
         )
     }
 }

@@ -27,7 +27,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
-
     private val json = Json { ignoreUnknownKeys = true }
     private const val CONTENT_TYPE = "Content-Type"
     private const val APPLICATION_JSON = "application/json"
@@ -41,66 +40,70 @@ object RetrofitModule {
     fun providesAuthInterceptor(
         localDataSource: LocalDataStore,
         refreshTokenRepository: RefreshTokenRepository,
-    ): Interceptor = Interceptor { chain ->
-        val tokenFlow = localDataSource.accessToken
-        val token = runBlocking { tokenFlow.first() }
+    ): Interceptor =
+        Interceptor { chain ->
+            val tokenFlow = localDataSource.accessToken
+            val token = runBlocking { tokenFlow.first() }
 
-        val request = chain.request()
-        val response = chain.proceed(
-            request
-                .newBuilder()
-                .addHeader(CONTENT_TYPE, APPLICATION_JSON)
-                .addHeader(AUTHORIZATION, BEARER + token)
-                .build()
-        )
-
-        when (response.code) {
-            EXPIRED_TOKEN -> try {
-                runBlocking {
-                    refreshTokenRepository.refreshToken().collect { data ->
-                        data.onSuccess { accessToken ->
-                            refreshTokenRepository.saveAccessToken(accessToken.accessToken)
-                        }
-                    }
-                }
-                response.close()
-
-                val newRequest = chain.request()
-                val newResponse = chain.proceed(
-                    newRequest
+            val request = chain.request()
+            val response =
+                chain.proceed(
+                    request
                         .newBuilder()
                         .addHeader(CONTENT_TYPE, APPLICATION_JSON)
-                        .addHeader(AUTHORIZATION, BEARER + localDataSource.accessToken)
-                        .build()
+                        .addHeader(AUTHORIZATION, BEARER + token)
+                        .build(),
                 )
-                return@Interceptor newResponse
-            } catch (t: Throwable) {
-                Timber.e(t.message)
+
+            when (response.code) {
+                EXPIRED_TOKEN ->
+                    try {
+                        runBlocking {
+                            refreshTokenRepository.refreshToken().collect { data ->
+                                data.onSuccess { accessToken ->
+                                    refreshTokenRepository.saveAccessToken(accessToken.accessToken)
+                                }
+                            }
+                        }
+                        response.close()
+
+                        val newRequest = chain.request()
+                        val newResponse =
+                            chain.proceed(
+                                newRequest
+                                    .newBuilder()
+                                    .addHeader(CONTENT_TYPE, APPLICATION_JSON)
+                                    .addHeader(AUTHORIZATION, BEARER + localDataSource.accessToken)
+                                    .build(),
+                            )
+                        return@Interceptor newResponse
+                    } catch (t: Throwable) {
+                        Timber.e(t.message)
+                    }
             }
+
+            return@Interceptor response
         }
-
-
-        return@Interceptor response
-    }
 
     @Singleton
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        val loggingInterceptor = HttpLoggingInterceptor { message ->
-            when {
-                message.isJsonObject() ->
-                    Timber.tag("retrofit").d(JSONObject(message).toString(4))
+        val loggingInterceptor =
+            HttpLoggingInterceptor { message ->
+                when {
+                    message.isJsonObject() ->
+                        Timber.tag("retrofit").d(JSONObject(message).toString(4))
 
-                message.isJsonArray() ->
-                    Timber.tag("retrofit").d(JSONArray(message).toString(4))
+                    message.isJsonArray() ->
+                        Timber.tag("retrofit").d(JSONArray(message).toString(4))
 
-                else -> {
-                    Timber.tag("retrofit").d("CONNECTION INFO -> $message")
+                    else -> {
+                        Timber.tag("retrofit").d("CONNECTION INFO -> $message")
+                    }
                 }
+            }.apply {
+                level = HttpLoggingInterceptor.Level.BODY
             }
-        }.apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
 
         return loggingInterceptor
     }
@@ -131,5 +134,4 @@ object RetrofitModule {
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory(APPLICATION_JSON.toMediaType()))
             .build()
-
 }

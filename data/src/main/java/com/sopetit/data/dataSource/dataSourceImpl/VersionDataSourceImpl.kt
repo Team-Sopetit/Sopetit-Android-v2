@@ -7,10 +7,11 @@ import com.sopetit.data.service.VersionService
 import retrofit2.Response
 import javax.inject.Inject
 
-class VersionDataSourceImpl @Inject constructor(
-    private val versionService: VersionService
-): VersionDataSource {
-
-    override suspend fun getVersion(): Response<BaseResponse<VersionResponseDto>> =
-        versionService.getVersion()
-}
+class VersionDataSourceImpl
+    @Inject
+    constructor(
+        private val versionService: VersionService,
+    ) : VersionDataSource {
+        override suspend fun getVersion(): Response<BaseResponse<VersionResponseDto>> =
+            versionService.getVersion()
+    }

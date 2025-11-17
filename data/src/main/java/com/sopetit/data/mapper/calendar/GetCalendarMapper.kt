@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 object GetCalendarMapper : BaseMapper() {
-
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<Map<String, GetCalendarItemResponseDto>>>): Flow<Result<Map<String, CalendarModel>>> {
         return baseMapper(
             apiCall = { apiCall() },
@@ -19,22 +18,24 @@ object GetCalendarMapper : BaseMapper() {
                     CalendarModel(
                         memoId = dto.memoId,
                         memoContent = dto.memoContent,
-                        histories = dto.histories.map { history ->
-                            CalendarHistoryModel(
-                                themeId = history.themeId,
-                                themeName = history.themeName,
-                                histories = history.histories.map { historyItem ->
-                                    CalendarHistoryItemModel(
-                                        historyId = historyItem.historyId,
-                                        content = historyItem.content,
-                                        isChallenge = historyItem.isChallenge
-                                    )
-                                }
-                            )
-                        }
+                        histories =
+                            dto.histories.map { history ->
+                                CalendarHistoryModel(
+                                    themeId = history.themeId,
+                                    themeName = history.themeName,
+                                    histories =
+                                        history.histories.map { historyItem ->
+                                            CalendarHistoryItemModel(
+                                                historyId = historyItem.historyId,
+                                                content = historyItem.content,
+                                                isChallenge = historyItem.isChallenge,
+                                            )
+                                        },
+                                )
+                            },
                     )
                 } ?: emptyMap()
-            }
+            },
         )
     }
 }

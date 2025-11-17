@@ -6,11 +6,12 @@ import com.sopetit.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetTokenUseCase @Inject constructor(
-    private val authRepository: AuthRepository
-): UseCase<Unit, Result<TokenStoreModel>>() {
-
-    override suspend fun invoke(request: Unit): Flow<Result<TokenStoreModel>> {
-        return authRepository.getToken()
+class GetTokenUseCase
+    @Inject
+    constructor(
+        private val authRepository: AuthRepository,
+    ) : UseCase<Unit, Result<TokenStoreModel>>() {
+        override suspend fun invoke(request: Unit): Flow<Result<TokenStoreModel>> {
+            return authRepository.getToken()
+        }
     }
-}

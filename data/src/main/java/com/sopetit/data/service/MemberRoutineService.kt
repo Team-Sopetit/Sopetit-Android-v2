@@ -16,7 +16,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MemberRoutineService {
-
     @GET(EndPoints.MemberRoutine.MEMBERROUTINE2)
     suspend fun getMemberDailyRoutine(): Response<BaseResponse<GetMemberRoutineResponseDto>>
 
@@ -27,16 +26,16 @@ interface MemberRoutineService {
 
     @PATCH(EndPoints.MemberRoutine.ROUTINEACHIEVE)
     suspend fun achieveMemberDailyRoutine(
-        @Path("routineId") routineId: Int
+        @Path("routineId") routineId: Int,
     ): Response<BaseResponse<AchieveDailyRoutineResponseDto>>
 
     @POST(EndPoints.MemberRoutine.MEMBERROUTINE2)
     suspend fun addMemberDailyRoutine(
-        @Body body: AddMemberDailyRoutineRequestDto
+        @Body body: AddMemberDailyRoutineRequestDto,
     ): Response<BaseResponse<AddMemberDailyRoutineResponseDto>>
 
     @DELETE(EndPoints.MemberRoutine.ROUTINEHISTORY)
     suspend fun deleteDailyRoutineHistory(
-        @Path("historyId") historyId: Int
+        @Path("historyId") historyId: Int,
     ): Response<BaseResponse<Unit>>
 }

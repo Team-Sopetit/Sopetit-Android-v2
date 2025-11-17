@@ -1,4 +1,4 @@
-package com.sopetit.design_system
+package com.sopetit.designsystem
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -56,12 +56,14 @@ val Blue200 = Color(0xFF6280CD)
 // Purple
 val Purple50 = Color(0xFFE5E1FF)
 val Purple200 = Color(0xFF8E77F5)
-val PurpleGradient = Brush.linearGradient(
-    colors = listOf(
-        Color(0xFFAE9CFF),
-        Color(0xFFE09EFF)
+val PurpleGradient =
+    Brush.linearGradient(
+        colors =
+            listOf(
+                Color(0xFFAE9CFF),
+                Color(0xFFE09EFF),
+            ),
     )
-)
 
 // Brown
 val Brown50 = Color(0xFFFFF7E6)

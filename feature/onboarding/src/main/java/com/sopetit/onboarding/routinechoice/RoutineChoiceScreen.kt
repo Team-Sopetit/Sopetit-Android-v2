@@ -28,18 +28,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray50
-import com.sopetit.design_system.Gray700
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray50
+import com.sopetit.designsystem.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.Red200
-import com.sopetit.design_system.RoutineChoiceBtn
-import com.sopetit.design_system.RoutineChoiceSnackBar
-import com.sopetit.design_system.RoutineChoiceTopNumSpeech
-import com.sopetit.design_system.RoutineChoiceTopNumSpeechAfter
-import com.sopetit.design_system.RoutineChoiceTopOriginalSpeech
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Red200
+import com.sopetit.designsystem.RoutineChoiceBtn
+import com.sopetit.designsystem.RoutineChoiceSnackBar
+import com.sopetit.designsystem.RoutineChoiceTopNumSpeech
+import com.sopetit.designsystem.RoutineChoiceTopNumSpeechAfter
+import com.sopetit.designsystem.RoutineChoiceTopOriginalSpeech
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.domain.entity.enums.DollType
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.routine.DailyRoutineListItemModel
@@ -92,7 +92,7 @@ fun RoutineChoiceScreen(
         eachThemeRoutineList = uiState.eachThemeRoutineList,
         onSelectRoutine = { viewModel.setSelectedRoutineIdList(it) },
         selectedRoutineIdList = uiState.selectedRoutineIdList,
-        onClickBtnAction = { viewModel.createMember() }
+        onClickBtnAction = { viewModel.createMember() },
     )
 }
 
@@ -110,27 +110,29 @@ fun RoutineChoiceContent(
     selectedRoutineIdList: List<Int> = emptyList(),
     onClickBtnAction: () -> Unit = {},
 ) {
-
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) {
             OnboardingTopBar(
                 page = 4,
                 enabledGoBack = true,
-                goBack = { onClickBackBtnAction() }
+                goBack = { onClickBackBtnAction() },
             )
 
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 TopBearFaceSpeech(
                     dollType = selectedDollType.value,
@@ -138,7 +140,7 @@ fun RoutineChoiceContent(
                     isHighlightSpeechExist = isAfterRoutineSelect,
                     highlightSpeech = "${selectedRoutineIdList.size}/3",
                     highlightColor = Red200,
-                    speechContentAfterHighlight = RoutineChoiceTopNumSpeechAfter
+                    speechContentAfterHighlight = RoutineChoiceTopNumSpeechAfter,
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -147,20 +149,20 @@ fun RoutineChoiceContent(
                     chipThemeList = chipThemeList,
                     selectedRoutineNumForTheme = selectedRoutineNumForTheme,
                     onSelectThemeId = onSelectThemeId,
-                    selectedThemeId = selectedThemeId
+                    selectedThemeId = selectedThemeId,
                 )
 
                 RoutineChoiceForThemeContent(
                     routineList = eachThemeRoutineList,
                     onSelectRoutine = onSelectRoutine,
-                    selectedRoutineIdList = selectedRoutineIdList
+                    selectedRoutineIdList = selectedRoutineIdList,
                 )
             }
 
             BottomRectangleBtn(
                 btnTextContent = RoutineChoiceBtn,
                 isBtnActivated = (selectedRoutineIdList.size == 3),
-                onClickAction = onClickBtnAction
+                onClickAction = onClickBtnAction,
             )
         }
     }
@@ -174,13 +176,14 @@ fun RoutineChoiceTopTheme(
     selectedThemeId: Int = -1,
 ) {
     Row(
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(Gray200)
-            .padding(vertical = 4.dp, horizontal = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(Gray200)
+                .padding(vertical = 4.dp, horizontal = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         chipThemeList.forEachIndexed { index, item ->
             RoutineChoiceTopThemeItem(
@@ -188,7 +191,7 @@ fun RoutineChoiceTopTheme(
                 themeIcon = item.themeIcon,
                 onClick = { onSelectThemeId(item.themeId) },
                 isSelectedTheme = selectedThemeId == item.themeId,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
         }
     }
@@ -203,29 +206,33 @@ fun RoutineChoiceTopThemeItem(
     modifier: Modifier,
 ) {
     Row(
-        modifier = modifier
-            .clip(RoundedCornerShape(5.dp))
-            .background(if (isSelectedTheme) Gray0 else Gray200)
-            .clickable { onClick() },
-        horizontalArrangement = Arrangement.Center
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(5.dp))
+                .background(if (isSelectedTheme) Gray0 else Gray200)
+                .clickable { onClick() },
+        horizontalArrangement = Arrangement.Center,
     ) {
         Row(
-            modifier = Modifier
-                .padding(vertical = 8.dp)
+            modifier =
+                Modifier
+                    .padding(vertical = 8.dp),
         ) {
             Image(
                 painter = painterResource(id = themeIcon),
                 contentDescription = "theme icon",
-                modifier = Modifier
-                    .size(16.dp)
+                modifier =
+                    Modifier
+                        .size(16.dp),
             )
 
             Text(
                 text = title,
                 color = Gray700,
                 style = SoftieTypo.body2,
-                modifier = Modifier
-                    .padding(start = 2.dp)
+                modifier =
+                    Modifier
+                        .padding(start = 2.dp),
             )
         }
     }
@@ -238,17 +245,18 @@ fun RoutineChoiceForThemeContent(
     selectedRoutineIdList: List<Int> = emptyList(),
 ) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 10.dp, bottom = 29.dp)
-            .padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 10.dp, bottom = 29.dp)
+                .padding(horizontal = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         itemsIndexed(routineList, key = { index, item -> item.routineId }) { index, item ->
             DailyRoutineListItem(
                 routineContent = item.content,
                 onClickAction = { onSelectRoutine(item.routineId) },
-                isRoutineSelected = selectedRoutineIdList.contains(item.routineId)
+                isRoutineSelected = selectedRoutineIdList.contains(item.routineId),
             )
         }
     }

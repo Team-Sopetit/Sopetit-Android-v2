@@ -10,5 +10,5 @@ data class CreateMemberRequestDto(
     @SerializedName("name")
     val name: String = "",
     @SerializedName("routines")
-    val routines: List<Int> = emptyList()
+    val routines: List<Int> = emptyList(),
 )

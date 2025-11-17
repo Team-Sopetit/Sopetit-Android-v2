@@ -5,9 +5,10 @@ plugins {
     id("sopetit.android.compose")
 }
 
-val properties = Properties().apply {
-    load(rootProject.file("local.properties").inputStream())
-}
+val properties =
+    Properties().apply {
+        load(rootProject.file("local.properties").inputStream())
+    }
 
 android {
     namespace = "com.sopetit.ui"
@@ -31,4 +32,6 @@ dependencies {
 
     // ThreeTen
     implementation(libs.threeten)
+
+    testImplementation(libs.junit)
 }

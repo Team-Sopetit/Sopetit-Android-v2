@@ -7,10 +7,11 @@ import com.sopetit.domain.repository.RoutineRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetDailyRoutineUseCase @Inject constructor(
-    private val routineRepository: RoutineRepository
-) : UseCase<DailyRoutineListRequestModel, Result<DailyRoutineListThemeTotalModel>>() {
-
-    override suspend fun invoke(request: DailyRoutineListRequestModel): Flow<Result<DailyRoutineListThemeTotalModel>> =
-        routineRepository.dailyRoutineList(request)
-}
+class GetDailyRoutineUseCase
+    @Inject
+    constructor(
+        private val routineRepository: RoutineRepository,
+    ) : UseCase<DailyRoutineListRequestModel, Result<DailyRoutineListThemeTotalModel>>() {
+        override suspend fun invoke(request: DailyRoutineListRequestModel): Flow<Result<DailyRoutineListThemeTotalModel>> =
+            routineRepository.dailyRoutineList(request)
+    }

@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CustomRoutineResponseDto (
+data class CustomRoutineResponseDto(
     @SerialName("id")
     val id: Int,
     @SerialName("content")
@@ -12,5 +12,5 @@ data class CustomRoutineResponseDto (
     @SerialName("themeId")
     val themeId: Int,
     @SerialName("alarmTime")
-    val alarmTime: String
+    val alarmTime: String,
 )

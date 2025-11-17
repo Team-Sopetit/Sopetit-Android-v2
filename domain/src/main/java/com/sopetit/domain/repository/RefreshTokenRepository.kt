@@ -5,5 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface RefreshTokenRepository {
     suspend fun refreshToken(): Flow<Result<AccessToken>>
+
     suspend fun saveAccessToken(request: String): Flow<Result<Unit>>
 }

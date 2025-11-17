@@ -20,26 +20,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.SoftieTypo
 
 @Composable
 fun CommonSnackBar(
     hostState: SnackbarHostState,
     paddingBottom: Int,
     iconResource: Int,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(bottom = paddingBottom.dp),
-        contentAlignment = Alignment.BottomCenter
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(bottom = paddingBottom.dp),
+        contentAlignment = Alignment.BottomCenter,
     ) {
         CommonSnackBarContent(
             hostState = hostState,
-            iconResource = iconResource
+            iconResource = iconResource,
         )
     }
 }
@@ -53,21 +54,24 @@ fun CommonSnackBarContent(
         hostState = hostState,
         snackbar = { snackBarData ->
             Surface(
-                modifier = Modifier
-                    .wrapContentSize(Alignment.Center)
-                    .clip(RoundedCornerShape(99.dp)),
-                color = Gray400
+                modifier =
+                    Modifier
+                        .wrapContentSize(Alignment.Center)
+                        .clip(RoundedCornerShape(99.dp)),
+                color = Gray400,
             ) {
                 Row(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
+                    modifier =
+                        Modifier
+                            .padding(horizontal = 16.dp),
                 ) {
                     Image(
                         painter = painterResource(id = iconResource),
                         contentDescription = "snackbar icon",
-                        modifier = Modifier
-                            .size(18.dp)
-                            .align(Alignment.CenterVertically)
+                        modifier =
+                            Modifier
+                                .size(18.dp)
+                                .align(Alignment.CenterVertically),
                     )
 
                     Spacer(modifier = Modifier.width(6.dp))
@@ -76,11 +80,12 @@ fun CommonSnackBarContent(
                         text = snackBarData.visuals.message,
                         style = SoftieTypo.body2,
                         color = Gray0,
-                        modifier = Modifier
-                            .padding(vertical = 12.dp)
+                        modifier =
+                            Modifier
+                                .padding(vertical = 12.dp),
                     )
                 }
             }
-        }
+        },
     )
 }

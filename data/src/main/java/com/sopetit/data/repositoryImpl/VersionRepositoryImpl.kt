@@ -7,10 +7,11 @@ import com.sopetit.domain.repository.VersionRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class VersionRepositoryImpl @Inject constructor(
-    private val versionDataSource: VersionDataSource
-): VersionRepository {
-
-    override suspend fun getVersion(): Flow<Result<VersionModel>> =
-        GetVersionMapper.responseToModel(apiCall = { versionDataSource.getVersion() })
-}
+class VersionRepositoryImpl
+    @Inject
+    constructor(
+        private val versionDataSource: VersionDataSource,
+    ) : VersionRepository {
+        override suspend fun getVersion(): Flow<Result<VersionModel>> =
+            GetVersionMapper.responseToModel(apiCall = { versionDataSource.getVersion() })
+    }

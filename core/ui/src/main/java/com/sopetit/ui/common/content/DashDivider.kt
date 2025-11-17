@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray300
+import com.sopetit.designsystem.Gray300
 
 @Composable
 fun DashedDivider(
@@ -18,9 +18,10 @@ fun DashedDivider(
     strokeWidth: Dp = 1.dp,
     dashRatio: Float = 0.6f,
     dashCount: Int = 40,
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .height(strokeWidth)
+    modifier: Modifier =
+        Modifier
+            .fillMaxWidth()
+            .height(strokeWidth),
 ) {
     val strokePx = with(LocalDensity.current) { strokeWidth.toPx() }
 
@@ -36,7 +37,7 @@ fun DashedDivider(
                 color = color,
                 start = Offset(startX, 0f),
                 end = Offset(startX + dashWidth, 0f),
-                strokeWidth = strokePx
+                strokeWidth = strokePx,
             )
             startX += unitWidth
         }

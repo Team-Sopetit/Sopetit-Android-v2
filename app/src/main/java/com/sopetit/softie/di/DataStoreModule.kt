@@ -12,10 +12,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
-
     @Provides
     @Singleton
-    fun providesDataStore(@ApplicationContext context: Context): LocalDataStore {
+    fun providesDataStore(
+        @ApplicationContext context: Context,
+    ): LocalDataStore {
         return LocalDataStore(context)
     }
 }

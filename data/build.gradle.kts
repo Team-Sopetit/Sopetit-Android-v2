@@ -24,4 +24,6 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.okhttp.urlconnection)
+
+    testImplementation(libs.junit)
 }

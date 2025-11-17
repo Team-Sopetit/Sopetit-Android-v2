@@ -10,39 +10,40 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class AchieveRoutineViewModel @Inject constructor(
-    private val getAchieveRoutineUseCase: GetAchieveRoutineUseCase,
-) : BaseViewModel<AchieveRoutinePageState>(
-    AchieveRoutinePageState()
-) {
+class AchieveRoutineViewModel
+    @Inject
+    constructor(
+        private val getAchieveRoutineUseCase: GetAchieveRoutineUseCase,
+    ) : BaseViewModel<AchieveRoutinePageState>(
+            AchieveRoutinePageState(),
+        ) {
+        fun getAchieveThemeRoutine(themeId: Int) {
+            viewModelScope.launch {
+                setAchieveThemeId(themeId)
 
-    fun getAchieveThemeRoutine(themeId: Int) {
-        viewModelScope.launch {
-            setAchieveThemeId(themeId)
-
-            getAchieveRoutineUseCase(themeId).collect {
-                resultResponse(
-                    it,
-                    ::onSuccessAchieveThemeRoutine
-                )
+                getAchieveRoutineUseCase(themeId).collect {
+                    resultResponse(
+                        it,
+                        ::onSuccessAchieveThemeRoutine,
+                    )
+                }
             }
         }
-    }
 
-    private fun setAchieveThemeId(themeId: Int) {
-        updateState(
-            uiState.value.copy(
-                achieveThemeId = themeId
+        private fun setAchieveThemeId(themeId: Int) {
+            updateState(
+                uiState.value.copy(
+                    achieveThemeId = themeId,
+                ),
             )
-        )
-    }
+        }
 
-    private fun onSuccessAchieveThemeRoutine(data: AchieveRoutineModel) {
-        Timber.d("[테스트] -> $data")
-        updateState(
-            uiState.value.copy(
-                achieveRoutine = data
+        private fun onSuccessAchieveThemeRoutine(data: AchieveRoutineModel) {
+            Timber.d("[테스트] -> $data")
+            updateState(
+                uiState.value.copy(
+                    achieveRoutine = data,
+                ),
             )
-        )
+        }
     }
-}

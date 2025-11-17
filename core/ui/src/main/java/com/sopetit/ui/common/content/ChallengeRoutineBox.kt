@@ -22,14 +22,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Complete
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.Gray700
+import com.sopetit.designsystem.Complete
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.domain.entity.response.memberchallenge.MemberChallengeModel
 import com.sopetit.ui.common.type.ThemeIconType
 
@@ -38,7 +38,7 @@ fun ChallengeRoutineBox(
     challengeModel: MemberChallengeModel,
     onClickDetailAction: () -> Unit = {},
     onClickAchievement: () -> Unit = {},
-    isUsedForChange: Boolean = false
+    isUsedForChange: Boolean = false,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -47,7 +47,7 @@ fun ChallengeRoutineBox(
         onClickRoutineDetail = { onClickDetailAction() },
         interactionSource = interactionSource,
         onClickAchievement = onClickAchievement,
-        isUsedForChange = isUsedForChange
+        isUsedForChange = isUsedForChange,
     )
 }
 
@@ -57,57 +57,62 @@ fun ChallengeRoutineContent(
     onClickRoutineDetail: () -> Unit = {},
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     onClickAchievement: () -> Unit = {},
-    isUsedForChange: Boolean = false
+    isUsedForChange: Boolean = false,
 ) {
     val themeType: ThemeIconType = ThemeIconType.mapThemeIconType(challengeModel.theme.themeId)
 
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .clip(RoundedCornerShape(10.dp))
-            .background(themeType.themeColor)
-            .border(width = 1.dp, color = Gray200, RoundedCornerShape(10.dp))
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(10.dp))
+                .background(themeType.themeColor)
+                .border(width = 1.dp, color = Gray200, RoundedCornerShape(10.dp)),
     ) {
         Column {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(top = 16.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(top = 16.dp),
             ) {
                 Image(
                     painter = painterResource(id = themeType.themeIcon),
                     contentDescription = "theme icon",
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                        .align(Alignment.CenterStart)
-                        .size(16.dp)
+                    modifier =
+                        Modifier
+                            .padding(start = 20.dp)
+                            .align(Alignment.CenterStart)
+                            .size(16.dp),
                 )
 
                 Text(
                     text = challengeModel.theme.themeName,
                     color = Gray500,
                     style = SoftieTypo.body2,
-                    modifier = Modifier
-                        .padding(start = 38.dp)
-                        .align(Alignment.CenterStart)
+                    modifier =
+                        Modifier
+                            .padding(start = 38.dp)
+                            .align(Alignment.CenterStart),
                 )
 
                 if (!isUsedForChange) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_more_info),
                         contentDescription = "more info",
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(end = 20.dp)
-                            .size(24.dp)
-                            .padding(vertical = 10.dp, horizontal = 5.dp)
-                            .clickable(
-                                indication = null,
-                                interactionSource = interactionSource,
-                                onClick = { onClickRoutineDetail() }
-                            )
+                        modifier =
+                            Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(end = 20.dp)
+                                .size(24.dp)
+                                .padding(vertical = 10.dp, horizontal = 5.dp)
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = interactionSource,
+                                    onClick = { onClickRoutineDetail() },
+                                ),
                     )
                 }
             }
@@ -116,30 +121,32 @@ fun ChallengeRoutineContent(
                 text = challengeModel.content,
                 color = Gray700,
                 style = SoftieTypo.body2,
-                modifier = Modifier
-                    .padding(top = 6.dp, start = 20.dp, end = 35.dp)
-                    .fillMaxWidth()
-                    .padding(bottom = if (isUsedForChange) 12.dp else 0.dp)
+                modifier =
+                    Modifier
+                        .padding(top = 6.dp, start = 20.dp, end = 35.dp)
+                        .fillMaxWidth()
+                        .padding(bottom = if (isUsedForChange) 12.dp else 0.dp),
             )
 
             if (!isUsedForChange) {
                 Box(
-                    modifier = Modifier
-                        .padding(start = 20.dp, top = 10.dp, bottom = 12.dp)
-                        .wrapContentSize()
-                        .clip(RoundedCornerShape(100.dp))
-                        .background(Gray650)
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = null,
-                            onClick = { onClickAchievement() }
-                        )
+                    modifier =
+                        Modifier
+                            .padding(start = 20.dp, top = 10.dp, bottom = 12.dp)
+                            .wrapContentSize()
+                            .clip(RoundedCornerShape(100.dp))
+                            .background(Gray650)
+                            .clickable(
+                                interactionSource = interactionSource,
+                                indication = null,
+                                onClick = { onClickAchievement() },
+                            ),
                 ) {
                     Text(
                         text = Complete,
                         color = Gray0,
                         style = SoftieTypo.caption1,
-                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp),
                     )
                 }
             }
@@ -148,9 +155,10 @@ fun ChallengeRoutineContent(
         Image(
             painter = painterResource(id = themeType.themeBackgroundImg),
             contentDescription = "theme background",
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 12.dp)
+            modifier =
+                Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 12.dp),
         )
     }
 }

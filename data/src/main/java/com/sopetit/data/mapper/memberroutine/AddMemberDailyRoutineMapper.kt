@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 object AddMemberDailyRoutineMapper : BaseMapper() {
-
     fun listToDto(request: List<Int>) = AddMemberDailyRoutineRequestDto(request)
 
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<AddMemberDailyRoutineResponseDto>>): Flow<Result<List<Int>>> {
@@ -16,7 +15,7 @@ object AddMemberDailyRoutineMapper : BaseMapper() {
             apiCall = { apiCall() },
             responseToModel = { response ->
                 response?.ids ?: emptyList()
-            }
+            },
         )
     }
 }

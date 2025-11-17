@@ -22,22 +22,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray700
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.SoftieTypo
 
 @Composable
 fun StoryTellingTextItem(
     storyContent: String,
-    onClickAction: () -> Unit = {}
+    onClickAction: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     StoryTellingTextContent(
         storyContent = storyContent,
         onClickAction = onClickAction,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     )
 }
 
@@ -45,45 +45,48 @@ fun StoryTellingTextItem(
 fun StoryTellingTextContent(
     storyContent: String,
     onClickAction: () -> Unit = {},
-    interactionSource: MutableInteractionSource = MutableInteractionSource()
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
-
     Spacer(modifier = Modifier.height(63.dp))
 
     Box(
-        modifier = Modifier
-            .wrapContentSize()
-            .padding(bottom = 107.dp)
+        modifier =
+            Modifier
+                .wrapContentSize()
+                .padding(bottom = 107.dp),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .clip(RoundedCornerShape(12))
-                .background(Gray0)
-                .wrapContentHeight()
-                .clickable(
-                    indication = null,
-                    interactionSource = interactionSource,
-                    onClick = { onClickAction() }
-                )
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .clip(RoundedCornerShape(12))
+                    .background(Gray0)
+                    .wrapContentHeight()
+                    .clickable(
+                        indication = null,
+                        interactionSource = interactionSource,
+                        onClick = { onClickAction() },
+                    ),
         ) {
             Text(
                 text = storyContent,
                 style = SoftieTypo.bubble1,
                 color = Gray700,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(vertical = 23.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.Center)
+                        .padding(vertical = 23.dp),
             )
 
             Icon(
                 painter = painterResource(id = R.drawable.ic_btn_next),
                 contentDescription = "next btn",
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 23.dp)
-                    .size(14.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(end = 23.dp)
+                        .size(14.dp),
             )
         }
     }

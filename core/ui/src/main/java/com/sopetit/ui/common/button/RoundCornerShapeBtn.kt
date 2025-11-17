@@ -15,10 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.SoftieTypo
 
 @Composable
 fun RoundCornerShapeBtn(
@@ -30,7 +30,7 @@ fun RoundCornerShapeBtn(
     textStyle: TextStyle,
     verticalPadding: Int,
     horizontalPadding: Int,
-    onClickAction: () -> Unit
+    onClickAction: () -> Unit,
 ) {
     RoundCornerShapeBtnContent(
         backgroundColor = backgroundColor,
@@ -41,7 +41,7 @@ fun RoundCornerShapeBtn(
         textStyle = textStyle,
         verticalPadding = verticalPadding,
         horizontalPadding = horizontalPadding,
-        onClickAction = onClickAction
+        onClickAction = onClickAction,
     )
 }
 
@@ -55,24 +55,26 @@ fun RoundCornerShapeBtnContent(
     textStyle: TextStyle = SoftieTypo.caption1,
     verticalPadding: Int = 0,
     horizontalPadding: Int = 0,
-    onClickAction: () -> Unit = {}
+    onClickAction: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier
-            .wrapContentSize()
-            .clip(RoundedCornerShape(cornerShape.dp))
-            .background(backgroundColor)
-            .border(1.dp, color = borderColor, RoundedCornerShape(cornerShape.dp))
-            .clickable(
-                onClick = onClickAction
-            )
+        modifier =
+            Modifier
+                .wrapContentSize()
+                .clip(RoundedCornerShape(cornerShape.dp))
+                .background(backgroundColor)
+                .border(1.dp, color = borderColor, RoundedCornerShape(cornerShape.dp))
+                .clickable(
+                    onClick = onClickAction,
+                ),
     ) {
         Text(
             text = textContent,
             color = textColor,
             style = textStyle,
-            modifier = Modifier
-                .padding(vertical = verticalPadding.dp, horizontal = horizontalPadding.dp)
+            modifier =
+                Modifier
+                    .padding(vertical = verticalPadding.dp, horizontal = horizontalPadding.dp),
         )
     }
 }

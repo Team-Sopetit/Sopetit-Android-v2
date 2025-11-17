@@ -7,8 +7,7 @@ import com.sopetit.data.entity.response.memberchallenge.AddMemberChallengeRespon
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-object AddMemberChallengeMapper: BaseMapper() {
-
+object AddMemberChallengeMapper : BaseMapper() {
     fun intToDto(request: Int) = AddMemberChallengeRequestDto(request)
 
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<AddMemberChallengeResponseDto>>): Flow<Result<Int>> {
@@ -16,7 +15,7 @@ object AddMemberChallengeMapper: BaseMapper() {
             apiCall = { apiCall() },
             responseToModel = { response ->
                 response?.memberChallengeId ?: 0
-            }
+            },
         )
     }
 }

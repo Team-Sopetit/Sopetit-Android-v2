@@ -9,16 +9,17 @@ import com.sopetit.data.service.RoutineService
 import retrofit2.Response
 import javax.inject.Inject
 
-data class RoutineDataSourceImpl @Inject constructor(
-    private val routineService: RoutineService
-) : RoutineDataSource {
+data class RoutineDataSourceImpl
+    @Inject
+    constructor(
+        private val routineService: RoutineService,
+    ) : RoutineDataSource {
+        override suspend fun getDailyRoutine(request: List<Int>): Response<BaseResponse<DailyRoutineListResponseDto>> =
+            routineService.routineList(request)
 
-    override suspend fun getDailyRoutine(request: List<Int>): Response<BaseResponse<DailyRoutineListResponseDto>> =
-        routineService.routineList(request)
+        override suspend fun getDailyThemeRoutine(request: Int): Response<BaseResponse<DailyThemeRoutineResponseDto>> =
+            routineService.dailyThemeRoutine(request)
 
-    override suspend fun getDailyThemeRoutine(request: Int): Response<BaseResponse<DailyThemeRoutineResponseDto>> =
-        routineService.dailyThemeRoutine(request)
-
-    override suspend fun getChallengeRoutine(request: Int): Response<BaseResponse<ChallengeResponseDto>> =
-        routineService.challenge(request)
-}
+        override suspend fun getChallengeRoutine(request: Int): Response<BaseResponse<ChallengeResponseDto>> =
+            routineService.challenge(request)
+    }

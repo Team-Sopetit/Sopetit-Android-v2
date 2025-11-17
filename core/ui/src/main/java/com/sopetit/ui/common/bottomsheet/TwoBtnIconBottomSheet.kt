@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray300
-import com.sopetit.design_system.Gray700
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray300
+import com.sopetit.designsystem.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.ui.common.button.BottomTwoBtn
 import com.sopetit.ui.common.model.TwoBtnIconModel
 
@@ -27,7 +27,6 @@ fun TwoBtnIconBottomSheet(
     onClickLeftBtn: () -> Unit,
     onClickRightBtn: () -> Unit,
 ) {
-
     TwoBtnIconContent(
         title = twoBtnIconModel.title,
         semiTitle = twoBtnIconModel.semiTitle,
@@ -38,7 +37,7 @@ fun TwoBtnIconBottomSheet(
         leftBtnColor = twoBtnIconModel.leftBtnColor,
         rightBtnColor = twoBtnIconModel.rightBtnColor,
         onClickLeftBtn = onClickLeftBtn,
-        onClickRightBtn = onClickRightBtn
+        onClickRightBtn = onClickRightBtn,
     )
 }
 
@@ -56,35 +55,39 @@ fun TwoBtnIconContent(
     onClickRightBtn: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Gray0)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Gray0),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_bear_face_crying),
             contentDescription = "crying",
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 42.dp)
-                .size(width = 66.dp, height = 61.dp)
+            modifier =
+                Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 42.dp)
+                    .size(width = 66.dp, height = 61.dp),
         )
 
         Text(
             text = title,
             color = Gray700,
             style = SoftieTypo.head1,
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .align(Alignment.CenterHorizontally)
+            modifier =
+                Modifier
+                    .padding(top = 12.dp)
+                    .align(Alignment.CenterHorizontally),
         )
 
         Text(
             text = semiTitle,
             color = Gray300,
             style = SoftieTypo.body2,
-            modifier = Modifier
-                .padding(top = 6.dp, bottom = 35.dp)
-                .align(Alignment.CenterHorizontally)
+            modifier =
+                Modifier
+                    .padding(top = 6.dp, bottom = 35.dp)
+                    .align(Alignment.CenterHorizontally),
         )
 
         BottomTwoBtn(
@@ -97,7 +100,7 @@ fun TwoBtnIconContent(
             leftBtnTextColor = leftBtnTextColor,
             rightBtnTextColor = rightBtnTextColor,
             twoBtnBottomPadding = 32,
-            twoBtnHorizontalPadding = 20
+            twoBtnHorizontalPadding = 20,
         )
     }
 }

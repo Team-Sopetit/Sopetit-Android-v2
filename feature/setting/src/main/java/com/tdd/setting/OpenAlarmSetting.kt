@@ -15,8 +15,9 @@ fun openAppNotificationSettings(context: Context) {
         } ?: false
     }
 
-
-    tryStart(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-        data = Uri.fromParts("package", context.packageName, null)
-    })
+    tryStart(
+        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts("package", context.packageName, null)
+        },
+    )
 }

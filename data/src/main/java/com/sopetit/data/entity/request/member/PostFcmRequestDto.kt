@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PostFcmRequestDto (
+data class PostFcmRequestDto(
     @SerialName("fcmToken")
-    val fcmToken: String = ""
+    val fcmToken: String = "",
 )

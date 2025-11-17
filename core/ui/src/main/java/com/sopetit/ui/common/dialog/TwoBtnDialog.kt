@@ -16,10 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.SoftieTypo
-import com.sopetit.design_system.White0
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.SoftieTypo
+import com.sopetit.designsystem.White0
 import com.sopetit.ui.common.button.BottomTwoBtn
 import com.sopetit.ui.common.model.TwoBtnDialogModel
 
@@ -29,7 +29,6 @@ fun TwoBtnDialog(
     onDismiss: () -> Unit,
     onClickDoBtn: () -> Unit,
 ) {
-
     TwoBtnDialogContent(
         title = twoBtnDialogModel.title,
         semiTitle = twoBtnDialogModel.semiTitle,
@@ -41,7 +40,7 @@ fun TwoBtnDialog(
         rightBtnColorBrush = twoBtnDialogModel.rightBtnColorBrush,
         rightBtnTextColor = twoBtnDialogModel.rightBtnTextColor,
         onDismiss = onDismiss,
-        onClickDoBtn = onClickDoBtn
+        onClickDoBtn = onClickDoBtn,
     )
 }
 
@@ -61,11 +60,12 @@ fun TwoBtnDialogContent(
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(
-            modifier = Modifier
-                .wrapContentHeight()
-                .width(266.dp),
+            modifier =
+                Modifier
+                    .wrapContentHeight()
+                    .width(266.dp),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = White0)
+            colors = CardDefaults.cardColors(containerColor = White0),
         ) {
             Column {
                 Text(
@@ -73,9 +73,10 @@ fun TwoBtnDialogContent(
                     color = Gray700,
                     style = SoftieTypo.head3,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(top = 15.dp)
-                        .align(Alignment.CenterHorizontally)
+                    modifier =
+                        Modifier
+                            .padding(top = 15.dp)
+                            .align(Alignment.CenterHorizontally),
                 )
 
                 Text(
@@ -83,9 +84,10 @@ fun TwoBtnDialogContent(
                     color = Gray500,
                     style = SoftieTypo.body2,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(top = 7.dp, bottom = 16.dp)
-                        .align(Alignment.CenterHorizontally)
+                    modifier =
+                        Modifier
+                            .padding(top = 7.dp, bottom = 16.dp)
+                            .align(Alignment.CenterHorizontally),
                 )
 
                 BottomTwoBtn(
@@ -99,7 +101,7 @@ fun TwoBtnDialogContent(
                     leftBtnTextColor = leftBtnTextColor,
                     rightBtnTextColor = rightBtnTextColor,
                     twoBtnBottomPadding = 10,
-                    twoBtnHorizontalPadding = 11
+                    twoBtnHorizontalPadding = 11,
                 )
             }
         }

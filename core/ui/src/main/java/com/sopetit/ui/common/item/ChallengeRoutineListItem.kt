@@ -21,26 +21,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Detail
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.Gray700
+import com.sopetit.designsystem.Detail
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.Gray700
 import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.SoftieTypo
 
 @Composable
 fun ChallengeRoutineListItem(
     onClickAction: () -> Unit = {},
     routineContent: String,
     isRoutineSelected: Boolean = false,
-    onClickDetail: () -> Unit
+    onClickDetail: () -> Unit,
 ) {
     ChallengeRoutineListItemContent(
         onClickAction = onClickAction,
         routineContent = routineContent,
         isRoutineSelected = isRoutineSelected,
-        onClickDetail = onClickDetail
+        onClickDetail = onClickDetail,
     )
 }
 
@@ -49,71 +49,81 @@ fun ChallengeRoutineListItemContent(
     onClickAction: () -> Unit = {},
     routineContent: String = "",
     isRoutineSelected: Boolean = false,
-    onClickDetail: () -> Unit = {}
+    onClickDetail: () -> Unit = {},
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .clip(RoundedCornerShape(10.dp))
-            .border(width = 1.dp, color = Gray200, RoundedCornerShape(10.dp))
-            .background(Gray0)
-            .clickable { onClickAction() }
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(10.dp))
+                .border(width = 1.dp, color = Gray200, RoundedCornerShape(10.dp))
+                .background(Gray0)
+                .clickable { onClickAction() },
     ) {
         Text(
             text = routineContent,
             color = Gray700,
             style = SoftieTypo.body2,
-            modifier = Modifier
-                .padding(20.dp)
+            modifier =
+                Modifier
+                    .padding(20.dp),
         )
 
-        Divider(modifier = Modifier
-            .border(1.dp, color = Gray200)
-            .fillMaxWidth())
+        Divider(
+            modifier =
+                Modifier
+                    .border(1.dp, color = Gray200)
+                    .fillMaxWidth(),
+        )
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
         ) {
             Row(
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .padding(start = 20.dp)
-                    .align(Alignment.CenterStart)
-                    .clip(RoundedCornerShape(100.dp))
-                    .background(Gray200)
-                    .clickable(
-                        onClick = onClickDetail
-                    )
+                modifier =
+                    Modifier
+                        .padding(vertical = 12.dp)
+                        .padding(start = 20.dp)
+                        .align(Alignment.CenterStart)
+                        .clip(RoundedCornerShape(100.dp))
+                        .background(Gray200)
+                        .clickable(
+                            onClick = onClickDetail,
+                        ),
             ) {
                 Text(
                     text = Detail,
                     color = Gray400,
                     style = SoftieTypo.caption1,
-                    modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .padding(start = 8.dp)
+                    modifier =
+                        Modifier
+                            .padding(vertical = 6.dp)
+                            .padding(start = 8.dp),
                 )
 
                 Image(
                     painter = painterResource(id = R.drawable.ic_detail),
                     contentDescription = "detail",
-                    modifier = Modifier
-                        .padding(vertical = 7.dp)
-                        .padding(start = 2.dp, end = 8.dp)
-                        .size(16.dp)
+                    modifier =
+                        Modifier
+                            .padding(vertical = 7.dp)
+                            .padding(start = 2.dp, end = 8.dp)
+                            .size(16.dp),
                 )
             }
 
             Image(
                 painter = painterResource(id = if (isRoutineSelected) R.drawable.ic_check_on else R.drawable.ic_check_off),
                 contentDescription = "check icon",
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(5.dp)
-                    .padding(end = 7.dp)
-                    .size(24.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(5.dp)
+                        .padding(end = 7.dp)
+                        .size(24.dp),
             )
         }
     }

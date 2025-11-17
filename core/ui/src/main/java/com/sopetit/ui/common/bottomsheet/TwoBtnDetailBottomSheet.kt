@@ -19,18 +19,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.DailyRoutine
-import com.sopetit.design_system.Delete
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.MemoTitle
-import com.sopetit.design_system.Modify
+import com.sopetit.designsystem.DailyRoutine
+import com.sopetit.designsystem.Delete
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.MemoTitle
+import com.sopetit.designsystem.Modify
 import com.sopetit.design_system.R
-import com.sopetit.design_system.Red200
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Red200
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.domain.entity.enums.BottomSheetActionType
 import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel
@@ -55,7 +55,7 @@ fun TwoBtnDetailBottomSheet(
         onClickRoutineDeleteBtn = { onClickRoutineDeleteBtn(routine) },
         memoActionModel = memoActionModel,
         type = type,
-        routine = routine
+        routine = routine,
     )
 }
 
@@ -69,56 +69,62 @@ fun TwoBtnDetailContent(
     routine: RoutineDetailModel = RoutineDetailModel(),
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Gray0),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Gray0),
     ) {
         Text(
             text = if (type == TwoBtnBottomSheetType.MemoWrite) MemoTitle else DailyRoutine,
             color = Gray700,
             style = SoftieTypo.head4,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 24.dp)
+            modifier =
+                Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 24.dp),
         )
 
         Box(
-            modifier = Modifier
-                .padding(top = 16.dp, start = 20.dp, end = 20.dp)
-                .padding(bottom = if (routine.alarmTime.isNotEmpty()) 0.dp else 32.dp)
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
-                .background(Gray200)
+            modifier =
+                Modifier
+                    .padding(top = 16.dp, start = 20.dp, end = 20.dp)
+                    .padding(bottom = if (routine.alarmTime.isNotEmpty()) 0.dp else 32.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Gray200),
         ) {
             Text(
                 text = if (type == TwoBtnBottomSheetType.MemoWrite) memoActionModel.content else routine.content,
                 color = Gray700,
                 style = SoftieTypo.body2,
-                modifier = Modifier
-                    .padding(horizontal = 27.dp, vertical = 20.dp)
+                modifier =
+                    Modifier
+                        .padding(horizontal = 27.dp, vertical = 20.dp),
             )
         }
 
         if (routine.alarmTime.isNotEmpty()) {
             Row(
-                modifier = Modifier
-                    .padding(start = 20.dp, top = 12.dp, bottom = 32.dp),
-                verticalAlignment = Alignment.CenterVertically
+                modifier =
+                    Modifier
+                        .padding(start = 20.dp, top = 12.dp, bottom = 32.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_routine_time),
                     contentDescription = "alarm",
-                    modifier = Modifier
-                        .padding(end = 2.dp)
-                        .size(14.dp)
+                    modifier =
+                        Modifier
+                            .padding(end = 2.dp)
+                            .size(14.dp),
                 )
 
                 Text(
                     text = convertToAmPmFormat(routine.alarmTime),
                     color = Gray500,
                     style = SoftieTypo.caption1,
-                    modifier = Modifier
+                    modifier = Modifier,
                 )
             }
         }
@@ -136,7 +142,7 @@ fun TwoBtnDetailContent(
             leftBtnTextColor = Gray0,
             rightBtnTextColor = Gray0,
             twoBtnBottomPadding = 32,
-            twoBtnHorizontalPadding = 20
+            twoBtnHorizontalPadding = 20,
         )
     }
 }

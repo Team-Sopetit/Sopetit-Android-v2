@@ -1,6 +1,6 @@
 package com.sopetit.domain.entity.response.version
 
-data class VersionAppModel (
+data class VersionAppModel(
     val appVersion: String = "",
-    val forceUpdateVersion: String = ""
+    val forceUpdateVersion: String = "",
 )

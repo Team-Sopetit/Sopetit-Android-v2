@@ -6,11 +6,12 @@ import com.sopetit.domain.repository.MemberRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class PostCreateMemberUseCase @Inject constructor(
-    private val memberRepository: MemberRepository
-) : UseCase<CreateMemberModel, Result<Unit>>() {
-
-    override suspend fun invoke(request: CreateMemberModel): Flow<Result<Unit>> {
-        return memberRepository.postCreateMember(request)
+class PostCreateMemberUseCase
+    @Inject
+    constructor(
+        private val memberRepository: MemberRepository,
+    ) : UseCase<CreateMemberModel, Result<Unit>>() {
+        override suspend fun invoke(request: CreateMemberModel): Flow<Result<Unit>> {
+            return memberRepository.postCreateMember(request)
+        }
     }
-}

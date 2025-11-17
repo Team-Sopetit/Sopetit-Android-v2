@@ -11,70 +11,71 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class ThemeChoiceViewModel @Inject constructor(
-    private val getThemeListUseCase: GetThemeListUseCase
-) : BaseViewModel<ThemeChoicePageState>(
-    ThemeChoicePageState()
-) {
-
-    init {
-        initGetThemeList()
-    }
-
-    fun clickFirstPage() {
-        updateState(
-            uiState.value.copy(
-                isFirstChoicePage = false
-            )
-        )
-    }
-
-    fun getMemberModel(memberModel: CreateMemberModel) {
-        updateState(
-            uiState.value.copy(
-                memberModel = memberModel
-            )
-        )
-        Timber.d("[온보딩] (themeChoice) member -> ${uiState.value.memberModel}")
-    }
-
-    fun updateMemberModel() = CreateMemberModel(dollType = uiState.value.memberModel.dollType, dollName = uiState.value.memberModel.dollName, selectedThemeIdList = uiState.value.selectedThemeIdList)
-
-    private fun initGetThemeList() {
-        viewModelScope.launch {
-            getThemeListUseCase(request = Unit).collect {
-                resultResponse(it, ::onSuccessGetThemeList)
-            }
+class ThemeChoiceViewModel
+    @Inject
+    constructor(
+        private val getThemeListUseCase: GetThemeListUseCase,
+    ) : BaseViewModel<ThemeChoicePageState>(
+            ThemeChoicePageState(),
+        ) {
+        init {
+            initGetThemeList()
         }
-    }
 
-    private fun onSuccessGetThemeList(data: ThemeListModel) {
-        updateState(
-            uiState.value.copy(
-                themeList = data.themes
+        fun clickFirstPage() {
+            updateState(
+                uiState.value.copy(
+                    isFirstChoicePage = false,
+                ),
             )
-        )
-    }
+        }
 
-    fun setSelectedThemeIdList(themeId: Int) {
-        val newList: MutableList<Int> = mutableListOf()
-        newList.addAll(uiState.value.selectedThemeIdList)
+        fun getMemberModel(memberModel: CreateMemberModel) {
+            updateState(
+                uiState.value.copy(
+                    memberModel = memberModel,
+                ),
+            )
+            Timber.d("[온보딩] (themeChoice) member -> ${uiState.value.memberModel}")
+        }
 
-        when (uiState.value.selectedThemeIdList.contains(themeId)) {
-            true -> {
-                newList.remove(themeId)
-            }
-            false -> {
-                if (uiState.value.selectedThemeIdList.size < 3) {
-                    newList.add(themeId)
+        fun updateMemberModel() = CreateMemberModel(dollType = uiState.value.memberModel.dollType, dollName = uiState.value.memberModel.dollName, selectedThemeIdList = uiState.value.selectedThemeIdList)
+
+        private fun initGetThemeList() {
+            viewModelScope.launch {
+                getThemeListUseCase(request = Unit).collect {
+                    resultResponse(it, ::onSuccessGetThemeList)
                 }
             }
         }
 
-        updateState(
-            uiState.value.copy(
-                selectedThemeIdList = newList.sorted()
+        private fun onSuccessGetThemeList(data: ThemeListModel) {
+            updateState(
+                uiState.value.copy(
+                    themeList = data.themes,
+                ),
             )
-        )
+        }
+
+        fun setSelectedThemeIdList(themeId: Int) {
+            val newList: MutableList<Int> = mutableListOf()
+            newList.addAll(uiState.value.selectedThemeIdList)
+
+            when (uiState.value.selectedThemeIdList.contains(themeId)) {
+                true -> {
+                    newList.remove(themeId)
+                }
+                false -> {
+                    if (uiState.value.selectedThemeIdList.size < 3) {
+                        newList.add(themeId)
+                    }
+                }
+            }
+
+            updateState(
+                uiState.value.copy(
+                    selectedThemeIdList = newList.sorted(),
+                ),
+            )
+        }
     }
-}

@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MemoWriteRequestDto (
+data class MemoWriteRequestDto(
     @SerialName("achievedDate")
     val achievedDate: String = "",
     @SerialName("content")
-    val content: String = ""
+    val content: String = "",
 )

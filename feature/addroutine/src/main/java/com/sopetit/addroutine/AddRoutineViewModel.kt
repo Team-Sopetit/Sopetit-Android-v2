@@ -9,29 +9,30 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddRoutineViewModel @Inject constructor(
-    private val getThemeListUseCase: GetThemeListUseCase,
-) : BaseViewModel<AddRoutinePageState>(
-    AddRoutinePageState()
-) {
+class AddRoutineViewModel
+    @Inject
+    constructor(
+        private val getThemeListUseCase: GetThemeListUseCase,
+    ) : BaseViewModel<AddRoutinePageState>(
+            AddRoutinePageState(),
+        ) {
+        init {
+            initSetRoutineThemeList()
+        }
 
-    init {
-        initSetRoutineThemeList()
-    }
-
-    private fun initSetRoutineThemeList() {
-        viewModelScope.launch {
-            getThemeListUseCase(request = Unit).collect {
-                resultResponse(it, ::onSuccessGetRoutineThemeList)
+        private fun initSetRoutineThemeList() {
+            viewModelScope.launch {
+                getThemeListUseCase(request = Unit).collect {
+                    resultResponse(it, ::onSuccessGetRoutineThemeList)
+                }
             }
         }
-    }
 
-    private fun onSuccessGetRoutineThemeList(data: ThemeListModel) {
-        updateState(
-            uiState.value.copy(
-                routineThemeList = data.themes
+        private fun onSuccessGetRoutineThemeList(data: ThemeListModel) {
+            updateState(
+                uiState.value.copy(
+                    routineThemeList = data.themes,
+                ),
             )
-        )
+        }
     }
-}

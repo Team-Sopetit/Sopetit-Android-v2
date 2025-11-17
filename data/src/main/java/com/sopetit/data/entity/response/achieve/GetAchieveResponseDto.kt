@@ -4,11 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetAchieveResponseDto (
+data class GetAchieveResponseDto(
     @SerialName("achievedCount")
     val achievedCount: Int = 0,
     @SerialName("themes")
-    val themes: List<AchieveTheme> = emptyList()
+    val themes: List<AchieveTheme> = emptyList(),
 ) {
     @Serializable
     data class AchieveTheme(
@@ -17,6 +17,6 @@ data class GetAchieveResponseDto (
         @SerialName("name")
         val name: String = "",
         @SerialName("achievedCount")
-        val achievedCount: Int = 0
+        val achievedCount: Int = 0,
     )
 }

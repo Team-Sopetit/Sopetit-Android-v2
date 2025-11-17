@@ -8,30 +8,30 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class DollNamingViewModel @Inject constructor(
-
-) : BaseViewModel<DollNamingPageState>(DollNamingPageState()) {
-
-    fun getMemberModel(memberModel: CreateMemberModel) {
-        updateState(
-            uiState.value.copy(
-                memberModel = memberModel,
-                dollHelloResource = BearType.getDollResource(memberModel.dollType.value)
+class DollNamingViewModel
+    @Inject
+    constructor() : BaseViewModel<DollNamingPageState>(DollNamingPageState()) {
+        fun getMemberModel(memberModel: CreateMemberModel) {
+            updateState(
+                uiState.value.copy(
+                    memberModel = memberModel,
+                    dollHelloResource = BearType.getDollResource(memberModel.dollType.value),
+                ),
             )
-        )
-        Timber.d("[온보딩] (dollNaming) member -> ${uiState.value.memberModel}")
-    }
+            Timber.d("[온보딩] (dollNaming) member -> ${uiState.value.memberModel}")
+        }
 
-    fun updateMemberModel() = CreateMemberModel(
-        dollType = uiState.value.memberModel.dollType,
-        dollName = uiState.value.dollInputName
-    )
-
-    fun onValueChange(newValue: String) {
-        updateState(
-            uiState.value.copy(
-                dollInputName = newValue
+        fun updateMemberModel() =
+            CreateMemberModel(
+                dollType = uiState.value.memberModel.dollType,
+                dollName = uiState.value.dollInputName,
             )
-        )
+
+        fun onValueChange(newValue: String) {
+            updateState(
+                uiState.value.copy(
+                    dollInputName = newValue,
+                ),
+            )
+        }
     }
-}

@@ -6,5 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AchieveRepository {
     suspend fun getAchieve(): Flow<Result<AchieveModel>>
+
     suspend fun getAchieveRoutine(themeId: Int): Flow<Result<AchieveRoutineModel>>
 }
