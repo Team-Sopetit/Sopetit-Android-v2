@@ -12,4 +12,6 @@ dependencies {
 
     implementation(libs.coroutines.core)
     implementation(libs.hilt.core)
+
+    testImplementation(libs.junit)
 }

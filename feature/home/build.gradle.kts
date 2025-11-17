@@ -15,4 +15,6 @@ dependencies {
 
     implementation(libs.firebase.messaging)
     implementation(libs.permissions)
+
+    testImplementation(libs.junit)
 }

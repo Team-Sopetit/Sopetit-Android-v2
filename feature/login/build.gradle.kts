@@ -14,4 +14,6 @@ dependencies {
     implementation(projects.core.designSystem)
 
     implementation(libs.kakao.auth)
+
+    testImplementation(libs.junit)
 }

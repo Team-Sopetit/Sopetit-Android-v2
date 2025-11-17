@@ -15,4 +15,6 @@ dependencies {
 
     // ThreeTen
     implementation(libs.threeten)
+
+    testImplementation(libs.junit)
 }

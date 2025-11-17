@@ -22,4 +22,6 @@ dependencies {
     implementation(projects.feature.addroutine)
     implementation(projects.feature.customroutine)
     implementation(projects.feature.setting)
+
+    testImplementation(libs.junit)
 }
