@@ -49,7 +49,7 @@ import com.sopetit.designsystem.Gray300
 import com.sopetit.designsystem.Gray50
 import com.sopetit.designsystem.Gray500
 import com.sopetit.designsystem.Gray700
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Softie
 import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel

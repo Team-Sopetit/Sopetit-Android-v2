@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.AddRoutineCustomSemiTitle
 import com.sopetit.designsystem.AddRoutineCustomTitle
 import com.sopetit.designsystem.AddRoutineTitle
@@ -76,9 +77,9 @@ fun AddRoutineContent(
 ) {
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .background(Gray50),
+        Modifier
+            .fillMaxSize()
+            .background(Gray50),
     ) {
         TopBarContent(
             content = AddRoutineTitle,
@@ -96,8 +97,8 @@ fun AddRoutineContent(
             color = Gray700,
             style = SoftieTypo.head3,
             modifier =
-                Modifier
-                    .padding(top = 12.dp, start = 20.dp),
+            Modifier
+                .padding(top = 12.dp, start = 20.dp),
         )
 
         RoutineThemeList(
@@ -114,31 +115,31 @@ fun RoutineCustomBox(
 ) {
     Row(
         modifier =
-            Modifier
-                .padding(horizontal = 20.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
-                .background(Gray650)
-                .clickable(
-                    onClick = onClickAction,
-                    interactionSource = interactionSource,
-                    indication = null,
-                ),
+        Modifier
+            .padding(horizontal = 20.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .background(Gray650)
+            .clickable(
+                onClick = onClickAction,
+                interactionSource = interactionSource,
+                indication = null,
+            ),
     ) {
         Column(
             modifier =
-                Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically)
-                    .padding(start = 20.dp),
+            Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
+                .padding(start = 20.dp),
         ) {
             Text(
                 text = AddRoutineCustomTitle,
                 color = Gray300,
                 style = SoftieTypo.caption1,
                 modifier =
-                    Modifier
-                        .padding(bottom = 2.dp),
+                Modifier
+                    .padding(bottom = 2.dp),
             )
 
             Text(
@@ -151,9 +152,9 @@ fun RoutineCustomBox(
             painter = painterResource(id = R.drawable.ic_routine_custom),
             contentDescription = "write custom",
             modifier =
-                Modifier
-                    .align(Alignment.Bottom)
-                    .height(76.dp),
+            Modifier
+                .align(Alignment.Bottom)
+                .height(76.dp),
         )
 
         Image(
@@ -161,10 +162,10 @@ fun RoutineCustomBox(
             contentDescription = "next",
             colorFilter = ColorFilter.tint(Gray400),
             modifier =
-                Modifier
-                    .align(Alignment.Top)
-                    .padding(start = 4.dp, top = 16.dp, end = 12.dp)
-                    .size(24.dp),
+            Modifier
+                .align(Alignment.Top)
+                .padding(start = 4.dp, top = 16.dp, end = 12.dp)
+                .size(24.dp),
         )
     }
 }
@@ -176,9 +177,9 @@ fun RoutineThemeList(
 ) {
     LazyColumn(
         modifier =
-            Modifier
-                .padding(horizontal = 20.dp)
-                .padding(top = 8.dp),
+        Modifier
+            .padding(horizontal = 20.dp)
+            .padding(top = 8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         items(routineThemeList) { theme ->
@@ -201,31 +202,31 @@ fun RoutineThemeListItem(
 ) {
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
-                .background(Gray0)
-                .border(1.dp, color = Gray200, shape = RoundedCornerShape(10.dp))
-                .clickable(
-                    onClick = onClickAction,
-                ),
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .background(Gray0)
+            .border(1.dp, color = Gray200, shape = RoundedCornerShape(10.dp))
+            .clickable(
+                onClick = onClickAction,
+            ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
             painter = painterResource(id = ThemeIconType.getThemeIcon(themeId)),
             contentDescription = "theme icon",
             modifier =
-                Modifier
-                    .padding(start = 20.dp)
-                    .size(40.dp),
+            Modifier
+                .padding(start = 20.dp)
+                .size(40.dp),
         )
 
         Column(
             modifier =
-                Modifier
-                    .padding(start = 12.dp)
-                    .padding(vertical = 20.dp)
-                    .weight(1f),
+            Modifier
+                .padding(start = 12.dp)
+                .padding(vertical = 20.dp)
+                .weight(1f),
         ) {
             Text(
                 text = themeSubTitle,
@@ -238,8 +239,8 @@ fun RoutineThemeListItem(
                 color = Gray700,
                 style = SoftieTypo.head3,
                 modifier =
-                    Modifier
-                        .padding(top = 2.dp),
+                Modifier
+                    .padding(top = 2.dp),
             )
         }
 
@@ -247,9 +248,9 @@ fun RoutineThemeListItem(
             painter = painterResource(id = R.drawable.ic_arrow_next),
             contentDescription = "arrow next",
             modifier =
-                Modifier
-                    .padding(end = 12.dp)
-                    .size(24.dp),
+            Modifier
+                .padding(end = 12.dp)
+                .size(24.dp),
         )
     }
 }

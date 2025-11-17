@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.sopetit.designsystem.Gray0
 import com.sopetit.designsystem.Gray300
 import com.sopetit.designsystem.Gray700
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.ui.common.button.BottomTwoBtn
 import com.sopetit.ui.common.model.TwoBtnIconModel

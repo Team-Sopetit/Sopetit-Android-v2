@@ -9,6 +9,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import com.sopetit.design_system.R
 
 @AndroidEntryPoint
 class FcmService : FirebaseMessagingService() {

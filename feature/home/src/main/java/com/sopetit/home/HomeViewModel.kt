@@ -1,6 +1,7 @@
 package com.sopetit.home
 
 import androidx.lifecycle.viewModelScope
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.FeedbackLeftBtn
 import com.sopetit.designsystem.FeedbackRightBtn
 import com.sopetit.designsystem.FeedbackSemiTitle

@@ -1,5 +1,6 @@
 package com.sopetit.feature
 
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Achieve
 import com.sopetit.designsystem.Empty
 import com.sopetit.designsystem.Home

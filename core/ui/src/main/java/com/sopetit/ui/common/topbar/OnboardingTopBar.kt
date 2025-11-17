@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sopetit.designsystem.Gray200
 import com.sopetit.designsystem.Gray650
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 
 @Composable
 fun OnboardingTopBar(

@@ -1,6 +1,6 @@
 package com.sopetit.ui.common.type
 
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 
 enum class ThemeStatType(
     val themeId: Int,

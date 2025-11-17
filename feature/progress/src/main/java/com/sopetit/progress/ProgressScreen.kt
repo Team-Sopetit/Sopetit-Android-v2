@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Gray0
 import com.sopetit.designsystem.Gray200
 import com.sopetit.designsystem.Gray400

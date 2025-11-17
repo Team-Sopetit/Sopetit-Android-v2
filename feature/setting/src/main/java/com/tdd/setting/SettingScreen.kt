@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Gray0
 import com.sopetit.designsystem.Gray400
 import com.sopetit.designsystem.Gray50
@@ -100,7 +101,7 @@ fun SettingContent(
     onClickFeedBack: () -> Unit,
     onClickAlarmSetting: () -> Unit,
     onClickServicePolicy: () -> Unit,
-    onClickPersonalInfoPolicy: () -> Unit
+    onClickPersonalInfoPolicy: () -> Unit,
 ) {
     Column(
         modifier = Modifier

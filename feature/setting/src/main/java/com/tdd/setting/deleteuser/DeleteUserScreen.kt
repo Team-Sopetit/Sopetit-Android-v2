@@ -31,7 +31,7 @@ import com.sopetit.designsystem.Gray100
 import com.sopetit.designsystem.Gray300
 import com.sopetit.designsystem.Gray400
 import com.sopetit.designsystem.Gray700
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Red200
 import com.sopetit.designsystem.SettingDeleteSpeechText
 import com.sopetit.designsystem.SettingDeleteUserBtn

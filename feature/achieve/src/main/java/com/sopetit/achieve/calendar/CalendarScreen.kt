@@ -59,7 +59,7 @@ import com.sopetit.designsystem.Gray700
 import com.sopetit.designsystem.Mon
 import com.sopetit.designsystem.Num
 import com.sopetit.designsystem.Pink50
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Red200
 import com.sopetit.designsystem.Sat
 import com.sopetit.designsystem.SoftieTypo

@@ -60,6 +60,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Gray0
 import com.sopetit.designsystem.Gray1000
 import com.sopetit.designsystem.Gray650
@@ -208,11 +209,11 @@ fun MainScreen() {
 
     Box(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .windowInsetsPadding(
-                    WindowInsets.navigationBars.only(WindowInsetsSides.Bottom),
-                ),
+        Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(
+                WindowInsets.navigationBars.only(WindowInsetsSides.Bottom),
+            ),
     ) {
         DismissKeyboardOnClick {
             if (isShowDialog.value) {
@@ -233,18 +234,18 @@ fun MainScreen() {
                         targetState = uiState.bottomSheetType,
                         transitionSpec = {
                             fadeIn(animationSpec = tween(500)) togetherWith
-                                fadeOut(
-                                    animationSpec =
+                                    fadeOut(
+                                        animationSpec =
                                         tween(
                                             500,
                                         ),
-                                )
+                                    )
                         },
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .navigationBarsPadding(),
+                        Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .navigationBarsPadding(),
                         label = "",
                     ) { currentSheet ->
                         when (currentSheet) {
@@ -384,9 +385,9 @@ fun MainScreen() {
                 ) { innerPadding ->
                     Box(
                         modifier =
-                            Modifier
-                                .padding(innerPadding)
-                                .statusBarsPadding(),
+                        Modifier
+                            .padding(innerPadding)
+                            .statusBarsPadding(),
                     ) {
                         NavHost(
                             navController = navController,
@@ -483,15 +484,15 @@ fun MainScreen() {
 
                 Box(
                     modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .background(Gray1000)
-                            .clickable(
-                                interactionSource = interactionSource,
-                                indication = null,
-                                onClick = { dismiss() },
-                            )
-                            .zIndex(1f),
+                    Modifier
+                        .fillMaxSize()
+                        .background(Gray1000)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { dismiss() },
+                        )
+                        .zIndex(1f),
                 ) {
                     LottieAnimation(
                         composition = composition,
@@ -523,15 +524,15 @@ fun MainScreen() {
 
                 Box(
                     modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .background(Gray1000)
-                            .clickable(
-                                interactionSource = interactionSource,
-                                indication = null,
-                                onClick = { dismiss() },
-                            )
-                            .zIndex(1f),
+                    Modifier
+                        .fillMaxSize()
+                        .background(Gray1000)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { dismiss() },
+                        )
+                        .zIndex(1f),
                 ) {
                     LottieAnimation(
                         composition = composition,
@@ -544,12 +545,12 @@ fun MainScreen() {
             if (uiState.isTooltipShowValid) {
                 Box(
                     modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .background(Gray1000)
-                            .clickable(
-                                onClick = { viewModel.updateTooltipState(false) },
-                            ),
+                    Modifier
+                        .fillMaxSize()
+                        .background(Gray1000)
+                        .clickable(
+                            onClick = { viewModel.updateTooltipState(false) },
+                        ),
                 ) {
                     Popup(
                         alignment = Alignment.TopEnd,
@@ -557,16 +558,16 @@ fun MainScreen() {
                     ) {
                         Column(
                             modifier =
-                                Modifier
-                                    .padding(end = 20.dp)
-                                    .background(Gray0, RoundedCornerShape(10.dp))
-                                    .width(272.dp),
+                            Modifier
+                                .padding(end = 20.dp)
+                                .background(Gray0, RoundedCornerShape(10.dp))
+                                .width(272.dp),
                         ) {
                             Row(
                                 modifier =
-                                    Modifier
-                                        .padding(start = 16.dp, end = 12.dp, top = 12.dp)
-                                        .fillMaxWidth(),
+                                Modifier
+                                    .padding(start = 16.dp, end = 12.dp, top = 12.dp)
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
@@ -574,21 +575,21 @@ fun MainScreen() {
                                     color = Gray700,
                                     style = SoftieTypo.head4,
                                     modifier =
-                                        Modifier
-                                            .weight(1f),
+                                    Modifier
+                                        .weight(1f),
                                 )
 
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_close),
                                     contentDescription = "close tooltip",
                                     modifier =
-                                        Modifier
-                                            .size(18.dp)
-                                            .clickable(
-                                                onClick = { viewModel.updateTooltipState(false) },
-                                                interactionSource = interactionSource,
-                                                indication = null,
-                                            ),
+                                    Modifier
+                                        .size(18.dp)
+                                        .clickable(
+                                            onClick = { viewModel.updateTooltipState(false) },
+                                            interactionSource = interactionSource,
+                                            indication = null,
+                                        ),
                                 )
                             }
 
@@ -597,10 +598,10 @@ fun MainScreen() {
                                 color = Gray650,
                                 style = SoftieTypo.caption1,
                                 modifier =
-                                    Modifier
-                                        .padding(top = 6.dp, bottom = 16.dp)
-                                        .padding(horizontal = 16.dp)
-                                        .fillMaxWidth(),
+                                Modifier
+                                    .padding(top = 6.dp, bottom = 16.dp)
+                                    .padding(horizontal = 16.dp)
+                                    .fillMaxWidth(),
                             )
                         }
                     }
@@ -612,9 +613,9 @@ fun MainScreen() {
                 paddingBottom = snackBarPadding.value,
                 iconResource = snackBarIcon.value,
                 modifier =
-                    Modifier
-                        .align(Alignment.BottomCenter)
-                        .zIndex(2f),
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .zIndex(2f),
             )
         }
     }

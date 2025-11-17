@@ -26,7 +26,7 @@ import com.sopetit.designsystem.ChangeRoutine
 import com.sopetit.designsystem.Gray0
 import com.sopetit.designsystem.Gray650
 import com.sopetit.designsystem.Gray700
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Red200
 import com.sopetit.designsystem.SelectedRoutineBottomSheetTitle
 import com.sopetit.designsystem.SoftieTypo

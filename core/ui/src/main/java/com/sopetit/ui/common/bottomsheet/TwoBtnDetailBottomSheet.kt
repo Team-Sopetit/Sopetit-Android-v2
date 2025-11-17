@@ -28,7 +28,7 @@ import com.sopetit.designsystem.Gray650
 import com.sopetit.designsystem.Gray700
 import com.sopetit.designsystem.MemoTitle
 import com.sopetit.designsystem.Modify
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Red200
 import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.domain.entity.enums.BottomSheetActionType

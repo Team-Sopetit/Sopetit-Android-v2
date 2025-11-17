@@ -49,6 +49,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Brown100
 import com.sopetit.designsystem.Brown200
 import com.sopetit.designsystem.Gray0

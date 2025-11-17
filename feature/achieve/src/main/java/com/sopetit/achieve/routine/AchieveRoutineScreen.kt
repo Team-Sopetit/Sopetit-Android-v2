@@ -47,7 +47,7 @@ import com.sopetit.designsystem.Gray650
 import com.sopetit.designsystem.Gray700
 import com.sopetit.designsystem.ProgressEmptyAddTitle
 import com.sopetit.designsystem.ProgressEmptyTitle
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.designsystem.StatAchieveRoutineTitle
 import com.sopetit.domain.entity.response.achieve.AchieveRoutineItem

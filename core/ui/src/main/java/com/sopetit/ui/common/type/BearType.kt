@@ -3,7 +3,7 @@ package com.sopetit.ui.common.type
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.sopetit.designsystem.Brown
 import com.sopetit.designsystem.Gray
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Red
 import com.sopetit.designsystem.White
 

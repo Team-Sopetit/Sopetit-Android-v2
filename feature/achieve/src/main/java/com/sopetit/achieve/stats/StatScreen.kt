@@ -42,7 +42,7 @@ import com.sopetit.designsystem.Gray500
 import com.sopetit.designsystem.Gray700
 import com.sopetit.designsystem.Percentage
 import com.sopetit.designsystem.PercentageString
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.designsystem.StatAchieveRoutineTitle
 import com.sopetit.designsystem.StatGraphEmptyTitle

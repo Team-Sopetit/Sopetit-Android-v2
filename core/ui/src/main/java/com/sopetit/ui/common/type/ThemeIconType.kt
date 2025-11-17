@@ -9,7 +9,7 @@ import com.sopetit.designsystem.Orange100
 import com.sopetit.designsystem.Orange50
 import com.sopetit.designsystem.Pink100
 import com.sopetit.designsystem.Pink50
-import com.sopetit.designsystem.R
+import com.sopetit.design_system.R
 import com.sopetit.designsystem.Red100
 import com.sopetit.designsystem.Red50
 import com.sopetit.designsystem.Sky100
