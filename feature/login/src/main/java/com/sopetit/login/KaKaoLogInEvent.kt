@@ -1,0 +1,9 @@
+package com.sopetit.login
+
+import com.sopetit.ui.base.Event
+
+sealed class KaKaoLogInEvent : Event {
+    data object GoToOnBoardingPage : KaKaoLogInEvent()
+
+    data object GoToHomePage : KaKaoLogInEvent()
+}

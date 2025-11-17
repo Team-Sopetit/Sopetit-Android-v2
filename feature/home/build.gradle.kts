@@ -1,0 +1,20 @@
+plugins {
+    id("sopetit.android.feature")
+    id("sopetit.android.compose")
+}
+
+android {
+    namespace = "com.sopetit.home"
+}
+
+dependencies {
+    implementation(projects.domain)
+    implementation(projects.core)
+    implementation(projects.core.ui)
+    implementation(projects.core.designSystem)
+
+    implementation(libs.firebase.messaging)
+    implementation(libs.permissions)
+
+    testImplementation(libs.junit)
+}

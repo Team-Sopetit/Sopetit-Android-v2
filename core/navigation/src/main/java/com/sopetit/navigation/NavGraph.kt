@@ -1,0 +1,357 @@
+package com.sopetit.navigation
+
+import androidx.compose.ui.unit.IntOffset
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.navigation.navigation
+import com.google.gson.Gson
+import com.sopetit.achieve.AchieveScreen
+import com.sopetit.achieve.routine.AchieveRoutineScreen
+import com.sopetit.addroutine.AddRoutineScreen
+import com.sopetit.addroutine.detail.AddRoutineDetailScreen
+import com.sopetit.domain.entity.request.CreateMemberModel
+import com.sopetit.domain.entity.response.memo.MemoActionModel
+import com.sopetit.domain.entity.response.routine.ChallengeChangeModel
+import com.sopetit.domain.entity.response.screen.ModifyRoutineModel
+import com.sopetit.domain.entity.response.screen.RoutineDetailModel
+import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.domain.entity.response.theme.ThemeListItemModel
+import com.sopetit.home.HomeScreen
+import com.sopetit.login.LogInScreen
+import com.sopetit.onboarding.dollnaming.DollNamingScreen
+import com.sopetit.onboarding.dolltype.DollTypeChoiceScreen
+import com.sopetit.onboarding.routinechoice.RoutineChoiceScreen
+import com.sopetit.onboarding.storytelling.StoryTellingFirstScreen
+import com.sopetit.onboarding.storytelling.StoryTellingSecondScreen
+import com.sopetit.onboarding.storytelling.StoryTellingThirdScreen
+import com.sopetit.onboarding.themechoice.ThemeChoiceScreen
+import com.sopetit.progress.ProgressScreen
+import com.sopetit.splash.SplashScreen
+import com.sopetit.ui.common.model.TwoBtnDialogModel
+import com.sopetit.ui.common.model.TwoBtnIconModel
+import com.tdd.customroutine.CustomRoutineScreen
+import com.tdd.setting.SettingScreen
+import com.tdd.setting.deleteuser.DeleteUserScreen
+import kotlinx.coroutines.flow.SharedFlow
+
+fun NavGraphBuilder.splashNavGraph(
+    navController: NavHostController,
+    setTutorialValid: (Boolean) -> Unit,
+) {
+    navigation(
+        startDestination = NavRoutes.SplashScreen.route,
+        route = NavRoutes.SplashGraph.route,
+    ) {
+        composable(NavRoutes.SplashScreen.route) {
+            SplashScreen(
+                goToKaKaoLogIn = { navController.navigate(NavRoutes.LogInScreen.route) },
+                goToHome = {
+                    setTutorialValid(it)
+                    navController.navigate(NavRoutes.HomeScreen.route) { popUpTo(0) }
+                },
+                goToOnboarding = {
+                    setTutorialValid(it)
+                    navController.navigate(NavRoutes.StoryTellingFirstScreen.route) { popUpTo(0) }
+                },
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.logInNavGraph(
+    navController: NavHostController,
+    setTutorialValid: (Boolean) -> Unit,
+) {
+    navigation(
+        startDestination = NavRoutes.LogInScreen.route,
+        route = NavRoutes.LogInGraph.route,
+    ) {
+        composable(NavRoutes.LogInScreen.route) {
+            LogInScreen(
+                goToOnboarding = {
+                    setTutorialValid(it)
+                    navController.navigate(NavRoutes.StoryTellingFirstScreen.route) {
+                        popUpTo(0)
+                    }
+                },
+                goToHome = {
+                    setTutorialValid(it)
+                    navController.navigate(NavRoutes.HomeScreen.route) {
+                        popUpTo(0)
+                    }
+                },
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.onBoardingNavGraph(
+    navController: NavHostController,
+    showSnackBar: (String, Int, Int) -> Unit,
+    setMemberModel: (CreateMemberModel) -> Unit,
+    memberModel: SharedFlow<CreateMemberModel>,
+) {
+    navigation(
+        startDestination = NavRoutes.StoryTellingFirstScreen.route,
+        route = NavRoutes.OnBoardingGraph.route,
+    ) {
+        composable(NavRoutes.StoryTellingFirstScreen.route) {
+            StoryTellingFirstScreen(
+                goToSecondStoryPage = { navController.navigate(NavRoutes.StoryTellingSecondScreen.route) },
+            )
+        }
+
+        composable(NavRoutes.StoryTellingSecondScreen.route) {
+            StoryTellingSecondScreen(
+                goToThirdStoryPage = { navController.navigate(NavRoutes.StoryTellingThirdScreen.route) },
+            )
+        }
+
+        composable(NavRoutes.StoryTellingThirdScreen.route) {
+            StoryTellingThirdScreen(
+                goToDollTypeChoicePage = { navController.navigate(NavRoutes.DollTypeChoiceScreen.route) },
+            )
+        }
+
+        composable(NavRoutes.DollTypeChoiceScreen.route) {
+            DollTypeChoiceScreen(
+                goToDollNamingPage = {
+                    setMemberModel(it)
+                    navController.navigate(NavRoutes.DollNamingScreen.route)
+                },
+            )
+        }
+
+        composable(NavRoutes.DollNamingScreen.route) {
+            DollNamingScreen(
+                memberModel = memberModel,
+                goToThemeChoicePage = {
+                    setMemberModel(it)
+                    navController.navigate(NavRoutes.ThemeChoiceScreen.route)
+                },
+                goBackToDollTypePage = { navController.popBackStack() },
+            )
+        }
+
+        composable(NavRoutes.ThemeChoiceScreen.route) {
+            ThemeChoiceScreen(
+                memberModel = memberModel,
+                goBackToDollNamingPage = { navController.popBackStack() },
+                goToRoutineChoicePage = {
+                    setMemberModel(it)
+                    navController.navigate(NavRoutes.RoutineChoiceScreen.route)
+                },
+            )
+        }
+
+        composable(NavRoutes.RoutineChoiceScreen.route) {
+            RoutineChoiceScreen(
+                goBackToThemeChoicePage = { navController.popBackStack() },
+                memberModel = memberModel,
+                showSnackBar = showSnackBar,
+                goToHomePage = {
+                    navController.navigate(NavRoutes.HomeScreen.route) {
+                        popUpTo(0)
+                    }
+                },
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.homeNavGraph(
+    navController: NavHostController,
+    showTutorialBottomSheet: (List<TutorialModel>) -> Unit,
+    isTutorialValid: SharedFlow<Boolean>,
+    showFeedbackDialog: (TwoBtnDialogModel) -> Unit,
+) {
+    navigation(
+        startDestination = NavRoutes.HomeScreen.route,
+        route = NavRoutes.HomeGraph.route,
+    ) {
+        composable(NavRoutes.HomeScreen.route) {
+            HomeScreen(
+                showTutorialBottomSheet = showTutorialBottomSheet,
+                isTutorialValid = isTutorialValid,
+                goToSettingPage = { navController.navigate(NavRoutes.SettingScreen.route) },
+                showFeedbackDialog = showFeedbackDialog,
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.achieveNavGraph(
+    navController: NavHostController,
+    showRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    deleteRoutineId: SharedFlow<RoutineDetailModel>,
+    showMemoWriteBottomSheet: () -> Unit,
+    writtenMemo: SharedFlow<String>,
+    showMemoDetailBottomSheet: (MemoActionModel) -> Unit,
+    memoActionModel: SharedFlow<MemoActionModel>,
+    setAchieveThemeId: (Int) -> Unit,
+    achieveThemeId: SharedFlow<Int>,
+) {
+    navigation(
+        startDestination = NavRoutes.AchieveScreen.route,
+        route = NavRoutes.AchieveGraph.route,
+    ) {
+        composable(NavRoutes.AchieveScreen.route) {
+            AchieveScreen(
+                showRoutineDeleteBottomSheet = showRoutineBottomSheet,
+                deleteRoutine = deleteRoutineId,
+                showMemoWriteBottomSheet = showMemoWriteBottomSheet,
+                writtenMemo = writtenMemo,
+                showMemoDetailBottomSheet = showMemoDetailBottomSheet,
+                memoActionModel = memoActionModel,
+                goToAchieveRoutinePage = {
+                    setAchieveThemeId(it)
+                    navController.navigate(NavRoutes.AchieveRoutineScreen.route)
+                },
+            )
+        }
+
+        composable(NavRoutes.AchieveRoutineScreen.route) {
+            AchieveRoutineScreen(
+                achieveThemeId = achieveThemeId,
+                goToAddRoutinePage = { navController.navigate(NavRoutes.AddRoutineScreen.route) },
+                goBackToAchievePage = { navController.popBackStack() },
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.progressNavGraph(
+    navController: NavHostController,
+    showChallengeRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    showDailyRoutineBottomSheet: (RoutineDetailModel) -> Unit,
+    deleteRoutineId: SharedFlow<RoutineDetailModel>,
+    modRoutine: SharedFlow<RoutineDetailModel>,
+    showChallengeAchieveSom: (Boolean) -> Unit,
+    showChallengeDailySom: (Boolean) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
+    showToolTip: (IntOffset, String, String) -> Unit,
+) {
+    navigation(
+        startDestination = NavRoutes.ProgressScreen.route,
+        route = NavRoutes.ProgressGraph.route,
+    ) {
+        composable(NavRoutes.ProgressScreen.route) {
+            ProgressScreen(
+                showChallengeRoutineBottomSheet = showChallengeRoutineBottomSheet,
+                showDailyRoutineBottomSheet = showDailyRoutineBottomSheet,
+                deleteRoutineId = deleteRoutineId,
+                modRoutine = modRoutine,
+                showChallengeAchieveSom = showChallengeAchieveSom,
+                showChallengeDailySom = showChallengeDailySom,
+                showSnackBar = showSnackBar,
+                showTooltip = showToolTip,
+                goToAddRoutinePage = {
+                    navController.navigate(NavRoutes.AddRoutineScreen.route)
+                },
+                goToModifyRoutinePage = {
+                    navController.navigate(NavRoutes.CustomRoutineScreen.setRouteModel(it))
+                },
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.addRoutineNavGraph(
+    navController: NavHostController,
+    setSelectedThemeId: (ThemeListItemModel) -> Unit,
+    selectedThemeId: SharedFlow<ThemeListItemModel>,
+    showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit,
+    showSnackBar: (String, Int, Int) -> Unit,
+    showChallengeChangeBottomSheet: (ChallengeChangeModel) -> Unit,
+) {
+    navigation(
+        startDestination = NavRoutes.AddRoutineScreen.route,
+        route = NavRoutes.AddRoutineGraph.route,
+    ) {
+        composable(NavRoutes.AddRoutineScreen.route) {
+            AddRoutineScreen(
+                goToDetailPage = {
+                    setSelectedThemeId(it)
+                    navController.navigate(NavRoutes.AddRoutineDetailScreen.route)
+                },
+                goToCustomRoutinePage = {
+                    navController.navigate(NavRoutes.CustomRoutineScreen.setRouteModel(null))
+                },
+                goBackToProgressPage = { navController.popBackStack() },
+            )
+        }
+
+        composable(NavRoutes.AddRoutineDetailScreen.route) {
+            AddRoutineDetailScreen(
+                selectedThemeId = selectedThemeId,
+                showChallengeDetailBottomSheet = showChallengeDetailBottomSheet,
+                showSnackBar = showSnackBar,
+                showChallengeChangeBottomSheet = showChallengeChangeBottomSheet,
+                goBackToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.customRoutineNavGraph(
+    navController: NavHostController,
+) {
+    navigation(
+        startDestination = NavRoutes.CustomRoutineScreen.route,
+        route = NavRoutes.CustomRoutineGraph.route,
+    ) {
+        composable(
+            route = NavRoutes.CustomRoutineScreen.ROUTE_WITH_PARAM,
+            arguments = listOf(navArgument("data") { type = NavType.StringType }),
+        ) {
+            val json = it.arguments?.getString("data")
+            val data = Gson().fromJson(json, ModifyRoutineModel::class.java)
+
+            CustomRoutineScreen(
+                goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
+                modifyRoutineModel = data,
+                goBackPage = { navController.popBackStack() },
+            )
+        }
+
+        composable(route = NavRoutes.CustomRoutineScreen.route) {
+            CustomRoutineScreen(
+                goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
+                modifyRoutineModel = null,
+                goBackPage = { navController.popBackStack() },
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.settingNavGraph(
+    navController: NavController,
+    showLogOutBottomSheet: (TwoBtnIconModel) -> Unit,
+    isSelectedLogOut: SharedFlow<Boolean>,
+) {
+    navigation(
+        startDestination = NavRoutes.SettingScreen.route,
+        route = NavRoutes.SettingGraph.route,
+    ) {
+        composable(NavRoutes.SettingScreen.route) {
+            SettingScreen(
+                goBackPage = { navController.popBackStack() },
+                goToDeleteUserScreen = { navController.navigate(NavRoutes.DeleteUserScreen.route) },
+                showLogOutBottomSheet = showLogOutBottomSheet,
+                isSelectedLogOut = isSelectedLogOut,
+                goBackToLogInPage = { navController.navigate(NavRoutes.LogInScreen.route) },
+            )
+        }
+
+        composable(NavRoutes.DeleteUserScreen.route) {
+            DeleteUserScreen(
+                goBackPage = { navController.popBackStack() },
+                goBackToLogInPage = { navController.navigate(NavRoutes.LogInScreen.route) },
+            )
+        }
+    }
+}

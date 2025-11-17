@@ -1,0 +1,142 @@
+package com.sopetit.ui.common.bottomsheet
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.SoftieTypo
+import com.sopetit.designsystem.TutorialNextBtn
+import com.sopetit.designsystem.TutorialStartBtn
+import com.sopetit.domain.entity.response.screen.TutorialModel
+import com.sopetit.ui.common.button.BottomRectangleBtn
+import com.sopetit.ui.common.item.PagerIndicator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+
+@Composable
+fun TutorialBottomSheet(
+    tutorials: List<TutorialModel>,
+    closeTutorials: () -> Unit = {},
+) {
+    val scope = rememberCoroutineScope()
+    val pagerState = rememberPagerState(pageCount = { tutorials.size })
+
+    TutorialBottomSheetContent(
+        scope = scope,
+        tutorials = tutorials,
+        pagerState = pagerState,
+        onClickStartBtn = { closeTutorials() },
+    )
+}
+
+@Composable
+fun TutorialBottomSheetContent(
+    scope: CoroutineScope,
+    tutorials: List<TutorialModel> = emptyList(),
+    pagerState: PagerState,
+    onClickStartBtn: () -> Unit = {},
+) {
+    val currentPage = pagerState.currentPage
+
+    Column(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Gray0),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(
+            modifier =
+                Modifier
+                    .padding(top = 24.dp)
+                    .wrapContentSize()
+                    .clip(RoundedCornerShape(99.dp))
+                    .background(Gray200),
+        ) {
+            Text(
+                text = tutorials[currentPage].bottomSheetTitle,
+                color = Gray700,
+                style = SoftieTypo.head3,
+                modifier =
+                    Modifier
+                        .padding(vertical = 8.dp, horizontal = 16.dp),
+            )
+        }
+
+        Text(
+            text = tutorials[currentPage].title,
+            style = SoftieTypo.head3,
+            color = Gray700,
+            modifier = Modifier.padding(top = 24.dp),
+        )
+
+        Text(
+            text = tutorials[currentPage].semiTitle,
+            style = SoftieTypo.body2,
+            color = Gray500,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 10.dp),
+        )
+
+        HorizontalPager(
+            state = pagerState,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp, bottom = 30.dp),
+            key = { index ->
+                tutorials[index].id
+            },
+        ) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Image(
+                    painter = painterResource(id = tutorials[currentPage].tutorialImg),
+                    contentDescription = "tutorial",
+                    modifier = Modifier.size(width = 320.dp, height = 240.dp),
+                )
+            }
+        }
+
+        PagerIndicator(pageNumber = pagerState.pageCount, currentPage = currentPage)
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        BottomRectangleBtn(
+            btnTextContent = if (currentPage == 2) TutorialStartBtn else TutorialNextBtn,
+            isBtnActivated = true,
+            onClickAction = {
+                if (currentPage < 2) {
+                    scope.launch { pagerState.scrollToPage(currentPage + 1) }
+                } else {
+                    onClickStartBtn()
+                }
+            },
+        )
+    }
+}

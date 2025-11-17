@@ -1,0 +1,46 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+pluginManagement {
+    includeBuild("build-logic")
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = java.net.URI("https://devrepo.kakao.com/nexus/content/groups/public/") }
+    }
+}
+
+rootProject.name = "Softie"
+include(":app")
+include(":core")
+include(":data")
+include(":domain")
+include(":feature")
+
+include(":core:ui")
+include(":core:navigation")
+include(":core:design-system")
+include(":core:firebase")
+
+include(":feature:onboarding")
+include(":feature:login")
+include(":feature:splash")
+include(":feature:home")
+include(":feature:progress")
+include(":feature:achieve")
+include(":feature:addroutine")
+include(":feature:customroutine")
+include(":feature:setting")
