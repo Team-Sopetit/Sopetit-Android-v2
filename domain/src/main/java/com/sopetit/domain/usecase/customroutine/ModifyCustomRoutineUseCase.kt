@@ -7,10 +7,11 @@ import com.sopetit.domain.repository.CustomRoutineRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ModifyCustomRoutineUseCase @Inject constructor(
-    private val customRoutineRepository: CustomRoutineRepository
-): UseCase<ModifyCustomRoutineRequestModel, Result<CustomRoutineModel>>() {
-
-    override suspend fun invoke(request: ModifyCustomRoutineRequestModel): Flow<Result<CustomRoutineModel>> =
-        customRoutineRepository.modifyCreateCustomRoutine(request)
-}
+class ModifyCustomRoutineUseCase
+    @Inject
+    constructor(
+        private val customRoutineRepository: CustomRoutineRepository,
+    ) : UseCase<ModifyCustomRoutineRequestModel, Result<CustomRoutineModel>>() {
+        override suspend fun invoke(request: ModifyCustomRoutineRequestModel): Flow<Result<CustomRoutineModel>> =
+            customRoutineRepository.modifyCreateCustomRoutine(request)
+    }

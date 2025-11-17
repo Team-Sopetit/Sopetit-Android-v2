@@ -10,5 +10,5 @@ data class RoutineDetailModel(
     val time: String = "",
     val place: String = "",
     val isJustDetailView: Boolean = false,
-    val alarmTime: String = ""
+    val alarmTime: String = "",
 )

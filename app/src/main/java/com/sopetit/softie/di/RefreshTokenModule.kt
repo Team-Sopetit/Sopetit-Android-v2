@@ -35,27 +35,29 @@ object RefreshTokenModule {
     @RefreshTokenRetrofit
     fun providesAuthInterceptor(
         localDataSource: LocalDataStore,
-    ): Interceptor = Interceptor { chain ->
-        val tokenFlow = localDataSource.refreshToken
-        val token = runBlocking { tokenFlow.first() }
+    ): Interceptor =
+        Interceptor { chain ->
+            val tokenFlow = localDataSource.refreshToken
+            val token = runBlocking { tokenFlow.first() }
 
-        val request = chain.request()
-        val response = chain.proceed(
-            request
-                .newBuilder()
-                .addHeader(CONTENT_TYPE, APPLICATION_JSON)
-                .addHeader(AUTHORIZATION, BEARER + token)
-                .build()
-        )
-        when (response.code) {
-            EXPIRED_TOKEN, BAD_REQUEST -> {
-                runBlocking {
-                    CommonEventManager.triggerLogout()
+            val request = chain.request()
+            val response =
+                chain.proceed(
+                    request
+                        .newBuilder()
+                        .addHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .addHeader(AUTHORIZATION, BEARER + token)
+                        .build(),
+                )
+            when (response.code) {
+                EXPIRED_TOKEN, BAD_REQUEST -> {
+                    runBlocking {
+                        CommonEventManager.triggerLogout()
+                    }
                 }
             }
+            return@Interceptor response
         }
-        return@Interceptor response
-    }
 
     @Singleton
     @Provides

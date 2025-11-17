@@ -11,21 +11,22 @@ import com.sopetit.domain.repository.MemoRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MemoRepositoryImpl @Inject constructor(
-    private val memoDataSource: MemoDataSource,
-) : MemoRepository {
+class MemoRepositoryImpl
+    @Inject
+    constructor(
+        private val memoDataSource: MemoDataSource,
+    ) : MemoRepository {
+        override suspend fun postWriteMemo(request: MemoWriteRequestModel): Flow<Result<Int>> =
+            MemoWriteMapper.responseToModel(apiCall = { memoDataSource.postWriteMemo(request.toDto()) })
 
-    override suspend fun postWriteMemo(request: MemoWriteRequestModel): Flow<Result<Int>> =
-        MemoWriteMapper.responseToModel(apiCall = { memoDataSource.postWriteMemo(request.toDto()) })
+        override suspend fun deleteMemo(request: Int): Flow<Result<Unit>> =
+            DefaultUnitMapper.responseToModel(apiCall = { memoDataSource.deleteMemo(request) })
 
-    override suspend fun deleteMemo(request: Int): Flow<Result<Unit>> =
-        DefaultUnitMapper.responseToModel(apiCall = { memoDataSource.deleteMemo(request) })
-
-    override suspend fun modifyMemo(request: MemoActionModel): Flow<Result<Unit>> =
-        DefaultUnitMapper.responseToModel(apiCall = {
-            memoDataSource.modifyMemo(
-                request.memoId,
-                MemoModifyRequestDto(request.content)
-            )
-        })
-}
+        override suspend fun modifyMemo(request: MemoActionModel): Flow<Result<Unit>> =
+            DefaultUnitMapper.responseToModel(apiCall = {
+                memoDataSource.modifyMemo(
+                    request.memoId,
+                    MemoModifyRequestDto(request.content),
+                )
+            })
+    }

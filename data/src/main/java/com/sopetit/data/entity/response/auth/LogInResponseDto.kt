@@ -10,5 +10,5 @@ data class LogInResponseDto(
     @SerializedName("refreshToken")
     val refreshToken: String = "",
     @SerializedName("isMemberDollExist")
-    val isMemberDollExist: Boolean = false
+    val isMemberDollExist: Boolean = false,
 )

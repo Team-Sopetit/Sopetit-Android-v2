@@ -5,7 +5,8 @@ enum class DollType(val value: String) {
     GRAY("GRAY"),
     WHITE("WHITE"),
     RED("RED"),
-    NONE("NONE");
+    NONE("NONE"),
+    ;
 
     companion object {
         fun stringToEnum(value: String): DollType =

@@ -9,22 +9,23 @@ import com.sopetit.data.service.MemberChallengeService
 import retrofit2.Response
 import javax.inject.Inject
 
-class MemberChallengeDataSourceImpl @Inject constructor(
-    private val memberChallengeService: MemberChallengeService,
-) : MemberChallengeDataSource {
+class MemberChallengeDataSourceImpl
+    @Inject
+    constructor(
+        private val memberChallengeService: MemberChallengeService,
+    ) : MemberChallengeDataSource {
+        override suspend fun getMemberChallenge(): Response<BaseResponse<GetMemberChallengeResponseDto>> =
+            memberChallengeService.getMemberChallenge()
 
-    override suspend fun getMemberChallenge(): Response<BaseResponse<GetMemberChallengeResponseDto>> =
-        memberChallengeService.getMemberChallenge()
+        override suspend fun deleteMemberChallenge(): Response<BaseResponse<Unit>> =
+            memberChallengeService.deleteMemberChallenge()
 
-    override suspend fun deleteMemberChallenge(): Response<BaseResponse<Unit>> =
-        memberChallengeService.deleteMemberChallenge()
+        override suspend fun achieveMemberChallenge(): Response<BaseResponse<Unit>> =
+            memberChallengeService.achieveMemberChallenge()
 
-    override suspend fun achieveMemberChallenge(): Response<BaseResponse<Unit>> =
-        memberChallengeService.achieveMemberChallenge()
+        override suspend fun addMemberChallenge(request: AddMemberChallengeRequestDto): Response<BaseResponse<AddMemberChallengeResponseDto>> =
+            memberChallengeService.addMemberChallenge(request)
 
-    override suspend fun addMemberChallenge(request: AddMemberChallengeRequestDto): Response<BaseResponse<AddMemberChallengeResponseDto>> =
-        memberChallengeService.addMemberChallenge(request)
-
-    override suspend fun deleteChallengeHistory(request: Int): Response<BaseResponse<Unit>> =
-        memberChallengeService.deleteRoutineHistory(request)
-}
+        override suspend fun deleteChallengeHistory(request: Int): Response<BaseResponse<Unit>> =
+            memberChallengeService.deleteRoutineHistory(request)
+    }

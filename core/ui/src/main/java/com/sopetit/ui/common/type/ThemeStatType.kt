@@ -14,16 +14,17 @@ enum class ThemeStatType(
     FOUR(4, R.drawable.ic_stat_background4, "에너지 솜뭉치", "밝고 긍정적이에요"),
     FIVE(5, R.drawable.ic_stat_background5, "느긋한 솜뭉치", "차분하고 여유로워요"),
     SIX(6, R.drawable.ic_stat_background6, "활력의 솜뭉치", "활발하고 힘이 넘쳐요"),
-    SEVEN(7, R.drawable.ic_stat_background7, "다정한 솜뭉치", "섬세하고 온화해요");
+    SEVEN(7, R.drawable.ic_stat_background7, "다정한 솜뭉치", "섬세하고 온화해요"),
+    ;
 
     companion object {
         fun getStatBackground(themeId: Int): Int =
             entries.firstOrNull { it.themeId == themeId }?.themeStatBackground ?: -1
 
         fun getStatTitle(themeId: Int): String =
-            entries.firstOrNull { it.themeId == themeId}?.statTitle ?: ""
+            entries.firstOrNull { it.themeId == themeId }?.statTitle ?: ""
 
         fun getStatContent(themeId: Int): String =
-            entries.firstOrNull { it.themeId == themeId}?.statContent ?: ""
+            entries.firstOrNull { it.themeId == themeId }?.statContent ?: ""
     }
 }

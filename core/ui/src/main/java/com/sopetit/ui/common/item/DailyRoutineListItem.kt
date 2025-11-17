@@ -28,12 +28,12 @@ import com.sopetit.design_system.SoftieTypo
 fun DailyRoutineListItem(
     routineContent: String,
     isRoutineSelected: Boolean = false,
-    onClickAction: () -> Unit = {}
+    onClickAction: () -> Unit = {},
 ) {
     DailyRoutineListItemContent(
         routineContent = routineContent,
         isRoutineSelected = isRoutineSelected,
-        onClick = onClickAction
+        onClick = onClickAction,
     )
 }
 
@@ -41,33 +41,36 @@ fun DailyRoutineListItem(
 fun DailyRoutineListItemContent(
     routineContent: String = "",
     isRoutineSelected: Boolean = false,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .clip(RoundedCornerShape(10.dp))
-            .border(width = 1.dp, color = Gray200, RoundedCornerShape(10.dp))
-            .background(Gray0)
-            .clickable { onClick() }
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(10.dp))
+                .border(width = 1.dp, color = Gray200, RoundedCornerShape(10.dp))
+                .background(Gray0)
+                .clickable { onClick() },
     ) {
         Text(
             text = routineContent,
             color = Gray700,
             style = SoftieTypo.body2,
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .padding(vertical = 18.dp)
+            modifier =
+                Modifier
+                    .padding(start = 16.dp)
+                    .padding(vertical = 18.dp),
         )
 
         Image(
             painter = painterResource(id = if (isRoutineSelected) R.drawable.ic_check_on else R.drawable.ic_check_off),
             contentDescription = "check icon",
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .padding(end = 16.dp)
-                .size(24.dp)
+            modifier =
+                Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 16.dp)
+                    .size(24.dp),
         )
     }
 }

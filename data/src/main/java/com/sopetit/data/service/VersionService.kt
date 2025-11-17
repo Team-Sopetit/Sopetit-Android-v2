@@ -7,7 +7,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface VersionService {
-
     @GET(EndPoints.Version.VERSION)
     suspend fun getVersion(): Response<BaseResponse<VersionResponseDto>>
 }

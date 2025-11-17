@@ -3,7 +3,10 @@ package com.sopetit.ui.util
 import org.threeten.bp.LocalDate
 import org.threeten.bp.YearMonth
 
-fun generateCalendarDays(year: Int, month: Int): List<LocalDate> {
+fun generateCalendarDays(
+    year: Int,
+    month: Int,
+): List<LocalDate> {
     val yearMonth = YearMonth.of(year, month)
     val lastDayOfMonth = yearMonth.atEndOfMonth()
 
@@ -16,7 +19,10 @@ fun generateCalendarDays(year: Int, month: Int): List<LocalDate> {
     return days
 }
 
-fun setBeforeYearMonth(currentYear: Int, currentMonth: Int): List<Int> {
+fun setBeforeYearMonth(
+    currentYear: Int,
+    currentMonth: Int,
+): List<Int> {
     val essentialYear: Int
     val essentialMonth: Int
     if (currentMonth == 1) {
@@ -30,7 +36,10 @@ fun setBeforeYearMonth(currentYear: Int, currentMonth: Int): List<Int> {
     return listOf(essentialYear, essentialMonth)
 }
 
-fun setAfterYearMonth(currentYear: Int, currentMonth: Int): List<Int> {
+fun setAfterYearMonth(
+    currentYear: Int,
+    currentMonth: Int,
+): List<Int> {
     val essentialYear: Int
     val essentialMonth: Int
     if (currentMonth == 12) {

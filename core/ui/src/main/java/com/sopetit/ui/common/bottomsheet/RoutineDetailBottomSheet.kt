@@ -49,7 +49,7 @@ fun RoutineDetailBottomSheet(
         onClickDeleteBtnAction = onClickRoutineDeleteBtn,
         interactionSource = interactionSource,
         isJustDetailView = routine.isJustDetailView,
-        onClickConfirmBtn = onClickConfirmBtn
+        onClickConfirmBtn = onClickConfirmBtn,
     )
 }
 
@@ -62,29 +62,31 @@ fun RoutineDetailContent(
     onClickConfirmBtn: () -> Unit = {},
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Gray0)
-            .padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Gray0)
+                .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = routine.routineType.typeName,
             color = Gray700,
             style = SoftieTypo.head4,
-            modifier = Modifier
-                .padding(top = 24.dp)
+            modifier =
+                Modifier
+                    .padding(top = 24.dp),
         )
 
         RoutineDetailTitleBox(
-            content = routine.content
+            content = routine.content,
         )
 
         if (routine.routineType == RoutineType.Challenge && routine.explainDetail.isNotEmpty()) {
             ChallengeRoutineDetail(
                 explainDetail = routine.explainDetail,
                 time = routine.time,
-                place = routine.place
+                place = routine.place,
             )
         }
 
@@ -92,7 +94,7 @@ fun RoutineDetailContent(
             interactionSource = interactionSource,
             onClickBtnAction = { onClickDeleteBtnAction(routine) },
             isJustDetailView = isJustDetailView,
-            onClickConfirmBtn = onClickConfirmBtn
+            onClickConfirmBtn = onClickConfirmBtn,
         )
     }
 }
@@ -102,20 +104,22 @@ fun RoutineDetailTitleBox(
     content: String,
 ) {
     Box(
-        modifier = Modifier
-            .padding(vertical = 16.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .background(Gray200)
-            .border(width = 1.dp, color = Gray300, shape = RoundedCornerShape(10.dp))
+        modifier =
+            Modifier
+                .padding(vertical = 16.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(Gray200)
+                .border(width = 1.dp, color = Gray300, shape = RoundedCornerShape(10.dp)),
     ) {
         Text(
             text = content,
             color = Gray700,
             style = SoftieTypo.body1,
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(vertical = 20.dp)
+            modifier =
+                Modifier
+                    .align(Alignment.Center)
+                    .padding(vertical = 20.dp),
         )
     }
 }
@@ -135,44 +139,43 @@ fun ChallengeRoutineDetail(
 
         Row(
             modifier = Modifier.padding(top = 24.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-
             Image(
                 painter = painterResource(id = R.drawable.ic_routine_time),
                 contentDescription = "routine time",
-                modifier = Modifier
-                    .size(18.dp)
+                modifier =
+                    Modifier
+                        .size(18.dp),
             )
-
 
             Text(
                 text = time,
                 color = Gray500,
                 style = SoftieTypo.caption1,
-                modifier = Modifier.padding(start = 6.dp)
+                modifier = Modifier.padding(start = 6.dp),
             )
         }
 
         Row(
             modifier = Modifier.padding(top = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_routine_place),
                 contentDescription = "routine place",
-                modifier = Modifier
-                    .size(18.dp)
+                modifier =
+                    Modifier
+                        .size(18.dp),
             )
 
             Text(
                 text = place,
                 color = Gray500,
                 style = SoftieTypo.caption1,
-                modifier = Modifier.padding(start = 6.dp)
+                modifier = Modifier.padding(start = 6.dp),
             )
         }
-
     }
 }
 
@@ -184,32 +187,35 @@ fun RoutineDeleteBtn(
     onClickConfirmBtn: () -> Unit,
 ) {
     Box(
-        modifier = Modifier
-            .padding(vertical = 32.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .background(if (isJustDetailView) Gray650 else Red200)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = {
-                    if (isJustDetailView) onClickConfirmBtn() else onClickBtnAction()
-                }
-            ),
+        modifier =
+            Modifier
+                .padding(vertical = 32.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(if (isJustDetailView) Gray650 else Red200)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = {
+                        if (isJustDetailView) onClickConfirmBtn() else onClickBtnAction()
+                    },
+                ),
     ) {
         Row(
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .padding(vertical = 16.dp)
+                    .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (!isJustDetailView) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_trash),
                     contentDescription = "routine delete",
-                    modifier = Modifier
-                        .size(18.dp)
+                    modifier =
+                        Modifier
+                            .size(18.dp),
                 )
             }
 
@@ -217,7 +223,7 @@ fun RoutineDeleteBtn(
                 text = if (isJustDetailView) Confirm else Delete,
                 color = Gray0,
                 style = SoftieTypo.body1,
-                modifier = Modifier.padding(start = 4.dp)
+                modifier = Modifier.padding(start = 4.dp),
             )
         }
     }

@@ -22,7 +22,7 @@ fun PieChart(
                 color = colors[index],
                 startAngle = startAngle,
                 sweepAngle = sweepAngle,
-                useCenter = true
+                useCenter = true,
             )
             startAngle += sweepAngle
         }
@@ -30,7 +30,7 @@ fun PieChart(
         drawCircle(
             color = Gray50,
             radius = diameter * 0.5f / 2,
-            center = center
+            center = center,
         )
     }
 }

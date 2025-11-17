@@ -21,33 +21,34 @@ import com.sopetit.design_system.SoftieTypo
 @Composable
 fun LeftTopBarContent(
     interactionSource: MutableInteractionSource,
-    onClickIcon: () -> Unit
+    onClickIcon: () -> Unit,
 ) {
-
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_arrow_back),
             contentDescription = "back",
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .padding(start = 18.dp, end = 12.dp)
-                .align(Alignment.CenterVertically)
-                .size(24.dp)
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null,
-                    onClick = onClickIcon
-                )
+            modifier =
+                Modifier
+                    .padding(vertical = 16.dp)
+                    .padding(start = 18.dp, end = 12.dp)
+                    .align(Alignment.CenterVertically)
+                    .size(24.dp)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = onClickIcon,
+                    ),
         )
 
         Text(
             text = SettingDeleteUser,
             color = Gray700,
             style = SoftieTypo.body1,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
+            modifier =
+                Modifier
+                    .align(Alignment.CenterVertically),
         )
     }
 }

@@ -6,5 +6,5 @@ data class CreateMemberModel(
     val dollType: DollType = DollType.NONE,
     val dollName: String = "",
     val selectedThemeIdList: List<Int> = emptyList(),
-    val selectedRoutineIdList: List<Int> = emptyList()
+    val selectedRoutineIdList: List<Int> = emptyList(),
 )

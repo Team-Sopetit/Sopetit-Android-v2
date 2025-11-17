@@ -11,19 +11,18 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RoutineService {
-
     @GET(EndPoints.Routine.ROUTINE)
     suspend fun routineList(
-        @Query("themeIds") themeIds: List<Int>
+        @Query("themeIds") themeIds: List<Int>,
     ): Response<BaseResponse<DailyRoutineListResponseDto>>
 
     @GET(EndPoints.Routine.DAILYTYHEMEROUTINE)
     suspend fun dailyThemeRoutine(
-        @Path("themeId") themeId: Int
+        @Path("themeId") themeId: Int,
     ): Response<BaseResponse<DailyThemeRoutineResponseDto>>
 
     @GET(EndPoints.Routine.CHALLENGE)
     suspend fun challenge(
-        @Query("themeId") themeId: Int
+        @Query("themeId") themeId: Int,
     ): Response<BaseResponse<ChallengeResponseDto>>
 }

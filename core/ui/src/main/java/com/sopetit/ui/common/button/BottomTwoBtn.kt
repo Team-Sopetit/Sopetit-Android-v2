@@ -41,7 +41,7 @@ fun BottomTwoBtn(
     leftBtnTextColor: Color,
     rightBtnTextColor: Color,
     twoBtnHorizontalPadding: Int,
-    twoBtnBottomPadding: Int
+    twoBtnBottomPadding: Int,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -60,7 +60,7 @@ fun BottomTwoBtn(
         rightBtnTextColor = rightBtnTextColor,
         iconVisible = iconVisible,
         twoBtnBottomPadding = twoBtnBottomPadding,
-        twoBtnHorizontalPadding = twoBtnHorizontalPadding
+        twoBtnHorizontalPadding = twoBtnHorizontalPadding,
     )
 }
 
@@ -80,12 +80,13 @@ fun BottomTwoBtnContent(
     leftBtnTextColor: Color,
     rightBtnTextColor: Color,
     twoBtnHorizontalPadding: Int,
-    twoBtnBottomPadding: Int
+    twoBtnBottomPadding: Int,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = twoBtnHorizontalPadding.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = twoBtnHorizontalPadding.dp),
     ) {
         TwoBtnBox(
             btnColor = leftColor,
@@ -97,7 +98,7 @@ fun BottomTwoBtnContent(
             onClickBtnAction = onClickLeftBtn,
             btnTextColor = leftBtnTextColor,
             iconVisible = iconVisible,
-            twoBtnBottomPadding = twoBtnBottomPadding
+            twoBtnBottomPadding = twoBtnBottomPadding,
         )
 
         Spacer(modifier = Modifier.width(7.dp))
@@ -112,7 +113,7 @@ fun BottomTwoBtnContent(
             onClickBtnAction = onClickRightBtn,
             btnTextColor = rightBtnTextColor,
             iconVisible = iconVisible,
-            twoBtnBottomPadding = twoBtnBottomPadding
+            twoBtnBottomPadding = twoBtnBottomPadding,
         )
     }
 }
@@ -128,41 +129,44 @@ fun TwoBtnBox(
     modifier: Modifier,
     btnTextColor: Color,
     iconVisible: Boolean = false,
-    twoBtnBottomPadding: Int
+    twoBtnBottomPadding: Int,
 ) {
     Box(
-        modifier = modifier
-            .padding(bottom = twoBtnBottomPadding.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .background(btnColorBrush ?: SolidColor(btnColor))
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClickBtnAction
-            ),
+        modifier =
+            modifier
+                .padding(bottom = twoBtnBottomPadding.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(btnColorBrush ?: SolidColor(btnColor))
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = onClickBtnAction,
+                ),
     ) {
         Row(
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .padding(vertical = 16.dp)
+                    .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (iconVisible) {
                 Image(
                     painter = painterResource(id = icon),
                     contentDescription = "btn icon",
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .size(18.dp)
+                    modifier =
+                        Modifier
+                            .padding(end = 4.dp)
+                            .size(18.dp),
                 )
             }
 
             Text(
                 text = btnText,
                 color = btnTextColor,
-                style = SoftieTypo.body1
+                style = SoftieTypo.body1,
             )
         }
     }

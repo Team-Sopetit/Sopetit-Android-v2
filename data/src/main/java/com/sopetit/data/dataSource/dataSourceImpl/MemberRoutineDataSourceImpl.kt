@@ -10,22 +10,23 @@ import com.sopetit.data.service.MemberRoutineService
 import retrofit2.Response
 import javax.inject.Inject
 
-class MemberRoutineDataSourceImpl @Inject constructor(
-    private val memberRoutineService: MemberRoutineService,
-) : MemberRoutineDataSource {
+class MemberRoutineDataSourceImpl
+    @Inject
+    constructor(
+        private val memberRoutineService: MemberRoutineService,
+    ) : MemberRoutineDataSource {
+        override suspend fun getMemberRoutine(): Response<BaseResponse<GetMemberRoutineResponseDto>> =
+            memberRoutineService.getMemberDailyRoutine()
 
-    override suspend fun getMemberRoutine(): Response<BaseResponse<GetMemberRoutineResponseDto>> =
-        memberRoutineService.getMemberDailyRoutine()
+        override suspend fun deleteMemberRoutine(request: List<Int>): Response<BaseResponse<Unit>> =
+            memberRoutineService.deleteMemberDailyRoutine(request)
 
-    override suspend fun deleteMemberRoutine(request: List<Int>): Response<BaseResponse<Unit>> =
-        memberRoutineService.deleteMemberDailyRoutine(request)
+        override suspend fun achieveDailyRoutine(routineId: Int): Response<BaseResponse<AchieveDailyRoutineResponseDto>> =
+            memberRoutineService.achieveMemberDailyRoutine(routineId)
 
-    override suspend fun achieveDailyRoutine(routineId: Int): Response<BaseResponse<AchieveDailyRoutineResponseDto>> =
-        memberRoutineService.achieveMemberDailyRoutine(routineId)
+        override suspend fun addMemberDailyRoutine(request: AddMemberDailyRoutineRequestDto): Response<BaseResponse<AddMemberDailyRoutineResponseDto>> =
+            memberRoutineService.addMemberDailyRoutine(request)
 
-    override suspend fun addMemberDailyRoutine(request: AddMemberDailyRoutineRequestDto): Response<BaseResponse<AddMemberDailyRoutineResponseDto>> =
-        memberRoutineService.addMemberDailyRoutine(request)
-
-    override suspend fun deleteRoutineHistory(request: Int): Response<BaseResponse<Unit>> =
-        memberRoutineService.deleteDailyRoutineHistory(request)
-}
+        override suspend fun deleteRoutineHistory(request: Int): Response<BaseResponse<Unit>> =
+            memberRoutineService.deleteDailyRoutineHistory(request)
+    }

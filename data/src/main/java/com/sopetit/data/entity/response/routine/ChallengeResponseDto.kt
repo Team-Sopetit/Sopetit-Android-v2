@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ChallengeResponseDto (
+data class ChallengeResponseDto(
     @SerialName("challenges")
-    val challenges: List<ChallengeItem> = emptyList()
+    val challenges: List<ChallengeItem> = emptyList(),
 ) {
     @Serializable
     data class ChallengeItem(
@@ -21,6 +21,6 @@ data class ChallengeResponseDto (
         @SerialName("place")
         val place: String = "",
         @SerialName("hasRoutine")
-        val hasRoutine: Boolean = false
+        val hasRoutine: Boolean = false,
     )
 }

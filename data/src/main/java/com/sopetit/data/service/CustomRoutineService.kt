@@ -12,20 +12,19 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface CustomRoutineService {
-
     @POST(EndPoints.CustomRoutine.CREATE)
     suspend fun createRoutine(
-        @Body body: CustomRoutineRequestDto
+        @Body body: CustomRoutineRequestDto,
     ): Response<BaseResponse<CustomRoutineResponseDto>>
 
     @PUT(EndPoints.CustomRoutine.MODIFY)
     suspend fun modifyRoutine(
         @Path("customRoutineId") customRoutineId: Int,
-        @Body body: CustomRoutineRequestDto
+        @Body body: CustomRoutineRequestDto,
     ): Response<BaseResponse<CustomRoutineResponseDto>>
 
     @DELETE(EndPoints.CustomRoutine.MODIFY)
     suspend fun deleteRoutine(
-        @Path("customRoutineId") customRoutineId: Int
+        @Path("customRoutineId") customRoutineId: Int,
     ): Response<BaseResponse<Unit>>
 }

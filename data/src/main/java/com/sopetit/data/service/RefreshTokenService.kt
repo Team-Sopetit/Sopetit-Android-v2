@@ -7,7 +7,6 @@ import retrofit2.Response
 import retrofit2.http.POST
 
 interface RefreshTokenService {
-
     @POST(EndPoints.Auth.REISSUE)
     suspend fun refreshToken(): Response<BaseResponse<RefreshResponseDto>>
 }

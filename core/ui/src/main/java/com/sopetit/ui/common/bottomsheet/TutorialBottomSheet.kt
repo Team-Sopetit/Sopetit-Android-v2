@@ -48,7 +48,7 @@ fun TutorialBottomSheet(
         scope = scope,
         tutorials = tutorials,
         pagerState = pagerState,
-        onClickStartBtn = { closeTutorials() }
+        onClickStartBtn = { closeTutorials() },
     )
 }
 
@@ -62,24 +62,27 @@ fun TutorialBottomSheetContent(
     val currentPage = pagerState.currentPage
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Gray0),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Gray0),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
-            modifier = Modifier
-                .padding(top = 24.dp)
-                .wrapContentSize()
-                .clip(RoundedCornerShape(99.dp))
-                .background(Gray200)
+            modifier =
+                Modifier
+                    .padding(top = 24.dp)
+                    .wrapContentSize()
+                    .clip(RoundedCornerShape(99.dp))
+                    .background(Gray200),
         ) {
             Text(
                 text = tutorials[currentPage].bottomSheetTitle,
                 color = Gray700,
                 style = SoftieTypo.head3,
-                modifier = Modifier
-                    .padding(vertical = 8.dp, horizontal = 16.dp)
+                modifier =
+                    Modifier
+                        .padding(vertical = 8.dp, horizontal = 16.dp),
             )
         }
 
@@ -87,7 +90,7 @@ fun TutorialBottomSheetContent(
             text = tutorials[currentPage].title,
             style = SoftieTypo.head3,
             color = Gray700,
-            modifier = Modifier.padding(top = 24.dp)
+            modifier = Modifier.padding(top = 24.dp),
         )
 
         Text(
@@ -95,26 +98,27 @@ fun TutorialBottomSheetContent(
             style = SoftieTypo.body2,
             color = Gray500,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 10.dp)
+            modifier = Modifier.padding(top = 10.dp),
         )
 
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp, bottom = 30.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp, bottom = 30.dp),
             key = { index ->
                 tutorials[index].id
-            }
+            },
         ) {
             Box(
                 modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Image(
                     painter = painterResource(id = tutorials[currentPage].tutorialImg),
                     contentDescription = "tutorial",
-                    modifier = Modifier.size(width = 320.dp, height = 240.dp)
+                    modifier = Modifier.size(width = 320.dp, height = 240.dp),
                 )
             }
         }
@@ -132,7 +136,7 @@ fun TutorialBottomSheetContent(
                 } else {
                     onClickStartBtn()
                 }
-            }
+            },
         )
     }
 }

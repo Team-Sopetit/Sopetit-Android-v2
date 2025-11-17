@@ -30,7 +30,7 @@ data class GetMemberRoutineResponseDto(
             @SerializedName("isAchieve")
             val isAchieve: Boolean = false,
             @SerializedName("alarmTime")
-            val alarmTime: String = ""
+            val alarmTime: String = "",
         )
     }
 }

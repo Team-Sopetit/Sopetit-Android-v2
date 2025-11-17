@@ -8,16 +8,17 @@ import com.sopetit.data.service.AuthService
 import retrofit2.Response
 import javax.inject.Inject
 
-data class AuthDataSourceImpl @Inject constructor(
-    private val authService: AuthService
-) : AuthDataSource {
+data class AuthDataSourceImpl
+    @Inject
+    constructor(
+        private val authService: AuthService,
+    ) : AuthDataSource {
+        override suspend fun postLogIn(request: LogInRequestDto): Response<BaseResponse<LogInResponseDto>> =
+            authService.login(request)
 
-    override suspend fun postLogIn(request: LogInRequestDto): Response<BaseResponse<LogInResponseDto>> =
-        authService.login(request)
+        override suspend fun deleteUser(): Response<BaseResponse<Unit>> =
+            authService.deleteUser()
 
-    override suspend fun deleteUser(): Response<BaseResponse<Unit>> =
-        authService.deleteUser()
-
-    override suspend fun postLogOut(): Response<BaseResponse<Unit>> =
-        authService.logout()
-}
+        override suspend fun postLogOut(): Response<BaseResponse<Unit>> =
+            authService.logout()
+    }

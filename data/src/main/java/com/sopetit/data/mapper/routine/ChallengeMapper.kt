@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 object ChallengeMapper : BaseMapper() {
-
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<ChallengeResponseDto>>): Flow<Result<List<ChallengeItemModel>>> {
         return baseMapper(
             apiCall = { apiCall() },
@@ -21,11 +20,11 @@ object ChallengeMapper : BaseMapper() {
                             description = challenge.description,
                             requiredTime = challenge.requiredTime,
                             place = challenge.place,
-                            hasRoutine = challenge.hasRoutine
+                            hasRoutine = challenge.hasRoutine,
                         )
                     }
                 } ?: listOf(ChallengeItemModel())
-            }
+            },
         )
     }
 }

@@ -7,7 +7,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface ThemeService {
-
     @GET(EndPoints.Theme.THEME)
     suspend fun themeList(): Response<BaseResponse<ThemeListResponseDto>>
 }

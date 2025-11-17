@@ -47,9 +47,8 @@ fun AchieveScreen(
     writtenMemo: SharedFlow<String>,
     showMemoDetailBottomSheet: (MemoActionModel) -> Unit,
     memoActionModel: SharedFlow<MemoActionModel>,
-    goToAchieveRoutinePage: (Int) -> Unit
+    goToAchieveRoutinePage: (Int) -> Unit,
 ) {
-
     val viewModel: AchieveViewModel = hiltViewModel()
     val uiState: AchievePageState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -62,7 +61,7 @@ fun AchieveScreen(
         writtenMemo = writtenMemo,
         showMemoDetailBottomSheet = showMemoDetailBottomSheet,
         memoActionModel = memoActionModel,
-        goToAchieveRoutinePage = goToAchieveRoutinePage
+        goToAchieveRoutinePage = goToAchieveRoutinePage,
     )
 }
 
@@ -76,33 +75,36 @@ fun AchieveContent(
     writtenMemo: SharedFlow<String> = MutableSharedFlow(),
     showMemoDetailBottomSheet: (MemoActionModel) -> Unit = {},
     memoActionModel: SharedFlow<MemoActionModel> = MutableSharedFlow(),
-    goToAchieveRoutinePage: (Int) -> Unit = {}
+    goToAchieveRoutinePage: (Int) -> Unit = {},
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
     ) {
         Text(
             text = Achieve,
             color = Gray700,
             style = SoftieTypo.head3,
-            modifier = Modifier
-                .padding(vertical = 16.dp, horizontal = 20.dp)
+            modifier =
+                Modifier
+                    .padding(vertical = 16.dp, horizontal = 20.dp),
         )
 
         AchieveTab(
             onSelectTab = onSelectTab,
-            selectedTab = selectedTab
+            selectedTab = selectedTab,
         )
 
         Box(
-            modifier = Modifier
-                .weight(1f)
+            modifier =
+                Modifier
+                    .weight(1f),
         ) {
             if (selectedTab == AchieveTabType.TabStat) {
                 StatScreen(
-                    goToAchieveRoutinePage = goToAchieveRoutinePage
+                    goToAchieveRoutinePage = goToAchieveRoutinePage,
                 )
             } else {
                 CalendarScreen(
@@ -111,7 +113,7 @@ fun AchieveContent(
                     showMemoWriteBottomSheet = showMemoWriteBottomSheet,
                     writtenMemo = writtenMemo,
                     showMemoDetailBottomSheet = showMemoDetailBottomSheet,
-                    memoActionModel = memoActionModel
+                    memoActionModel = memoActionModel,
                 )
             }
         }
@@ -124,28 +126,30 @@ fun AchieveTab(
     selectedTab: AchieveTabType,
 ) {
     Row(
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp),
     ) {
         AchieveTabItem(
             modifier = Modifier.weight(1f),
             content = AchieveTabStat,
             isSelectedTab = (selectedTab == AchieveTabType.TabStat),
-            onSelect = { onSelectTab(AchieveTabType.TabStat) }
+            onSelect = { onSelectTab(AchieveTabType.TabStat) },
         )
 
         AchieveTabItem(
             modifier = Modifier.weight(1f),
             content = AchieveTabCalendar,
             isSelectedTab = (selectedTab == AchieveTabType.TabCalendar),
-            onSelect = { onSelectTab(AchieveTabType.TabCalendar) }
+            onSelect = { onSelectTab(AchieveTabType.TabCalendar) },
         )
     }
 
     Divider(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(width = 2.dp, color = Gray200)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .border(width = 2.dp, color = Gray200),
     )
 }
 
@@ -157,27 +161,30 @@ fun AchieveTabItem(
     onSelect: () -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .clickable(
-                onClick = onSelect
-            )
+        modifier =
+            modifier
+                .clickable(
+                    onClick = onSelect,
+                ),
     ) {
         Text(
             text = content,
             color = if (isSelectedTab) Gray700 else Gray400,
             style = if (isSelectedTab) SoftieTypo.head4 else SoftieTypo.body2,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(top = 6.dp, bottom = 10.dp)
-                .align(Alignment.CenterHorizontally)
+            modifier =
+                Modifier
+                    .padding(top = 6.dp, bottom = 10.dp)
+                    .align(Alignment.CenterHorizontally),
         )
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(3.dp)
-                .clip(RoundedCornerShape(9.dp))
-                .background(if (isSelectedTab) Gray650 else Gray200)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(3.dp)
+                    .clip(RoundedCornerShape(9.dp))
+                    .background(if (isSelectedTab) Gray650 else Gray200),
         )
     }
 }

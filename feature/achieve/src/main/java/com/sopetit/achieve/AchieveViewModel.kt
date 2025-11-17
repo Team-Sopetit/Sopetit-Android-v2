@@ -5,17 +5,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AchieveViewModel @Inject constructor(
-
-) : BaseViewModel<AchievePageState>(
-    AchievePageState()
-) {
-
-    fun setSelectedTab(tab: AchieveTabType) {
-        updateState(
-            uiState.value.copy(
-                selectedTab = tab
+class AchieveViewModel
+    @Inject
+    constructor() : BaseViewModel<AchievePageState>(
+            AchievePageState(),
+        ) {
+        fun setSelectedTab(tab: AchieveTabType) {
+            updateState(
+                uiState.value.copy(
+                    selectedTab = tab,
+                ),
             )
-        )
+        }
     }
-}

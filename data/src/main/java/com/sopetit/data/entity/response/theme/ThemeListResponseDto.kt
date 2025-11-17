@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ThemeListResponseDto(
     @SerializedName("themes")
-    val themes: List<ThemeListResponseItemDto>
+    val themes: List<ThemeListResponseItemDto>,
 ) {
     @Serializable
     data class ThemeListResponseItemDto(
@@ -17,6 +17,6 @@ data class ThemeListResponseDto(
         @SerializedName("subTitle")
         val subTitle: String = "",
         @SerializedName("description")
-        val description: String = ""
+        val description: String = "",
     )
 }

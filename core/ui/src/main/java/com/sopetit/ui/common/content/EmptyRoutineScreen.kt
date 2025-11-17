@@ -36,7 +36,7 @@ fun EmptyRoutineScreen(
     btnTextStyle: TextStyle,
     btnVerticalPadding: Int,
     btnHorizontalPadding: Int,
-    onClickAddRoutine: () -> Unit
+    onClickAddRoutine: () -> Unit,
 ) {
     EmptyRoutineContent(
         titleContent = titleContent,
@@ -50,7 +50,7 @@ fun EmptyRoutineScreen(
         btnTextStyle = btnTextStyle,
         btnVerticalPadding = btnVerticalPadding,
         btnHorizontalPadding = btnHorizontalPadding,
-        onClickAddRoutine = onClickAddRoutine
+        onClickAddRoutine = onClickAddRoutine,
     )
 }
 
@@ -67,19 +67,21 @@ fun EmptyRoutineContent(
     btnTextStyle: TextStyle = SoftieTypo.caption1,
     btnVerticalPadding: Int = 0,
     btnHorizontalPadding: Int = 0,
-    onClickAddRoutine: () -> Unit = {}
+    onClickAddRoutine: () -> Unit = {},
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_empty_routine),
             contentDescription = "empty bear",
-            modifier = Modifier
-                .size(width = 100.dp, height = 120.dp)
+            modifier =
+                Modifier
+                    .size(width = 100.dp, height = 120.dp),
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -87,7 +89,7 @@ fun EmptyRoutineContent(
         Text(
             text = titleContent,
             color = titleColor,
-            style = titleStyle
+            style = titleStyle,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -101,7 +103,7 @@ fun EmptyRoutineContent(
             textStyle = btnTextStyle,
             verticalPadding = btnVerticalPadding,
             horizontalPadding = btnHorizontalPadding,
-            onClickAction = onClickAddRoutine
+            onClickAction = onClickAddRoutine,
         )
     }
 }

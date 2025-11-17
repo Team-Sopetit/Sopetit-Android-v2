@@ -28,5 +28,5 @@ data class MainPageState(
     val twoBtnType: TwoBtnBottomSheetType = TwoBtnBottomSheetType.MemoWrite,
     val modifyRoutine: ModifyRoutineModel = ModifyRoutineModel(),
     val twoBtnIconModel: TwoBtnIconModel = TwoBtnIconModel(),
-    val twoBtnDialogModel: TwoBtnDialogModel = TwoBtnDialogModel()
+    val twoBtnDialogModel: TwoBtnDialogModel = TwoBtnDialogModel(),
 ) : PageState

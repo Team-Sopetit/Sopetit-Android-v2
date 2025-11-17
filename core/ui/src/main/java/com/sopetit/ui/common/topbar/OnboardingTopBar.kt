@@ -31,7 +31,7 @@ import com.sopetit.design_system.R
 fun OnboardingTopBar(
     page: Int = 0,
     enabledGoBack: Boolean = false,
-    goBack: () -> Unit = {}
+    goBack: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -39,7 +39,7 @@ fun OnboardingTopBar(
         boxIndex = page - 1,
         enabledGoBack = enabledGoBack,
         onClickAction = { goBack() },
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     )
 }
 
@@ -48,28 +48,29 @@ fun OnboardingTopBarContent(
     boxIndex: Int = 0,
     enabledGoBack: Boolean = true,
     onClickAction: () -> Unit = {},
-    interactionSource: MutableInteractionSource = MutableInteractionSource()
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
-
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(65.dp)
-            .wrapContentSize(Alignment.Center)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(65.dp)
+                .wrapContentSize(Alignment.Center),
     ) {
         if (enabledGoBack) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = "back",
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .padding(vertical = 14.dp)
-                    .size(28.dp)
-                    .clickable(
-                        indication = null,
-                        interactionSource = interactionSource,
-                        onClick = { onClickAction() }
-                    )
+                modifier =
+                    Modifier
+                        .align(Alignment.Start)
+                        .padding(vertical = 14.dp)
+                        .size(28.dp)
+                        .clickable(
+                            indication = null,
+                            interactionSource = interactionSource,
+                            onClick = { onClickAction() },
+                        ),
             )
             Spacer(modifier = Modifier.height(4.dp))
         } else {
@@ -77,11 +78,11 @@ fun OnboardingTopBarContent(
         }
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             items(4, key = { it }) { index ->
                 OnboardingTopBarItem(
-                    boxActivation = (index <= boxIndex)
+                    boxActivation = (index <= boxIndex),
                 )
             }
         }
@@ -90,13 +91,14 @@ fun OnboardingTopBarContent(
 
 @Composable
 fun OnboardingTopBarItem(
-    boxActivation: Boolean = false
+    boxActivation: Boolean = false,
 ) {
     Box(
-        modifier = Modifier
-            .size(height = 5.dp, width = 80.dp)
-            .clip(RoundedCornerShape(99))
-            .background(if (boxActivation) Gray650 else Gray200)
+        modifier =
+            Modifier
+                .size(height = 5.dp, width = 80.dp)
+                .clip(RoundedCornerShape(99))
+                .background(if (boxActivation) Gray650 else Gray200),
     )
 }
 

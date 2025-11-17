@@ -8,8 +8,7 @@ import com.sopetit.domain.entity.response.version.VersionModel
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-object GetVersionMapper: BaseMapper() {
-
+object GetVersionMapper : BaseMapper() {
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<VersionResponseDto>>): Flow<Result<VersionModel>> {
         return baseMapper(
             apiCall = { apiCall() },
@@ -20,10 +19,10 @@ object GetVersionMapper: BaseMapper() {
                         androidVersion = VersionAppModel(data.androidVersion.appVersion, data.androidVersion.forceUpdateVersion),
                         notificationTitle = data.notificationTitle,
                         notificationContent = data.notificationContent,
-                        properties = data.properties
+                        properties = data.properties,
                     )
                 } ?: VersionModel()
-            }
+            },
         )
     }
 }

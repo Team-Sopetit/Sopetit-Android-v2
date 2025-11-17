@@ -14,25 +14,29 @@ private val Context.dataStore by preferencesDataStore(name = "softie_prefs")
 class LocalDataStore(context: Context) {
     private val dataStore = context.dataStore
 
-    val accessToken: Flow<String?> = dataStore.data
-        .map { preferences ->
-            preferences[ACCESS_TOKEN_KEY]
-        }
+    val accessToken: Flow<String?> =
+        dataStore.data
+            .map { preferences ->
+                preferences[ACCESS_TOKEN_KEY]
+            }
 
-    val refreshToken: Flow<String?> = dataStore.data
-        .map { preferences ->
-            preferences[REFRESH_TOKEN_KEY]
-        }
+    val refreshToken: Flow<String?> =
+        dataStore.data
+            .map { preferences ->
+                preferences[REFRESH_TOKEN_KEY]
+            }
 
-    val isMemberDollExist: Flow<Boolean?> = dataStore.data
-        .map { preferences ->
-            preferences[IS_MEMBER_DOLL_EXIST]
-        }
+    val isMemberDollExist: Flow<Boolean?> =
+        dataStore.data
+            .map { preferences ->
+                preferences[IS_MEMBER_DOLL_EXIST]
+            }
 
-    val fcmToken: Flow<String?> = dataStore.data
-        .map { preferences ->
-            preferences[FCM_TOKEN_KEY]
-        }
+    val fcmToken: Flow<String?> =
+        dataStore.data
+            .map { preferences ->
+                preferences[FCM_TOKEN_KEY]
+            }
 
     suspend fun saveAccessToken(token: String) {
         dataStore.edit { preferences ->

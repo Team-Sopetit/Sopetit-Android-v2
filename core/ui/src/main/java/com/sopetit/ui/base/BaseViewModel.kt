@@ -10,10 +10,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-abstract class BaseViewModel<STATE: PageState>(
-    initialState: STATE
+abstract class BaseViewModel<STATE : PageState>(
+    initialState: STATE,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()
 
@@ -45,7 +44,7 @@ abstract class BaseViewModel<STATE: PageState>(
                 onFailure = { exception ->
                     Timber.e("[에러 발생]", exception.stackTraceToString())
                     errorCallback?.invoke(exception)
-                }
+                },
             )
         }
     }

@@ -8,7 +8,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface CalendarService {
-
     @GET(EndPoints.Calendar.CALENDAR)
     suspend fun getCalendar(
         @Query("year") year: Int,

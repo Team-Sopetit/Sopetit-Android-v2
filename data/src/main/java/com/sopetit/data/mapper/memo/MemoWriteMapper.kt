@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 object MemoWriteMapper : BaseMapper() {
-
     fun MemoWriteRequestModel.toDto() = MemoWriteRequestDto(achievedDate = date, content = content)
 
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<MemoWriteResponseDto>>): Flow<Result<Int>> {
@@ -17,7 +16,7 @@ object MemoWriteMapper : BaseMapper() {
             apiCall = { apiCall() },
             responseToModel = { response ->
                 response?.memoId ?: 0
-            }
+            },
         )
     }
 }

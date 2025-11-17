@@ -26,7 +26,7 @@ import com.sopetit.design_system.SoftieTypo
 fun BottomRectangleBtn(
     btnTextContent: String,
     isBtnActivated: Boolean = false,
-    onClickAction: () -> Unit = {}
+    onClickAction: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -34,7 +34,7 @@ fun BottomRectangleBtn(
         interactionSource = interactionSource,
         btnTextContent = btnTextContent,
         isBtnActivated = isBtnActivated,
-        onClickAction = onClickAction
+        onClickAction = onClickAction,
     )
 }
 
@@ -43,34 +43,37 @@ fun BottomRectangleBtnContent(
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     btnTextContent: String,
     isBtnActivated: Boolean = false,
-    onClickAction: () -> Unit = {}
+    onClickAction: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier
-            .wrapContentSize()
-            .padding(bottom = 32.dp)
+        modifier =
+            Modifier
+                .wrapContentSize()
+                .padding(bottom = 32.dp),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(if (isBtnActivated) Gray650 else Gray300)
-                .wrapContentHeight()
-                .clickable(
-                    enabled = isBtnActivated,
-                    indication = null,
-                    interactionSource = interactionSource,
-                    onClick = { onClickAction() }
-                )
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(if (isBtnActivated) Gray650 else Gray300)
+                    .wrapContentHeight()
+                    .clickable(
+                        enabled = isBtnActivated,
+                        indication = null,
+                        interactionSource = interactionSource,
+                        onClick = { onClickAction() },
+                    ),
         ) {
             Text(
                 text = btnTextContent,
                 style = SoftieTypo.body1,
                 color = Gray0,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(vertical = 17.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.Center)
+                        .padding(vertical = 17.dp),
             )
         }
     }

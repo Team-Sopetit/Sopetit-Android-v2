@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LogInRequestDto(
     @SerialName("socialType")
-    val socialType: String
+    val socialType: String,
 )

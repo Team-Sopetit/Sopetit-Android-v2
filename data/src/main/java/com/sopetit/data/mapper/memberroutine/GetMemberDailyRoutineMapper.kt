@@ -9,33 +9,34 @@ import com.sopetit.domain.entity.response.memberroutine.MemberDailyRoutineTotalM
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-object GetMemberDailyRoutineMapper: BaseMapper() {
-
+object GetMemberDailyRoutineMapper : BaseMapper() {
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<GetMemberRoutineResponseDto>>): Flow<Result<MemberDailyRoutineTotalModel>> {
         return baseMapper(
             apiCall = { apiCall() },
             responseToModel = { response ->
                 response?.let { data ->
                     MemberDailyRoutineTotalModel(
-                        routines = data.routines.map { routineList ->
-                            MemberDailyRoutineListModel(
-                                themeId = routineList.themeId,
-                                themeName = routineList.themeName,
-                                routines = routineList.routines.map { listItem ->
-                                    MemberDailyRoutineListItemModel(
-                                        routineId = listItem.routineId,
-                                        originRoutineId = listItem.originRoutineId,
-                                        content = listItem.content,
-                                        achieveCount = listItem.achieveCount,
-                                        isAchieve = listItem.isAchieve,
-                                        alarmTime = listItem.alarmTime
-                                    )
-                                }
-                            )
-                        }
+                        routines =
+                            data.routines.map { routineList ->
+                                MemberDailyRoutineListModel(
+                                    themeId = routineList.themeId,
+                                    themeName = routineList.themeName,
+                                    routines =
+                                        routineList.routines.map { listItem ->
+                                            MemberDailyRoutineListItemModel(
+                                                routineId = listItem.routineId,
+                                                originRoutineId = listItem.originRoutineId,
+                                                content = listItem.content,
+                                                achieveCount = listItem.achieveCount,
+                                                isAchieve = listItem.isAchieve,
+                                                alarmTime = listItem.alarmTime,
+                                            )
+                                        },
+                                )
+                            },
                     )
                 } ?: MemberDailyRoutineTotalModel()
-            }
+            },
         )
     }
 }

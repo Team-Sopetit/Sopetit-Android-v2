@@ -17,7 +17,7 @@ fun PagerIndicator(
 ) {
     PagerIndicatorContent(
         pageNumber = pageNumber,
-        currentPage = currentPage
+        currentPage = currentPage,
     )
 }
 
@@ -27,11 +27,11 @@ fun PagerIndicatorContent(
     currentPage: Int,
 ) {
     LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         items(pageNumber, key = { it }) {
             PagerIndicatorItem(
-                isCurrentPage = it == currentPage
+                isCurrentPage = it == currentPage,
             )
         }
     }
@@ -42,13 +42,14 @@ fun PagerIndicatorItem(
     isCurrentPage: Boolean,
 ) {
     Canvas(
-        modifier = Modifier
-            .size(6.dp),
+        modifier =
+            Modifier
+                .size(6.dp),
         onDraw = {
             drawCircle(
                 color = if (isCurrentPage) Gray650 else Gray300,
-                radius = 3.dp.toPx()
+                radius = 3.dp.toPx(),
             )
-        }
+        },
     )
 }

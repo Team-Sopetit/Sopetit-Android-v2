@@ -5,11 +5,12 @@ import com.sopetit.domain.repository.RefreshTokenRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class SaveAccessTokenUseCase @Inject constructor(
-    private val refreshTokenRepository: RefreshTokenRepository,
-) : UseCase<String, Result<Unit>>() {
-
-    override suspend fun invoke(request: String): Flow<Result<Unit>> {
-        return refreshTokenRepository.saveAccessToken(request)
+class SaveAccessTokenUseCase
+    @Inject
+    constructor(
+        private val refreshTokenRepository: RefreshTokenRepository,
+    ) : UseCase<String, Result<Unit>>() {
+        override suspend fun invoke(request: String): Flow<Result<Unit>> {
+            return refreshTokenRepository.saveAccessToken(request)
+        }
     }
-}

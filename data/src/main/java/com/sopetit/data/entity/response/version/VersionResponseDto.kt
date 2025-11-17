@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class VersionResponseDto (
+data class VersionResponseDto(
     @SerialName("iosVersion")
     val iosVersion: AppVersion,
     @SerialName("androidVersion")
@@ -14,13 +14,13 @@ data class VersionResponseDto (
     @SerialName("notificationContent")
     val notificationContent: String = "",
     @SerialName("properties")
-    val properties: Map<String, String> = emptyMap()
+    val properties: Map<String, String> = emptyMap(),
 ) {
     @Serializable
-    data class AppVersion (
+    data class AppVersion(
         @SerialName("appVersion")
         val appVersion: String = "",
         @SerialName("forceUpdateVersion")
-        val forceUpdateVersion: String = ""
+        val forceUpdateVersion: String = "",
     )
 }

@@ -24,7 +24,7 @@ enum class ThemeIconType(
     val themeBackgroundImg: Int,
     val themeDetailBackground: Int,
     val themeColor: Color,
-    val themeGraphColor: Color
+    val themeGraphColor: Color,
 ) {
     ONE(1, R.drawable.ic_theme1, "관계 쌓기", R.drawable.ic_challenge_background1, R.drawable.ic_theme_background1, Pink50, Pink100),
     TWO(2, R.drawable.ic_theme2, "마음 챙김", R.drawable.ic_challenge_background2, R.drawable.ic_theme_background2, Red50, Red100),
@@ -32,7 +32,8 @@ enum class ThemeIconType(
     FOUR(4, R.drawable.ic_theme4, "산뜻한 일상", R.drawable.ic_challenge_background4, R.drawable.ic_theme_background4, Yellow50, Yellow100),
     FIVE(5, R.drawable.ic_theme5, "한 걸음 성장", R.drawable.ic_challenge_background5, R.drawable.ic_theme_background5, Green50, Green100),
     SIX(6, R.drawable.ic_theme6, "건강한 몸", R.drawable.ic_challenge_background6, R.drawable.ic_theme_background6, Sky50, Sky100),
-    SEVEN(7, R.drawable.ic_theme7, "나와 친해지기", R.drawable.ic_challenge_background7, R.drawable.ic_theme_background7, Blue50, Blue100);
+    SEVEN(7, R.drawable.ic_theme7, "나와 친해지기", R.drawable.ic_challenge_background7, R.drawable.ic_theme_background7, Blue50, Blue100),
+    ;
 
     companion object {
         fun getThemeIcon(themeId: Int): Int =
@@ -60,6 +61,6 @@ enum class ThemeIconType(
             entries.firstOrNull { it.themeId == themeId }?.themeColor ?: Color.Transparent
 
         fun getThemeGraphColor(themeId: Int): Color =
-            entries.firstOrNull { it.themeId == themeId}?.themeGraphColor?: Color.Transparent
+            entries.firstOrNull { it.themeId == themeId }?.themeGraphColor ?: Color.Transparent
     }
 }

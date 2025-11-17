@@ -7,10 +7,10 @@ import com.sopetit.design_system.Gray400
 import com.sopetit.design_system.Gray500
 
 enum class EmptyColorType(
-    val color: Color
+    val color: Color,
 ) {
     ONE(Gray400),
     TWO(Gray300),
     THREE(Gray200),
-    FOUR(Gray500)
+    FOUR(Gray500),
 }

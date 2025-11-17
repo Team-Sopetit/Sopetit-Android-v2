@@ -6,10 +6,11 @@ import com.sopetit.domain.repository.AchieveRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAchieveRoutineUseCase @Inject constructor(
-    private val achieveRepository: AchieveRepository,
-) : UseCase<Int, Result<AchieveRoutineModel>>() {
-
-    override suspend fun invoke(request: Int): Flow<Result<AchieveRoutineModel>> =
-        achieveRepository.getAchieveRoutine(request)
-}
+class GetAchieveRoutineUseCase
+    @Inject
+    constructor(
+        private val achieveRepository: AchieveRepository,
+    ) : UseCase<Int, Result<AchieveRoutineModel>>() {
+        override suspend fun invoke(request: Int): Flow<Result<AchieveRoutineModel>> =
+            achieveRepository.getAchieveRoutine(request)
+    }

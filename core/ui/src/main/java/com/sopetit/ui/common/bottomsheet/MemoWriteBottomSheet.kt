@@ -62,12 +62,16 @@ fun MemoWriteBottomSheet(
         memoInput = memoInput,
         onValueChange = { memoInput = it },
         onClickCompleteBtn = {
-            if (memoActionModel.content.isNotEmpty()) onClickModifyBtn(
-                memoActionModel.copy(
-                    type = BottomSheetActionType.Modify,
-                    content = memoInput
+            if (memoActionModel.content.isNotEmpty()) {
+                onClickModifyBtn(
+                    memoActionModel.copy(
+                        type = BottomSheetActionType.Modify,
+                        content = memoInput,
+                    ),
                 )
-            ) else onClickConfirmBtn(memoInput)
+            } else {
+                onClickConfirmBtn(memoInput)
+            }
         },
     )
 }
@@ -80,47 +84,52 @@ fun MemoWriteContent(
     onClickCompleteBtn: () -> Unit = {},
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Gray0),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Gray0),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
         ) {
             Text(
                 text = MemoTitle,
                 color = Gray700,
                 style = SoftieTypo.head4,
-                modifier = Modifier
-                    .padding(top = 24.dp)
-                    .align(Alignment.Center)
+                modifier =
+                    Modifier
+                        .padding(top = 24.dp)
+                        .align(Alignment.Center),
             )
 
             Text(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = Gray700)) { append(memoInput.length.toString()) }
-                    append(MemoWriteNumber)
-                },
+                text =
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = Gray700)) { append(memoInput.length.toString()) }
+                        append(MemoWriteNumber)
+                    },
                 color = Gray400,
                 style = SoftieTypo.body2,
-                modifier = Modifier
-                    .padding(top = 24.dp)
-                    .align(Alignment.CenterEnd)
+                modifier =
+                    Modifier
+                        .padding(top = 24.dp)
+                        .align(Alignment.CenterEnd),
             )
         }
 
         MemoWriteBox(
             textInput = memoInput,
-            onValueChange = onValueChange
+            onValueChange = onValueChange,
         )
 
         BottomRectangleBtn(
             btnTextContent = CompleteShort,
             isBtnActivated = memoInput.isNotEmpty(),
-            onClickAction = onClickCompleteBtn
+            onClickAction = onClickCompleteBtn,
         )
     }
 }
@@ -142,51 +151,57 @@ fun MemoWriteBox(
     }
 
     Box(
-        modifier = Modifier
-            .padding(top = 16.dp, bottom = 32.dp, start = 20.dp, end = 20.dp)
-            .fillMaxWidth()
-            .height(132.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(Gray200)
+        modifier =
+            Modifier
+                .padding(top = 16.dp, bottom = 32.dp, start = 20.dp, end = 20.dp)
+                .fillMaxWidth()
+                .height(132.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(Gray200),
     ) {
         BasicTextField(
             value = textInput,
             onValueChange = { input ->
                 onValueChange(input)
             },
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .onFocusChanged { focusState ->
-                    isFocused = focusState.isFocused
-                },
-            textStyle = SoftieTypo.body2.copy(
-                color = Gray700,
-                textAlign = TextAlign.Start
-            ),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus()
-                }
-            ),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .onFocusChanged { focusState ->
+                        isFocused = focusState.isFocused
+                    },
+            textStyle =
+                SoftieTypo.body2.copy(
+                    color = Gray700,
+                    textAlign = TextAlign.Start,
+                ),
+            keyboardOptions =
+                KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done,
+                ),
+            keyboardActions =
+                KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    },
+                ),
             decorationBox = { innerTextField ->
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
                 ) {
                     if (textInput.isEmpty() && !isFocused) {
                         Text(
                             text = MemoHintContent,
                             style = SoftieTypo.body2,
-                            color = Gray400
+                            color = Gray400,
                         )
                     }
                     innerTextField()
                 }
-            }
+            },
         )
     }
 }

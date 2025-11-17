@@ -7,11 +7,11 @@ import com.sopetit.data.service.ThemeService
 import retrofit2.Response
 import javax.inject.Inject
 
-class ThemeDataSourceImpl @Inject constructor(
-    private val themeService: ThemeService
-) : ThemeDataSource {
-
-    override suspend fun themeList(): Response<BaseResponse<ThemeListResponseDto>> =
-        themeService.themeList()
-
-}
+class ThemeDataSourceImpl
+    @Inject
+    constructor(
+        private val themeService: ThemeService,
+    ) : ThemeDataSource {
+        override suspend fun themeList(): Response<BaseResponse<ThemeListResponseDto>> =
+            themeService.themeList()
+    }

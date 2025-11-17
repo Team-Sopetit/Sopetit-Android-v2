@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 object GetAchieveRoutineMapper : BaseMapper() {
-
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<GetAchieveRoutineResponseDto>>): Flow<Result<AchieveRoutineModel>> {
         return baseMapper(
             apiCall = { apiCall() },
@@ -19,24 +18,26 @@ object GetAchieveRoutineMapper : BaseMapper() {
                         id = data.id,
                         name = data.name,
                         routineTotalCount = data.routineTotalCount,
-                        routines = data.routines.map { routine ->
-                            AchieveRoutineItem(
-                                content = routine.content,
-                                achievedCount = routine.achievedCount,
-                                startedAt = routine.startedAt
-                            )
-                        },
+                        routines =
+                            data.routines.map { routine ->
+                                AchieveRoutineItem(
+                                    content = routine.content,
+                                    achievedCount = routine.achievedCount,
+                                    startedAt = routine.startedAt,
+                                )
+                            },
                         challengeTotalCount = data.challengeTotalCount,
-                        challenges = data.challenges.map { challenge ->
-                            AchieveRoutineItem(
-                                content = challenge.content,
-                                achievedCount = challenge.achievedCount,
-                                startedAt = challenge.startedAt
-                            )
-                        }
+                        challenges =
+                            data.challenges.map { challenge ->
+                                AchieveRoutineItem(
+                                    content = challenge.content,
+                                    achievedCount = challenge.achievedCount,
+                                    startedAt = challenge.startedAt,
+                                )
+                            },
                     )
                 } ?: AchieveRoutineModel()
-            }
+            },
         )
     }
 }

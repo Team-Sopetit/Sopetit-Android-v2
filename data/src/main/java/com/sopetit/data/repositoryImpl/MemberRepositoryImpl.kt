@@ -15,24 +15,27 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class MemberRepositoryImpl @Inject constructor(
-    private val memberDataSource: MemberDataSource,
-    private val localDataStore: LocalDataStore,
-    private val fcmTokenProvider: FcmTokenProvider,
-) : MemberRepository {
-    override suspend fun postCreateMember(request: CreateMemberModel): Flow<Result<Unit>> =
-        CreateMemberMapper.responseToModel(apiCall = { memberDataSource.postCreateMember(request.toDto()) })
+class MemberRepositoryImpl
+    @Inject
+    constructor(
+        private val memberDataSource: MemberDataSource,
+        private val localDataStore: LocalDataStore,
+        private val fcmTokenProvider: FcmTokenProvider,
+    ) : MemberRepository {
+        override suspend fun postCreateMember(request: CreateMemberModel): Flow<Result<Unit>> =
+            CreateMemberMapper.responseToModel(apiCall = { memberDataSource.postCreateMember(request.toDto()) })
 
-    override suspend fun getMember(): Flow<Result<GetMemberModel>> =
-        GetMemberMapper.responseToModel(apiCall = { memberDataSource.getMember() })
+        override suspend fun getMember(): Flow<Result<GetMemberModel>> =
+            GetMemberMapper.responseToModel(apiCall = { memberDataSource.getMember() })
 
-    override suspend fun postFcmToken(): Flow<Result<Unit>> = flow {
-        localDataStore.saveFcmToken(fcmTokenProvider.getFcmToken())
-        memberDataSource.postFcmToken(
-            PostFcmRequestDto(fcmTokenProvider.getFcmToken())
-        )
+        override suspend fun postFcmToken(): Flow<Result<Unit>> =
+            flow {
+                localDataStore.saveFcmToken(fcmTokenProvider.getFcmToken())
+                memberDataSource.postFcmToken(
+                    PostFcmRequestDto(fcmTokenProvider.getFcmToken()),
+                )
+            }
+
+        override suspend fun patchCotton(request: String): Flow<Result<Int>> =
+            PatchCottonMapper.responseToModel(apiCall = { memberDataSource.patchCotton(request) })
     }
-
-    override suspend fun patchCotton(request: String): Flow<Result<Int>> =
-        PatchCottonMapper.responseToModel(apiCall = { memberDataSource.patchCotton(request) })
-}

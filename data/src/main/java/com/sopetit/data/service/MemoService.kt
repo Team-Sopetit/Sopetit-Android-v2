@@ -13,20 +13,19 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface MemoService {
-
     @POST(EndPoints.Memo.MEMOWRITE)
     suspend fun writeMemo(
-        @Body body: MemoWriteRequestDto
+        @Body body: MemoWriteRequestDto,
     ): Response<BaseResponse<MemoWriteResponseDto>>
 
     @DELETE(EndPoints.Memo.ACTION)
     suspend fun deleteMemo(
-        @Path("memoId") memoId: Int
+        @Path("memoId") memoId: Int,
     ): Response<BaseResponse<Unit>>
 
     @PATCH(EndPoints.Memo.ACTION)
     suspend fun modifyMemo(
         @Path("memoId") memoId: Int,
-        @Body body: MemoModifyRequestDto
+        @Body body: MemoModifyRequestDto,
     ): Response<BaseResponse<Unit>>
 }

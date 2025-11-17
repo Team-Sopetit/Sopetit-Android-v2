@@ -10,7 +10,6 @@ import retrofit2.http.DELETE
 import retrofit2.http.POST
 
 interface AuthService {
-
     @POST(EndPoints.Auth.AUTH)
     suspend fun login(
         @Body body: LogInRequestDto,

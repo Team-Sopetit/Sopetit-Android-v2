@@ -12,8 +12,7 @@ import timber.log.Timber
 import com.sopetit.design_system.R
 
 @AndroidEntryPoint
-class FcmService: FirebaseMessagingService() {
-
+class FcmService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
@@ -29,39 +28,47 @@ class FcmService: FirebaseMessagingService() {
             title = message.notification?.title.orEmpty(),
             body = message.notification?.body.orEmpty(),
             type = message.data[TYPE].orEmpty(),
-            imageUrl = message.data[IMAGE_URL].orEmpty()
+            imageUrl = message.data[IMAGE_URL].orEmpty(),
         )
     }
 
-    private fun sendNotification(title: String, body: String, type: String, imageUrl: String) {
+    private fun sendNotification(
+        title: String,
+        body: String,
+        type: String,
+        imageUrl: String,
+    ) {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(title)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setContentText(body)
-            .setAutoCancel(true)
-            .setGroup(GROUP_KEY)
-            .build()
+        val notification =
+            NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(title)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentText(body)
+                .setAutoCancel(true)
+                .setGroup(GROUP_KEY)
+                .build()
 
-        val summaryNotification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(title)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setStyle(
-                NotificationCompat.InboxStyle()
-                    .addLine(body)
-                    .setSummaryText("${notificationManager.activeNotifications.size}")
-            )
-            .setGroup(GROUP_KEY)
-            .setGroupSummary(true)
-            .build()
+        val summaryNotification =
+            NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(title)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setStyle(
+                    NotificationCompat.InboxStyle()
+                        .addLine(body)
+                        .setSummaryText("${notificationManager.activeNotifications.size}"),
+                )
+                .setGroup(GROUP_KEY)
+                .setGroupSummary(true)
+                .build()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_ID,
-                NotificationManager.IMPORTANCE_HIGH
-            )
+            val channel =
+                NotificationChannel(
+                    CHANNEL_ID,
+                    CHANNEL_ID,
+                    NotificationManager.IMPORTANCE_HIGH,
+                )
             notificationManager.createNotificationChannel(channel)
         }
 

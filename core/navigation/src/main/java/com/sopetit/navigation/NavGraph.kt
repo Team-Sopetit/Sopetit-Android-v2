@@ -44,7 +44,7 @@ fun NavGraphBuilder.splashNavGraph(
 ) {
     navigation(
         startDestination = NavRoutes.SplashScreen.route,
-        route = NavRoutes.SplashGraph.route
+        route = NavRoutes.SplashGraph.route,
     ) {
         composable(NavRoutes.SplashScreen.route) {
             SplashScreen(
@@ -56,7 +56,7 @@ fun NavGraphBuilder.splashNavGraph(
                 goToOnboarding = {
                     setTutorialValid(it)
                     navController.navigate(NavRoutes.StoryTellingFirstScreen.route) { popUpTo(0) }
-                }
+                },
             )
         }
     }
@@ -68,7 +68,7 @@ fun NavGraphBuilder.logInNavGraph(
 ) {
     navigation(
         startDestination = NavRoutes.LogInScreen.route,
-        route = NavRoutes.LogInGraph.route
+        route = NavRoutes.LogInGraph.route,
     ) {
         composable(NavRoutes.LogInScreen.route) {
             LogInScreen(
@@ -83,7 +83,7 @@ fun NavGraphBuilder.logInNavGraph(
                     navController.navigate(NavRoutes.HomeScreen.route) {
                         popUpTo(0)
                     }
-                }
+                },
             )
         }
     }
@@ -97,23 +97,23 @@ fun NavGraphBuilder.onBoardingNavGraph(
 ) {
     navigation(
         startDestination = NavRoutes.StoryTellingFirstScreen.route,
-        route = NavRoutes.OnBoardingGraph.route
+        route = NavRoutes.OnBoardingGraph.route,
     ) {
         composable(NavRoutes.StoryTellingFirstScreen.route) {
             StoryTellingFirstScreen(
-                goToSecondStoryPage = { navController.navigate(NavRoutes.StoryTellingSecondScreen.route) }
+                goToSecondStoryPage = { navController.navigate(NavRoutes.StoryTellingSecondScreen.route) },
             )
         }
 
         composable(NavRoutes.StoryTellingSecondScreen.route) {
             StoryTellingSecondScreen(
-                goToThirdStoryPage = { navController.navigate(NavRoutes.StoryTellingThirdScreen.route) }
+                goToThirdStoryPage = { navController.navigate(NavRoutes.StoryTellingThirdScreen.route) },
             )
         }
 
         composable(NavRoutes.StoryTellingThirdScreen.route) {
             StoryTellingThirdScreen(
-                goToDollTypeChoicePage = { navController.navigate(NavRoutes.DollTypeChoiceScreen.route) }
+                goToDollTypeChoicePage = { navController.navigate(NavRoutes.DollTypeChoiceScreen.route) },
             )
         }
 
@@ -122,7 +122,7 @@ fun NavGraphBuilder.onBoardingNavGraph(
                 goToDollNamingPage = {
                     setMemberModel(it)
                     navController.navigate(NavRoutes.DollNamingScreen.route)
-                }
+                },
             )
         }
 
@@ -133,7 +133,7 @@ fun NavGraphBuilder.onBoardingNavGraph(
                     setMemberModel(it)
                     navController.navigate(NavRoutes.ThemeChoiceScreen.route)
                 },
-                goBackToDollTypePage = { navController.popBackStack() }
+                goBackToDollTypePage = { navController.popBackStack() },
             )
         }
 
@@ -144,7 +144,7 @@ fun NavGraphBuilder.onBoardingNavGraph(
                 goToRoutineChoicePage = {
                     setMemberModel(it)
                     navController.navigate(NavRoutes.RoutineChoiceScreen.route)
-                }
+                },
             )
         }
 
@@ -157,7 +157,7 @@ fun NavGraphBuilder.onBoardingNavGraph(
                     navController.navigate(NavRoutes.HomeScreen.route) {
                         popUpTo(0)
                     }
-                }
+                },
             )
         }
     }
@@ -171,14 +171,14 @@ fun NavGraphBuilder.homeNavGraph(
 ) {
     navigation(
         startDestination = NavRoutes.HomeScreen.route,
-        route = NavRoutes.HomeGraph.route
+        route = NavRoutes.HomeGraph.route,
     ) {
         composable(NavRoutes.HomeScreen.route) {
             HomeScreen(
                 showTutorialBottomSheet = showTutorialBottomSheet,
                 isTutorialValid = isTutorialValid,
                 goToSettingPage = { navController.navigate(NavRoutes.SettingScreen.route) },
-                showFeedbackDialog = showFeedbackDialog
+                showFeedbackDialog = showFeedbackDialog,
             )
         }
     }
@@ -197,7 +197,7 @@ fun NavGraphBuilder.achieveNavGraph(
 ) {
     navigation(
         startDestination = NavRoutes.AchieveScreen.route,
-        route = NavRoutes.AchieveGraph.route
+        route = NavRoutes.AchieveGraph.route,
     ) {
         composable(NavRoutes.AchieveScreen.route) {
             AchieveScreen(
@@ -210,7 +210,7 @@ fun NavGraphBuilder.achieveNavGraph(
                 goToAchieveRoutinePage = {
                     setAchieveThemeId(it)
                     navController.navigate(NavRoutes.AchieveRoutineScreen.route)
-                }
+                },
             )
         }
 
@@ -218,7 +218,7 @@ fun NavGraphBuilder.achieveNavGraph(
             AchieveRoutineScreen(
                 achieveThemeId = achieveThemeId,
                 goToAddRoutinePage = { navController.navigate(NavRoutes.AddRoutineScreen.route) },
-                goBackToAchievePage = { navController.popBackStack() }
+                goBackToAchievePage = { navController.popBackStack() },
             )
         }
     }
@@ -237,7 +237,7 @@ fun NavGraphBuilder.progressNavGraph(
 ) {
     navigation(
         startDestination = NavRoutes.ProgressScreen.route,
-        route = NavRoutes.ProgressGraph.route
+        route = NavRoutes.ProgressGraph.route,
     ) {
         composable(NavRoutes.ProgressScreen.route) {
             ProgressScreen(
@@ -254,7 +254,7 @@ fun NavGraphBuilder.progressNavGraph(
                 },
                 goToModifyRoutinePage = {
                     navController.navigate(NavRoutes.CustomRoutineScreen.setRouteModel(it))
-                }
+                },
             )
         }
     }
@@ -270,7 +270,7 @@ fun NavGraphBuilder.addRoutineNavGraph(
 ) {
     navigation(
         startDestination = NavRoutes.AddRoutineScreen.route,
-        route = NavRoutes.AddRoutineGraph.route
+        route = NavRoutes.AddRoutineGraph.route,
     ) {
         composable(NavRoutes.AddRoutineScreen.route) {
             AddRoutineScreen(
@@ -281,7 +281,7 @@ fun NavGraphBuilder.addRoutineNavGraph(
                 goToCustomRoutinePage = {
                     navController.navigate(NavRoutes.CustomRoutineScreen.setRouteModel(null))
                 },
-                goBackToProgressPage = { navController.popBackStack() }
+                goBackToProgressPage = { navController.popBackStack() },
             )
         }
 
@@ -291,7 +291,7 @@ fun NavGraphBuilder.addRoutineNavGraph(
                 showChallengeDetailBottomSheet = showChallengeDetailBottomSheet,
                 showSnackBar = showSnackBar,
                 showChallengeChangeBottomSheet = showChallengeChangeBottomSheet,
-                goBackToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) }
+                goBackToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
             )
         }
     }
@@ -302,11 +302,11 @@ fun NavGraphBuilder.customRoutineNavGraph(
 ) {
     navigation(
         startDestination = NavRoutes.CustomRoutineScreen.route,
-        route = NavRoutes.CustomRoutineGraph.route
+        route = NavRoutes.CustomRoutineGraph.route,
     ) {
         composable(
             route = NavRoutes.CustomRoutineScreen.routeWithParam,
-            arguments = listOf(navArgument("data") { type = NavType.StringType })
+            arguments = listOf(navArgument("data") { type = NavType.StringType }),
         ) {
             val json = it.arguments?.getString("data")
             val data = Gson().fromJson(json, ModifyRoutineModel::class.java)
@@ -314,7 +314,7 @@ fun NavGraphBuilder.customRoutineNavGraph(
             CustomRoutineScreen(
                 goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
                 modifyRoutineModel = data,
-                goBackPage = { navController.popBackStack() }
+                goBackPage = { navController.popBackStack() },
             )
         }
 
@@ -322,7 +322,7 @@ fun NavGraphBuilder.customRoutineNavGraph(
             CustomRoutineScreen(
                 goToProgressPage = { navController.navigate(NavRoutes.ProgressScreen.route) },
                 modifyRoutineModel = null,
-                goBackPage = { navController.popBackStack() }
+                goBackPage = { navController.popBackStack() },
             )
         }
     }
@@ -335,7 +335,7 @@ fun NavGraphBuilder.settingNavGraph(
 ) {
     navigation(
         startDestination = NavRoutes.SettingScreen.route,
-        route = NavRoutes.SettingGraph.route
+        route = NavRoutes.SettingGraph.route,
     ) {
         composable(NavRoutes.SettingScreen.route) {
             SettingScreen(
@@ -343,14 +343,14 @@ fun NavGraphBuilder.settingNavGraph(
                 goToDeleteUserScreen = { navController.navigate(NavRoutes.DeleteUserScreen.route) },
                 showLogOutBottomSheet = showLogOutBottomSheet,
                 isSelectedLogOut = isSelectedLogOut,
-                goBackToLogInPage = { navController.navigate(NavRoutes.LogInScreen.route) }
+                goBackToLogInPage = { navController.navigate(NavRoutes.LogInScreen.route) },
             )
         }
 
         composable(NavRoutes.DeleteUserScreen.route) {
             DeleteUserScreen(
                 goBackPage = { navController.popBackStack() },
-                goBackToLogInPage = { navController.navigate(NavRoutes.LogInScreen.route) }
+                goBackToLogInPage = { navController.navigate(NavRoutes.LogInScreen.route) },
             )
         }
     }

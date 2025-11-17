@@ -1,7 +1,6 @@
 package com.sopetit.data.base
 
 object EndPoints {
-
     object Version {
         const val VERSION = "/api/v1/versions/client/app"
     }

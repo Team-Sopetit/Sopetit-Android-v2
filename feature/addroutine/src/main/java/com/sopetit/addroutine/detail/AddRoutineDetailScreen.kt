@@ -62,7 +62,7 @@ fun AddRoutineDetailScreen(
     showChallengeDetailBottomSheet: (RoutineDetailModel) -> Unit,
     showSnackBar: (String, Int, Int) -> Unit,
     showChallengeChangeBottomSheet: (ChallengeChangeModel) -> Unit,
-    goBackToProgressPage: () -> Unit
+    goBackToProgressPage: () -> Unit,
 ) {
     val viewModel: AddRoutineDetailViewModel = hiltViewModel()
     val uiState: AddRoutineDetailPageState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -111,7 +111,7 @@ fun AddRoutineDetailScreen(
         selectedChallengeId = uiState.selectedChallengeIdList[0],
         onSelectDaily = { viewModel.updateSelectedDaily(it) },
         selectedDailyIdList = uiState.selectedDailyIdList,
-        onClickRoutineAddBtn = { viewModel.clickAddRoutineBtn() }
+        onClickRoutineAddBtn = { viewModel.clickAddRoutineBtn() },
     )
 }
 
@@ -133,27 +133,30 @@ fun AddRoutineDetailContent(
     val selectedChallengeNum = if (selectedChallengeId == -1) 0 else 1
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray50)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Gray50),
     ) {
         Box(
-            modifier = Modifier
+            modifier = Modifier,
         ) {
             Image(
                 painter = painterResource(id = ThemeIconType.getThemeDetailBackground(themeId = theme.themeId)),
                 contentDescription = "theme background",
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentScale = ContentScale.Crop
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
+                contentScale = ContentScale.Crop,
             )
 
             Image(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = "arrow back",
-                modifier = Modifier
-                    .padding(top = 14.dp, start = 20.dp)
-                    .size(28.dp)
+                modifier =
+                    Modifier
+                        .padding(top = 14.dp, start = 20.dp)
+                        .size(28.dp),
             )
         }
 
@@ -161,20 +164,22 @@ fun AddRoutineDetailContent(
             text = theme.description,
             color = Gray500,
             style = SoftieTypo.body2,
-            modifier = Modifier
-                .padding(vertical = 16.dp, horizontal = 20.dp)
+            modifier =
+                Modifier
+                    .padding(vertical = 16.dp, horizontal = 20.dp),
         )
 
         RoutineDetailTab(
             selectedRoutine = selectedRoutine,
             onSelectRoutine = onSelectRoutine,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
         )
 
         Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
         ) {
             SelectedRoutineContent(
                 selectedRoutine = selectedRoutine,
@@ -184,17 +189,18 @@ fun AddRoutineDetailContent(
                 onSelectChallenge = onSelectChallenge,
                 selectedChallengeId = selectedChallengeId,
                 selectedDailyIdList = selectedDailyIdList,
-                onSelectDaily = onSelectDaily
+                onSelectDaily = onSelectDaily,
             )
         }
 
         BottomRectangleBtn(
-            btnTextContent = String.format(
-                RoutineAddBtn,
-                selectedDailyIdList.size + selectedChallengeNum
-            ),
+            btnTextContent =
+                String.format(
+                    RoutineAddBtn,
+                    selectedDailyIdList.size + selectedChallengeNum,
+                ),
             isBtnActivated = (selectedDailyIdList.size + selectedChallengeNum) > 0,
-            onClickAction = onClickRoutineAddBtn
+            onClickAction = onClickRoutineAddBtn,
         )
     }
 }
@@ -206,37 +212,42 @@ fun RoutineDetailTab(
     interactionSource: MutableInteractionSource,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier =
+            Modifier
+                .fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(horizontal = 20.dp)
+                    .fillMaxWidth(),
         ) {
             RoutineDetailTabItem(
-                modifier = Modifier
-                    .weight(1f),
+                modifier =
+                    Modifier
+                        .weight(1f),
                 tabTitle = DailyRoutine,
                 isSelected = (selectedRoutine == DailyRoutine),
                 onSelect = { onSelectRoutine(DailyRoutine) },
-                interactionSource = interactionSource
+                interactionSource = interactionSource,
             )
             RoutineDetailTabItem(
-                modifier = Modifier
-                    .weight(1f),
+                modifier =
+                    Modifier
+                        .weight(1f),
                 tabTitle = ChallengeRoutine,
                 isSelected = (selectedRoutine == ChallengeRoutine),
                 onSelect = { onSelectRoutine(ChallengeRoutine) },
-                interactionSource = interactionSource
+                interactionSource = interactionSource,
             )
         }
 
         Divider(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .border(1.dp, color = Gray200)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .border(1.dp, color = Gray200)
+                    .fillMaxWidth(),
         )
     }
 }
@@ -250,28 +261,31 @@ fun RoutineDetailTabItem(
     interactionSource: MutableInteractionSource,
 ) {
     Column(
-        modifier = modifier
-            .clickable(
-                onClick = onSelect,
-                interactionSource = interactionSource,
-                indication = null
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            modifier
+                .clickable(
+                    onClick = onSelect,
+                    interactionSource = interactionSource,
+                    indication = null,
+                ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = tabTitle,
             color = if (isSelected) Gray700 else Gray400,
             style = if (isSelected) SoftieTypo.head4 else SoftieTypo.body2,
-            modifier = Modifier
-                .padding(top = 6.dp, bottom = 10.dp)
+            modifier =
+                Modifier
+                    .padding(top = 6.dp, bottom = 10.dp),
         )
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(3.dp)
-                .clip(RoundedCornerShape(9.dp))
-                .background(if (isSelected) Gray650 else Gray200)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(3.dp)
+                    .clip(RoundedCornerShape(9.dp))
+                    .background(if (isSelected) Gray650 else Gray200),
         )
     }
 }
@@ -292,7 +306,7 @@ fun SelectedRoutineContent(
             DailyRoutineContent(
                 dailyRoutineList = dailyRoutineList,
                 onSelectDaily = onSelectDaily,
-                selectedDailyIdList = selectedDailyIdList
+                selectedDailyIdList = selectedDailyIdList,
             )
         }
 
@@ -301,7 +315,7 @@ fun SelectedRoutineContent(
                 challengeList = challengeList,
                 onClickChallengeDetail = onClickChallengeDetail,
                 onSelectChallenge = onSelectChallenge,
-                selectedChallengeId = selectedChallengeId
+                selectedChallengeId = selectedChallengeId,
             )
         }
     }
@@ -314,15 +328,16 @@ fun DailyRoutineContent(
     selectedDailyIdList: List<Int>,
 ) {
     LazyColumn(
-        modifier = Modifier
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        modifier =
+            Modifier
+                .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         items(dailyRoutineList) { routine ->
             DailyRoutineListItem(
                 routineContent = routine.content,
                 onClickAction = { onSelectDaily(routine) },
-                isRoutineSelected = selectedDailyIdList.contains(routine.id)
+                isRoutineSelected = selectedDailyIdList.contains(routine.id),
             )
         }
     }
@@ -336,16 +351,17 @@ fun ChallengeRoutineContent(
     selectedChallengeId: Int,
 ) {
     LazyColumn(
-        modifier = Modifier
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        modifier =
+            Modifier
+                .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         items(challengeList) { challenge ->
             ChallengeRoutineListItem(
                 routineContent = challenge.content,
                 onClickDetail = { onClickChallengeDetail(challenge) },
                 isRoutineSelected = (challenge.challengeId == selectedChallengeId),
-                onClickAction = { onSelectChallenge(challenge) }
+                onClickAction = { onSelectChallenge(challenge) },
             )
         }
     }

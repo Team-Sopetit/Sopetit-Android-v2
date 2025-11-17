@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MemoWriteResponseDto (
+data class MemoWriteResponseDto(
     @SerialName("memoId")
-    val memoId: Int = 0
+    val memoId: Int = 0,
 )

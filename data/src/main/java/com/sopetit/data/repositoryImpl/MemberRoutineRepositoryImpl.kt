@@ -12,39 +12,41 @@ import com.sopetit.domain.repository.MemberRoutineRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MemberRoutineRepositoryImpl @Inject constructor(
-    private val memberRoutineDataSource: MemberRoutineDataSource,
-) : MemberRoutineRepository {
-    override suspend fun getMemberDailyRoutine(): Flow<Result<MemberDailyRoutineTotalModel>> =
-        GetMemberDailyRoutineMapper.responseToModel(apiCall = { memberRoutineDataSource.getMemberRoutine() })
+class MemberRoutineRepositoryImpl
+    @Inject
+    constructor(
+        private val memberRoutineDataSource: MemberRoutineDataSource,
+    ) : MemberRoutineRepository {
+        override suspend fun getMemberDailyRoutine(): Flow<Result<MemberDailyRoutineTotalModel>> =
+            GetMemberDailyRoutineMapper.responseToModel(apiCall = { memberRoutineDataSource.getMemberRoutine() })
 
-    override suspend fun deleteMemberDailyRoutine(request: List<Int>): Flow<Result<Unit>> =
-        DeleteMemberDailyRoutineMapper.responseToModel(apiCall = {
-            memberRoutineDataSource.deleteMemberRoutine(
-                request
-            )
-        })
-
-    override suspend fun achieveDailyRoutine(routineId: Int): Flow<Result<AchieveDailyRoutineModel>> =
-        AchieveDailyRoutineMapper.responseToModel(apiCall = {
-            memberRoutineDataSource.achieveDailyRoutine(
-                routineId
-            )
-        })
-
-    override suspend fun addDailyMemberRoutine(request: List<Int>): Flow<Result<List<Int>>> =
-        AddMemberDailyRoutineMapper.responseToModel(apiCall = {
-            memberRoutineDataSource.addMemberDailyRoutine(
-                AddMemberDailyRoutineMapper.listToDto(
-                    request
+        override suspend fun deleteMemberDailyRoutine(request: List<Int>): Flow<Result<Unit>> =
+            DeleteMemberDailyRoutineMapper.responseToModel(apiCall = {
+                memberRoutineDataSource.deleteMemberRoutine(
+                    request,
                 )
-            )
-        })
+            })
 
-    override suspend fun deleteRoutineHistory(request: Int): Flow<Result<Unit>> =
-        DefaultUnitMapper.responseToModel(apiCall = {
-            memberRoutineDataSource.deleteRoutineHistory(
-                request
-            )
-        })
-}
+        override suspend fun achieveDailyRoutine(routineId: Int): Flow<Result<AchieveDailyRoutineModel>> =
+            AchieveDailyRoutineMapper.responseToModel(apiCall = {
+                memberRoutineDataSource.achieveDailyRoutine(
+                    routineId,
+                )
+            })
+
+        override suspend fun addDailyMemberRoutine(request: List<Int>): Flow<Result<List<Int>>> =
+            AddMemberDailyRoutineMapper.responseToModel(apiCall = {
+                memberRoutineDataSource.addMemberDailyRoutine(
+                    AddMemberDailyRoutineMapper.listToDto(
+                        request,
+                    ),
+                )
+            })
+
+        override suspend fun deleteRoutineHistory(request: Int): Flow<Result<Unit>> =
+            DefaultUnitMapper.responseToModel(apiCall = {
+                memberRoutineDataSource.deleteRoutineHistory(
+                    request,
+                )
+            })
+    }

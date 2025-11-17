@@ -8,19 +8,20 @@ import com.sopetit.data.service.CustomRoutineService
 import retrofit2.Response
 import javax.inject.Inject
 
-class CustomRoutineDataSourceImpl @Inject constructor(
-    private val customRoutineService: CustomRoutineService
-): CustomRoutineDataSource {
+class CustomRoutineDataSourceImpl
+    @Inject
+    constructor(
+        private val customRoutineService: CustomRoutineService,
+    ) : CustomRoutineDataSource {
+        override suspend fun postCreateCustomRoutine(request: CustomRoutineRequestDto): Response<BaseResponse<CustomRoutineResponseDto>> =
+            customRoutineService.createRoutine(request)
 
-    override suspend fun postCreateCustomRoutine(request: CustomRoutineRequestDto): Response<BaseResponse<CustomRoutineResponseDto>> =
-        customRoutineService.createRoutine(request)
+        override suspend fun putModifyCustomRoutine(
+            request: Int,
+            body: CustomRoutineRequestDto,
+        ): Response<BaseResponse<CustomRoutineResponseDto>> =
+            customRoutineService.modifyRoutine(request, body)
 
-    override suspend fun putModifyCustomRoutine(
-        request: Int,
-        body: CustomRoutineRequestDto
-    ): Response<BaseResponse<CustomRoutineResponseDto>> =
-        customRoutineService.modifyRoutine(request, body)
-
-    override suspend fun deleteCustomRoutine(request: Int): Response<BaseResponse<Unit>> =
-        customRoutineService.deleteRoutine(request)
-}
+        override suspend fun deleteCustomRoutine(request: Int): Response<BaseResponse<Unit>> =
+            customRoutineService.deleteRoutine(request)
+    }

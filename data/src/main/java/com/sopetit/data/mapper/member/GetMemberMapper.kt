@@ -7,8 +7,7 @@ import com.sopetit.domain.entity.response.member.GetMemberModel
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-object GetMemberMapper: BaseMapper() {
-
+object GetMemberMapper : BaseMapper() {
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<GetMemberResponseDto>>): Flow<Result<GetMemberModel>> {
         return baseMapper(
             apiCall = { apiCall() },
@@ -20,10 +19,10 @@ object GetMemberMapper: BaseMapper() {
                         dailyCottonCount = data.dailyCottonCount,
                         happinessCottonCount = data.happinessCottonCount,
                         conversations = data.conversations,
-                        frameImageUrl = data.frameImageUrl
+                        frameImageUrl = data.frameImageUrl,
                     )
                 } ?: GetMemberModel()
-            }
+            },
         )
     }
 }

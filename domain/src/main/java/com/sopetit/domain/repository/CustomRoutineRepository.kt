@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface CustomRoutineRepository {
     suspend fun postCreateCustomRoutine(request: CustomRoutineRequestModel): Flow<Result<CustomRoutineModel>>
+
     suspend fun modifyCreateCustomRoutine(request: ModifyCustomRoutineRequestModel): Flow<Result<CustomRoutineModel>>
+
     suspend fun deleteCustomRoutine(request: Int): Flow<Result<Unit>>
 }

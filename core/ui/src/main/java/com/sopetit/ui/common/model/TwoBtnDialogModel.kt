@@ -3,7 +3,7 @@ package com.sopetit.ui.common.model
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-data class TwoBtnDialogModel (
+data class TwoBtnDialogModel(
     val title: String = "",
     val semiTitle: String = "",
     val leftBtnText: String = "",

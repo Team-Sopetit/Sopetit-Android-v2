@@ -18,9 +18,10 @@ fun DashedDivider(
     strokeWidth: Dp = 1.dp,
     dashRatio: Float = 0.6f,
     dashCount: Int = 40,
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .height(strokeWidth)
+    modifier: Modifier =
+        Modifier
+            .fillMaxWidth()
+            .height(strokeWidth),
 ) {
     val strokePx = with(LocalDensity.current) { strokeWidth.toPx() }
 
@@ -36,7 +37,7 @@ fun DashedDivider(
                 color = color,
                 start = Offset(startX, 0f),
                 end = Offset(startX + dashWidth, 0f),
-                strokeWidth = strokePx
+                strokeWidth = strokePx,
             )
             startX += unitWidth
         }

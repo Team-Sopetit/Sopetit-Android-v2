@@ -7,8 +7,7 @@ import com.sopetit.domain.entity.response.routine.DailyThemeRoutineItemModel
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-object DailyThemeRoutineMapper: BaseMapper() {
-
+object DailyThemeRoutineMapper : BaseMapper() {
     fun responseToModel(apiCall: suspend () -> Response<BaseResponse<DailyThemeRoutineResponseDto>>): Flow<Result<List<DailyThemeRoutineItemModel>>> {
         return baseMapper(
             apiCall = { apiCall() },
@@ -18,11 +17,11 @@ object DailyThemeRoutineMapper: BaseMapper() {
                         DailyThemeRoutineItemModel(
                             id = routine.id,
                             content = routine.content,
-                            existedInMember = routine.existedInMember
+                            existedInMember = routine.existedInMember,
                         )
                     }
                 } ?: listOf(DailyThemeRoutineItemModel())
-            }
+            },
         )
     }
 }
