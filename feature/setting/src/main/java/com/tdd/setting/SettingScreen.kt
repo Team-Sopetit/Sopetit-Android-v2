@@ -102,9 +102,9 @@ fun SettingContent(
 ) {
     Column(
         modifier =
-        Modifier
-            .fillMaxSize()
-            .background(Gray0),
+            Modifier
+                .fillMaxSize()
+                .background(Gray0),
     ) {
         TopBarContent(
             content = SettingTitle,
@@ -128,9 +128,9 @@ fun SettingContent(
 
         Divider(
             modifier =
-            Modifier
-                .padding(horizontal = 10.dp)
-                .border(1.dp, Gray50),
+                Modifier
+                    .padding(horizontal = 10.dp)
+                    .border(1.dp, Gray50),
         )
 
         SettingBarItem(
@@ -156,49 +156,49 @@ fun SettingContent(
             color = Gray700,
             style = SoftieTypo.body1,
             modifier =
-            Modifier
-                .padding(vertical = 14.dp, horizontal = 20.dp),
+                Modifier
+                    .padding(vertical = 14.dp, horizontal = 20.dp),
         )
 
         SettingCommonDivider()
 
         Row(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .clickable(
-                    onClick = onClickLogOut,
-                    indication = null,
-                    interactionSource = interactionSource,
-                ),
+                Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        onClick = onClickLogOut,
+                        indication = null,
+                        interactionSource = interactionSource,
+                    ),
         ) {
             Text(
                 text = SettingLogOut,
                 color = Gray400,
                 style = SoftieTypo.body2,
                 modifier =
-                Modifier
-                    .padding(vertical = 16.dp, horizontal = 20.dp),
+                    Modifier
+                        .padding(vertical = 16.dp, horizontal = 20.dp),
             )
         }
 
         Row(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .clickable(
-                    onClick = onClickDeleteUser,
-                    indication = null,
-                    interactionSource = interactionSource,
-                ),
+                Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        onClick = onClickDeleteUser,
+                        indication = null,
+                        interactionSource = interactionSource,
+                    ),
         ) {
             Text(
                 text = SettingDeleteUser,
                 color = Gray400,
                 style = SoftieTypo.body2.copy(textDecoration = TextDecoration.Underline),
                 modifier =
-                Modifier
-                    .padding(vertical = 16.dp, horizontal = 20.dp),
+                    Modifier
+                        .padding(vertical = 16.dp, horizontal = 20.dp),
             )
         }
     }
@@ -208,8 +208,8 @@ fun SettingContent(
 fun SettingCommonDivider() {
     Divider(
         modifier =
-        Modifier
-            .border(8.dp, Gray50),
+            Modifier
+                .border(8.dp, Gray50),
     )
 }
 
@@ -222,23 +222,23 @@ fun SettingBarItem(
 ) {
     Row(
         modifier =
-        Modifier
-            .fillMaxWidth()
-            .clickable(
-                onClick = onClickAction,
-                interactionSource = interactionSource,
-                indication = null,
-            ),
+            Modifier
+                .fillMaxWidth()
+                .clickable(
+                    onClick = onClickAction,
+                    interactionSource = interactionSource,
+                    indication = null,
+                ),
     ) {
         Image(
             painter = painterResource(id = icon),
             contentDescription = "setting bar icon",
             modifier =
-            Modifier
-                .padding(vertical = 16.dp)
-                .padding(start = 20.dp, end = 3.dp)
-                .align(Alignment.CenterVertically)
-                .size(19.dp),
+                Modifier
+                    .padding(vertical = 16.dp)
+                    .padding(start = 20.dp, end = 3.dp)
+                    .align(Alignment.CenterVertically)
+                    .size(19.dp),
         )
 
         Text(
@@ -246,19 +246,19 @@ fun SettingBarItem(
             color = Gray700,
             style = SoftieTypo.body1,
             modifier =
-            Modifier
-                .align(Alignment.CenterVertically)
-                .weight(1f),
+                Modifier
+                    .align(Alignment.CenterVertically)
+                    .weight(1f),
         )
 
         Image(
             painter = painterResource(id = R.drawable.ic_arrow_next),
             contentDescription = "go setting",
             modifier =
-            Modifier
-                .padding(vertical = 14.dp, horizontal = 20.dp)
-                .size(23.dp)
-                .align(Alignment.CenterVertically),
+                Modifier
+                    .padding(vertical = 14.dp, horizontal = 20.dp)
+                    .size(23.dp)
+                    .align(Alignment.CenterVertically),
         )
     }
 }
