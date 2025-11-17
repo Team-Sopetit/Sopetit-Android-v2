@@ -1,15 +1,14 @@
 package com.sopetit.home
 
 import androidx.lifecycle.viewModelScope
-import com.sopetit.design_system.FeedbackLeftBtn
-import com.sopetit.design_system.FeedbackRightBtn
-import com.sopetit.design_system.FeedbackSemiTitle
-import com.sopetit.design_system.FeedbackTitle
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray100
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.PurpleGradient
-import com.sopetit.design_system.R
+import com.sopetit.designsystem.FeedbackLeftBtn
+import com.sopetit.designsystem.FeedbackRightBtn
+import com.sopetit.designsystem.FeedbackSemiTitle
+import com.sopetit.designsystem.FeedbackTitle
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray100
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.PurpleGradient
 import com.sopetit.domain.entity.response.member.GetMemberModel
 import com.sopetit.domain.entity.response.screen.TutorialModel
 import com.sopetit.domain.usecase.member.GetMemberUseCase

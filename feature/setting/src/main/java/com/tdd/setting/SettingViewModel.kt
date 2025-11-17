@@ -1,14 +1,14 @@
 package com.tdd.setting
 
 import androidx.lifecycle.viewModelScope
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray100
-import com.sopetit.design_system.Gray300
-import com.sopetit.design_system.LogOutBottomSheetSemiTitle
-import com.sopetit.design_system.LogOutBottomSheetTitle
-import com.sopetit.design_system.LogOutLeftBtnText
-import com.sopetit.design_system.LogOutRightBtnText
-import com.sopetit.design_system.Red200
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray100
+import com.sopetit.designsystem.Gray300
+import com.sopetit.designsystem.LogOutBottomSheetSemiTitle
+import com.sopetit.designsystem.LogOutBottomSheetTitle
+import com.sopetit.designsystem.LogOutLeftBtnText
+import com.sopetit.designsystem.LogOutRightBtnText
+import com.sopetit.designsystem.Red200
 import com.sopetit.domain.entity.response.version.VersionModel
 import com.sopetit.domain.usecase.auth.PostLogOutUseCase
 import com.sopetit.domain.usecase.version.GetVersionUseCase

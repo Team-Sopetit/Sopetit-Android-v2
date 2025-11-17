@@ -18,12 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.SoftieTypo
 
 @Composable
 fun ThemeListItem(

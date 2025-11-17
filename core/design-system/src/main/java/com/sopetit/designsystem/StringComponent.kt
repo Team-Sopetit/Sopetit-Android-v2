@@ -1,4 +1,4 @@
-package com.sopetit.design_system
+package com.sopetit.designsystem
 
 // Common
 const val Softie = "소프티"

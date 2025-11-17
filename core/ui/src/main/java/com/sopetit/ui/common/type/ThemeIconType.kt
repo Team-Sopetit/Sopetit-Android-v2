@@ -1,21 +1,21 @@
 package com.sopetit.ui.common.type
 
 import androidx.compose.ui.graphics.Color
-import com.sopetit.design_system.Blue100
-import com.sopetit.design_system.Blue50
-import com.sopetit.design_system.Green100
-import com.sopetit.design_system.Green50
-import com.sopetit.design_system.Orange100
-import com.sopetit.design_system.Orange50
-import com.sopetit.design_system.Pink100
-import com.sopetit.design_system.Pink50
-import com.sopetit.design_system.R
-import com.sopetit.design_system.Red100
-import com.sopetit.design_system.Red50
-import com.sopetit.design_system.Sky100
-import com.sopetit.design_system.Sky50
-import com.sopetit.design_system.Yellow100
-import com.sopetit.design_system.Yellow50
+import com.sopetit.designsystem.Blue100
+import com.sopetit.designsystem.Blue50
+import com.sopetit.designsystem.Green100
+import com.sopetit.designsystem.Green50
+import com.sopetit.designsystem.Orange100
+import com.sopetit.designsystem.Orange50
+import com.sopetit.designsystem.Pink100
+import com.sopetit.designsystem.Pink50
+import com.sopetit.designsystem.R
+import com.sopetit.designsystem.Red100
+import com.sopetit.designsystem.Red50
+import com.sopetit.designsystem.Sky100
+import com.sopetit.designsystem.Sky50
+import com.sopetit.designsystem.Yellow100
+import com.sopetit.designsystem.Yellow50
 
 enum class ThemeIconType(
     val themeId: Int,

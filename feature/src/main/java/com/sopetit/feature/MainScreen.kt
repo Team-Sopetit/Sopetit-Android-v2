@@ -60,12 +60,11 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray1000
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray1000
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.domain.entity.request.CreateMemberModel
 import com.sopetit.domain.entity.response.memo.MemoActionModel
 import com.sopetit.domain.entity.response.routine.ChallengeChangeModel

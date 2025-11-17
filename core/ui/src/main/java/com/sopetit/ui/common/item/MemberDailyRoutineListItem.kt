@@ -23,12 +23,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.R
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.ui.util.convertToAmPmFormat
 
 @Composable

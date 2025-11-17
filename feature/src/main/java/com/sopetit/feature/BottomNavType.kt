@@ -1,10 +1,9 @@
 package com.sopetit.feature
 
-import com.sopetit.design_system.Achieve
-import com.sopetit.design_system.Empty
-import com.sopetit.design_system.Home
-import com.sopetit.design_system.Progress
-import com.sopetit.design_system.R
+import com.sopetit.designsystem.Achieve
+import com.sopetit.designsystem.Empty
+import com.sopetit.designsystem.Home
+import com.sopetit.designsystem.Progress
 import com.sopetit.navigation.NavRoutes
 
 enum class BottomNavType(

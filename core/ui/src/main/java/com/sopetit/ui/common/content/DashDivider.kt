@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray300
+import com.sopetit.designsystem.Gray300
 
 @Composable
 fun DashedDivider(

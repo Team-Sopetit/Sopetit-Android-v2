@@ -4,7 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.sopetit.design_system.Gray50
+import com.sopetit.designsystem.Gray50
 
 @Composable
 fun PieChart(

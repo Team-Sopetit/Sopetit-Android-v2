@@ -15,10 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray200
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray200
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.SoftieTypo
 
 @Composable
 fun RoundCornerShapeBtn(

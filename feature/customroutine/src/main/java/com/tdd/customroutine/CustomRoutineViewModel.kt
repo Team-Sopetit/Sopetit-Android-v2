@@ -1,13 +1,13 @@
 package com.tdd.customroutine
 
 import androidx.lifecycle.viewModelScope
-import com.sopetit.design_system.TimeAM
-import com.sopetit.design_system.TimeMinuteFifty
-import com.sopetit.design_system.TimeMinuteForty
-import com.sopetit.design_system.TimeMinuteHalf
-import com.sopetit.design_system.TimeMinuteTen
-import com.sopetit.design_system.TimeMinuteTwenty
-import com.sopetit.design_system.TimeMinuteZero
+import com.sopetit.designsystem.TimeAM
+import com.sopetit.designsystem.TimeMinuteFifty
+import com.sopetit.designsystem.TimeMinuteForty
+import com.sopetit.designsystem.TimeMinuteHalf
+import com.sopetit.designsystem.TimeMinuteTen
+import com.sopetit.designsystem.TimeMinuteTwenty
+import com.sopetit.designsystem.TimeMinuteZero
 import com.sopetit.domain.entity.enums.CustomScreenType
 import com.sopetit.domain.entity.request.customroutine.CustomRoutineRequestModel
 import com.sopetit.domain.entity.request.customroutine.ModifyCustomRoutineRequestModel
@@ -18,7 +18,6 @@ import com.sopetit.domain.usecase.customroutine.PostCreateCustomRoutineUseCase
 import com.sopetit.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel

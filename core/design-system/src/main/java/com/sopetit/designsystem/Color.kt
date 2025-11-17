@@ -1,4 +1,4 @@
-package com.sopetit.design_system
+package com.sopetit.designsystem
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color

@@ -16,10 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.sopetit.design_system.Gray500
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.SoftieTypo
-import com.sopetit.design_system.White0
+import com.sopetit.designsystem.Gray500
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.SoftieTypo
+import com.sopetit.designsystem.White0
 import com.sopetit.ui.common.button.BottomTwoBtn
 import com.sopetit.ui.common.model.TwoBtnDialogModel
 

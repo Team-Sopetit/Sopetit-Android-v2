@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray50
-import com.sopetit.design_system.R
-import com.sopetit.design_system.StoryTellingContent3
+import com.sopetit.designsystem.Gray50
+import com.sopetit.designsystem.R
+import com.sopetit.designsystem.StoryTellingContent3
 import com.sopetit.ui.common.item.StoryTellingTextItem
 
 @Composable

@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray300
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray300
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.R
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.ui.common.button.BottomTwoBtn
 import com.sopetit.ui.common.model.TwoBtnIconModel
 

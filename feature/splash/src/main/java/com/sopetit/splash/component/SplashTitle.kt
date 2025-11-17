@@ -14,10 +14,10 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
-import com.sopetit.design_system.SplashSemiTitle
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.R
+import com.sopetit.designsystem.SoftieTypo
+import com.sopetit.designsystem.SplashSemiTitle
 
 @Composable
 fun SplashTitle(

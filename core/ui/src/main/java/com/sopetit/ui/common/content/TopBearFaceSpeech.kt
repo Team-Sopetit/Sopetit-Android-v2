@@ -21,9 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray700
-import com.sopetit.design_system.R
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray700
+import com.sopetit.designsystem.R
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.ui.common.type.BearType
 
 @Composable

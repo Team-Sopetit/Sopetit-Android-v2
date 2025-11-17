@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.SoftieTypo
 
 @Composable
 fun BottomTwoBtn(

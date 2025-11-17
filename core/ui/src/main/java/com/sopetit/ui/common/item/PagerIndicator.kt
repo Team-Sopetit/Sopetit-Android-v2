@@ -7,8 +7,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray300
-import com.sopetit.design_system.Gray650
+import com.sopetit.designsystem.Gray300
+import com.sopetit.designsystem.Gray650
 
 @Composable
 fun PagerIndicator(

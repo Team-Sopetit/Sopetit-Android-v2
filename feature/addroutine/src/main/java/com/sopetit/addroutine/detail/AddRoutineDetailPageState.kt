@@ -1,6 +1,6 @@
 package com.sopetit.addroutine.detail
 
-import com.sopetit.design_system.DailyRoutine
+import com.sopetit.designsystem.DailyRoutine
 import com.sopetit.domain.entity.response.routine.ChallengeItemModel
 import com.sopetit.domain.entity.response.routine.DailyThemeRoutineItemModel
 import com.sopetit.domain.entity.response.screen.RoutineDetailModel

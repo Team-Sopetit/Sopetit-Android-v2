@@ -19,10 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sopetit.design_system.Gray0
-import com.sopetit.design_system.Gray400
-import com.sopetit.design_system.Gray650
-import com.sopetit.design_system.SoftieTypo
+import com.sopetit.designsystem.Gray0
+import com.sopetit.designsystem.Gray400
+import com.sopetit.designsystem.Gray650
+import com.sopetit.designsystem.SoftieTypo
 import com.sopetit.feature.BottomNavType
 
 @Composable

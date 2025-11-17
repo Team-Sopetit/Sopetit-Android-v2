@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.graphics.toArgb
-import com.sopetit.design_system.Gray50
+import com.sopetit.designsystem.Gray50
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
