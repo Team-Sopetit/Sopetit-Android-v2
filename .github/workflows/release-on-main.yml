@@ -1,0 +1,87 @@
+name: Create Release Tag
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    name: Generate & Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Prepare local.properties
+        run: |
+          cat <<EOF > local.properties
+          BASE_URL=${{ secrets.BASE_URL }}
+          KAKAO_APP_KEY=${{ secrets.KAKAO_APP_KEY }}
+          KAKAO_HOST_SCHEME=${{ secrets.KAKAO_HOST_SCHEME }}
+          FEEDBACK_FORM=${{ secrets.FEEDBACK_FORM }}
+          SERVICE_POLICY=${{ secrets.SERVICE_POLICY }}
+          PERSONAL_INFO_POLICY=${{ secrets.PERSONAL_INFO_POLICY }}
+          EOF
+
+      - name: Decode google-services.json
+        env:
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+        run: |
+          mkdir -p app
+          echo "$GOOGLE_SERVICES" | base64 -d > app/google-services.json
+
+      # --------- Release 빌드 ----------
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --stacktrace
+
+      
+      - name: Upload Release APK (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/*.apk
+
+      
+      - name: Extract version from commit message
+        id: extract_version
+        shell: bash
+        run: |
+          MSG="${{ github.event.head_commit.message }}"
+          if [[ $MSG =~ ([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}) ]]; then
+            VERSION="${BASH_REMATCH[1]}"
+            TAG="v${VERSION}"
+          else
+            VERSION="$(date +'%Y.%m.%d')-${{ github.run_number }}"
+            TAG="v${VERSION}"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG"         >> "$GITHUB_OUTPUT"
+
+     
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.extract_version.outputs.tag }}
+          name:     ${{ steps.extract_version.outputs.tag }}
+          draft: false
+          prerelease: false
+          files: |
+            app/build/outputs/apk/release/*.apk
+          body: |
+            ## ${{ steps.extract_version.outputs.tag }} 릴리즈
+            - Release APK가 포함되어 있습니다.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
